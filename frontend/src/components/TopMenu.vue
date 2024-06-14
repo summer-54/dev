@@ -19,7 +19,10 @@ export default defineComponent({
     display: flex;
     justify-content: space-around;
 }
-a {
+a:any-link {
     text-decoration: none;
+    color:blueviolet;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 1.5em;
 }
 </style>
