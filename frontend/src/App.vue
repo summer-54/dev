@@ -2,11 +2,18 @@
 import {RouterView} from 'vue-router';
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue";
+import Header from './components/Header.vue';
+export default {
+  components: {
+    Header
+  }
+}
 </script>
 
 <template>
+  <Header></Header>
   <RouterView/>
-  <SuiButton>test</SuiButton>
+  <!--<SuiButton>test</SuiButton>-->
 </template>
 
 <style scoped>
