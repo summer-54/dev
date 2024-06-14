@@ -15,13 +15,9 @@ export default defineComponent({
 <style scoped>
 .all {
     background-color: lightskyblue;
-    margin: 20px 20px 20px 20px;
-    display: block;
-    width: 100%;
-    align-items: center;
-}
-.element {
-    margin-left: 50px;
+    padding: 20px 20px 20px 20px;
+    display: flex;
+    justify-content: space-around;
 }
 a {
     text-decoration: none;
