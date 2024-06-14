@@ -1,11 +1,12 @@
-<script setup lang="ts">
+<script lang="ts">
 import {RouterView} from 'vue-router';
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue";
-import Header from './components/Header.vue';
+import Header from '@/components/Header.vue';
 export default {
-  components: {
-    Header
+  components: {Header, RouterView},
+  computed: {
+    color() {return this.$theme.color}
   }
 }
 </script>
@@ -24,5 +25,9 @@ export default {
 body {
   padding: 0;
   margin: 0;
+}
+
+* {
+  color: v-bind(color);
 }
 </style>

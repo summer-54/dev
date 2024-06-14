@@ -1,36 +1,71 @@
 <template>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
+  <header>
     <h1>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h1>
-    <span class="all">
-        <span class="element"><a href="/"           class="element_a">Главная</a></span>
-        <span class="element"><a href="/olymp"      class="element_a">Олимпиада</a></span>
-        <span class="element"><a href="/summer-cup" class="element_a">Летний кубок</a></span>
-    </span>
+    <nav>
+      <span class="element"><SuiButton @click="$router.push('/')" class="element_a">Главная</SuiButton></span>
+      <span class="element"><SuiButton @click="$router.push('/olymp')" class="element_a">Олимпиада</SuiButton></span>
+      <span class="element"><SuiButton @click="$router.push('/summer-cup')" class="element_a">Летний кубок</SuiButton></span>
+    </nav>
+  </header>
 </template>
+
 <script>
 import {defineComponent} from "vue";
+// @ts-ignore
+import SuiButton from "sffui.vue/suiButton.vue";
 
 export default defineComponent({
-
+  name: "Header",
+  components: {SuiButton}
 });
 </script>
+
 <style scoped>
-.all {
-    background-color: lightskyblue;
-    padding: 20px 20px 20px 20px;
+header {
+  display: flex;
+  background-color: lightskyblue;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+
+  @media (max-width: 1000px) {
+    justify-content: center;
+  }
+
+  h1 {
+    margin-left: 20px;
+
+    @media (max-width: 1000px) {
+      display: none;
+    }
+  }
+
+  nav {
     display: flex;
-    justify-content: space-around;
+    align-items: center;
+
+    @media (max-width: 1000px) {
+      width: 100%;
+      justify-content: space-evenly;
+    }
+
+    * {
+      @media (min-width: 1000px) {
+        margin-right: 10px;
+      }
+
+      @media (max-width: 530px) {
+        font-size: 16px;
+      }
+
+      font-family: "Tiny5", sans-serif;
+    }
+  }
 }
-.element_a {
-    font-family: "Tiny5", sans-serif;
-}
-.element {
-    font-size: 3em;
-}
+
 a:any-link {
-    text-decoration: none;
-    color: blueviolet;
-    cursor: pointer;
+  text-decoration: none;
+  color: blueviolet;
+  cursor: pointer;
 }
 </style>
