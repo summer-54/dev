@@ -34,7 +34,7 @@ header {
 
   h1 {
     margin-left: 20px;
-
+    font-family: "LXGW WenKai Mono TC", monospace;
     @media (max-width: 1000px) {
       display: none;
     }
