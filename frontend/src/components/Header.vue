@@ -2,17 +2,17 @@
   <header>
     <h1>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h1>
     <nav>
-      <span class="element"><CustomRouterLink to="/">Главная</CustomRouterLink></span>
-      <span class="element"><CustomRouterLink to="/olymp">Олимпиада</CustomRouterLink></span>
-      <span class="element"><CustomRouterLink to="/summer-cup">Летний кубок</CustomRouterLink></span>
+      <span class="element"><CustomRouterLink to="/" :class="$style.button">Главная</CustomRouterLink></span>
+      <span class="element"><CustomRouterLink to="/olymp" :class="$style.button">Олимпиада</CustomRouterLink></span>
+      <span class="element"><CustomRouterLink to="/summer-cup" :class="$style.button">Летний кубок</CustomRouterLink></span>
     </nav>
   </header>
   <teleport to="body">
     <footer>
       <nav>
-        <span class="element"><CustomRouterLink to="/">Главная</CustomRouterLink></span>
-        <span class="element"><CustomRouterLink to="/olymp">Олимпиада</CustomRouterLink></span>
-        <span class="element"><CustomRouterLink to="/summer-cup">Летний кубок</CustomRouterLink></span>
+        <span class="element"><CustomRouterLink to="/" :class="$style.button">Главная</CustomRouterLink></span>
+        <span class="element"><CustomRouterLink to="/olymp" :class="$style.button">Олимпиада</CustomRouterLink></span>
+        <span class="element"><CustomRouterLink to="/summer-cup" :class="$style.button">Летний кубок</CustomRouterLink></span>
       </nav>
     </footer>
   </teleport>
@@ -63,6 +63,11 @@ header {
       font-size: 25px;
       margin-left: 0;
     }
+
+    @media (max-width: 300px) {
+      font-size: 20px;
+      margin-left: 0;
+    }
   }
 
   nav {
@@ -91,8 +96,6 @@ header {
         @media (max-width: 830px) {
           font-size: 16px;
         }
-
-        font-family: "Tiny5", sans-serif !important;
       }
 
       margin: 8px 0;
@@ -118,11 +121,11 @@ footer {
 
     span {
       margin: 8px 0;
-    }
 
-    * {
-      font-size: 16px;
-      font-family: "Tiny5", sans-serif;
+      a button {
+        font-size: 16px;
+        font-family: "Tiny5", sans-serif;
+      }
     }
   }
 }
@@ -131,5 +134,20 @@ a:any-link {
   text-decoration: none;
   color: blueviolet;
   cursor: pointer;
+}
+</style>
+
+<style module>
+.button * {
+  @media (max-width: 800px) {
+    font-size: 16px !important;
+  }
+
+  @media (max-width: 380px) {
+    font-size: 12px !important;
+    padding: 10px !important;
+  }
+
+  font-family: "Tiny5", sans-serif !important;
 }
 </style>
