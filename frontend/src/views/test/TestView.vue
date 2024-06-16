@@ -8,9 +8,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <main>
-
-  </main>
+  <textarea></textarea>
 </template>
 
 <style scoped>

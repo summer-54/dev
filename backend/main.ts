@@ -2,6 +2,7 @@ import SBackend from "sbackend";
 import handlers from "./handlers.js";
 import "dotenv/config";
 import {setupEnv} from "./sql/index.js";
+import {test} from "./standings.js";
 
 async function main() {
     await setupEnv();
@@ -28,8 +29,9 @@ async function main() {
         response.end("404 Not Found");
     });
 
-    app.start(() => {
+    app.start(async () => {
         console.log(app.routes);
+        console.log(await test());
     });
 }
 
