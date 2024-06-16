@@ -31,7 +31,7 @@ async function main() {
 
     app.start(async () => {
         console.log(app.routes);
-        console.log(await test());
+        await test();
     });
 }
 
