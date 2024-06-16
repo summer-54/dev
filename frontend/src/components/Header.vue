@@ -2,17 +2,17 @@
   <header>
     <h1>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h1>
     <nav>
-      <span class="element"><RouterLink to="/"><SuiButton class="element_a">Главная</SuiButton></RouterLink></span>
-      <span class="element"><RouterLink to="/olymp"><SuiButton class="element_a">Олимпиада</SuiButton></RouterLink></span>
-      <span class="element"><RouterLink to="/summer-cup"><SuiButton class="element_a">Летний кубок</SuiButton></RouterLink></span>
+      <span class="element"><CustomRouterLink to="/">Главная</CustomRouterLink></span>
+      <span class="element"><CustomRouterLink to="/olymp">Олимпиада</CustomRouterLink></span>
+      <span class="element"><CustomRouterLink to="/summer-cup">Летний кубок</CustomRouterLink></span>
     </nav>
   </header>
   <teleport to="body">
     <footer>
       <nav>
-        <span class="element"><RouterLink to="/"><SuiButton class="element_a">Главная</SuiButton></RouterLink></span>
-        <span class="element"><RouterLink to="/olymp"><SuiButton class="element_a">Олимпиада</SuiButton></RouterLink></span>
-        <span class="element"><RouterLink to="/summer-cup"><SuiButton class="element_a">Летний кубок</SuiButton></RouterLink></span>
+        <span class="element"><CustomRouterLink to="/">Главная</CustomRouterLink></span>
+        <span class="element"><CustomRouterLink to="/olymp">Олимпиада</CustomRouterLink></span>
+        <span class="element"><CustomRouterLink to="/summer-cup">Летний кубок</CustomRouterLink></span>
       </nav>
     </footer>
   </teleport>
@@ -20,12 +20,11 @@
 
 <script>
 import {defineComponent} from "vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
+import CustomRouterLink from "@/components/ui/customRouterLink.vue";
 
 export default defineComponent({
   name: "Header",
-  components: {SuiButton}
+  components: {CustomRouterLink}
 });
 </script>
 
