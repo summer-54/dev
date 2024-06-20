@@ -1,6 +1,6 @@
 <template>
   <span class="qa">
-  <Subtitle :text="question"></Subtitle>
+  <Subtitle :text="question" class="subtitle"></Subtitle>
   <span class="answer">{{ answer }}</span>
   </span>
 </template>
@@ -21,7 +21,18 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   margin-left: 8px;
-  width: 30%;
+  @media (min-width: 1200px){
+    width: 30%;
+  }
+  @media (min-width: 600px) and (max-width: 1200px){
+    width: 45%;
+  }
+  @media (max-width: 600px){
+    width: 90%;
+  }
+}
+.subtitle {
+  text-align: justify;
 }
 .answer {
   font-family: "LXGW WenKai Mono TC", monospace;
