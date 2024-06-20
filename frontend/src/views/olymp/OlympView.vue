@@ -23,6 +23,12 @@ export default defineComponent({
         {src: "./../../../assets/manager2.jpg", note1: "Васильев Михаил Юрьевич", note2: "Выпускник механико-математического факультета МГУ имени М.В. Ломоносова, 2019 г."},
         {src: "./../../../assets/manager3.jpg", note1: "Смирнова Елена Юрьевна", note2: "Почётный работник образования г. Москвы. Лауреат премии Президента РФ, 2008 г."},
         {src: "./../../../assets/manager4.jpg", note1: "Бегунц Александр Владимирович", note2: "Директор Центра математического творчества МГУ имени М.В. Ломоносова."}
+      ],
+      authors_list: [
+        {src: "./../../../assets/author1.jpg", note1: "Сергей Сергеевич Князевский"},
+        {src: "./../../../assets/author2.jpg", note1: "Никита Пшеничный"},
+        {src: "./../../../assets/author3.jpg", note1: "Иван Клочков"},
+        {src: "./../../../assets/author4.jpg", note1: "Рамиль Хакимов"}
       ]
     }
   }
@@ -35,6 +41,8 @@ export default defineComponent({
   <QA_container :qa_list="rules"></QA_container>
   <span class="subtitle"><Subtitle text="Организационный комитет"></Subtitle></span>
   <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
+  <span class="subtitle"><Subtitle text="Методическая комиссия"></Subtitle></span>
+  <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
 </template>
 
 <style scoped>
