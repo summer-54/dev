@@ -43,9 +43,27 @@ export default defineComponent({
   <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
   <span class="subtitle"><Subtitle text="Методическая комиссия"></Subtitle></span>
   <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
+  <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>
 </template>
 
 <style scoped>
+.link_p {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.link {
+  font-family: "LXGW WenKai Mono TC", monospace;
+  text-decoration: none;
+  font-size: 24px;
+  @media (min-width: 530px) and (max-width: 940px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 12px;
+  }
+}
 .subtitle {
   text-align: center;
 }

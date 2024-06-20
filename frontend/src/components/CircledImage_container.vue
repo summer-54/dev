@@ -20,5 +20,6 @@ export default defineComponent({
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-bottom: 100px;
 }
 </style>
