@@ -3,10 +3,11 @@ import {defineComponent} from 'vue';
 import QA_container from '@/components/QA_container.vue';
 import Subtitle from '@/components/Subtitle.vue';
 import CircledImage_container from '@/components/CircledImage_container.vue';
+import ImageGallery from '@/components/ImageGallery.vue';
 
 export default defineComponent({
   name: "OlympView",
-  components: {QA_container, Subtitle, CircledImage_container},
+  components: {QA_container, Subtitle, CircledImage_container, ImageGallery},
   data() {
     return {
       rules: [
@@ -29,6 +30,12 @@ export default defineComponent({
         {src: "./../../../assets/author2.jpg", note1: "Никита Пшеничный"},
         {src: "./../../../assets/author3.jpg", note1: "Иван Клочков"},
         {src: "./../../../assets/author4.jpg", note1: "Рамиль Хакимов"}
+      ],
+      gallery_list: [
+        {src: "./../../../assets/author1.jpg", id: 0},
+        {src: "./../../../assets/author2.jpg", id: 1},
+        {src: "./../../../assets/author3.jpg", id: 2},
+        {src: "./../../../assets/author4.jpg", id: 3}
       ]
     }
   }
@@ -43,11 +50,14 @@ export default defineComponent({
   <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
   <span class="subtitle"><Subtitle text="Методическая комиссия"></Subtitle></span>
   <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
+  <span class="subtitle"><Subtitle text="Фотографии"></Subtitle></span>
+  <ImageGallery :imgs_list="gallery_list"></ImageGallery>
   <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>
 </template>
 
 <style scoped>
 .link_p {
+  margin-top: 100px;
   display: block;
   width: 100%;
   text-align: center;
