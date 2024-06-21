@@ -50,7 +50,7 @@ export default defineComponent({
   <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
   <span class="subtitle"><Subtitle text="Методическая комиссия"></Subtitle></span>
   <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
-  <span class="subtitle"><Subtitle text="Фотографии"></Subtitle></span>
+  <span class="subtitle"><Subtitle text="Фотогалерея"></Subtitle></span>
   <ImageGallery :imgs_list="gallery_list"></ImageGallery>
   <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>
 </template>
