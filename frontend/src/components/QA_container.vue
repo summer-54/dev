@@ -34,4 +34,11 @@ export default defineComponent({
     font-size: 12px;
   }
 }
+.qa_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-left: 5%;
+  margin-right: 5%;
+}
 </style>

@@ -78,11 +78,4 @@ export default defineComponent({
 .subtitle {
   text-align: center;
 }
-.qa_container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-left: 5%;
-  margin-right: 5%;
-}
 </style>
