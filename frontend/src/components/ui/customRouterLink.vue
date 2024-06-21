@@ -16,5 +16,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <RouterLink :to="to"><SuiButton><slot/></SuiButton></RouterLink>
+  <RouterLink :to="to"><SuiButton border="#9297FB"><slot/></SuiButton></RouterLink>
 </template>
