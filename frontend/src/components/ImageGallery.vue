@@ -1,16 +1,16 @@
 <template>
   <span class="imageGallery">
-    <span class="arrow"><img v-on:click="previous()" src="./../../assets/left.png"></span>
+    <span class="arrow"><img v-on:click="previous()" src="@/assets/left.svg" alt="prev"></span>
     <span class="img_container">
       <span v-for="item in imgs_list" :id="item.id">
-        <img class="img_gallery" :src="item.src" v-if="item.id == cur">
+        <img class="img_gallery" :src="item.src" v-if="item.id === cur" alt="image">
       </span>
     </span>
-    <span class="arrow"><img v-on:click="next()" src="./../../assets/right.png"></span>
+    <span class="arrow"><img v-on:click="next()" src="@/assets/right.svg" alt="next"></span>
   </span>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from "vue";
 
 export default defineComponent({
@@ -43,8 +43,14 @@ export default defineComponent({
   margin: auto;
 }
 .arrow {
+  display: inline-block;
   margin: auto;
   cursor: pointer;
+  width: 100px;
+
+  img {
+    width: 100%;
+  }
 }
 .img_gallery {
   @media (min-width: 1200px){

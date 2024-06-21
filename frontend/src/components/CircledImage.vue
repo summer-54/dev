@@ -9,7 +9,7 @@ export default defineComponent({
 
 <template>
   <span class="image_with_note">
-    <img :src="src" class="circled_image">
+    <img :src="src" class="circled_image" alt="image">
     <span class="note1">{{ note1 }}</span>
     <span class="note2">{{ note2 }}</span>
   </span>

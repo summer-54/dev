@@ -1,7 +1,7 @@
 <template>
   <span class="qa">
-  <Subtitle :text="question" class="subtitle"></Subtitle>
-  <span class="answer">{{ answer }}</span>
+    <Subtitle :text="question" class="subtitle"></Subtitle>
+    <span class="answer">{{ answer }}</span>
   </span>
 </template>
 

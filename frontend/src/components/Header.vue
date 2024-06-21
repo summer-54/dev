@@ -18,7 +18,7 @@
   </teleport>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from "vue";
 import CustomRouterLink from "@/components/ui/customRouterLink.vue";
 
