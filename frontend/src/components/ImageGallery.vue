@@ -48,16 +48,16 @@ export default defineComponent({
 }
 .img_gallery {
   @media (min-width: 1200px){
-    width: 600px;
+    height: 600px;
   }
   @media (min-width: 800px) and (max-width: 1200px) {
-    width: 400px;
+    height: 400px;
   }
   @media (min-width: 500px) and (max-width: 800px){
-    width: 250px;
+    height: 250px;
   }
   @media (max-width: 500px){
-    width: 150px;
+    height: 150px;
   }
 }
 </style>
