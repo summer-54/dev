@@ -4,10 +4,11 @@ import QA_container from '@/components/QA_container.vue';
 import Subtitle from '@/components/Subtitle.vue';
 import CircledImage_container from '@/components/CircledImage_container.vue';
 import ImageGallery from '@/components/ImageGallery.vue';
+import Title from '@/components/Title.vue';
 
 export default defineComponent({
   name: "OlympView",
-  components: {QA_container, Subtitle, CircledImage_container, ImageGallery},
+  components: {QA_container, Subtitle, CircledImage_container, ImageGallery, Title},
   data() {
     return {
       rules: [
@@ -43,7 +44,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <h1>Олимпиада по программированию</h1>
+  <Title text="Олимпиада по программированию"></Title>
   <span class="subtitle"><Subtitle text="Правила"></Subtitle></span>
   <QA_container :qa_list="rules"></QA_container>
   <span class="subtitle"><Subtitle text="Организационный комитет"></Subtitle></span>
@@ -76,12 +77,6 @@ export default defineComponent({
 }
 .subtitle {
   text-align: center;
-}
-h1 {
-  text-align: center;
-  font-family: "LXGW WenKai Mono TC", monospace;
-  margin-left: 8px;
-  margin-right: 8px;
 }
 .qa_container {
   display: flex;
