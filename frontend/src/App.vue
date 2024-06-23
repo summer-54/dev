@@ -30,7 +30,7 @@ html {
 body {
   padding: 0;
   margin: 0;
-  height: 100%;
+  min-height: 100vh;
 }
 
 * {
@@ -39,5 +39,6 @@ body {
 
 #app {
   height: 100%;
+  padding-bottom: 10px;
 }
 </style>

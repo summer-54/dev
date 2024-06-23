@@ -64,7 +64,7 @@ header {
       margin-left: 0;
     }
 
-    @media (max-width: 300px) {
+    @media (max-width: 315px) {
       font-size: 20px;
       margin-left: 0;
     }
@@ -109,7 +109,7 @@ footer {
   }
 
   overflow: hidden;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   width: 100%;
   background-color: var(--headerBg);
@@ -149,5 +149,13 @@ a:any-link {
   }
 
   font-family: "Tiny5", sans-serif !important;
+}
+</style>
+
+<style>
+#app {
+  @media (max-width: 501px) {
+    padding-bottom: 60px;
+  }
 }
 </style>

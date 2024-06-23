@@ -1,27 +1,29 @@
 <template>
-  <span class="qa_container">
-  <QA v-for="item in qa_list" :question="item.q" :answer="item.a"></QA>
-  </span>
+  <div>
+    <span class="qa_container" v-for="{q, a} in qa_list">
+      <Subtitle :text="q" class="subtitle"></Subtitle>
+      <span class="answer">{{ a }}</span>
+    </span>
+  </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
-import QA from '@/components/QA.vue'
+import Subtitle from "@/components/Subtitle.vue";
 
 export default defineComponent({
   name: "QA_container",
-  props: ['qa_list'],
-  components: {QA}
+  components: {Subtitle},
+  props: {
+    qa_list: {
+      type: Array<{q: string, a: string}>,
+      required: true
+    }
+  }
 });
 </script>
 
-<style>
-.qa {
-  display: flex;
-  flex-direction: column;
-  margin-left: 8px;
-  width: 30%;
-}
+<style scoped>
 .answer {
   font-family: "LXGW WenKai Mono TC", monospace;
   font-size: 24px;
@@ -31,14 +33,26 @@ export default defineComponent({
   }
 
   @media (max-width: 530px) {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
-.qa_container {
+
+div {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  margin-left: 5%;
-  margin-right: 5%;
+  gap: 40px;
+  justify-content: center;
+  padding-left: 40px;
+  padding-right: 40px;
+
+  span {
+    flex-basis: 350px;
+    flex-grow: 1;
+    text-align: justify;
+
+    h2 {
+      text-align: center;
+    }
+  }
 }
 </style>

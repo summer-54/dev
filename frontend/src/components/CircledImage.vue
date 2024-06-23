@@ -3,7 +3,17 @@ import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "CircledImage",
-  props: ['src', 'note1', 'note2', 'width_']
+  props: {
+    src: {
+      type: String,
+      required: true
+    },
+    note1: {
+      type: String,
+      required: true
+    },
+    note2: String
+  }
 });
 </script>
 
@@ -17,19 +27,19 @@ export default defineComponent({
 <style scoped>
 .circled_image {
   border-radius: 1000px;
-  @media (min-width: 1200px){
+  @media (min-width: 1274px){
     width: 275px;
   }
-  @media (min-width: 1000px) and (max-width: 1200px){
+  @media (min-width: 1054px) and (max-width: 1274px){
     width: 230px;
   }
-  @media (min-width: 800px) and (max-width: 1000px){
+  @media (min-width: 854px) and (max-width: 1054px){
     width: 180px;
   }
-  @media (min-width: 600px) and (max-width: 800px){
+  @media (min-width: 654px) and (max-width: 854px){
     width: 130px;
   }
-  @media (max-width: 600px){
+  @media (max-width: 654px){
     width: 70px;
   }
 }

@@ -5,7 +5,7 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
 import {defineComponent} from "vue";
 import Subtitle from "@/components/Subtitle.vue";
 
