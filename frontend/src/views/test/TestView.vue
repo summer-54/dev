@@ -3,14 +3,17 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
   name: "TestView",
-
+  mounted() {
+    console.log(this.route.params.id);
+  },
+  computed: {
+    route() {
+      return Object(this.$router).currentRoute.value;
+    }
+  }
 })
 </script>
 
 <template>
-  <textarea></textarea>
+  <span>{{route.params.id}}</span>
 </template>
-
-<style scoped>
-
-</style>

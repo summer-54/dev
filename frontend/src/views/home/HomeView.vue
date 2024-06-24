@@ -17,7 +17,7 @@ export default defineComponent({
         {src: "/public/favicon.ico", title: "Новый сайт1", comment: "А то сайт на Tilda был", page: "/news/1"}
       ], 
       news_count: 0,
-      news_cur: []
+      news_cur: [] as Array<{src: string, title: string, comment: string, page: string}>
     }
   },
   mounted(){
@@ -27,14 +27,15 @@ export default defineComponent({
     }
     const news_at_once = 40;
     let global_this = this;
-    const callback = function(entries: Array<Object>, observer: Array<Object>){
+    const callback = function(entries: Array<IntersectionObserverEntry>){
       if(entries[0].isIntersecting){
         global_this.news_count += news_at_once;
         global_this.news_cur = [...global_this.news_cur, ...global_this.news_list.slice(global_this.news_count-news_at_once, global_this.news_count)];
       }
     }
     const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer);
+    // @ts-ignore
+    observer.observe(this.$refs.observer as HTMLElement);
   }
 })
 </script>
