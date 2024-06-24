@@ -1,23 +1,16 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import News from "./News.vue";
+import {getNews} from "@/api";
 
 export default defineComponent({
   name: "HomeView",
   components: {News},
   data() {
     return {
-      news_list: [
-        {src: "/public/favicon.ico", title: "Новый сайт7", comment: "А то сайт на Tilda был был был был был был был был был был был", page: "/news/7"},
-        {src: "/public/favicon.ico", title: "Новый сайт6", comment: "А то сайт на Tilda был", page: "/news/6"},
-        {src: "/public/favicon.ico", title: "Новый сайт5", comment: "А то сайт на Tilda был", page: "/news/5"},
-        {src: "/public/favicon.ico", title: "Новый сайт4", comment: "А то сайт на Tilda был", page: "/news/4"},
-        {src: "/public/favicon.ico", title: "Новый сайт3", comment: "А то сайт на Tilda был", page: "/news/3"},
-        {src: "/public/favicon.ico", title: "Новый сайт2", comment: "А то сайт на Tilda был", page: "/news/2"},
-        {src: "/public/favicon.ico", title: "Новый сайт1", comment: "А то сайт на Tilda был", page: "/news/1"}
-      ], 
       news_count: 0,
-      news_cur: [] as Array<{src: string, title: string, comment: string, page: string}>
+      news_cur: [] as Array<{id: number, datetime: Date, title: string, description: string, fullText: string, img: string}>,
+      news_amount: 0
     }
   },
   mounted(){
@@ -25,12 +18,20 @@ export default defineComponent({
       rootMargin: "0px",
       threshold: 1.0
     }
-    const news_at_once = 40;
     let global_this = this;
+    getNews().then(data=>{
+      global_this.news_amount = data.length;
+    }, () => {
+      global_this.news_amount = 0;
+      console.log("Cannot get news");
+    });
+    const news_at_once = 40;
     const callback = function(entries: Array<IntersectionObserverEntry>){
       if(entries[0].isIntersecting){
         global_this.news_count += news_at_once;
-        global_this.news_cur = [...global_this.news_cur, ...global_this.news_list.slice(global_this.news_count-news_at_once, global_this.news_count)];
+        getNews(global_this.news_count, Math.max(0, global_this.news_amount-global_this.news_count+1)).then(data=>{
+          global_this.news_cur = data
+        });
       }
     }
     const observer = new IntersectionObserver(callback, options);
@@ -43,7 +44,7 @@ export default defineComponent({
 <template>
   <main>
     <span class="container">
-      <News v-for="{src, title, comment, page} in news_cur" :src="src" :title="title" :comment="comment" :page="page" />
+      <News v-for="{id, title, description, img} in news_cur" :src="img" :title="title" :comment="description" :page="'/news/'+id" />
     </span>
     <span class="observer" ref="observer"></span>
   </main>

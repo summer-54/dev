@@ -24,8 +24,7 @@ export default defineComponent({
   name: "News",
   props: {
     src: {
-      type: String,
-      required: true
+      type: String
     },
     title: {
       type: String,
