@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_PASSWORD: "PROD"
       POSTGRES_USER: "postgres"
-      POSTGRES_DB: "PROD"
+      POSTGRES_DB: "postgres"
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready", "-d", "PROD", "-U", "postgres" ]
       interval: 5s
@@ -28,7 +28,7 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: PROD
-      DB_NAME: PROD
+      DB_NAME: postgres
       PORT: 8080
       HOST: "0.0.0.0"
   nginx:

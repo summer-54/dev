@@ -1,8 +1,8 @@
 import SBackend from "sbackend";
-import handlers from "./handlers.js";
 import "dotenv/config";
 import {setupEnv} from "./sql/index.js";
 import {test} from "./standings.js";
+import news from "./news.js";
 
 async function main() {
     await setupEnv();
@@ -15,7 +15,7 @@ async function main() {
         port: process.env.PORT
     });
 
-    app.addHandlers(handlers);
+    app.addHandlers(news);
 
     app.get("/", (request, response) => {
         console.log(request.body); // request body

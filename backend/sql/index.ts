@@ -2,8 +2,17 @@ import setupDB from "./setup.js";
 import {ColumnType, Generated, Kysely, PostgresDialect} from "kysely";
 import pg from "pg";
 
-export interface Database {
+export interface News {
+    id: Generated<number>;
+    title: string;
+    description: string;
+    img?: string;
+    fullText: string;
+    datetime: ColumnType<Date, Date | string>
+}
 
+export interface Database {
+    news: News;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;
