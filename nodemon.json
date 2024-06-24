@@ -1,6 +1,6 @@
 {
   "ignore": [
-    "./dist"
+    "./frontend"
   ],
   "ext": "ts, mts, cts, json, graphql"
 }
