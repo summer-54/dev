@@ -16,7 +16,7 @@
     "node-fetch": "^3.3.2",
     "node-html-parser": "^6.1.13",
     "pg": "^8.11.5",
-    "sbackend": "^0.2.7"
+    "sbackend": "^0.2.8"
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",

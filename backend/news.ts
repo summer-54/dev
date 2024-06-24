@@ -32,5 +32,17 @@ export default buildHandlers({
                 response.end(fs.readFileSync(`./newsAttachments/${Path}`));
             }
         }
+    },
+    post: {
+        async "/news"(request, response) {
+            if (typeof request.body !== "object") return response.status(400);
+            let body: {[key: string]: any} = request.body;
+            if (typeof body.title !== "string" || typeof body.description !== "string" || typeof body.fullText !== "string") return response.status(400);
+            if (typeof body.img !== "string" && typeof body.img !== "undefined") return response.status(400);
+            let {title, description, fullText, img} = body;
+            await db.insertInto("news").values({title, description, fullText, img, datetime: new Date()}).execute();
+            response.status(200);
+            response.end();
+        }
     }
 });
