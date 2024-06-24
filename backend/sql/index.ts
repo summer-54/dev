@@ -11,8 +11,15 @@ export interface News {
     datetime: ColumnType<Date, Date | string>
 }
 
+export interface NewsImages {
+    id: Generated<number>;
+    newId: number;
+    image: string;
+}
+
 export interface Database {
     news: News;
+    newsImages: NewsImages;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;

@@ -1,8 +1,9 @@
 import SBackend from "sbackend";
 import "dotenv/config";
 import {setupEnv} from "./sql/index.js";
-import {test} from "./standings.js";
+import {test as standingsTest} from "./standings.js";
 import news from "./news.js";
+import test from "./test.js";
 
 async function main() {
     await setupEnv();
@@ -16,6 +17,7 @@ async function main() {
     });
 
     app.addHandlers(news);
+    app.addHandlers(test);
 
     app.get("/", (request, response) => {
         console.log(request.body); // request body
@@ -31,7 +33,7 @@ async function main() {
 
     app.start(async () => {
         console.log(app.routes);
-        await test();
+        await standingsTest();
     });
 }
 
