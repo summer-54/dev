@@ -1,12 +1,12 @@
 <template>
-  <span v-if="page === undefined">
-  <span class="news">
-    <img :src="src" class="img">
-    <span class="title">{{ title }}</span>
-    <span class="comment">{{ comment }}</span>
+  <span class="all_new" v-if="page === undefined">
+    <span class="news">
+      <img :src="src" class="img">
+      <span class="title">{{ title }}</span>
+      <span class="comment">{{ comment }}</span>
+    </span>
   </span>
-  </span>
-  <span v-else>
+  <span class="all_new" v-else>
     <RouterLink :to="page">
       <span class="news">
         <img :src="src" class="img">
@@ -41,6 +41,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.all_new {
+  margin-top: 50px;
+}
 .news {
   display: flex;
   flex-direction: column;

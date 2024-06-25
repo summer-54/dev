@@ -2,10 +2,11 @@
 import {defineComponent} from "vue";
 import News from "./News.vue";
 import {getNews} from "@/api";
+import Title from "@/components/Title.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {News},
+  components: {News, Title},
   data() {
     return {
       news_count: 0,
@@ -43,6 +44,7 @@ export default defineComponent({
 
 <template>
   <main>
+    <Title text="Новости" />
     <span class="container">
       <News v-for="{id, title, description, img} in news_cur" :src="img" :title="title" :comment="description" :page="'/news/'+id" />
     </span>
