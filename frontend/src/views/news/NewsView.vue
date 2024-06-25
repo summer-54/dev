@@ -60,7 +60,7 @@ export default defineComponent({
         {{ news.fullText }}
       </span>
       <span v-if="images.length > 0">
-        <Subtitle text="Фотогалерея" />
+        <Subtitle style="text-align: center" text="Фотогалерея" />
         <ImageGallery :imgs_list="images" />
       </span>
     </span>
