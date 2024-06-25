@@ -1,12 +1,12 @@
 <template>
   <span class="imageGallery">
-    <span class="arrow"><img v-on:click="previous()" src="@/assets/left.svg" alt="prev"></span>
+    <span class="arrow" v-if="imgs_list.length > 1"><img v-on:click="previous()" src="@/assets/left.svg" alt="prev"></span>
     <span class="img_container">
       <span v-for="item in imgs_list" :key="item.id">
         <Transition><img class="img_gallery" :src="item.src" v-if="item.id === cur" alt="image"></Transition>
       </span>
     </span>
-    <span class="arrow"><img v-on:click="next()" src="@/assets/right.svg" alt="next"></span>
+    <span class="arrow" v-if="imgs_list.length > 1"><img v-on:click="next()" src="@/assets/right.svg" alt="next"></span>
   </span>
 </template>
 

@@ -2,6 +2,8 @@
 import {defineComponent} from "vue";
 import {getNew} from "@/api"
 import Title from "@/components/Title.vue";
+import Subtitle from "@/components/Subtitle.vue";
+import ImageGallery from "@/components/ImageGallery.vue";
 
 export default defineComponent({
   name: "NewsView",
@@ -20,6 +22,14 @@ export default defineComponent({
     date() {
       if(this.err) return undefined;
       return `${this.news.datetime.getDate()} ${["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][this.news.datetime.getMonth()]} ${this.news.datetime.getFullYear()}, ${this.news.datetime.getHours()}:${this.news.datetime.getMinutes()}`
+    },
+    images() {
+      if(this.news.images === undefined) return [] as Array<{src: string, id: number}>;
+      let res = [] as Array<{src: string, id: number}>;
+      for(let i = 0; i < this.news.images.length; i++){
+        res[i] = {src: this.news.images[i], id: i};
+      }
+      return res;
     }
   },
   data() {
@@ -30,12 +40,13 @@ export default defineComponent({
         "title": "", 
         "description": "",
         "fullText": "",
-        "img": ""
+        "img": "",
+        "images": [] as Array<string>
       },
       err: false
     }
   },
-  components: {Title}
+  components: {Title, Subtitle, ImageGallery}
 })
 </script>
 
@@ -47,6 +58,10 @@ export default defineComponent({
       <span class="date"><img src="@/assets/clock.svg"><span>{{ date }}</span></span>
       <span class="text">
         {{ news.fullText }}
+      </span>
+      <span v-if="images.length > 0">
+        <Subtitle text="Фотогалерея" />
+        <ImageGallery :imgs_list="images" />
       </span>
     </span>
   </span>
