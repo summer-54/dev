@@ -1,7 +1,6 @@
 import SBackend from "sbackend";
 import "dotenv/config";
 import {setupEnv} from "./sql/index.js";
-import {test as standingsTest} from "./standings.js";
 import news from "./news.js";
 import test from "./test.js";
 
@@ -33,7 +32,7 @@ async function main() {
 
     app.start(async () => {
         console.log(app.routes);
-        await standingsTest();
+        // await standingsTest();
     });
 }
 

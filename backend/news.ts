@@ -2,6 +2,7 @@ import {buildHandlers} from "sbackend";
 import {db} from "./sql/index.js";
 import * as fs from "node:fs";
 import {getLatestNew, getNew} from "./sql/news.js";
+import {addAttachment} from "./attachments.js";
 
 export default buildHandlers({
     get: {
@@ -45,27 +46,19 @@ export default buildHandlers({
             await db.insertInto("news").values({title, description, fullText, img, datetime: new Date()}).execute();
             let article = await getLatestNew();
             let promises: Array<Promise<any>> = [];
-            Object.entries(body.images ?? {}).forEach(([key, value]) => {
+            Object.entries(body.attachments ?? {}).forEach(([key, value]) => {
                 if (typeof value === "string") {
-                    let Path = `./newsAttachments/${article.id}/${key}`;
-                    try {
-                        fs.mkdirSync(Path.split('/').filter((_, index, arr) => index < arr.length - 1).join('/'));
-                    } catch (e) {}
-                    fs.writeFileSync(Path, value, {encoding: "utf8"});
+                    promises.push(addAttachment(`./newsAttachments/${article.id}/${key}`, value));
                     promises.push(db.insertInto("newsImages").values({newId: article.id, image: `%SERVER%/news/${article.id}/${key}`}).execute());
                 }
             });
-            await Promise.all(promises);
+            (body.images ?? []).forEach((image: string) => {
+                promises.push(db.insertInto("newsImages").values({newId: article.id, image: `%SERVER%/news/${article.id}/${image}`}).execute());
+            });
             if (img) {
-                if (typeof body.imgFormat !== "string") return response.status(400);
-                let {imgFormat} = body;
-                let Path = `./newsAttachments/${article.id}/icon.${imgFormat}`;
-                try {
-                    fs.mkdirSync(Path.split('/').filter((_, index, arr) => index < arr.length - 1).join('/'));
-                } catch (e) {}
-                fs.writeFileSync(Path, img, {encoding: "utf8"});
-                img = `%SERVER%/news/${article.id}/icon.${imgFormat}`;
+                promises.push(db.updateTable("news").set({img: `%SERVER%/news/${article.id}/${img}`}).where("id", "=", article.id).execute());
             }
+            await Promise.all(promises);
             response.status(200);
             response.end(await getNew(article.id));
         }

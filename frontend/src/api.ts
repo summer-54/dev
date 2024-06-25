@@ -23,7 +23,8 @@ export async function getNews(length?: number, offset?: number): Promise<NewsTyp
     let query = (length !== undefined ? `length=${length}` : "") + (length !== undefined && offset !== undefined ? "&" : "") + (offset !== undefined ? `offset=${offset}` : "");
     let request = await axios.get<Array<{id: number, title: string, description: string, img?: string, datetime: string}>>(`${SERVER_URL}/news${query ? "?" + query : ""}`);
     return request.data.map(({id, img, datetime, ...data}) => ({
-        img: img ? `${SERVER_URL}/news/${id}/${img}` : undefined,
+        // @ts-ignore
+        img: img ? img.replaceAll("%SERVER%", SERVER_URL) : undefined,
         datetime: new Date(datetime),
         id, ...data
     }));
@@ -35,7 +36,8 @@ export async function getNew(id: number): Promise<NewType | undefined> {
     return {
         ...request.data,
         datetime: new Date(request.data.datetime),
-        img: request.data.img ? `${SERVER_URL}/news/${id}/${request.data.img}` : undefined,
+        // @ts-ignore
+        img: request.data.img ? request.data.img.replaceAll("%SERVER%", SERVER_URL) : undefined,
         // @ts-ignore
         fullText: request.data.fullText.replaceAll("%SERVER%", SERVER_URL)
     };
