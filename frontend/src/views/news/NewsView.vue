@@ -21,7 +21,7 @@ export default defineComponent({
     },
     date() {
       if(this.err) return undefined;
-      return `${this.news.datetime.getDate()} ${["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][this.news.datetime.getMonth()]} ${this.news.datetime.getFullYear()}, ${this.news.datetime.getHours()}:${this.news.datetime.getMinutes()}`
+      return `${this.news.datetime.getDate()} ${["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][this.news.datetime.getMonth()]} ${this.news.datetime.getFullYear()}, ${this.news.datetime.getHours() < 10 ? "0" : ""}${this.news.datetime.getHours()}:${this.news.datetime.getMinutes() < 10 ? "0" : ""}${this.news.datetime.getMinutes()}`
     },
     images() {
       if(this.news.images === undefined) return [] as Array<{src: string, id: number}>;
