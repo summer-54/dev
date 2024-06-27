@@ -1,10 +1,13 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
+
 import QA_container from '@/components/QA_container.vue';
 import Subtitle from '@/components/Subtitle.vue';
 import CircledImage_container from '@/components/CircledImage_container.vue';
 import ImageGallery from '@/components/ImageGallery.vue';
 import Title from '@/components/Title.vue';
+import OlympMaterials from "./OlympMaterials.vue";
+
 import manager1 from "@/assets/manager1.jpg";
 import manager2 from "@/assets/manager2.jpg";
 import manager3 from "@/assets/manager3.jpg";
@@ -16,7 +19,7 @@ import author4 from "@/assets/author4.jpg";
 
 export default defineComponent({
   name: "OlympView",
-  components: {QA_container, Subtitle, CircledImage_container, ImageGallery, Title},
+  components: {QA_container, Subtitle, CircledImage_container, ImageGallery, Title, OlympMaterials},
   data() {
     return {
       rules: [
@@ -61,6 +64,7 @@ export default defineComponent({
   <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
   <span class="subtitle"><Subtitle text="Фотогалерея"></Subtitle></span>
   <ImageGallery :imgs_list="gallery_list"></ImageGallery>
+  <OlympMaterials/>
   <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>
 </template>
 
@@ -70,6 +74,8 @@ export default defineComponent({
   display: block;
   width: 100%;
   text-align: center;
+  padding-bottom: 50px;
+  font-weight: bold;
 }
 .link {
   font-family: "LXGW WenKai Mono TC", monospace;
