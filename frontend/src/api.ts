@@ -17,6 +17,7 @@ export type NewType = {
     img?: string,
     datetime: Date,
     fullText: string
+    images: []
 }
 
 export async function getNews(length?: number, offset?: number): Promise<NewsType> {
@@ -31,7 +32,7 @@ export async function getNews(length?: number, offset?: number): Promise<NewsTyp
 }
 
 export async function getNew(id: number): Promise<NewType | undefined> {
-    let request = await axios.get<{id: number, title: string, description: string, img?: string, datetime: string, fullText: string}>(`${SERVER_URL}/news/${id}`);
+    let request = await axios.get<{id: number, title: string, description: string, img?: string, datetime: string, fullText: string, images: []}>(`${SERVER_URL}/news/${id}`);
     if (request.status !== 200) return undefined;
     return {
         ...request.data,

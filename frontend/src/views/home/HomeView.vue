@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import News from "./News.vue";
-import {getNews} from "@/api";
+import {getNews, type NewsType} from "@/api";
 import Title from "@/components/Title.vue";
 
 export default defineComponent({
@@ -10,7 +10,7 @@ export default defineComponent({
   data() {
     return {
       news_count: 0,
-      news_cur: [] as Array<{id: number, datetime: Date, title: string, description: string, fullText: string, img: string}>,
+      news_cur: [] as NewsType,
       news_amount: 0
     }
   },

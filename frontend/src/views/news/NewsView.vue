@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-import {getNew} from "@/api"
+import {getNew, type NewType} from "@/api"
 import Title from "@/components/Title.vue";
 import Subtitle from "@/components/Subtitle.vue";
 import ImageGallery from "@/components/ImageGallery.vue";
@@ -10,7 +10,7 @@ export default defineComponent({
   mounted() {
     console.log(this.route.params.id);
     getNew(this.route.params.id).then(result=>{
-      this.news = result;
+      if (result) this.news = result;
     }, ()=>{
       this.err = true;
     });
@@ -23,8 +23,8 @@ export default defineComponent({
       if(this.err) return undefined;
       return `${this.news.datetime.getDate()} ${["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"][this.news.datetime.getMonth()]} ${this.news.datetime.getFullYear()}, ${this.news.datetime.getHours() < 10 ? "0" : ""}${this.news.datetime.getHours()}:${this.news.datetime.getMinutes() < 10 ? "0" : ""}${this.news.datetime.getMinutes()}`
     },
-    images() {
-      if(this.news.images === undefined) return [] as Array<{src: string, id: number}>;
+    images(): Array<{src: string, id: number}> {
+      if(!("images" in this.news)) return [];
       let res = [] as Array<{src: string, id: number}>;
       for(let i = 0; i < this.news.images.length; i++){
         res[i] = {src: this.news.images[i], id: i};
@@ -41,8 +41,8 @@ export default defineComponent({
         "description": "",
         "fullText": "",
         "img": "",
-        "images": [] as Array<string>
-      },
+        "images": []
+      } as NewType,
       err: false
     }
   },
