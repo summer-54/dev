@@ -1,4 +1,5 @@
 import axios from "axios";
+import {readFileBase64} from "@/utils.js";
 
 export const SERVER_URL: string = "http://localhost:80/api";
 
@@ -16,8 +17,8 @@ export type NewType = {
     description: string,
     img?: string,
     datetime: Date,
-    fullText: string
-    images: []
+    fullText: string,
+    images: Array<string>
 }
 
 export async function getNews(length?: number, offset?: number): Promise<NewsType> {
@@ -42,4 +43,28 @@ export async function getNew(id: number): Promise<NewType | undefined> {
         // @ts-ignore
         fullText: request.data.fullText.replaceAll("%SERVER%", SERVER_URL)
     };
+}
+
+export type PostNewType = {
+    title: string,
+    description: string,
+    img?: string,
+    fullText: string,
+    images?: Array<string>,
+    attachments?: {[key: string]: File}
+}
+
+export async function postNew({attachments, ...data}: PostNewType): Promise<void> {
+    let newAttachments: {[key: string]: string} = {};
+    for (const key in attachments) {
+        newAttachments[key] = await readFileBase64(attachments[key]);
+    }
+    console.log(SERVER_URL + "/news", {
+        ...data,
+        attachments: newAttachments
+    });
+    await axios.post(SERVER_URL + "/news", {
+        ...data,
+        attachments: newAttachments
+    });
 }

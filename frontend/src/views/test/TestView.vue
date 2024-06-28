@@ -3,7 +3,7 @@ import {defineComponent} from 'vue'
 // @ts-ignore
 import SuiFileInput from "sffui.vue/suiFileInput.vue"
 import axios from "axios";
-import {SERVER_URL} from "@/api";
+import {postNew, SERVER_URL} from "@/api";
 
 export default defineComponent({
   name: "TestView",
@@ -37,8 +37,18 @@ export default defineComponent({
         });
       }
     },
-    read() {
-      this.files.forEach(file => this.readFile(file));
+    async read() {
+      // this.files.forEach(file => this.readFile(file));
+      let attachments: {[key: string]: File} = {};
+      this.files.forEach(file => attachments[file.name] = file);
+      await postNew({
+        title: "test",
+        description: "test",
+        fullText: "test",
+        images: ["test.png"],
+        img: "test.png",
+        attachments
+      });
     }
   }
 })
