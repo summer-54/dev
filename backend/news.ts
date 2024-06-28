@@ -45,9 +45,6 @@ export default buildHandlers({
             let {title, description, fullText, img} = body;
             await db.insertInto("news").values({title, description, fullText, img, datetime: new Date()}).execute();
             let article = await getLatestNew();
-            if (typeof body.attachments === "object" && "test.png" in body.attachments) {
-                fs.writeFileSync("./test.png", body.attachments["test.png"]);
-            }
             let promises: Array<Promise<any>> = [];
             Object.entries(body.attachments ?? {}).forEach(([key, value]) => {
                 if (typeof value === "string") {
