@@ -2,6 +2,8 @@
 import {defineComponent} from 'vue'
 // @ts-ignore
 import SuiFileInput from "sffui.vue/suiFileInput.vue"
+import axios from "axios";
+import {SERVER_URL} from "@/api";
 
 export default defineComponent({
   name: "TestView",
@@ -19,9 +21,20 @@ export default defineComponent({
   methods: {
     readFile(file: File) {
       let reader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = () => {
-        console.log(reader.result);
+      reader.readAsArrayBuffer(file);
+      reader.onload = async () => {
+        if (!reader.result || typeof reader.result === "string") return;
+        let str = btoa(String.fromCharCode(...new Uint8Array(reader.result)));
+        await axios.post(SERVER_URL + "/news", {
+          title: "test",
+          description: "test",
+          fullText: "test",
+          images: ["test.png"],
+          img: "test.png",
+          attachments: {
+            "test.png": str
+          }
+        });
       }
     },
     read() {

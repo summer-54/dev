@@ -38,35 +38,32 @@ export default buildHandlers({
     },
     post: {
         async "/news"(request, response) {
-            try{
-                if (typeof request.body !== "object") { response.status(400); response.end("400: request.body isn't object"); return; }
-                let body: {[key: string]: any} = request.body;
-                if (typeof body.title !== "string" || typeof body.description !== "string" || typeof body.fullText !== "string") { response.status(400); response.end("400: title, description ot fullText are not strings"); return; }
-                if ((typeof body.img !== "string" && typeof body.img !== "undefined") || (typeof body.images !== "object" && typeof body.images !== "undefined")) { response.status(400); response.end("400: img or images format is wrong"); return; }
-                let {title, description, fullText, img} = body;
-                await db.insertInto("news").values({title, description, fullText, img, datetime: new Date()}).execute();
-                let article = await getLatestNew();
-                let promises: Array<Promise<any>> = [];
-                Object.entries(body.attachments ?? {}).forEach(([key, value]) => {
-                    if (typeof value === "string") {
-                        promises.push(addAttachment(`./newsAttachments/${article.id}/${key}`, value));
-                        promises.push(db.insertInto("newsImages").values({newId: article.id, image: `%SERVER%/news/${article.id}/${key}`}).execute());
-                    }
-                });
-                (body.images ?? []).forEach((image: string) => {
-                    promises.push(db.insertInto("newsImages").values({newId: article.id, image: `%SERVER%/news/${article.id}/${image}`}).execute());
-                });
-                if (img) {
-                    promises.push(db.updateTable("news").set({img: `%SERVER%/news/${article.id}/${img}`}).where("id", "=", article.id).execute());
-                }
-                await Promise.all(promises);
-                response.status(200);
-                response.end("ok");
-            } catch(err) {
-                response.status(500);
-                response.end(String(err));
+            if (typeof request.body !== "object") { response.status(400); response.end("400: request.body isn't object"); return; }
+            let body: {[key: string]: any} = request.body;
+            if (typeof body.title !== "string" || typeof body.description !== "string" || typeof body.fullText !== "string") { response.status(400); response.end("400: title, description ot fullText are not strings"); return; }
+            if ((typeof body.img !== "string" && typeof body.img !== "undefined") || (typeof body.images !== "object" && typeof body.images !== "undefined")) { response.status(400); response.end("400: img or images format is wrong"); return; }
+            let {title, description, fullText, img} = body;
+            await db.insertInto("news").values({title, description, fullText, img, datetime: new Date()}).execute();
+            let article = await getLatestNew();
+            if (typeof body.attachments === "object" && "test.png" in body.attachments) {
+                fs.writeFileSync("./test.png", body.attachments["test.png"]);
             }
-            //response.end(await getNew(article.id));
+            let promises: Array<Promise<any>> = [];
+            Object.entries(body.attachments ?? {}).forEach(([key, value]) => {
+                if (typeof value === "string") {
+                    promises.push(addAttachment(`./newsAttachments/${article.id}/${key}`, value));
+                    promises.push(db.insertInto("newsImages").values({newId: article.id, image: `%SERVER%/news/${article.id}/${key}`}).execute());
+                }
+            });
+            (body.images ?? []).forEach((image: string) => {
+                promises.push(db.insertInto("newsImages").values({newId: article.id, image: `%SERVER%/news/${article.id}/${image}`}).execute());
+            });
+            if (img) {
+                promises.push(db.updateTable("news").set({img: `%SERVER%/news/${article.id}/${img}`}).where("id", "=", article.id).execute());
+            }
+            await Promise.all(promises);
+            response.status(200);
+            response.end(await getNew(article.id));
         }
     }
 });

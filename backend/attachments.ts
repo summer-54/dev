@@ -1,13 +1,8 @@
-import fs from "node:fs";
+import fs from "node:fs/promises";
 
 export async function addAttachment(path: string, data: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        try {
-            fs.mkdirSync(path.split('/').filter((_, index, arr) => index < arr.length - 1).join('/'));
-        } catch (e) {}
-        fs.writeFile(path, data, {encoding: "utf8"}, err => {
-            if (err) return reject(err);
-            resolve(undefined);
-        });
-    });
+    try {
+        await fs.mkdir(path.split('/').filter((_, index, arr) => index < arr.length - 1).join('/'), {recursive: true});
+    } catch (e) {}
+    await fs.writeFile(path, data, {encoding: "base64"});
 }

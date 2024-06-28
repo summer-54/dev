@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const SERVER_URL: string = "http://localhost:80/api";
+export const SERVER_URL: string = "http://localhost:80/api";
 
 export type NewsType = Array<{
     id: number,

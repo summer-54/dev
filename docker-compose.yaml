@@ -19,7 +19,7 @@ services:
       - "5432:5432"
   backend:
     build: ./backend
-    command: node main.js
+    command: node --inspect=0.0.0.0:9229 main.js
     depends_on:
       db:
         condition: service_healthy
@@ -33,6 +33,8 @@ services:
       HOST: "0.0.0.0"
     volumes:
       - "newsAttachments:/app/newsAttachments"
+    ports:
+      - "9229:9229" # debug port for node.js
   nginx:
     build:
       context: .
