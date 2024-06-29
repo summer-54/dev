@@ -2,7 +2,7 @@ import setupDB from "./setup.js";
 import {ColumnType, Generated, Kysely, PostgresDialect} from "kysely";
 import pg from "pg";
 
-export interface News {
+export interface NewsTable {
     id: Generated<number>;
     title: string;
     description: string;
@@ -11,15 +11,32 @@ export interface News {
     datetime: ColumnType<Date, Date | string>
 }
 
-export interface NewsImages {
+export interface NewsImagesTable {
     id: Generated<number>;
     newId: number;
     image: string;
 }
 
+export interface UsersTable {
+    id: Generated<number>;
+    username: string;
+    codeforcesHandle: string;
+    firstName: string;
+    lastName: string;
+    passwordHash: string;
+}
+
+export interface SessionsTable {
+    id: Generated<number>;
+    userId: number;
+    token: string;
+}
+
 export interface Database {
-    news: News;
-    newsImages: NewsImages;
+    news: NewsTable;
+    newsImages: NewsImagesTable;
+    users: UsersTable;
+    sessions: SessionsTable;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;

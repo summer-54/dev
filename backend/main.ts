@@ -2,7 +2,7 @@ import SBackend from "sbackend";
 import "dotenv/config";
 import {setupEnv} from "./sql/index.js";
 import news from "./news.js";
-import test from "./test.js";
+import users from "./users.js";
 
 async function main() {
     await setupEnv();
@@ -16,7 +16,7 @@ async function main() {
     });
 
     app.addHandlers(news);
-    app.addHandlers(test);
+    app.addHandlers(users);
 
     app.get("/", (request, response) => {
         console.log(request.body); // request body
