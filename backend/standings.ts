@@ -14,19 +14,15 @@ class StandingRow {
         };
     }
 
-    public get json() {return JSON.stringify(this.object);}
+    public get json() {
+        return JSON.stringify(this.object);
+    }
 }
 
 class Standings {
     public rows: Array<StandingRow> = [];
 
     public constructor(public name: string, public tasks: Array<Element>) {}
-
-    public addRow(name: string, total: number, penalty: number, tasks: Array<Element>): StandingRow {
-        let row = new StandingRow(name, total, penalty, tasks);
-        this.rows.push(row);
-        return row;
-    }
 
     public get object() {
         return {
@@ -38,6 +34,12 @@ class Standings {
 
     public get json() {
         return JSON.stringify(this.object);
+    }
+
+    public addRow(name: string, total: number, penalty: number, tasks: Array<Element>): StandingRow {
+        let row = new StandingRow(name, total, penalty, tasks);
+        this.rows.push(row);
+        return row;
     }
 }
 

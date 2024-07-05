@@ -9,13 +9,15 @@ export default async function () {
             .addColumn("description", "text", cb => cb.notNull())
             .addColumn("img", "varchar(50)")
             .addColumn("fullText", "text", cb => cb.notNull()).execute();
-    } catch (error) {}
+    } catch (error) {
+    }
     try {
         await db.schema.createTable("newsImages")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("newId", "integer", cb => cb.notNull())
             .addColumn("image", "varchar(50)", cb => cb.notNull()).execute();
-    } catch (error) {}
+    } catch (error) {
+    }
     try {
         await db.schema.createTable("users")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
@@ -24,11 +26,13 @@ export default async function () {
             .addColumn("firstName", "varchar(50)", cb => cb.notNull())
             .addColumn("lastName", "varchar(50)", cb => cb.notNull())
             .addColumn("passwordHash", "varchar(256)", cb => cb.notNull()).execute();
-    } catch (error) {}
+    } catch (error) {
+    }
     try {
         await db.schema.createTable("sessions")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("userId", "integer", cb => cb.notNull())
             .addColumn("token", "varchar(512)", cb => cb.notNull()).execute();
-    } catch (error) {}
+    } catch (error) {
+    }
 }

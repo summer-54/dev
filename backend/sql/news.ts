@@ -1,9 +1,10 @@
 import {db} from "./index.js";
+import {addAttachment} from "../attachments.js";
 
-export async function getNews({limit, offset}: {limit: number, offset: number}) {
+export async function getNews({limit, offset}: {limit?: number, offset?: number}) {
     let select = db.selectFrom("news").select(["id", "title", "img", "description", "datetime"]).orderBy("datetime", "desc");
-    if (limit) select = select.limit(Number(limit));
-    if (offset) select = select.offset(Number(offset));
+    if (limit && !isNaN(limit)) select = select.limit(limit);
+    if (offset && !isNaN(offset)) select = select.offset(offset);
     return select.execute();
 }
 
@@ -21,4 +22,35 @@ export async function getLatestNew() {
         ...article, datetime: new Date(article.datetime),
         images: await db.selectFrom("newsImages").selectAll().where("newId", "=", article.id).execute()
     }
+}
+
+export async function postNew({title, description, fullText, images, img, attachments}: {
+    title: string,
+    description: string,
+    fullText: string,
+    images?: Array<string>,
+    img?: string,
+    attachments?: {[key: string]: string}
+}) {
+    await db.insertInto("news").values({title, description, fullText, img, datetime: new Date()}).execute();
+    let article = await getLatestNew();
+    let promises: Array<Promise<any>> = [];
+    Object.entries(attachments ?? {}).forEach(([key, value]) => {
+        promises.push(addAttachment(`./newsAttachments/${article.id}/${key}`, value));
+        promises.push(db.insertInto("newsImages").values({
+            newId: article.id,
+            image: `%SERVER%/news/${article.id}/${key}`
+        }).execute());
+    });
+    (images ?? []).forEach((image: string) => {
+        promises.push(db.insertInto("newsImages").values({
+            newId: article.id,
+            image: `%SERVER%/news/${article.id}/${image}`
+        }).execute());
+    });
+    if (img) {
+        promises.push(db.updateTable("news").set({img: `%SERVER%/news/${article.id}/${img}`}).where("id", "=", article.id).execute());
+    }
+    await Promise.all(promises);
+    return getNew(article.id);
 }
