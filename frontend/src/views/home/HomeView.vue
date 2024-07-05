@@ -1,7 +1,7 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import News from "./News.vue";
-import {getNews, type NewsType} from "@/api";
+import {getNews, type NewsType} from "@/api/news.js";
 import Title from "@/components/Title.vue";
 
 export default defineComponent({

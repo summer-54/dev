@@ -26,6 +26,16 @@ export default buildHandlers({
                 return;
             }
             let {username, codeforcesHandle, firstName, lastName, password} = request.body;
+            if (!(await isUniqueUsername(username))) {
+                response.status(409);
+                response.end("username");
+                return;
+            }
+            if (!(await isUniqueCodeforcesHandle(codeforcesHandle))) {
+                response.status(409);
+                response.end("codeforcesHandle");
+                return;
+            }
             let token = await register({username, codeforcesHandle, firstName, lastName, password});
             if (!token) {
                 response.status(500);

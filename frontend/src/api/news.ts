@@ -1,7 +1,6 @@
 import axios from "axios";
 import {readFileBase64} from "@/utils.js";
-
-export const SERVER_URL: string = "http://localhost:80/api";
+import {SERVER_URL} from "@/api/index.js";
 
 export type NewsType = Array<{
     id: number,

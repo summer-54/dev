@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from "vue";
-import {getNew, type NewType} from "@/api"
+import {getNew, type NewType} from "@/api/news.js"
 import Title from "@/components/Title.vue";
 import Subtitle from "@/components/Subtitle.vue";
 import ImageGallery from "@/components/ImageGallery.vue";

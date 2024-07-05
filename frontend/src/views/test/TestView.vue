@@ -3,7 +3,8 @@ import {defineComponent} from 'vue'
 // @ts-ignore
 import SuiFileInput from "sffui.vue/suiFileInput.vue"
 import axios from "axios";
-import {postNew, SERVER_URL} from "@/api";
+import {postNew} from "@/api/news.js";
+import {SERVER_URL} from "@/api/index.js";
 
 export default defineComponent({
   name: "TestView",
