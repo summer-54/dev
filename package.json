@@ -2,7 +2,7 @@
   "name": "test",
   "version": "0.0.0",
   "scripts": {
-    "build": "npm run build --prefix ./backend && docker-compose build",
+    "build": "docker-compose build",
     "up": "docker-compose up",
     "start": "npm run build && npm run up",
     "dev": "nodemon --exec \"npm start\""

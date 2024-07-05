@@ -3,7 +3,7 @@
     <span class="arrow" v-if="imgs_list.length > 1"><img v-on:click="previous()" src="@/assets/left.svg" alt="prev"></span>
     <span class="img_container">
       <span v-for="item in imgs_list" :key="item.id">
-        <Transition><img class="img_gallery" :src="item.src" v-if="item.id === cur" alt="image"></Transition>
+        <Transition :name="left ? 'left' : 'right'"><img class="img_gallery" :src="item.src" v-if="item.id === cur" alt="image"></Transition>
       </span>
     </span>
     <span class="arrow" v-if="imgs_list.length > 1"><img v-on:click="next()" src="@/assets/right.svg" alt="next"></span>
@@ -23,15 +23,18 @@ export default defineComponent({
   },
   data(){
     return {
-      cur: 0
+      cur: 0,
+      left: false
     }
   },
   methods: {
     previous(){
+      this.left = true;
       this.cur += this.imgs_list.length-1;
       this.cur %= this.imgs_list.length;
     },
     next(){
+      this.left = false;
       this.cur++;
       this.cur %= this.imgs_list.length;
     }
@@ -92,14 +95,16 @@ export default defineComponent({
     width: 150px;
   }
 }
-.v-enter-active,
-.v-leave-active {
+.left-enter-active,
+.left-leave-active,
+.right-enter-active,
+.right-leave-active {
   transition: transform 0.5s ease;
 }
-.v-enter-from {
+.left-enter-from, .right-leave-to {
   transform: translateX(200vw);
 }
-.v-leave-to {
+.left-leave-to, .right-enter-from {
   transform: translateX(-200vw);
 }
 </style>

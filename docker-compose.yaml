@@ -19,7 +19,7 @@ services:
       - "5432:5432"
   backend:
     build: ./backend
-    command: node --inspect=0.0.0.0:9229 main.js
+    command: node --inspect=0.0.0.0:9229 ./dist/main.js
     depends_on:
       db:
         condition: service_healthy

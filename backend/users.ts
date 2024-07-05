@@ -1,6 +1,6 @@
 import {buildHandlers} from "sbackend";
 import {compareHash, hash} from "scryptex";
-import {Database, db, UsersTable} from "./sql/index.js";
+import {Database, db} from "./sql/index.js";
 import randomstring from "randomstring";
 import {SelectExpression} from "kysely";
 import {UpdateObjectExpression} from "kysely/dist/cjs/parser/update-set-parser.js";

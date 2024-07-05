@@ -18,11 +18,9 @@ async function main() {
     app.addHandlers(news);
     app.addHandlers(users);
 
-    app.get("/", (request, response) => {
-        console.log(request.body); // request body
-        console.log(request.headers); // request headers
-        console.log(request.query); // query (after '?' in route string)
-        response.end("test"); // argument can be string or object
+    app.get("/teapot", (request, response) => {
+        response.status(418);
+        response.end("This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. However, known implementations do exist.");
     });
 
     app.use("*", (request, response) => {

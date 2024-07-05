@@ -1,10 +1,10 @@
-FROM node:22-alpine3.19
+FROM node:22.4.0-alpine3.19
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY . .
 
-COPY ./dist ./
+RUN npm i
+RUN npm run build
 
-CMD ["node", "./main.js"]
+CMD ["node", "./dist/main.js"]
