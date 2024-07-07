@@ -64,24 +64,6 @@ export default buildHandlers({
                 return;
             }
             response.end(token);
-        },
-        async "/users/is-unique/username"(request, response) {
-            if (typeof request.body !== "string") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            if (await isUniqueUsername(request.body)) response.end("1");
-            else response.end("0");
-        },
-        async "/users/is-unique/codeforces-handle"(request, response) {
-            if (typeof request.body !== "string") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            if (await isUniqueCodeforcesHandle(request.body)) response.end("1");
-            else response.end("0");
         }
     },
     get: {
@@ -92,7 +74,7 @@ export default buildHandlers({
                 return;
             }
             let {authorization: token} = request.headers;
-            let user = await getUserByToken(token);
+            let user = await getUserByToken(token, ["username", "codeforcesHandle", "firstName", "lastName"]);
             if (!user) {
                 response.status(401);
                 response.end("");
@@ -113,6 +95,24 @@ export default buildHandlers({
                 return;
             }
             response.end(user);
+        },
+        async "/users/is-unique/username/:username"(request, response) {
+            if (typeof request.params.username !== "string") {
+                response.status(400);
+                response.end("");
+                return;
+            }
+            if (await isUniqueUsername(request.params.username)) response.end("1");
+            else response.end("0");
+        },
+        async "/users/is-unique/codeforces-handle/:codeforcesHandle"(request, response) {
+            if (typeof request.params.codeforcesHandle !== "string") {
+                response.status(400);
+                response.end("");
+                return;
+            }
+            if (await isUniqueCodeforcesHandle(request.params.codeforcesHandle)) response.end("1");
+            else response.end("0");
         }
     },
     patch: {

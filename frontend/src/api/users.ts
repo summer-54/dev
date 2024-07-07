@@ -30,23 +30,43 @@ export type UserType = {
     lastName: string
 }
 
-export type MeType = UserType & {
-    id: number
-}
-
 export async function getMe() {
     if (!localStorage.getItem("token")) return null;
-    let response = await axios.get<MeType>(`${SERVER_URL}/me`, {
-        headers: {
-            Authorization: localStorage.getItem("token")
-        }
-    })
+    let response = await axios.get<UserType>(`${SERVER_URL}/me`, {
+        headers: {Authorization: localStorage.getItem("token")}
+    });
     if (response.status === 200) return response.data;
     return null;
 }
 
 export async function getUserByUsername(username: string) {
-    let response = await axios.get<MeType>(`${SERVER_URL}/users/${username}`);
+    let response = await axios.get<UserType>(`${SERVER_URL}/users/${username}`);
     if (response.status === 200) return response.data;
     return null;
+}
+
+export async function isUniqueUsername(username: string): Promise<boolean | null> {
+    let response = await axios.get<number>(`${SERVER_URL}/users/is-unique/username/${username}`);
+    if (response.status === 200) return Boolean(response.data);
+    return null;
+}
+
+export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promise<boolean | null> {
+    let response = await axios.get<number>(`${SERVER_URL}/users/is-unique/codeforces-handle/${codeforcesHandle}`);
+    if (response.status === 200) return Boolean(response.data);
+    return null;
+}
+
+export async function patchUser(user: Partial<UserType>): Promise<boolean> {
+    let response = await axios.patch<void>(`${SERVER_URL}/me`, user, {
+        headers: {Authorization: localStorage.getItem("token")}
+    });
+    return response.status === 200;
+}
+
+export async function patchUserPassword(oldPassword: string, newPassword: string): Promise<boolean> {
+    let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: oldPassword, new: newPassword}, {
+        headers: {Authorization: localStorage.getItem("token")}
+    });
+    return response.status === 200;
 }
