@@ -5,7 +5,7 @@ import SuiInput from "sffui.vue/suiInput.vue"
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
 import Title from "@/components/Title.vue";
-import {isUniqueCodeforcesHandle, isUniqueUsername, register} from "@/api/users.js";
+import {hasToken, isUniqueCodeforcesHandle, isUniqueUsername, register} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
 import FormComment from "@/components/ui/formComment.vue";
 
@@ -24,6 +24,9 @@ export default defineComponent({
       isUniqueCodeforcesHandle: true,
       pending: false
     }
+  },
+  mounted() {
+    if (hasToken()) this.$router.push("/me");
   },
   watch: {
     username() {
@@ -60,18 +63,18 @@ export default defineComponent({
   <main>
     <Title text="Регистрация"/>
     <CustomForm>
-      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username"/>
+      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username" border="#9297FB"/>
       <FormComment v-if="!isUniqueUsername">Не уникально</FormComment>
-      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password"/>
-      <SuiInput maxLength="50" placeholder="Повторите пароль" password v-model="passwordRepeat"/>
+      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Повторите пароль" password v-model="passwordRepeat" border="#9297FB"/>
       <FormComment v-if="!isPasswordEqual">Не совподает</FormComment>
-      <SuiInput maxLength="50" placeholder="Имя" v-model="firstName"/>
-      <SuiInput maxLength="50" placeholder="Фамилия" v-model="lastName"/>
-      <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle"/>
+      <SuiInput maxLength="50" placeholder="Имя" v-model="firstName" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Фамилия" v-model="lastName" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle" border="#9297FB"/>
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
       <span class="buttons">
-        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit">Зарегистрироваться</SuiButton>
-        <SuiButton><RouterLink to="/sign-in">Войти</RouterLink></SuiButton>
+        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
+        <SuiButton border="#9297FB"><RouterLink to="/sign-in">Войти</RouterLink></SuiButton>
       </span>
     </CustomForm>
   </main>

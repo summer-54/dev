@@ -5,7 +5,7 @@ import SuiInput from "sffui.vue/suiInput.vue"
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
 import Title from "@/components/Title.vue";
-import {signIn} from "@/api/users.js";
+import {hasToken, signIn} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
 
 export default defineComponent({
@@ -18,6 +18,9 @@ export default defineComponent({
       wrong: false,
       pending: false
     }
+  },
+  mounted() {
+    if (hasToken()) this.$router.push("/me");
   },
   methods: {
     async submit(event: Event) {
@@ -41,12 +44,12 @@ export default defineComponent({
   <main>
     <Title text="Вход"/>
     <CustomForm>
-      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username"/>
-      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password"/>
+      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>
       <span v-if="wrong">Неверное имя пользователя или пароль</span>
       <span class="buttons">
-      <SuiButton @click="submit" class="first" :disabled="pending">Войти</SuiButton>
-      <SuiButton><RouterLink to="/registration">Зарегистрироваться</RouterLink></SuiButton>
+      <SuiButton @click="submit" class="first" :disabled="pending" border="#9297FB">Войти</SuiButton>
+      <SuiButton border="#9297FB"><RouterLink to="/registration">Зарегистрироваться</RouterLink></SuiButton>
     </span>
     </CustomForm>
   </main>
