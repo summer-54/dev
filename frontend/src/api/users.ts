@@ -33,6 +33,14 @@ export type UserType = {
     lastName: string
 }
 
+export function hasToken(): boolean {
+    return localStorage.getItem("token") !== null;
+}
+
+export function signOut() {
+    localStorage.removeItem("token");
+}
+
 export async function getMe() {
     if (!localStorage.getItem("token")) return null;
     let response = await axios.get<UserType>(`${SERVER_URL}/me`, {

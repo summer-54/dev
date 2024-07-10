@@ -2,9 +2,6 @@
   <header>
     <h1>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h1>
     <nav>
-<!--      <span class="element"><CustomRouterLink to="/" :class="$style.button">Главная</CustomRouterLink></span>-->
-<!--      <span class="element"><CustomRouterLink to="/olymp" :class="$style.button">Олимпиада</CustomRouterLink></span>-->
-<!--      <span class="element"><CustomRouterLink to="/summer-cup" :class="$style.button">Летний кубок</CustomRouterLink></span>-->
       <NavButton to="/" :icon="homeIcon">Главная</NavButton>
       <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
       <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>

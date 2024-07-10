@@ -1,28 +1,45 @@
 <script lang="ts">
-import {computed, defineComponent} from "vue";
+import {defineComponent} from "vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
-import {getMe, me, type UserType} from "@/api/users.js";
+import {getMe, hasToken, me, signOut} from "@/api/users.js";
+import NavButton from "@/components/ui/navButton.vue";
+import homeIcon from "@/assets/home.svg"
+import settingsIcon from "@/assets/settings.svg"
+import signOutIcon from "@/assets/signout.svg"
+import IconButton from "@/components/ui/iconButton.vue";
 
 export default defineComponent({
   name: "MeView",
-  components: {SuiButton},
+  components: {IconButton, NavButton, SuiButton},
+  data() {
+    return {homeIcon, settingsIcon, signOutIcon};
+  },
   mounted() {
+    if (!hasToken()) {
+      this.$router.push("/sign-in");
+      return;
+    }
     getMe().then(user => me.value = user);
+  },
+  methods: {
+    signOut() {
+      signOut();
+      this.$router.push("/");
+    }
   }
 });
 </script>
 
 <template>
   <div>
-    <nav class="usermenu">
-      <SuiButton border="#9297FB">
-        <RouterLink to="/me">Главная</RouterLink>
-      </SuiButton>
-      <SuiButton border="#9297FB">
-        <RouterLink to="/me/settings">Настройки</RouterLink>
-      </SuiButton>
-    </nav>
+    <header>
+      <nav>
+        <NavButton to="/me" :icon="homeIcon">Главная</NavButton>
+        <NavButton to="/me/settings" :icon="settingsIcon">Настройки</NavButton>
+      </nav>
+      <IconButton :icon="signOutIcon" @click="signOut">Выйти</IconButton>
+    </header>
     <RouterView v-slot="{Component}">
       <Transition name="fade" mode="out-in">
         <Component :is="Component"/>
@@ -32,17 +49,24 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.usermenu {
+nav {
   justify-content: space-around;
   margin-top: 20px;
-
-  button {
-    margin-left: 20px;
-  }
 
   * {
     text-decoration: none;
     font-family: "Tiny5", sans-serif;
+    margin-left: 20px;
+  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  *:last-child {
+    margin-right: 20px;
   }
 }
 
