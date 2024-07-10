@@ -19,6 +19,10 @@ export default defineComponent({
     notInvert: {
       type: Boolean,
       default: false
+    },
+    alt: {
+      type: String,
+      default: ""
     }
   }
 })
@@ -26,7 +30,7 @@ export default defineComponent({
 
 <template>
   <SuiButton :class="{[$style.button]: true, [$style.noText]: noText}" border="#9297FB">
-    <img :src="icon" :alt="icon" v-if="notInvert">
+    <img :src="icon" :alt="alt" v-if="notInvert">
     <ThemeInvertSvg :src="icon" :alt="icon" v-else/>
     <div v-if="!noText"><slot/></div>
   </SuiButton>

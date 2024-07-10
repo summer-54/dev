@@ -23,6 +23,10 @@ export default defineComponent({
     notInvert: {
       type: Boolean,
       default: false
+    },
+    alt: {
+      type: String,
+      default: ""
     }
   }
 })
@@ -30,6 +34,6 @@ export default defineComponent({
 
 <template>
   <RouterLink :to="to">
-    <IconButton :icon="icon" :noText="noText" :notInvert><slot/></IconButton>
+    <IconButton :icon="icon" :noText="noText" :notInvert :alt="alt"><slot/></IconButton>
   </RouterLink>
 </template>

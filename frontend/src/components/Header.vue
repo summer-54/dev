@@ -5,12 +5,12 @@
       <NavButton to="/" :icon="homeIcon">Главная</NavButton>
       <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
       <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
-      <NavButton to="/me" :icon="accountIcon" noText/>
-      <IconButton :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
+      <NavButton alt="account" to="/me" :icon="accountIcon" noText/>
+      <IconButton alt="changeTheme" :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
     </nav>
     <span>
-      <NavButton to="/me" :icon="accountIcon" noText/>
-      <IconButton :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
+      <NavButton alt="account" to="/me" :icon="accountIcon" noText/>
+      <IconButton alt="changeTheme" :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
     </span>
   </header>
   <teleport to="body">
