@@ -1,21 +1,27 @@
 <script lang="ts">
 import {RouterView} from 'vue-router';
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
 import Header from '@/components/Header.vue';
+import {defineComponent} from "vue";
 
-export default {
+export default defineComponent({
   components: {Header, RouterView},
   computed: {
-    color() {return this.$theme.color}
+    color() {
+      return this.$theme.color
+    }
   }
-}
+})
 </script>
 
 <template>
-  <Header></Header>
-  <RouterView/>
-  <!--<SuiButton>test</SuiButton>-->
+  <div>
+    <Header/>
+    <RouterView v-slot="{Component}">
+      <Transition name="fade" mode="out-in">
+        <Component :is="Component"/>
+      </Transition>
+    </RouterView>
+  </div>
 </template>
 
 <style scoped>
@@ -40,5 +46,13 @@ body {
 #app {
   height: 100%;
   padding-bottom: 10px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

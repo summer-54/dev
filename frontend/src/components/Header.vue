@@ -41,6 +41,7 @@ header {
   position: sticky;
   top: 0;
   overflow: hidden;
+  z-index: 100000;
 
   @media (max-width: 500px) {
     justify-content: center;

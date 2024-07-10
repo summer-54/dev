@@ -15,12 +15,25 @@ async function main() {
         port: process.env.PORT
     });
 
+    app.use("*", (request, response, next) => {
+        response.headers = {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+            "Access-Control-Allow-Headers": "*"
+        };
+        next();
+    })
+
     app.addHandlers(news);
     app.addHandlers(users);
 
     app.get("/teapot", (request, response) => {
         response.status(418);
         response.end("This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. However, known implementations do exist.");
+    });
+
+    app.options("*", (request, response) => {
+        response.end();
     });
 
     app.use("*", (request, response) => {

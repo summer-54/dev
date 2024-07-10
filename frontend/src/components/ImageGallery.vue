@@ -29,12 +29,12 @@ export default defineComponent({
   },
   methods: {
     previous(){
-      this.left = true;
+      this.left = false;
       this.cur += this.imgs_list.length-1;
       this.cur %= this.imgs_list.length;
     },
     next(){
-      this.left = false;
+      this.left = true;
       this.cur++;
       this.cur %= this.imgs_list.length;
     }

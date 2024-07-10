@@ -35,11 +35,11 @@ export async function signIn(username: string, password: string, passwordHash?: 
 }
 
 export async function isUniqueUsername(username: string): Promise<boolean> {
-    return Boolean(db.selectFrom("users").where("username", '=', username).select("id").executeTakeFirst());
+    return !Boolean(await db.selectFrom("users").where("username", '=', username).select("id").executeTakeFirst());
 }
 
 export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promise<boolean> {
-    return Boolean(db.selectFrom("users").where("username", '=', codeforcesHandle).select("id").executeTakeFirst());
+    return !Boolean(await db.selectFrom("users").where("codeforcesHandle", '=', codeforcesHandle).select("id").executeTakeFirst());
 }
 
 export async function getUserByUsername(username: string, select: Array<SelectExpression<Database, "users">> = ["username", "codeforcesHandle", "firstName", "lastName"]) {

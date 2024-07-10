@@ -28,6 +28,32 @@ const router = createRouter({
       path: "/test",
       name: 'test',
       component: () => import("./views/test/TestView.vue")
+    },
+    {
+      path: "/sign-in",
+      name: "signIn",
+      component: () => import("./views/signIn/SignInView.vue")
+    },
+    {
+      path: "/registration",
+      name: "registration",
+      component: () => import("./views/registration/RegistrationView.vue"),
+      alias: ["/reg"]
+    },
+    {
+      path: "/me",
+      name: "me",
+      component: () => import("./views/me/MeView.vue"),
+      children: [
+        {
+          path: "",
+          component: () => import("./views/me/DefaultSubView.vue"),
+        },
+        {
+          path: "settings",
+          component: () => import("./views/me/SettingsSubView.vue"),
+        }
+      ]
     }
   ]
 });

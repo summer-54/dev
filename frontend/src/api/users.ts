@@ -1,9 +1,12 @@
 import axios from "axios";
 import {SERVER_URL} from "@/api/index.js";
+import {ref} from "vue";
+
+export let me = ref<UserType | null>(null);
 
 export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, password: string}) {
     let response = await axios.post<string>(`${SERVER_URL}/users/register`, body);
-    if (response.status === 200) {
+    if (response.status === 201) {
         localStorage.setItem("token", response.data);
         return 0;
     }
@@ -58,15 +61,25 @@ export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promis
 }
 
 export async function patchUser(user: Partial<UserType>): Promise<boolean> {
-    let response = await axios.patch<void>(`${SERVER_URL}/me`, user, {
-        headers: {Authorization: localStorage.getItem("token")}
-    });
-    return response.status === 200;
+    try {
+        let response = await axios.patch<void>(`${SERVER_URL}/me`, user, {
+            headers: {Authorization: localStorage.getItem("token")}
+        });
+        return response.status === 200;
+    }
+    catch (error) {
+        return false;
+    }
 }
 
 export async function patchUserPassword(oldPassword: string, newPassword: string): Promise<boolean> {
-    let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: oldPassword, new: newPassword}, {
-        headers: {Authorization: localStorage.getItem("token")}
-    });
-    return response.status === 200;
+    try {
+        let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: oldPassword, new: newPassword}, {
+            headers: {Authorization: localStorage.getItem("token")}
+        });
+        return response.status === 200;
+    }
+    catch (error) {
+        return false;
+    }
 }
