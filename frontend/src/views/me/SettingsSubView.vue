@@ -81,9 +81,12 @@ export default defineComponent({
       <div>
         <CustomForm>
           <Subtitle text="Общая информация"/>
+          <FormComment color="unset">Ник на Codeforces:</FormComment>
           <SuiInput :placeholder="user?.codeforcesHandle" v-model="codeforcesHandle"/>
-          <SuiInput :placeholder="user?.lastName" v-model="lastName"/>
+          <FormComment color="unset">Имя:</FormComment>
           <SuiInput :placeholder="user?.firstName" v-model="firstName"/>
+          <FormComment color="unset">Фамилия:</FormComment>
+          <SuiInput :placeholder="user?.lastName" v-model="lastName"/>
           <SuiButton @click="patchUser" :disabled="pending">Обновить</SuiButton>
         </CustomForm>
         <CustomForm>
