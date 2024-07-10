@@ -21,7 +21,8 @@ export default defineComponent({
       lastName: "",
       codeforcesHandle: "",
       isUniqueUsername: true,
-      isUniqueCodeforcesHandle: true
+      isUniqueCodeforcesHandle: true,
+      pending: false
     }
   },
   watch: {
@@ -35,6 +36,7 @@ export default defineComponent({
   methods: {
     async submit(event: Event) {
       event.preventDefault();
+      this.pending = true;
       let response = await register({
         username: this.username,
         password: this.password,
@@ -42,6 +44,7 @@ export default defineComponent({
         lastName: this.lastName,
         codeforcesHandle: this.codeforcesHandle
       });
+      this.pending = false;
       if (!response) this.$router.push("/me");
     }
   },
@@ -67,7 +70,7 @@ export default defineComponent({
       <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle"/>
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
       <span class="buttons">
-        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle" @click="submit">Зарегистрироваться</SuiButton>
+        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit">Зарегистрироваться</SuiButton>
         <SuiButton><RouterLink to="/sign-in">Войти</RouterLink></SuiButton>
       </span>
     </CustomForm>

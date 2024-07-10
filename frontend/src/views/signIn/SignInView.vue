@@ -15,12 +15,14 @@ export default defineComponent({
     return {
       username: "",
       password: "",
-      wrong: false
+      wrong: false,
+      pending: false
     }
   },
   methods: {
     async submit(event: Event) {
       event.preventDefault();
+      this.pending = true;
       try {
         let response = await signIn(this.username, this.password);
         if (response) this.$router.push("/me");
@@ -29,7 +31,7 @@ export default defineComponent({
       catch (error) {
         this.wrong = true;
       }
-
+      this.pending = false;
     }
   }
 });
@@ -43,7 +45,7 @@ export default defineComponent({
       <SuiInput maxLength="50" placeholder="Пароль" password v-model="password"/>
       <span v-if="wrong">Неверное имя пользователя или пароль</span>
       <span class="buttons">
-      <SuiButton @click="submit" class="first">Войти</SuiButton>
+      <SuiButton @click="submit" class="first" :disabled="pending">Войти</SuiButton>
       <SuiButton><RouterLink to="/registration">Зарегистрироваться</RouterLink></SuiButton>
     </span>
     </CustomForm>
