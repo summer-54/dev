@@ -2,23 +2,33 @@
 import {defineComponent} from 'vue'
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
+import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 
 export default defineComponent({
   name: "iconButton",
-  components: {SuiButton},
+  components: {ThemeInvertSvg, SuiButton},
   props: {
     icon: {
       type: String,
       required: true
+    },
+    noText: {
+      type: Boolean,
+      default: false
+    },
+    notInvert: {
+      type: Boolean,
+      default: false
     }
   }
 })
 </script>
 
 <template>
-  <SuiButton :class="$style.button" border="#9297FB">
-    <img :src="icon" :alt="icon">
-    <div><slot/></div>
+  <SuiButton :class="{[$style.button]: true, [$style.noText]: noText}" border="#9297FB">
+    <img :src="icon" :alt="icon" v-if="notInvert">
+    <ThemeInvertSvg :src="icon" :alt="icon" v-else/>
+    <div v-if="!noText"><slot/></div>
   </SuiButton>
 </template>
 
@@ -40,5 +50,9 @@ div {
   }
 
   font-family: "Tiny5", sans-serif !important;
+}
+
+.noText {
+  padding: 5px !important;
 }
 </style>

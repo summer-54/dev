@@ -5,7 +5,13 @@
       <NavButton to="/" :icon="homeIcon">Главная</NavButton>
       <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
       <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
+      <NavButton to="/me" :icon="accountIcon" noText/>
+      <IconButton :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
     </nav>
+    <span>
+      <NavButton to="/me" :icon="accountIcon" noText/>
+      <IconButton :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
+    </span>
   </header>
   <teleport to="body">
     <footer>
@@ -25,12 +31,16 @@ import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/home.svg"
 import cupIcon from "@/assets/cup.svg"
 import olympIcon from "@/assets/olymp.svg"
+import accountIcon from "@/assets/account.svg"
+import darkIcon from "@/assets/dark.svg"
+import lightIcon from "@/assets/light.svg"
+import IconButton from "@/components/ui/iconButton.vue";
 
 export default defineComponent({
   name: "Header",
-  components: {NavButton, CustomRouterLink},
+  components: {IconButton, NavButton, CustomRouterLink},
   data() {
-    return {homeIcon, cupIcon, olympIcon}
+    return {homeIcon, cupIcon, olympIcon, accountIcon, darkIcon, lightIcon}
   },
 });
 </script>
@@ -52,18 +62,20 @@ header {
   padding: 8px;
 
   @media (max-width: 625px) {
-    justify-content: center;
+    padding-left: 12px;
+    justify-content: space-between;
   }
 
   h1 {
     margin: 0 0 0 20px;
     font-family: "LXGW WenKai Mono TC", monospace;
+    color: black;
 
     @media (max-width: 854px) {
       margin-left: 8px;
     }
 
-    @media (min-width: 530px) and (max-width: 836px) {
+    @media (min-width: 530px) and (max-width: 930px) {
       font-size: 20px;
     }
 
@@ -108,6 +120,20 @@ header {
       }
 
       margin: 8px 0;
+    }
+  }
+
+  span {
+    @media (min-width: 626px) {
+      display: none;
+    }
+
+    * {
+      margin-right: 8px;
+    }
+
+    *:last-child {
+      margin-right: 0;
     }
   }
 }
@@ -155,8 +181,8 @@ a:any-link {
 
 <style>
 #app {
-  @media (max-width: 501px) {
-    padding-bottom: 60px;
+  @media (max-width: 625px) {
+    padding-bottom: 100px !important;
   }
 }
 </style>
