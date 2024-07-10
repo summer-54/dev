@@ -1,6 +1,5 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import clock from "@/assets/clock.svg"
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
 
@@ -22,7 +21,7 @@ export default defineComponent({
 
 <template>
   <RouterLink :to="to">
-    <SuiButton :class="$style.button">
+    <SuiButton :class="$style.button" border="#9297FB">
       <img :src="icon" :alt="icon">
       <div><slot/></div>
     </SuiButton>

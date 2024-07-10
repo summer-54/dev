@@ -26,5 +26,6 @@ export default defineComponent({
   flex-direction: row;
   justify-content: space-around;
   margin-bottom: 100px;
+  flex-wrap: wrap;
 }
 </style>

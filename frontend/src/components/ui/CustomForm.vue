@@ -13,7 +13,6 @@ export default defineComponent({
         <slot/>
       </form>
     </Transition>
-
   </div>
 </template>
 

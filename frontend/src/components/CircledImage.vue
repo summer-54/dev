@@ -27,19 +27,19 @@ export default defineComponent({
 <style scoped>
 .circled_image {
   border-radius: 1000px;
-  @media (min-width: 1274px){
+  @media (min-width: 1288px){
     width: 275px;
   }
-  @media (min-width: 1054px) and (max-width: 1274px){
+  @media (min-width: 1105px) and (max-width: 1288px){
     width: 230px;
   }
-  @media (min-width: 854px) and (max-width: 1054px){
+  @media (min-width: 902px) and (max-width: 1105px){
     width: 180px;
   }
-  @media (min-width: 654px) and (max-width: 854px){
+  @media (min-width: 702px) and (max-width: 902px){
     width: 130px;
   }
-  @media (max-width: 654px){
+  @media (max-width: 702px){
     width: 70px;
   }
 }
@@ -70,5 +70,27 @@ export default defineComponent({
 }
 .note2 {
   text-align: justify;
+}
+
+.note1, .note2 {
+  @media (min-width: 1288px){
+    max-width: 278px;
+  }
+
+  @media (min-width: 1105px) and (max-width: 1288px){
+    max-width: 232px;
+  }
+
+  @media (min-width: 902px) and (max-width: 1105px){
+    max-width: 182px;
+  }
+
+  @media (min-width: 702px) and (max-width: 902px){
+    max-width: 132px;
+  }
+
+  @media (max-width: 702px){
+    max-width: 72px;
+  }
 }
 </style>
