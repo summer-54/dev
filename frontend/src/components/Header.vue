@@ -2,17 +2,20 @@
   <header>
     <h1>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h1>
     <nav>
-      <span class="element"><CustomRouterLink to="/" :class="$style.button">Главная</CustomRouterLink></span>
-      <span class="element"><CustomRouterLink to="/olymp" :class="$style.button">Олимпиада</CustomRouterLink></span>
-      <span class="element"><CustomRouterLink to="/summer-cup" :class="$style.button">Летний кубок</CustomRouterLink></span>
+<!--      <span class="element"><CustomRouterLink to="/" :class="$style.button">Главная</CustomRouterLink></span>-->
+<!--      <span class="element"><CustomRouterLink to="/olymp" :class="$style.button">Олимпиада</CustomRouterLink></span>-->
+<!--      <span class="element"><CustomRouterLink to="/summer-cup" :class="$style.button">Летний кубок</CustomRouterLink></span>-->
+      <NavButton to="/" :icon="homeIcon">Главная</NavButton>
+      <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
+      <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
     </nav>
   </header>
   <teleport to="body">
     <footer>
       <nav>
-        <span class="element"><CustomRouterLink to="/" :class="$style.button">Главная</CustomRouterLink></span>
-        <span class="element"><CustomRouterLink to="/olymp" :class="$style.button">Олимпиада</CustomRouterLink></span>
-        <span class="element"><CustomRouterLink to="/summer-cup" :class="$style.button">Летний кубок</CustomRouterLink></span>
+        <NavButton to="/" :icon="homeIcon">Главная</NavButton>
+        <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
+        <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
       </nav>
     </footer>
   </teleport>
@@ -21,10 +24,17 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import CustomRouterLink from "@/components/ui/customRouterLink.vue";
+import NavButton from "@/components/ui/navButton.vue";
+import homeIcon from "@/assets/home.svg"
+import cupIcon from "@/assets/cup.svg"
+import olympIcon from "@/assets/olymp.svg"
 
 export default defineComponent({
   name: "Header",
-  components: {CustomRouterLink}
+  components: {NavButton, CustomRouterLink},
+  data() {
+    return {homeIcon, cupIcon, olympIcon}
+  },
 });
 </script>
 
@@ -42,25 +52,25 @@ header {
   top: 0;
   overflow: hidden;
   z-index: 100000;
+  padding: 8px;
 
-  @media (max-width: 500px) {
+  @media (max-width: 625px) {
     justify-content: center;
   }
 
   h1 {
-    margin-left: 20px;
+    margin: 0 0 0 20px;
     font-family: "LXGW WenKai Mono TC", monospace;
 
-    @media (min-width: 530px) and (max-width: 940px) {
-      font-size: 20px;
-    }
-
-    @media (min-width: 500px) and (max-width: 530px) {
-      font-size: 16px;
+    @media (max-width: 854px) {
       margin-left: 8px;
     }
 
-    @media (max-width: 500px) {
+    @media (min-width: 530px) and (max-width: 836px) {
+      font-size: 20px;
+    }
+
+    @media (max-width: 625px) {
       font-size: 25px;
       margin-left: 0;
     }
@@ -72,12 +82,13 @@ header {
   }
 
   nav {
-    @media (max-width: 500px) {
+    @media (max-width: 625px) {
       display: none;
     }
 
     display: flex;
     align-items: center;
+    gap: 10px;
 
     @media (max-width: 500px) {
       width: 100%;
@@ -105,11 +116,11 @@ header {
 }
 
 footer {
-  @media (min-width: 501px) {
+  @media (min-width: 626px) {
     display: none;
   }
 
-  overflow: hidden;
+  overflow: visible;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -119,15 +130,7 @@ footer {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-
-    span {
-      margin: 8px 0;
-
-      a button {
-        font-size: 16px;
-        font-family: "Tiny5", sans-serif;
-      }
-    }
+    padding: 8px;
   }
 }
 
