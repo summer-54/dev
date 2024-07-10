@@ -82,21 +82,21 @@ export default defineComponent({
         <CustomForm>
           <Subtitle text="Общая информация"/>
           <FormComment color="unset">Ник на Codeforces:</FormComment>
-          <SuiInput :placeholder="user?.codeforcesHandle" v-model="codeforcesHandle"/>
+          <SuiInput :placeholder="user?.codeforcesHandle" v-model="codeforcesHandle" border="#9297FB"/>
           <FormComment color="unset">Имя:</FormComment>
-          <SuiInput :placeholder="user?.firstName" v-model="firstName"/>
+          <SuiInput :placeholder="user?.firstName" v-model="firstName" border="#9297FB"/>
           <FormComment color="unset">Фамилия:</FormComment>
-          <SuiInput :placeholder="user?.lastName" v-model="lastName"/>
-          <SuiButton @click="patchUser" :disabled="pending">Обновить</SuiButton>
+          <SuiInput :placeholder="user?.lastName" v-model="lastName" border="#9297FB"/>
+          <SuiButton @click="patchUser" :disabled="pending" border="#9297FB">Обновить</SuiButton>
         </CustomForm>
         <CustomForm>
           <Subtitle text="Смена пароля"/>
-          <SuiInput password placeholder="Старый пароль" v-model="oldPassword"/>
+          <SuiInput password placeholder="Старый пароль" v-model="oldPassword" border="#9297FB"/>
           <FormComment v-if="!correctPassword">Не подходит</FormComment>
-          <SuiInput password placeholder="Новый пароль" v-model="newPassword"/>
-          <SuiInput password placeholder="Повторите пароль" v-model="newPasswordRepeat"/>
+          <SuiInput password placeholder="Новый пароль" v-model="newPassword" border="#9297FB"/>
+          <SuiInput password placeholder="Повторите пароль" v-model="newPasswordRepeat" border="#9297FB"/>
           <FormComment v-if="!isPasswordEqual">Не совпадает</FormComment>
-          <SuiButton @click="patchPassword" :disabled="!isPasswordEqual || pending">Обновить пароль</SuiButton>
+          <SuiButton @click="patchPassword" :disabled="!isPasswordEqual || pending" border="#9297FB">Обновить пароль</SuiButton>
         </CustomForm>
       </div>
     </template>
