@@ -27,6 +27,7 @@ div {
 .form {
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 10px;
   border: #9297FB solid 4px;
   border-radius: 20px;

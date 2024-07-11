@@ -67,24 +67,45 @@ export default defineComponent({
       <FormComment v-if="!isUniqueUsername">Не уникально</FormComment>
       <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>
       <SuiInput maxLength="50" placeholder="Повторите пароль" password v-model="passwordRepeat" border="#9297FB"/>
-      <FormComment v-if="!isPasswordEqual">Не совподает</FormComment>
+      <FormComment v-if="!isPasswordEqual">Не совпадает</FormComment>
       <SuiInput maxLength="50" placeholder="Имя" v-model="firstName" border="#9297FB"/>
       <SuiInput maxLength="50" placeholder="Фамилия" v-model="lastName" border="#9297FB"/>
       <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle" border="#9297FB"/>
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
       <span class="buttons">
-        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
-        <SuiButton border="#9297FB"><RouterLink to="/sign-in">Войти</RouterLink></SuiButton>
+        <SuiButton class="first" :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
+        <SuiButton class="second" border="#9297FB"><RouterLink to="/sign-in">Войти</RouterLink></SuiButton>
       </span>
     </CustomForm>
   </main>
 </template>
 
 <style scoped>
+input {
+  @media (max-width: 420px){
+    width: 75%;
+  }
+}
 .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
   * {
     margin-bottom: 0;
     margin-right: 20px;
+  }
+
+  @media (max-width: 391.5px) {
+    .first {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 411.5px) {
+    .second {
+      margin-top: 10px;
+    }
   }
 
   *:last-child {

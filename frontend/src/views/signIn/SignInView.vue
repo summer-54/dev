@@ -48,18 +48,39 @@ export default defineComponent({
       <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>
       <span v-if="wrong">Неверное имя пользователя или пароль</span>
       <span class="buttons">
-      <SuiButton @click="submit" class="first" :disabled="pending" border="#9297FB">Войти</SuiButton>
-      <SuiButton border="#9297FB"><RouterLink to="/registration">Зарегистрироваться</RouterLink></SuiButton>
-    </span>
+        <SuiButton @click="submit" class="first" :disabled="pending" border="#9297FB">Войти</SuiButton>
+        <SuiButton border="#9297FB" class="second"><RouterLink to="/registration">Зарегистрироваться</RouterLink></SuiButton>
+      </span>
     </CustomForm>
   </main>
 </template>
 
 <style scoped>
+input {
+  @media (max-width: 420px){
+    width: 75%;
+  }
+}
 .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+
   * {
     margin-bottom: 0;
     margin-right: 20px;
+  }
+
+  @media (max-width: 391.5px) {
+    .first {
+      margin-right: 0;
+    }
+  }
+
+  @media (max-width: 411.5px) {
+    .second {
+      margin-top: 10px;
+    }
   }
 
   *:last-child {
