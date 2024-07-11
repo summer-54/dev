@@ -44,9 +44,17 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style scoped>
 * {
   font-family: "LXGW WenKai Mono TC", monospace;
+  font-size: 20px;
+  @media (min-width: 530px) and (max-width: 940px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 10px;
+  }
 }
 table {
   margin: auto;
