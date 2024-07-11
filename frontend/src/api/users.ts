@@ -50,12 +50,6 @@ export async function getMe() {
     return null;
 }
 
-export async function getUserByUsername(username: string) {
-    let response = await axios.get<UserType>(`${SERVER_URL}/users/${username}`);
-    if (response.status === 200) return response.data;
-    return null;
-}
-
 export async function isUniqueUsername(username: string): Promise<boolean | null> {
     let response = await axios.get<number>(`${SERVER_URL}/users/is-unique/username/${username}`);
     if (response.status === 200) return Boolean(response.data);
@@ -90,4 +84,10 @@ export async function patchUserPassword(oldPassword: string, newPassword: string
     catch (error) {
         return false;
     }
+}
+
+export async function getUserByUsername(username: string) {
+    let response = await axios.get<UserType>(`${SERVER_URL}/users/${username}`);
+    if (response.status === 200) return response.data;
+    return null;
 }
