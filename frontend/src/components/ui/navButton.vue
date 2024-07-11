@@ -34,6 +34,6 @@ export default defineComponent({
 
 <template>
   <RouterLink :to="to">
-    <IconButton :icon="icon" :noText="noText" :notInvert :alt="alt"><slot/></IconButton>
+    <IconButton style="cursor: pointer;" :icon="icon" :noText="noText" :notInvert :alt="alt"><slot/></IconButton>
   </RouterLink>
 </template>
