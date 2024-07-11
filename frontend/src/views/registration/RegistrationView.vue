@@ -91,4 +91,7 @@ export default defineComponent({
     margin-right: 0;
   }
 }
+a {
+  text-decoration: none;
+}
 </style>
