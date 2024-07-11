@@ -49,7 +49,7 @@ export default defineComponent({
       <span v-if="wrong">Неверное имя пользователя или пароль</span>
       <span class="buttons">
         <SuiButton @click="submit" class="first" :disabled="pending" border="#9297FB">Войти</SuiButton>
-        <SuiButton border="#9297FB" class="second"><RouterLink to="/registration">Зарегистрироваться</RouterLink></SuiButton>
+        <RouterLink to="/registration"><SuiButton border="#9297FB" class="second">Зарегистрироваться</SuiButton></RouterLink>
       </span>
     </CustomForm>
   </main>
