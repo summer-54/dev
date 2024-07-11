@@ -37,6 +37,10 @@ export default defineComponent({
 </template>
 
 <style scoped>
+button {
+  cursor: pointer;
+}
+
 div {
   font-family: "Tiny5", sans-serif;
   font-size: 16px;

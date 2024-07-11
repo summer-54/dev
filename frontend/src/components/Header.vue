@@ -10,7 +10,7 @@
     </nav>
     <span>
       <NavButton alt="account" to="/me" :icon="accountIcon" noText/>
-      <IconButton style="cursor: pointer;" alt="changeTheme" :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
+      <IconButton alt="changeTheme" :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
     </span>
   </header>
   <teleport to="body">
