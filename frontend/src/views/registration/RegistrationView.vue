@@ -74,7 +74,7 @@ export default defineComponent({
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
       <span class="buttons">
         <SuiButton class="first" :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
-        <RouterLink to="/sign-in"><SuiButton border="#9297FB" сlass="second">Войти</SuiButton></RouterLink>
+        <RouterLink to="/sign-in" class="second"><SuiButton border="#9297FB">Войти</SuiButton></RouterLink>
       </span>
     </CustomForm>
   </main>
