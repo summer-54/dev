@@ -16,8 +16,21 @@ export async function register({username, codeforcesHandle, firstName, lastName,
     return signIn(username, password, passwordHash);
 }
 
-export function generateToken() {
+async function isUniqueToken(token: string) {
+    let result = await db.selectFrom("sessions").where("token", '=', token).select("id").executeTakeFirst();
+    return !Boolean(result);
+}
+
+export function generateRandomString() {
     return randomstring.generate({length: 512, charset: ["alphanumeric", '@', '#', '$', '%', '^', '&', '*', ':', ';']});
+}
+
+export async function generateToken() {
+    let token = "";
+    do {
+        token = generateRandomString();
+    } while (!(await isUniqueToken(token)));
+    return token;
 }
 
 export async function signIn(username: string, password: string, passwordHash?: string): Promise<string | null> {
@@ -28,7 +41,7 @@ export async function signIn(username: string, password: string, passwordHash?: 
         passHash = passwordHash;
     }
     if (!compareHash(password, passHash)) return null;
-    let token = generateToken();
+    let token = await generateToken();
     let {id} = await db.selectFrom("users").select("id").where("username", '=', username).executeTakeFirstOrThrow();
     await db.insertInto("sessions").values({userId: id, token}).executeTakeFirstOrThrow();
     return token;
@@ -64,4 +77,8 @@ export async function patchUser(id: number, patch: UpdateObjectExpression<Databa
 
 export async function patchUserPassword(id: number, password: string) {
     await db.updateTable("users").set({passwordHash: hash(password)}).where("id", '=', id).executeTakeFirstOrThrow();
+}
+
+export async function signOut(token: string) {
+    await db.deleteFrom("sessions").where("token", '=', token).execute();
 }

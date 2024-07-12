@@ -7,7 +7,7 @@ import {
     isUniqueUsername,
     patchUser, patchUserPassword,
     register,
-    signIn
+    signIn, signOut
 } from "./sql/users.js";
 
 export default buildHandlers({
@@ -64,6 +64,16 @@ export default buildHandlers({
                 return;
             }
             response.end(token);
+        },
+        async "/users/signout"(request, response) {
+            if (typeof request.headers.authorization !== "string") {
+                response.status(401);
+                response.end("");
+                return;
+            }
+            let {authorization: token} = request.headers;
+            await signOut(token);
+            response.end();
         }
     },
     get: {

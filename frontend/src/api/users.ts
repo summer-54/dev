@@ -37,7 +37,10 @@ export function hasToken(): boolean {
     return localStorage.getItem("token") !== null;
 }
 
-export function signOut() {
+export async function signOut() {
+    let response = await axios.post<void>(`${SERVER_URL}/users/signout`, "", {
+        headers: {Authorization: localStorage.getItem("token")}
+    });
     localStorage.removeItem("token");
 }
 

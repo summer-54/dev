@@ -16,8 +16,7 @@ export default defineComponent({
   },
   methods: {
     signOut() {
-      signOut();
-      this.$router.push("/");
+      signOut().then(() => this.$router.push("/"));
     }
   }
 })
@@ -72,11 +71,4 @@ export default defineComponent({
     }
   }
 }
-
-/*span {
-  display: block;
-  margin-top: 10px;
-  margin-left: 20px;
-  font-size: 20px;
-}*/
 </style>
