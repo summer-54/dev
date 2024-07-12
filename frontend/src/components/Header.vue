@@ -1,6 +1,6 @@
 <template>
   <header>
-    <h1>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h1>
+    <h4>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h4>
     <nav>
       <NavButton to="/" :icon="homeIcon">Главная</NavButton>
       <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
@@ -66,10 +66,11 @@ header {
     justify-content: space-between;
   }
 
-  h1 {
+  h4 {
     margin: 0 0 0 20px;
     font-family: "LXGW WenKai Mono TC", monospace;
     color: black;
+    font-size: 2em;
 
     @media (max-width: 854px) {
       margin-left: 8px;
