@@ -73,8 +73,8 @@ export default defineComponent({
       <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle" border="#9297FB"/>
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
       <span class="buttons">
-        <SuiButton class="first" :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
-        <RouterLink to="/sign-in" class="second"><SuiButton border="#9297FB">Войти</SuiButton></RouterLink>
+        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
+        <RouterLink to="/sign-in"><SuiButton border="#9297FB">Войти</SuiButton></RouterLink>
       </span>
     </CustomForm>
   </main>
@@ -90,26 +90,10 @@ input {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  gap: 20px;
 
   * {
     margin-bottom: 0;
-    margin-right: 20px;
-  }
-
-  @media (max-width: 391.5px) {
-    .first {
-      margin-right: 0;
-    }
-  }
-
-  @media (max-width: 411.5px) {
-    .second {
-      margin-top: 10px;
-    }
-  }
-
-  *:last-child {
-    margin-right: 0;
   }
 }
 a {

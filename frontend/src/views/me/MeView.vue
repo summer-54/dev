@@ -2,16 +2,15 @@
 import {defineComponent} from "vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
-import {getMe, hasToken, me, signOut} from "@/api/users.js";
+import {getMe, hasToken, me} from "@/api/users.js";
 import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/home.svg"
 import settingsIcon from "@/assets/settings.svg"
 import signOutIcon from "@/assets/signout.svg"
-import IconButton from "@/components/ui/iconButton.vue";
 
 export default defineComponent({
   name: "MeView",
-  components: {IconButton, NavButton, SuiButton},
+  components: {NavButton, SuiButton},
   data() {
     return {homeIcon, settingsIcon, signOutIcon};
   },
@@ -21,12 +20,6 @@ export default defineComponent({
       return;
     }
     getMe().then(user => me.value = user);
-  },
-  methods: {
-    signOut() {
-      signOut();
-      this.$router.push("/");
-    }
   }
 });
 </script>
@@ -38,7 +31,6 @@ export default defineComponent({
         <NavButton to="/me" :icon="homeIcon">Главная</NavButton>
         <NavButton to="/me/settings" :icon="settingsIcon">Настройки</NavButton>
       </nav>
-      <IconButton :icon="signOutIcon" @click="signOut">Выйти</IconButton>
     </header>
     <RouterView v-slot="{Component}">
       <Transition name="fade" mode="out-in">

@@ -110,7 +110,6 @@ div {
   justify-content: space-evenly;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 0 10px;
   align-items: baseline;
 }
 </style>

@@ -128,13 +128,9 @@ header {
       display: none;
     }
 
-    * {
-      margin-right: 8px;
-    }
-
-    *:last-child {
-      margin-right: 0;
-    }
+    display: flex;
+    margin: 0 8px;
+    gap: 8px;
   }
 }
 

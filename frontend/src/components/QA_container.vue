@@ -42,8 +42,11 @@ div {
   flex-wrap: wrap;
   gap: 40px;
   justify-content: center;
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 0 40px;
+
+  @media (max-width: 530px) {
+    padding: 0 20px;
+  }
 
   span {
     flex-basis: 350px;

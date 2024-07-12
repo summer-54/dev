@@ -32,13 +32,17 @@ div {
   border: #9297FB solid 4px;
   border-radius: 20px;
 
-  * {
+  & > * {
     margin-bottom: 20px;
     font-family: "LXGW WenKai Mono TC", monospace;
     transition: all 0.5s;
   }
 
-  *:last-child {
+  input {
+    width: 88%;
+  }
+
+  & > *:last-child {
     margin-bottom: 0;
   }
 

@@ -63,8 +63,11 @@ export default defineComponent({
 <style scoped>
 .plain_text {
   text-align: justify;
-  margin-left: 40px;
-  margin-right: 40px;
+  margin: 0 40px;
+
+  @media (max-width: 530px) {
+    margin: 0 20px;
+  }
 }
 h2 {
   text-align: center;
