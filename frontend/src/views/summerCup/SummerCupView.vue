@@ -30,7 +30,7 @@ export default defineComponent({
           {num: 10, href: "https://youtu.be/2Zy77NRHSMk?feature=shared"}
         ],
         [
-          {num: 1, href: "https://youtu.be/2Zy77NRHSMk?feature=shared"},
+          {num: 1, href: "https://youtu.be/mCj1RIXx_qw?feature=shared"},
           {num: 2, href: "https://youtu.be/gg-MsmrzUaY?feature=shared"},
           {num: 3, href: "https://youtu.be/eXphcfz4AzI?feature=shared"},
           {num: 4, href: "https://youtu.be/hMGGmTd5de8?feature=shared"}
