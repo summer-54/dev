@@ -61,6 +61,9 @@ input {
     width: 75%;
   }
 }
+button {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
 .buttons {
   display: flex;
   flex-wrap: wrap;
