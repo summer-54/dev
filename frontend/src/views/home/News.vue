@@ -47,20 +47,14 @@ export default defineComponent({
 .news {
   display: flex;
   flex-direction: column;
-  @media (min-width: 1274px){
-    max-width: 275px;
+  @media (min-width: 1054px){
+    max-width: 30em;
   }
-  @media (min-width: 1054px) and (max-width: 1274px){
-    max-width: 230px;
-  }
-  @media (min-width: 854px) and (max-width: 1054px){
-    max-width: 180px;
-  }
-  @media (min-width: 654px) and (max-width: 854px){
-    max-width: 130px;
+  @media (min-width: 654px) and (max-width: 1054px){
+    max-width: 40em;
   }
   @media (max-width: 654px){
-    max-width: 70px;
+    max-width: 80em;
   }
 }
 .title {
