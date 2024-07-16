@@ -33,7 +33,9 @@ export default defineComponent({
           {num: 1, href: "https://youtu.be/mCj1RIXx_qw?feature=shared"},
           {num: 2, href: "https://youtu.be/gg-MsmrzUaY?feature=shared"},
           {num: 3, href: "https://youtu.be/eXphcfz4AzI?feature=shared"},
-          {num: 4, href: "https://youtu.be/hMGGmTd5de8?feature=shared"}
+          {num: 4, href: "https://youtu.be/hMGGmTd5de8?feature=shared"},
+          {num: 5, href: "https://youtu.be/6z9clGg8s7E?feature=shared"},
+          {num: 6, href: "https://youtu.be/GXFJrkMJrRw?feature=shared"}
         ]
       ],
       text: "Один тур оценивается в 90 баллов, общий балл за кубок — сумма баллов за все туры, кроме 2 худших. 30 баллов выставляется за место в виртуальном участии (за 1 место - 30, 2 - 28, 3 - 26, 4 - 24, 5 - 22, 6 - 20, 7 - 19, 8 - 18 и т.д.), но не решившие ни одной задачи не получают баллов за место. Оставшиеся 60 баллов участник получает за задачи. За каждую задачу, сданную до разбора, участник получает $\\frac{60}{n}$ баллов, а после разбора — $\\frac{30}{n}$ баллов, где $n$ - количество задач."

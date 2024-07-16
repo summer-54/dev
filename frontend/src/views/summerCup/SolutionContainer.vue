@@ -23,11 +23,12 @@ export default defineComponent({
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  gap: 50px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 a {
   font-size: 28px;
-  margin-right: 20px;
-  margin-left: 20px;
   font-family: "LXGW WenKai Mono TC", monospace;
   text-decoration: none;
   
