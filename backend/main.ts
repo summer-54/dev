@@ -43,7 +43,6 @@ async function main() {
 
     app.start(async () => {
         console.log(app.routes);
-        // await standingsTest();
     });
 }
 

@@ -1,7 +1,7 @@
 {
   "name": "test",
   "version": "0.0.0",
-  "main": "main.js",
+  "main": "./dist/main.js",
   "scripts": {
     "build": "tsc",
     "start": "npm run build && node --es-module-specifier-resolution=node ./dist/main.js",
