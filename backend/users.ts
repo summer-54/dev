@@ -1,13 +1,16 @@
 import {buildHandlers} from "sbackend";
 import {compareHash} from "scryptex";
 import {
-    getUserByToken, getUserByUsername,
+    getUserByToken,
+    getUserByUsername,
     getUserIdByToken,
     isUniqueCodeforcesHandle,
     isUniqueUsername,
-    patchUser, patchUserPassword,
+    patchUser,
+    patchUserPassword,
     register,
-    signIn, signOut
+    signIn,
+    signOut
 } from "./sql/users.js";
 
 export default buildHandlers({
