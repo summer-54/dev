@@ -42,7 +42,7 @@ export default async function () {
     try {
         await db.schema.createTable("tasks")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("contest", "integer", cb => cb.notNull())
+            .addColumn("contest", "integer", cb => cb.notNull().references("contests.id"))
             .addColumn("title", "varchar(512)", cb => cb.notNull())
             .addColumn("pdfLink", "varchar(512)")
             .addColumn("available", "boolean", cb => cb.defaultTo(true)).execute();
@@ -50,7 +50,7 @@ export default async function () {
     try {
         await db.schema.createTable("standings")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("contest", "integer", cb => cb.notNull())
+            .addColumn("contest", "integer", cb => cb.notNull().references("contests.id"))
             .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
             .addColumn("task", "integer", cb => cb.notNull().references("tasks.id"))
             .addColumn("status", "integer", cb => cb.notNull())
