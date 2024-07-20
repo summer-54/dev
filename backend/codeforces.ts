@@ -102,10 +102,11 @@ export function setupGroupStandingsUpdater(groupId: string, callback: (standings
         try {
             let data = callback(await getGroupStandings(groupId));
             if (data instanceof Promise) await data;
+            setTimeout(func, ms);
         } catch (error) {
             console.error(error);
+            setTimeout(func, ms * 100);
         }
-        setTimeout(func, ms);
     }
 
     func();
