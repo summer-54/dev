@@ -40,7 +40,7 @@ export default async function () {
             .addColumn("available", "boolean", cb => cb.defaultTo(true)).execute();
     } catch (error) {}
     try {
-        await db.schema.createTable("tasks")
+        await db.schema.createTable("problems")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("contest", "integer", cb => cb.notNull().references("contests.id"))
             .addColumn("title", "varchar(512)", cb => cb.notNull())
@@ -52,7 +52,7 @@ export default async function () {
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("contest", "integer", cb => cb.notNull().references("contests.id"))
             .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
-            .addColumn("task", "integer", cb => cb.notNull().references("tasks.id"))
+            .addColumn("task", "integer", cb => cb.notNull().references("problems.id"))
             .addColumn("status", "integer", cb => cb.notNull())
             .addColumn("available", "boolean", cb => cb.defaultTo(true))
             .addColumn("datetime", "timestamp", cb => cb.notNull()).execute();

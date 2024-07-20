@@ -40,7 +40,7 @@ export interface ContestsTable {
     available: ColumnType<boolean, boolean | undefined>;
 }
 
-export interface TasksTable {
+export interface ProblemsTable {
     id: Generated<number>;
     contest: number;
     title: string;
@@ -64,7 +64,7 @@ export interface Database {
     users: UsersTable;
     sessions: SessionsTable;
     contests: ContestsTable;
-    tasks: TasksTable;
+    problems: ProblemsTable;
     standings: StandingsTable;
 }
 

@@ -2,10 +2,10 @@ import axios from "axios";
 import {JSDOM} from "jsdom";
 
 export class StandingsRow {
-    public tasks: Array<number>;
+    public problems: Array<number>;
 
-    public constructor(public name: string, public total: number, public penalty: number, tasks: Array<string | number>, public notOfficial: boolean) {
-        this.tasks = tasks.map(elem => typeof elem === "number" ? elem : elem === "+" ? 1 : isNaN(Number(elem)) ? 0 : Number(elem));
+    public constructor(public name: string, public total: number, public penalty: number, problems: Array<string | number>, public notOfficial: boolean) {
+        this.problems = problems.map(elem => typeof elem === "number" ? elem : elem === "+" ? 1 : isNaN(Number(elem)) ? 0 : Number(elem));
     }
 
     public get object() {
@@ -13,7 +13,7 @@ export class StandingsRow {
             name: this.name,
             total: this.total,
             penalty: this.penalty,
-            tasks: this.tasks,
+            problems: this.problems,
             notOfficial: this.notOfficial
         };
     }
@@ -26,13 +26,13 @@ export class StandingsRow {
 export class Standings {
     public rows: Array<StandingsRow> = [];
 
-    public constructor(public name: string, public contestId: number, public tasks: Array<string>) {}
+    public constructor(public name: string, public contestId: number, public problems: Array<string>) {}
 
     public get object() {
         return {
             name: this.name,
             contestId: this.contestId,
-            tasks: this.tasks,
+            problems: this.problems,
             rows: this.rows.map(row => row.object)
         };
     }

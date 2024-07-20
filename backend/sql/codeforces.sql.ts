@@ -9,8 +9,8 @@ export async function getContestId(groupId: string, contestId: number): Promise<
     ])).executeTakeFirst())?.id;
 }
 
-export async function getContestTasks(contest: number): Promise<Array<number>> {
-    return (await db.selectFrom("tasks").select(["id"]).where("contest", '=', contest).execute())
+export async function getContestProblems(contest: number): Promise<Array<number>> {
+    return (await db.selectFrom("problems").select(["id"]).where("contest", '=', contest).execute())
         .map(({id}) => id);
 }
 
@@ -34,12 +34,12 @@ export async function updateContestStandingsRow(contest: number, user: number, t
     await db.updateTable("standings").set({status, datetime: new Date()}).where("id", '=', id).execute();
 }
 
-export async function updateContestStandingsUser(contest: number, row: StandingsRow, tasks: Array<number>, users: {[key: string]: number}): Promise<void> {
+export async function updateContestStandingsUser(contest: number, row: StandingsRow, problems: Array<number>, users: {[key: string]: number}): Promise<void> {
     let user = users[row.name];
     if (!user) return;
     let arr: Array<Promise<any>> = [];
-    for (let i = 0; i < tasks.length; i++) {
-        arr.push(updateContestStandingsRow(contest, user, tasks[i], row.tasks[i]));
+    for (let i = 0; i < problems.length; i++) {
+        arr.push(updateContestStandingsRow(contest, user, problems[i], row.problems[i]));
     }
     await Promise.all(arr);
 }
@@ -48,8 +48,8 @@ export async function createContest(groupId: string, standings: Standings): Prom
     await db.insertInto("contests").values({groupId, contestId: standings.contestId, name: standings.name}).execute();
     let contest = await getContestId(groupId, standings.contestId);
     if (!contest) return 0;
-    await Promise.all(standings.tasks.map(title =>
-        db.insertInto("tasks").values({contest, title, pdfLink: ""}).execute()
+    await Promise.all(standings.problems.map(title =>
+        db.insertInto("problems").values({contest, title, pdfLink: ""}).execute()
     ));
     return contest;
 }
@@ -58,9 +58,9 @@ export async function updateContestStandings(groupId: string, standings?: Standi
     if (!standings) return;
     let contest = await getContestId(groupId, standings.contestId);
     if (!contest) contest = await createContest(groupId, standings);
-    let tasks = await getContestTasks(contest);
+    let problems = await getContestProblems(contest);
     let users = await getCodeforcesHandleUserIdMap();
-    await Promise.all(standings.rows.map(row => updateContestStandingsUser(contest, row, tasks, users)));
+    await Promise.all(standings.rows.map(row => updateContestStandingsUser(contest, row, problems, users)));
 }
 
 export async function updateGroupStandings(groupId: string, groupStandings: {[key: string]: Standings | undefined}) {
@@ -75,7 +75,7 @@ export async function updateGroupStandings(groupId: string, groupStandings: {[ke
         .where(({or, eb}) =>
             or(contestsToRemove.map(contestId => eb("id", '=', contestId)))
         ).execute();
-    await db.updateTable("tasks").set({available: false})
+    await db.updateTable("problems").set({available: false})
         .where(({or, eb}) =>
             or(contestsToRemove.map(contestId => eb("contest", '=', contestId)))
         ).execute();
