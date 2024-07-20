@@ -99,8 +99,12 @@ export async function getGroupStandings(groupId: string): Promise<{[key: string]
 
 export function setupGroupStandingsUpdater(groupId: string, callback: (standings: {[key: string]: Standings | undefined}) => void | Promise<void>, ms: number = 20000): void {
     async function func() {
-        let data = callback(await getGroupStandings(groupId));
-        if (data instanceof Promise) await data;
+        try {
+            let data = callback(await getGroupStandings(groupId));
+            if (data instanceof Promise) await data;
+        } catch (error) {
+            console.error(error);
+        }
         setTimeout(func, ms);
     }
 
