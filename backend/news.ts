@@ -1,6 +1,6 @@
 import {buildHandlers} from "sbackend";
 import * as fs from "node:fs";
-import {getNew, getNews, postNew} from "./sql/news.js";
+import {getNew, getNews, postNew} from "./sql/news.sql.js";
 
 export default buildHandlers({
     get: {

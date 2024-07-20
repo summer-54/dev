@@ -1,4 +1,4 @@
-import {db} from "./index.js";
+import {db} from "./index.sql.js";
 import {addAttachment} from "../attachments.js";
 
 export async function getNews({limit, offset}: {limit?: number, offset?: number}) {

@@ -1,5 +1,5 @@
 import randomstring from "randomstring";
-import {Database, db} from "./index.js";
+import {Database, db} from "./index.sql.js";
 import {compareHash, hash} from "scryptex";
 import {SelectExpression} from "kysely";
 import {UpdateObjectExpression} from "kysely/dist/cjs/parser/update-set-parser.js";

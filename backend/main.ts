@@ -1,10 +1,10 @@
 import SBackend from "sbackend";
 import "dotenv/config";
-import {setupEnv} from "./sql/index.js";
+import {setupEnv} from "./sql/index.sql.js";
 import news from "./news.js";
 import users from "./users.js";
 import {setupGroupStandingsUpdater} from "./codeforces.js";
-import {updateGroupStandings} from "./sql/codeforces.js";
+import {updateGroupStandings} from "./sql/codeforces.sql.js";
 
 async function main() {
     await setupEnv();

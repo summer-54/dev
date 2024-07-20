@@ -1,6 +1,6 @@
 import {Standings, StandingsRow} from "../codeforces.js";
-import {db} from "./index.js";
-import {getCodeforcesHandleUserIdMap} from "./users.js";
+import {db} from "./index.sql.js";
+import {getCodeforcesHandleUserIdMap} from "./users.sql.js";
 
 export async function getContestId(groupId: string, contestId: number): Promise<number | undefined> {
     return (await db.selectFrom("contests").select(["id"]).where(({and, eb}) => and([

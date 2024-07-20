@@ -11,7 +11,7 @@ import {
     register,
     signIn,
     signOut
-} from "./sql/users.js";
+} from "./sql/users.sql.js";
 
 export default buildHandlers({
     post: {
