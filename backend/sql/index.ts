@@ -8,7 +8,7 @@ export interface NewsTable {
     description: string;
     img?: string;
     fullText: string;
-    datetime: ColumnType<Date, Date | string>
+    datetime: ColumnType<Date, Date | string>;
 }
 
 export interface NewsImagesTable {
@@ -32,11 +32,40 @@ export interface SessionsTable {
     token: string;
 }
 
+export interface ContestsTable {
+    id: Generated<number>;
+    groupId: string;
+    name: string;
+    contestId: number;
+    available: ColumnType<boolean, boolean | undefined>;
+}
+
+export interface TasksTable {
+    id: Generated<number>;
+    contest: number;
+    title: string;
+    pdfLink: string;
+    available: ColumnType<boolean, boolean | undefined>;
+}
+
+export interface StandingsTable {
+    id: Generated<number>;
+    contest: number;
+    user: number;
+    task: number;
+    status: number;
+    available: ColumnType<boolean, boolean | undefined>;
+    datetime: ColumnType<Date, Date | string>;
+}
+
 export interface Database {
     news: NewsTable;
     newsImages: NewsImagesTable;
     users: UsersTable;
     sessions: SessionsTable;
+    contests: ContestsTable;
+    tasks: TasksTable;
+    standings: StandingsTable;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;

@@ -82,3 +82,7 @@ export async function patchUserPassword(id: number, password: string) {
 export async function signOut(token: string) {
     await db.deleteFrom("sessions").where("token", '=', token).execute();
 }
+
+export async function getCodeforcesHandleUserIdMap(): Promise<{[key: string]: number}> {
+    return Object.fromEntries((await db.selectFrom("users").select(["id", "codeforcesHandle"]).execute()).map(({id, codeforcesHandle}) => [codeforcesHandle, id]));
+}

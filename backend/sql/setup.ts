@@ -9,15 +9,13 @@ export default async function () {
             .addColumn("description", "text", cb => cb.notNull())
             .addColumn("img", "varchar(50)")
             .addColumn("fullText", "text", cb => cb.notNull()).execute();
-    } catch (error) {
-    }
+    } catch (error) {}
     try {
         await db.schema.createTable("newsImages")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("newId", "integer", cb => cb.notNull())
+            .addColumn("newId", "integer", cb => cb.notNull().references("news.id"))
             .addColumn("image", "varchar(50)", cb => cb.notNull()).execute();
-    } catch (error) {
-    }
+    } catch (error) {}
     try {
         await db.schema.createTable("users")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
@@ -26,13 +24,37 @@ export default async function () {
             .addColumn("firstName", "varchar(50)", cb => cb.notNull())
             .addColumn("lastName", "varchar(50)", cb => cb.notNull())
             .addColumn("passwordHash", "varchar(256)", cb => cb.notNull()).execute();
-    } catch (error) {
-    }
+    } catch (error) {}
     try {
         await db.schema.createTable("sessions")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("userId", "integer", cb => cb.notNull())
+            .addColumn("userId", "integer", cb => cb.notNull().references("users.id"))
             .addColumn("token", "varchar(512)", cb => cb.notNull()).execute();
-    } catch (error) {
-    }
+    } catch (error) {}
+    try {
+        await db.schema.createTable("contests")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("groupId", "varchar(16)", cb => cb.notNull())
+            .addColumn("name", "varchar(512)", cb => cb.notNull())
+            .addColumn("contestId", "integer", cb => cb.notNull())
+            .addColumn("available", "boolean", cb => cb.defaultTo(true)).execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("tasks")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("contest", "integer", cb => cb.notNull())
+            .addColumn("title", "varchar(512)", cb => cb.notNull())
+            .addColumn("pdfLink", "varchar(512)")
+            .addColumn("available", "boolean", cb => cb.defaultTo(true)).execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("standings")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("contest", "integer", cb => cb.notNull())
+            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("task", "integer", cb => cb.notNull().references("tasks.id"))
+            .addColumn("status", "integer", cb => cb.notNull())
+            .addColumn("available", "boolean", cb => cb.defaultTo(true))
+            .addColumn("datetime", "timestamp", cb => cb.notNull()).execute();
+    } catch (error) {}
 }

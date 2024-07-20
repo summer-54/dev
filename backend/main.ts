@@ -3,6 +3,8 @@ import "dotenv/config";
 import {setupEnv} from "./sql/index.js";
 import news from "./news.js";
 import users from "./users.js";
+import {setupGroupStandingsUpdater} from "./codeforces.js";
+import {updateGroupStandings} from "./sql/codeforces.js";
 
 async function main() {
     await setupEnv();
@@ -43,6 +45,7 @@ async function main() {
 
     app.start(async () => {
         console.log(app.routes);
+        setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
     });
 }
 
