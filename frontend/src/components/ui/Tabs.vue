@@ -34,7 +34,7 @@ export default defineComponent({
 header {
   overflow-y: visible;
   overflow-x: hidden;
-  padding: 10px 0;
+  padding: 30px 0;
 
   nav {
     display: flex;
