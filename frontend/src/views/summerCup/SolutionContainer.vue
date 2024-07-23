@@ -5,14 +5,14 @@
         <RouterLink :to="solution.route" class="tour">
             <Subtitle :text="solution.num + ' тур'" />
             <span v-if="solution.date" class="date"><img src="@/assets/clock.svg"> {{ solution.date }}</span>
-            <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending }}</span>
+            <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending[solution.num-1] }}</span>
         </RouterLink>
       </template>
       <template v-else>
         <RouterLink class="tour" :to="solution.route">
           <Subtitle :text="solution.num + ' тур'" />
           <span v-if="solution.date" class="date"><img src="@/assets/clock.svg"> {{ solution.date }}</span>
-          <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending }}</span>
+          <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending[solution.num-1] }}</span>
         </RouterLink>
       </template>
     </template>
@@ -54,10 +54,17 @@ export default defineComponent({
           result[i] = "";
           continue;
         }
-        if(amount%10 == 1) return "а";
-        if(2 <= amount%10 && amount%10 <= 4) return "и";
-        return "";
+        if(amount%10 == 1){
+          result[i] = "а";
+          continue;
+        }
+        if(2 <= amount%10 && amount%10 <= 4){
+          result[i] = "и";
+          continue;
+        }
+        result[i] = "";
       }
+      return result;
     }
   }
 })
