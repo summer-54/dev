@@ -13,7 +13,7 @@ export default defineComponent({
     }
   },
   computed: {
-    currentRoute() {
+    currentRoute(): string {
       return Object(this.$router).currentRoute.value.path;
     }
   }
@@ -24,7 +24,7 @@ export default defineComponent({
   <header>
     <nav>
       <RouterLink v-for="(route, text) in routes" :to="route">
-        <SuiButton transform="1.2" :disabled="currentRoute === route">{{text}}</SuiButton>
+        <SuiButton transform="1.2" :disabled="currentRoute.startsWith(route)">{{text}}</SuiButton>
       </RouterLink>
     </nav>
   </header>

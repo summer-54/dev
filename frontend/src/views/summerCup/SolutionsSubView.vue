@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import SolutionContainer, {type SolutionsType} from "@/views/summerCup/SolutionContainer.vue";
+import SolutionContainer, {type SolutionType} from "@/views/summerCup/SolutionContainer.vue";
 
 export default defineComponent({
   name: "AnalysisSubView",
@@ -29,7 +29,7 @@ export default defineComponent({
           {num:  6, href: undefined, tasks_amount:  9, date: "06.07.2024—19.07.2024", route: "/summer-cup/2/6"}, // , href: "https://youtu.be/GXFJrkMJrRw"},
           {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", route: "/summer-cup/2/7"}  // , href: "https://youtu.be/jvEdVcos6Ms"}
         ]
-      ] as Array<Array<SolutionsType>>
+      ] as Array<Array<SolutionType>>
     }
   },
   computed: {
