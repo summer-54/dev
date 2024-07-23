@@ -11,6 +11,8 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@vue-youtube/component": "^0.0.6",
+    "@vue-youtube/core": "^0.0.6",
     "axios": "^1.7.2",
     "sffui.vue": "^0.0.2",
     "vatex": "^0.1.0",
