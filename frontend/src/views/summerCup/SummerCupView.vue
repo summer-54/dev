@@ -18,24 +18,25 @@ export default defineComponent({
       ],
       solutions: [
         [
-          {num:  1, href: "https://youtu.be/kSqRWlDEJHo?feature=shared"},
-          {num:  2, href: "https://youtu.be/Enuq2_ftRnk?feature=shared"},
-          {num:  3, href: "https://youtu.be/xd7ybW3XkpQ?feature=shared"},
-          {num:  4, href: "https://youtu.be/8wHtb8fsXvU?feature=shared"},
-          {num:  5, href: "https://youtu.be/r8AFfgb8bvY?feature=shared"},
-          {num:  6, href: "https://youtu.be/f7-pjyDR3OE?feature=shared"},
-          {num:  7, href: "https://youtu.be/kVicb6GQB8o?feature=shared"},
-          {num:  8, href: "https://youtu.be/FI9UPkaPPWc?feature=shared"},
-          {num:  9, href: "https://youtu.be/AqIf9P7YT8k?feature=shared"},
-          {num: 10, href: "https://youtu.be/2Zy77NRHSMk?feature=shared"}
+          {num:  1, href: "https://youtu.be/kSqRWlDEJHo"},
+          {num:  2, href: "https://youtu.be/Enuq2_ftRnk"},
+          {num:  3, href: "https://youtu.be/xd7ybW3XkpQ"},
+          {num:  4, href: "https://youtu.be/8wHtb8fsXvU"},
+          {num:  5, href: "https://youtu.be/r8AFfgb8bvY"},
+          {num:  6, href: "https://youtu.be/f7-pjyDR3OE"},
+          {num:  7, href: "https://youtu.be/kVicb6GQB8o"},
+          {num:  8, href: "https://youtu.be/FI9UPkaPPWc"},
+          {num:  9, href: "https://youtu.be/AqIf9P7YT8k"},
+          {num: 10, href: "https://youtu.be/2Zy77NRHSMk"}
         ],
         [
-          {num: 1, href: "https://youtu.be/mCj1RIXx_qw?feature=shared"},
-          {num: 2, href: "https://youtu.be/gg-MsmrzUaY?feature=shared"},
-          {num: 3, href: "https://youtu.be/eXphcfz4AzI?feature=shared"},
-          {num: 4, href: "https://youtu.be/hMGGmTd5de8?feature=shared"},
-          {num: 5, href: "https://youtu.be/6z9clGg8s7E?feature=shared"},
-          {num: 6, href: "https://youtu.be/GXFJrkMJrRw?feature=shared"}
+          {num:  1, href: "https://youtu.be/mCj1RIXx_qw"},
+          {num:  2, href: "https://youtu.be/gg-MsmrzUaY"},
+          {num:  3, href: "https://youtu.be/eXphcfz4AzI"},
+          {num:  4, href: "https://youtu.be/hMGGmTd5de8"},
+          {num:  5, href: "https://youtu.be/6z9clGg8s7E"},
+          {num:  6, href: "https://youtu.be/GXFJrkMJrRw"},
+          {num:  7, href: "https://youtu.be/jvEdVcos6Ms"}
         ]
       ],
       text: "Один тур оценивается в 90 баллов, общий балл за кубок — сумма баллов за все туры, кроме 2 худших. 30 баллов выставляется за место в виртуальном участии (за 1 место - 30, 2 - 28, 3 - 26, 4 - 24, 5 - 22, 6 - 20, 7 - 19, 8 - 18 и т.д.), но не решившие ни одной задачи не получают баллов за место. Оставшиеся 60 баллов участник получает за задачи. За каждую задачу, сданную до разбора, участник получает $\\frac{60}{n}$ баллов, а после разбора — $\\frac{30}{n}$ баллов, где $n$ - количество задач."
