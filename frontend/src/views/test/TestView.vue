@@ -9,7 +9,9 @@ export default defineComponent({
 </script>
 
 <template>
-<youtube-iframe video-id="jvEdVcos6Ms" />
+  <div>
+    <youtube-iframe video-id="jvEdVcos6Ms" />
+  </div>
 </template>
 
 <style scoped>
