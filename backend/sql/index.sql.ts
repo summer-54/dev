@@ -38,6 +38,9 @@ export interface ContestsTable {
     name: string;
     contestId: number;
     available: ColumnType<boolean, boolean | undefined>;
+    solutionsPublishDatetime?: ColumnType<Date, Date | string>;
+    solutionsVideoId?: string;
+    problemsPdfLink?: string;
 }
 
 export interface ProblemsTable {
@@ -56,6 +59,7 @@ export interface StandingsTable {
     status: number;
     available: ColumnType<boolean, boolean | undefined>;
     datetime: ColumnType<Date, Date | string>;
+    notOfficial: ColumnType<boolean, boolean | undefined>;
 }
 
 export interface Database {

@@ -86,3 +86,11 @@ export async function signOut(token: string) {
 export async function getCodeforcesHandleUserIdMap(): Promise<{[key: string]: number}> {
     return Object.fromEntries((await db.selectFrom("users").select(["id", "codeforcesHandle"]).execute()).map(({id, codeforcesHandle}) => [codeforcesHandle, id]));
 }
+
+export async function getUserById(id: number, select: Array<SelectExpression<Database, "users">> = ["id"]) {
+    return db.selectFrom("users").where("id", '=', id).select(select).executeTakeFirst();
+}
+
+export async function getUsernameById(id: number): Promise<string | undefined> {
+    return (await getUserById(id, ["username"]))?.username;
+}

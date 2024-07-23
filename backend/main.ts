@@ -1,10 +1,11 @@
-import SBackend from "sbackend";
 import "dotenv/config";
+import SBackend from "sbackend";
 import {setupEnv} from "./sql/index.sql.js";
+import {setupGroupStandingsUpdater} from "./codeforces.js";
+import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 import news from "./news.js";
 import users from "./users.js";
-import {setupGroupStandingsUpdater} from "./codeforces.js";
-import {updateGroupStandings} from "./sql/codeforces.sql.js";
+import standings from "./standings.js";
 
 async function main() {
     await setupEnv();
@@ -28,6 +29,7 @@ async function main() {
 
     app.addHandlers(news);
     app.addHandlers(users);
+    app.addHandlers(standings);
 
     app.get("/teapot", (request, response) => {
         response.status(418);

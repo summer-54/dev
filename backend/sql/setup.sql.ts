@@ -37,7 +37,10 @@ export default async function () {
             .addColumn("groupId", "varchar(16)", cb => cb.notNull())
             .addColumn("name", "varchar(512)", cb => cb.notNull())
             .addColumn("contestId", "integer", cb => cb.notNull())
-            .addColumn("available", "boolean", cb => cb.defaultTo(true)).execute();
+            .addColumn("available", "boolean", cb => cb.defaultTo(true))
+            .addColumn("solutionsPublishDatetime", "timestamp")
+            .addColumn("solutionsVideoId", "varchar(64)")
+            .addColumn("problemsPdfLink", "varchar(512)").execute();
     } catch (error) {}
     try {
         await db.schema.createTable("problems")
@@ -55,6 +58,7 @@ export default async function () {
             .addColumn("task", "integer", cb => cb.notNull().references("problems.id"))
             .addColumn("status", "integer", cb => cb.notNull())
             .addColumn("available", "boolean", cb => cb.defaultTo(true))
-            .addColumn("datetime", "timestamp", cb => cb.notNull()).execute();
+            .addColumn("datetime", "timestamp", cb => cb.notNull())
+            .addColumn("notOfficial", "boolean", cb => cb.defaultTo(false)).execute();
     } catch (error) {}
 }
