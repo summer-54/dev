@@ -46,6 +46,7 @@ header {
 
       button {
         width: 100%;
+        font-family: "LXGW WenKai Mono TC", monospace;
       }
     }
   }
