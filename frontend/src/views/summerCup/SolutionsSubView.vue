@@ -9,16 +9,16 @@ export default defineComponent({
     return {
       solutions: [
         [
-          {num:  1, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/1"}, // , href: "https://youtu.be/kSqRWlDEJHo"},
-          {num:  2, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/2"}, // , href: "https://youtu.be/Enuq2_ftRnk"},
-          {num:  3, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/3"}, // , href: "https://youtu.be/xd7ybW3XkpQ"},
-          {num:  4, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/4"}, // , href: "https://youtu.be/8wHtb8fsXvU"},
-          {num:  5, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/5"}, // , href: "https://youtu.be/r8AFfgb8bvY"},
-          {num:  6, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/6"}, // , href: "https://youtu.be/f7-pjyDR3OE"},
-          {num:  7, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/7"}, // , href: "https://youtu.be/kVicb6GQB8o"},
-          {num:  8, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/8"}, // , href: "https://youtu.be/FI9UPkaPPWc"},
-          {num:  9, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/9"}, // , href: "https://youtu.be/AqIf9P7YT8k"},
-          {num: 10, href: undefined, tasks_amount: undefined, date: undefined, route: "/summer-cup/1/solutions/10"}  // , href: "https://youtu.be/2Zy77NRHSMk"}
+          {num:  1, href: undefined, tasks_amount: 11, date: undefined, route: "/summer-cup/1/solutions/1"}, // , href: "https://youtu.be/kSqRWlDEJHo"},
+          {num:  2, href: undefined, tasks_amount:  9, date: undefined, route: "/summer-cup/1/solutions/2"}, // , href: "https://youtu.be/Enuq2_ftRnk"},
+          {num:  3, href: undefined, tasks_amount:  7, date: undefined, route: "/summer-cup/1/solutions/3"}, // , href: "https://youtu.be/xd7ybW3XkpQ"},
+          {num:  4, href: undefined, tasks_amount: 13, date: undefined, route: "/summer-cup/1/solutions/4"}, // , href: "https://youtu.be/8wHtb8fsXvU"},
+          {num:  5, href: undefined, tasks_amount:  9, date: undefined, route: "/summer-cup/1/solutions/5"}, // , href: "https://youtu.be/r8AFfgb8bvY"},
+          {num:  6, href: undefined, tasks_amount: 13, date: undefined, route: "/summer-cup/1/solutions/6"}, // , href: "https://youtu.be/f7-pjyDR3OE"},
+          {num:  7, href: undefined, tasks_amount:  9, date: undefined, route: "/summer-cup/1/solutions/7"}, // , href: "https://youtu.be/kVicb6GQB8o"},
+          {num:  8, href: undefined, tasks_amount: 10, date: undefined, route: "/summer-cup/1/solutions/8"}, // , href: "https://youtu.be/FI9UPkaPPWc"},
+          {num:  9, href: undefined, tasks_amount: 10, date: undefined, route: "/summer-cup/1/solutions/9"}, // , href: "https://youtu.be/AqIf9P7YT8k"},
+          {num: 10, href: undefined, tasks_amount:  7, date: undefined, route: "/summer-cup/1/solutions/10"}  // , href: "https://youtu.be/2Zy77NRHSMk"}
         ],
         [
           {num:  1, href: undefined, tasks_amount: 11, date: "01.06.2024—14.06.2024", route: "/summer-cup/2/solutions/1"}, // , href: "https://youtu.be/mCj1RIXx_qw"},
