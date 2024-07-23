@@ -2,20 +2,18 @@
   <span class="solution_container">
     <template v-for="solution in solutions">
       <template v-if="solution.href">
-        <RouterLink :to="solution.href">
-          <span class="tour">
+        <RouterLink :to="solution.route" class="tour">
             <Subtitle :text="solution.num + ' тур'" />
             <span v-if="solution.date" class="date"><img src="@/assets/clock.svg"> {{ solution.date }}</span>
             <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending }}</span>
-          </span>
         </RouterLink>
       </template>
       <template v-else>
-        <span class="tour">
+        <RouterLink class="tour" :to="solution.route">
           <Subtitle :text="solution.num + ' тур'" />
           <span v-if="solution.date" class="date"><img src="@/assets/clock.svg"> {{ solution.date }}</span>
           <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending }}</span>
-        </span>
+        </RouterLink>
       </template>
     </template>
   </span>
@@ -23,13 +21,22 @@
 
 <script lang="ts">
 import Subtitle from "@/components/Subtitle.vue";
-import {defineComponent} from "vue";
+import {defineComponent, type PropType} from "vue";
+
+export type SolutionType = {
+  num: number,
+  tasks_amount?: number,
+  href?: string,
+  date?: string,
+  solution: string,
+  route: string
+}
 
 export default defineComponent({
   name: "SolutionContainer",
   props: {
     solutions: {
-      type: Array<{num: number, tasks_amount?: number|undefined, href?: string|undefined, date?: string|undefined, solution: string}>,
+      type: Object as PropType<Array<SolutionType>>,
       required: true
     }
   },
@@ -68,6 +75,7 @@ export default defineComponent({
   justify-content: space-evenly;
   padding: 10px 0;
   align-items: center;
+  transition: all .5s;
 
   font-size: 20px;
   font-family: "LXGW WenKai Mono TC", monospace;
@@ -79,6 +87,12 @@ export default defineComponent({
 
   @media (max-width: 530px) {
     font-size: 12px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    border-color: #9297FB;
+    transform: scale(1.4);
   }
 }
 .date {

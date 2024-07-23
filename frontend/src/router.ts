@@ -12,7 +12,17 @@ const router = createRouter({
     {
       path: '/summer-cup',
       name: 'summerCup',
-      component: () => import("./views/summerCup/SummerCupView.vue")
+      component: () => import("./views/summerCup/SummerCupView.vue"),
+      children: [
+        {
+          path: ":year",
+          component: () => import("./views/summerCup/SolutionsSubView.vue")
+        },
+        {
+          path: ":year/:contest",
+          component: () => import("./views/summerCup/ContestSolutionsSubView.vue")
+        }
+      ]
     },
     {
       path: '/olymp',

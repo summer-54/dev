@@ -6,10 +6,11 @@ import Title from "@/components/Title.vue";
 import {VueLatex} from "vatex";
 import Tex from "@/components/ui/tex.vue";
 import SolutionContainer from "./SolutionContainer.vue";
+import Tabs from "@/components/ui/Tabs.vue";
 
 export default defineComponent({
   name: "SummerCupView",
-  components: {Tex, Subtitle, QA_container, Title, VueLatex, SolutionContainer},
+  components: {Tabs, Tex, Subtitle, QA_container, Title, VueLatex, SolutionContainer},
   data() {
     return {
       qa_list: [
@@ -43,9 +44,15 @@ export default defineComponent({
       text: "Один тур оценивается в 90 баллов, общий балл за кубок — сумма баллов за все туры, кроме 2 худших. 30 баллов выставляется за место в виртуальном участии (за 1 место - 30, 2 - 28, 3 - 26, 4 - 24, 5 - 22, 6 - 20, 7 - 19, 8 - 18 и т.д.), но не решившие ни одной задачи не получают баллов за место. Оставшиеся 60 баллов участник получает за задачи. За каждую задачу, сданную до разбора, участник получает $\\frac{60}{n}$ баллов, а после разбора — $\\frac{30}{n}$ баллов, где $n$ - количество задач."
     }
   },
-  mounted: function(){
-    for(let i = 0; i < this.solutions.length; i++){
+  mounted() {
+    if (!("year" in this.route.params)) this.$router.push("/summer-cup/2");
+    for (let i = 0; i < this.solutions.length; i++){
       this.solutions[i].reverse();
+    }
+  },
+  computed: {
+    route() {
+      return Object(this.$router).currentRoute.value;
     }
   }
 })
@@ -57,10 +64,8 @@ export default defineComponent({
     <QA_container :qa_list="qa_list"></QA_container>
     <Subtitle style="text-align: center;" text="Система оценивания"/>
     <tex class="plain_text" :text="text"/>
-    <Subtitle text="II ЛКП"/>
-    <SolutionContainer :solutions="solutions[1]"/>
-    <Subtitle text="I ЛКП"/>
-    <SolutionContainer :solutions="solutions[0]"/>
+    <Tabs :routes="{'I ЛКП': '/summer-cup/1', 'II ЛКП': '/summer-cup/2'}"/>
+    <RouterView/>
   </main>
 </template>
 
