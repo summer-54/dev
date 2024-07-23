@@ -29,7 +29,7 @@ export default defineComponent({
   name: "SolutionContainer",
   props: {
     solutions: {
-      type: Array<{num: number, tasks_amount: number|undefined, href: string|undefined, date: string|undefined, solution: string}>,
+      type: Array<{num: number, tasks_amount?: number|undefined, href?: string|undefined, date?: string|undefined, solution: string}>,
       required: true
     }
   },
