@@ -54,6 +54,10 @@ export default defineComponent({
 </template>
 
 <style scoped>
+button {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
+
 .root {
   display: flex;
   @media (max-width: 768px){
