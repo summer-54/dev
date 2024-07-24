@@ -4,13 +4,16 @@ import Title from "@/components/Title.vue";
 import {me, signOut} from "@/api/users.js";
 import IconButton from "@/components/ui/iconButton.vue";
 import signOutIcon from "@/assets/signout.svg"
+import UserInfo from "@/components/UserInfo.vue";
 
 export default defineComponent({
   name: "DefaultSubView",
   data() {
-    return {signOutIcon}
+    return {
+      signOutIcon
+    }
   },
-  components: {IconButton, Title},
+  components: {UserInfo, IconButton, Title},
   computed: {
     user: () => me.value
   },
@@ -25,17 +28,11 @@ export default defineComponent({
 <template>
   <main>
     <template v-if="user">
-      <Title :text="'Информация о ' + user.username"/>
-      <div class="info">
-        <div>
-          <span>Аккаунт Codeforces: <a :href="`https://codeforces.com/profile/${user.codeforcesHandle}`" target="_blank">{{ user.codeforcesHandle }}</a></span>
-          <span>{{ user.lastName }} {{ user.firstName }}</span>
-        </div>
+      <UserInfo :user="user">
         <div class="button">
           <IconButton :icon="signOutIcon" @click="signOut">Выйти</IconButton>
         </div>
-      </div>
-
+      </UserInfo>
     </template>
     <Title text="Загрузка..." v-else/>
   </main>
@@ -46,29 +43,11 @@ export default defineComponent({
   font-family: "LXGW WenKai Mono TC", monospace;
 }
 
-.info {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 0 20px;
-  flex-wrap: wrap;
-
-  div {
+@media (max-width: 396px) {
+  .button {
     display: flex;
-    flex-direction: column;
-
-    & > * {
-      margin-top: 10px;
-      font-size: 20px;
-    }
-  }
-
-  @media (max-width: 396px) {
-    .button {
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
+    align-items: center;
+    width: 100%;
   }
 }
 </style>

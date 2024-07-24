@@ -14,9 +14,11 @@
     "@vue-youtube/component": "^0.0.6",
     "@vue-youtube/core": "^0.0.6",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
     "sffui.vue": "^0.0.2",
     "vatex": "^0.1.0",
     "vue": "^3.4.21",
+    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {

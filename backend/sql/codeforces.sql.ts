@@ -43,7 +43,7 @@ export type UserStatisticsType = {
 export async function getAllContests(): Promise<Array<ContestType>> {
     let contests = await db.selectFrom("contests")
         .select(["id", "name"])
-        .where("available", '=', true).execute();
+        .where("available", '=', true).orderBy("name").execute();
     let problems = await db.selectFrom("problems")
         .select(["id", "contest", "title", "pdfLink"])
         .where("available", '=', true).execute();

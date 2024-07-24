@@ -1,0 +1,102 @@
+<script lang="ts">
+import {defineComponent, type PropType} from 'vue';
+import {Line} from "vue-chartjs";
+import IconButton from "@/components/ui/iconButton.vue";
+import {type UserType} from "@/api/users";
+import {getUserStatistics} from "@/api/codeforces";
+import Title from "@/components/Title.vue";
+import type {ChartDataset} from "chart.js";
+
+export default defineComponent({
+  name: "UserInfo",
+  components: {Title, IconButton, Line},
+  props: {
+    user: {
+      type: Object as PropType<UserType>,
+      required: true
+    }
+  },
+  data() {
+    return {
+      labels: [] as Array<string>,
+      datasets: [] as Array<ChartDataset>
+    }
+  },
+  methods: {
+    async updateStatistics() {
+      let {perContest, hardTasks} = await getUserStatistics(this.user?.username ?? "");
+      this.datasets = [{
+        data: perContest,
+        label: "per contest",
+        borderColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
+        backgroundColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
+        tension: .5
+      }, {
+        data: hardTasks,
+        label: "hard tasks",
+        borderColor: this.$themeName === "light" ? "#850000" : "#bf0000",
+        backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
+        tension: .5
+      }];
+      this.labels = [];
+      for (let i = 1; i <= perContest.length; i++) this.labels.push(`${i} тур`);
+      console.log(this.datasets, this.labels);
+    }
+  },
+  mounted() {
+    this.updateStatistics();
+  },
+  watch: {
+    user() {
+      this.updateStatistics();
+    },
+    $themeName() {
+      this.updateStatistics();
+    }
+  }
+});
+</script>
+
+<template>
+  <Title :text="'Информация о ' + user.username"/>
+  <div class="info">
+    <div>
+      <span>Аккаунт Codeforces: <a :href="`https://codeforces.com/profile/${user.codeforcesHandle}`" target="_blank">{{ user.codeforcesHandle }}</a></span>
+      <span>{{ user.lastName }} {{ user.firstName }}</span>
+    </div>
+    <slot/>
+  </div>
+  <Line :data="{labels, datasets}"/>
+</template>
+
+<style scoped>
+* {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 20px;
+  flex-wrap: wrap;
+
+  div {
+    display: flex;
+    flex-direction: column;
+
+    & > * {
+      margin-top: 10px;
+      font-size: 20px;
+    }
+  }
+
+  @media (max-width: 396px) {
+    .button {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+  }
+}
+</style>
