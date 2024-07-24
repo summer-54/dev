@@ -137,7 +137,7 @@ export async function getHardTasks(contest: number, maxSolutionsCount: number = 
         ])).execute()).filter(({status}) => status > 0);
     let taskSolutionsCount = new Map<number, number>();
     solutions.forEach(({task}) => taskSolutionsCount.set(task, (taskSolutionsCount.get(task) ?? 0) + 1));
-    return Array.from(taskSolutionsCount.entries()).filter(([_, count]) => count > 0)
+    return Array.from(taskSolutionsCount.entries()).filter(([_, count]) => count > 0 && count <= maxSolutionsCount)
         .map(([task]) => task);
 }
 
