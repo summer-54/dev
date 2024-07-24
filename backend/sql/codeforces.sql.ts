@@ -147,7 +147,7 @@ export async function getUserStatistics(user: number): Promise<UserStatisticsTyp
     return {
         perContest: userResults.map(({problemsDoneCount}) => problemsDoneCount),
         hardTasks: userResults.map(({standings, id}) => standings
-            .filter(({status, taskId}) => status > 0 && hardTasks[id].includes(taskId)).length
+            .filter(({status, taskId}) => status > 0 && hardTasks[id - 1].includes(taskId)).length
         )
     }
 }
