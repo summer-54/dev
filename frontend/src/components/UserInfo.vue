@@ -19,7 +19,7 @@ export default defineComponent({
   data() {
     return {
       labels: [] as Array<string>,
-      datasets: [] as Array<ChartDataset>
+      datasets: [] as Array<ChartDataset<"line">>
     }
   },
   methods: {

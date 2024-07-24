@@ -1,5 +1,5 @@
 <script lang="ts">
-import {defineComponent, type PropType} from 'vue'
+import {defineComponent} from 'vue'
 import {getUserByUsername, type UserType} from "@/api/users";
 import Title from "@/components/Title.vue";
 import IconButton from "@/components/ui/iconButton.vue";
@@ -10,7 +10,7 @@ export default defineComponent({
   components: {UserInfo, IconButton, Title},
   data() {
     return {
-      user: undefined as PropType<UserType | undefined>,
+      user: null as UserType | null,
       pending: true
     }
   },
