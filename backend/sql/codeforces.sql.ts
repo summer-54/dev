@@ -130,11 +130,12 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
 }
 
 export async function getHardTasks(contest: number, maxSolutionsCount: number = 2): Promise<Array<number>> {
-    let solutions = (await db.selectFrom("standings").select(["task", "status"])
+    let solutions = await db.selectFrom("standings").select(["task", "status"])
         .where(({and, eb}) => and([
             eb("available", '=', true),
-            eb("contest", '=', contest)
-        ])).execute()).filter(({status}) => status > 0);
+            eb("contest", '=', contest),
+            eb("status", '>', 0)
+        ])).execute();
     let taskSolutionsCount = new Map<number, number>();
     solutions.forEach(({task}) => taskSolutionsCount.set(task, (taskSolutionsCount.get(task) ?? 0) + 1));
     return Array.from(taskSolutionsCount.entries()).filter(([_, count]) => count > 0 && count <= maxSolutionsCount)
@@ -146,8 +147,8 @@ export async function getUserStatistics(user: number): Promise<UserStatisticsTyp
     let hardTasks = await Promise.all(userResults.map(async ({id}) => await getHardTasks(id)));
     return {
         perContest: userResults.map(({problemsDoneCount}) => problemsDoneCount),
-        hardTasks: userResults.map(({standings, id}) => standings
-            .filter(({status, taskId}) => status > 0 && hardTasks[id - 1].includes(taskId)).length
+        hardTasks: userResults.map(({standings}, index) => standings
+            .filter(({status, taskId}) => status > 0 && hardTasks[index].includes(taskId)).length
         )
     }
 }
