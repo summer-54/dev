@@ -71,9 +71,49 @@ export async function getAllContests(): Promise<Array<ContestType>> {
 
 export async function getFullStandings(): Promise<FullStandingsType> {
     let contests = await getAllContests();
+    let res = {} as {[user: string]: Array<number>};
+    for(let i = 0; i < contests.length; i++){
+        let before_solution = new Map<string, Set<string>>;
+        let after_solution = new Map<string, Set<string>>;
+        let problem_amount = 0;
+        for (const key in contests[i].problems) {
+            problem_amount++;
+        }
+        for(let j = 0; j < contests[i].standings.length; j++){
+            if(contests[i].standings[j].status < 0) continue;
+            if(contests[i].standings[j].datetime <= new Date()){ // SOLUTION POSTED DATE&TIME
+                if(before_solution.get(contests[i].standings[j].username) === undefined){
+                    before_solution.set(contests[i].standings[j].username, new Set<string>());
+                }
+                before_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
+            } else if(contests[i].standings[j].datetime <= new Date()) { // RESULTS POSTED DATE&TIME
+                if(after_solution.get(contests[i].standings[j].username) === undefined){
+                    after_solution.set(contests[i].standings[j].username, new Set<string>());
+                }
+                after_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
+            }
+        }
+        for(const key in before_solution){
+            if(res[key] === undefined){
+                res[key] = [] as Array<number>;
+            }
+            res[key][i] = 60*before_solution.get(key)?.size/problem_amount;
+            if(after_solution.get(key) === undefined) continue;
+            let after_solution_tasks = 0;
+            for(let val in after_solution.get(key)){
+                if(before_solution.get(key)?.has(val)) continue;
+                after_solution_tasks++;
+            }
+            res[key][i] += 30*after_solution_tasks/problem_amount;
+        }
+        for(const key in after_solution){
+            if(before_solution.get(key) !== undefined) continue;
+            res[key][i] = 30*after_solution.get(key)?.size/problem_amount;
+        }
+    }
     return {
         contests: contests.map(({name}) => name),
-        standings: {}
+        standings: res
     };
 }
 
