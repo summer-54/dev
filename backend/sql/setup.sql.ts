@@ -21,6 +21,7 @@ export default async function () {
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("username", "varchar(50)", cb => cb.notNull().unique())
             .addColumn("codeforcesHandle", "varchar(50)", cb => cb.notNull().unique())
+            .addColumn("codeforcesHandleLowerCase", "varchar(50)", cb => cb.notNull().unique())
             .addColumn("firstName", "varchar(50)", cb => cb.notNull())
             .addColumn("lastName", "varchar(50)", cb => cb.notNull())
             .addColumn("passwordHash", "varchar(256)", cb => cb.notNull()).execute();

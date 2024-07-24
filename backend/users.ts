@@ -152,7 +152,7 @@ export default buildHandlers({
                 promises.push(patchUser(id, {username: request.body.username}));
             }
             if (typeof request.body.codeforcesHandle === "string") {
-                promises.push(patchUser(id, {codeforcesHandle: request.body.codeforcesHandle}));
+                promises.push(patchUser(id, {codeforcesHandle: request.body.codeforcesHandle, codeforcesHandleLowerCase: request.body.codeforcesHandle.toLowerCase()}));
             }
             if (typeof request.body.firstName === "string") {
                 promises.push(patchUser(id, {firstName: request.body.firstName}));

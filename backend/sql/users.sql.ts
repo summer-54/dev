@@ -9,6 +9,7 @@ export async function register({username, codeforcesHandle, firstName, lastName,
     await db.insertInto("users").values({
         username,
         codeforcesHandle,
+        codeforcesHandleLowerCase: codeforcesHandle.toLowerCase(),
         firstName,
         lastName,
         passwordHash
@@ -52,7 +53,7 @@ export async function isUniqueUsername(username: string): Promise<boolean> {
 }
 
 export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promise<boolean> {
-    return !Boolean(await db.selectFrom("users").where("codeforcesHandle", '=', codeforcesHandle).select("id").executeTakeFirst());
+    return !Boolean(await db.selectFrom("users").where("codeforcesHandleLowerCase", '=', codeforcesHandle.toLowerCase()).select("id").executeTakeFirst());
 }
 
 export async function getUserByUsername(username: string, select: Array<SelectExpression<Database, "users">> = ["username", "codeforcesHandle", "firstName", "lastName"]) {
@@ -84,7 +85,7 @@ export async function signOut(token: string) {
 }
 
 export async function getCodeforcesHandleUserIdMap(): Promise<{[key: string]: number}> {
-    return Object.fromEntries((await db.selectFrom("users").select(["id", "codeforcesHandle"]).execute()).map(({id, codeforcesHandle}) => [codeforcesHandle, id]));
+    return Object.fromEntries((await db.selectFrom("users").select(["id", "codeforcesHandleLowerCase"]).execute()).map(({id, codeforcesHandleLowerCase}) => [codeforcesHandleLowerCase, id]));
 }
 
 export async function getUserById(id: number, select: Array<SelectExpression<Database, "users">> = ["id"]) {

@@ -21,6 +21,7 @@ export interface UsersTable {
     id: Generated<number>;
     username: string;
     codeforcesHandle: string;
+    codeforcesHandleLowerCase: string;
     firstName: string;
     lastName: string;
     passwordHash: string;
