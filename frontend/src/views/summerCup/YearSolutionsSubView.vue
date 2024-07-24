@@ -54,18 +54,32 @@ export default defineComponent({
 </template>
 
 <style scoped>
+button {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
+
 .root {
   display: flex;
+  @media (max-width: 768px){
+    flex-direction: column;
+  }
   margin: 0 40px;
 }
 
 nav {
   display: flex;
   flex-direction: column;
+  margin-right: 20px;
+  @media (max-width: 768px){
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
   padding: 10px;
   border: solid 2px #9297FB;
   border-radius: 20px;
   gap: 20px;
-  margin-right: 20px;
 }
 </style>
