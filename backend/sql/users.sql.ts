@@ -94,3 +94,7 @@ export async function getUserById(id: number, select: Array<SelectExpression<Dat
 export async function getUsernameById(id: number): Promise<string | undefined> {
     return (await getUserById(id, ["username"]))?.username;
 }
+
+export async function getUserIdByUsername(username: string): Promise<number | undefined> {
+    return (await getUserByUsername(username, ["id"]))?.id;
+}
