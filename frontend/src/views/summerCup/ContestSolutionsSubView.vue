@@ -46,6 +46,11 @@ export default defineComponent({
   </article>
 </template>
 
-<style scoped>
-
+<style>
+#vue-youtube-1 {
+  width: calc(100vw - 190px);
+  @media (max-width: 768px) {
+    width: 90vw;
+  }
+}
 </style>
