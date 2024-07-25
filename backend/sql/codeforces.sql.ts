@@ -75,10 +75,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
     for(let i = 0; i < contests.length; i++){
         let before_solution = new Map<string, Set<string>>;
         let after_solution = new Map<string, Set<string>>;
-        let problem_amount = 0;
-        for (const key in contests[i].problems) {
-            problem_amount++;
-        }
+        let problem_amount = Object.keys(contests[i].problems).length;
         for(let j = 0; j < contests[i].standings.length; j++){
             if(contests[i].standings[j].status < 0) continue;
             if(contests[i].standings[j].datetime <= new Date()){ // SOLUTION POSTED DATE&TIME
