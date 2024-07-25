@@ -67,7 +67,7 @@ export default defineComponent({
     <slot/>
   </div>
   <div class="graph">
-    <Line :data="{labels, datasets}"/>
+    <Line :data="{labels, datasets}" :options="{scales: {y: {min: 0}}}" />
   </div>
 </template>
 
