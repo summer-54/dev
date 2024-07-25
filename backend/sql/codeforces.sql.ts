@@ -73,26 +73,29 @@ export async function getFullStandings(): Promise<FullStandingsType> {
     let contests = await getAllContests();
     let res = {} as {[user: string]: Array<number>};
     for(let i = 0; i < contests.length; i++){
-        let before_solution = new Map<string, Set<string>>;
-        let after_solution = new Map<string, Set<string>>;
+        let before_solution = new Map<string, Set<string>>();
+        let after_solution = new Map();
         let problem_amount = Object.keys(contests[i].problems).length;
         for(let j = 0; j < contests[i].standings.length; j++){
             if(contests[i].standings[j].status < 0) continue;
-            if(contests[i].standings[j].datetime <= new Date()){ // SOLUTION POSTED DATE&TIME
+            if(new Date(contests[i].standings[j].datetime) <= new Date()){ // SOLUTION POSTED DATE&TIME
                 if(before_solution.get(contests[i].standings[j].username) === undefined){
-                    before_solution.set(contests[i].standings[j].username, new Set<string>());
+                    before_solution.set(contests[i].standings[j].username, new Set());
                 }
+                console.log(`Added ${contests[i].standings[j].task} to user ${contests[i].standings[j].username} (before)`);
                 before_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
-            } else if(contests[i].standings[j].datetime <= new Date()) { // RESULTS POSTED DATE&TIME
+            } else if(new Date(contests[i].standings[j].datetime) <= new Date()) { // RESULTS POSTED DATE&TIME
                 if(after_solution.get(contests[i].standings[j].username) === undefined){
-                    after_solution.set(contests[i].standings[j].username, new Set<string>());
+                    after_solution.set(contests[i].standings[j].username, new Set());
                 }
+                console.log(`Added ${contests[i].standings[j].task} to user ${contests[i].standings[j].username} (after)`);
                 after_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
             }
         }
-        for(const key in before_solution){
+        for(const key of Object.keys(before_solution)){
+            console.log(`Calculating scores ${key}`);
             if(res[key] === undefined){
-                res[key] = [] as Array<number>;
+                res[key] = [];
             }
             res[key][i] = 60*(before_solution.get(key)?.size ?? 0)/problem_amount;
             if(after_solution.get(key) === undefined) continue;
