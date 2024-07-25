@@ -53,6 +53,11 @@ export default defineComponent({
     $themeName() {
       this.updateStatistics();
     }
+  },
+  computed: {
+    width(){
+      return window.innerWidth/2;
+    }
   }
 });
 </script>
@@ -66,7 +71,9 @@ export default defineComponent({
     </div>
     <slot/>
   </div>
-  <Line :data="{labels, datasets}"/>
+  <div class="graph">
+    <Line :width="width" :data="{labels, datasets}"/>
+  </div>
 </template>
 
 <style scoped>
@@ -98,5 +105,11 @@ export default defineComponent({
       width: 100%;
     }
   }
+}
+
+.graph {
+  max-height: 50vh;
+  display: flex;
+  justify-content: space-around;
 }
 </style>
