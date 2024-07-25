@@ -94,7 +94,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
             if(res[key] === undefined){
                 res[key] = [] as Array<number>;
             }
-            res[key][i] = 60*before_solution.get(key)?.size/problem_amount;
+            res[key][i] = 60*(before_solution.get(key)?.size ?? 0)/problem_amount;
             if(after_solution.get(key) === undefined) continue;
             let after_solution_tasks = 0;
             for(let val in after_solution.get(key)){
@@ -105,7 +105,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
         }
         for(const key in after_solution){
             if(before_solution.get(key) !== undefined) continue;
-            res[key][i] = 30*after_solution.get(key)?.size/problem_amount;
+            res[key][i] = 30*(after_solution.get(key)?.size ?? 0)/problem_amount;
         }
     }
     return {
