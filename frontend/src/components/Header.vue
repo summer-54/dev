@@ -4,7 +4,7 @@
     <nav>
       <NavButton to="/" :icon="homeIcon">Главная</NavButton>
       <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
-      <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
+      <NavButton id="summer-cup" to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
       <NavButton alt="account" to="/me" :icon="accountIcon" noText/>
       <IconButton alt="changeTheme" :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
     </nav>
@@ -99,7 +99,9 @@ header {
     display: flex;
     align-items: center;
     gap: 10px;
-
+    #summer-cup{
+      margin-right: 10px;
+    }
     @media (max-width: 500px) {
       width: 100%;
       justify-content: space-evenly;
