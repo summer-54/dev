@@ -27,13 +27,13 @@ export default defineComponent({
       let {perContest, hardTasks} = await getUserStatistics(this.user?.username ?? "");
       this.datasets = [{
         data: perContest,
-        label: "per contest",
+        label: "Решенные задачи",
         borderColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
         backgroundColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
         tension: .5
       }, {
         data: hardTasks,
-        label: "hard tasks",
+        label: "Сложные задачи",
         borderColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         tension: .5
