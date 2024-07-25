@@ -77,7 +77,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
         let after_solution = new Map();
         let problem_amount = Object.keys(contests[i].problems).length;
         for(let j = 0; j < contests[i].standings.length; j++){
-            if(contests[i].standings[j].status < 0) continue;
+            if(contests[i].standings[j].status <= 0) continue;
             if(new Date(contests[i].standings[j].datetime) <= new Date()){ // SOLUTION POSTED DATE&TIME
                 if(before_solution.get(contests[i].standings[j].username) === undefined){
                     before_solution.set(contests[i].standings[j].username, new Set());
