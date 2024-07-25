@@ -20,7 +20,7 @@ export async function getStandingsRow(contest: number, user: number, task: numbe
         eb("user", '=', user),
         eb("task", '=', task)
     ])).select(["id", "status"]).executeTakeFirst();
-    return [row?.id ?? 0, row?.status ?? 0];
+    return [row?.id ?? 0, row ? row.status : 0];
 }
 
 export async function createContestStandingsRow(contest: number, user: number, task: number, status: number, notOfficial: boolean): Promise<void> {
@@ -29,6 +29,7 @@ export async function createContestStandingsRow(contest: number, user: number, t
 
 export async function updateContestStandingsRow(contest: number, user: number, task: number, status: number, notOfficial: boolean): Promise<void> {
     let [id, oldStatus] = await getStandingsRow(contest, user, task);
+    console.log(contest, user, task, id, status, oldStatus);
     if (id <= 0) return createContestStandingsRow(contest, user, task, status, notOfficial);
     if (oldStatus === status) return;
     await db.updateTable("standings").set({status, notOfficial, datetime: new Date()}).where("id", '=', id).execute();
