@@ -1,6 +1,6 @@
 <script lang="ts">
-import {defineComponent} from 'vue'
-import {getUserByUsername, type UserType} from "@/api/users";
+import {defineComponent, watch} from 'vue'
+import {getMe, getUserByUsername, me, type UserType} from "@/api/users";
 import Title from "@/components/Title.vue";
 import IconButton from "@/components/ui/iconButton.vue";
 import UserInfo from "@/components/UserInfo.vue";
@@ -24,10 +24,21 @@ export default defineComponent({
       this.pending = true;
       this.user = await getUserByUsername(this.route.params.username);
       this.pending = false;
+    },
+    ifMe() {
+      if (me.value && this.user && me.value?.username === this.user?.username) this.$router.push("/me");
     }
   },
   mounted() {
+    this.ifMe();
+    getMe().then(user => me.value = user);
     this.getUser();
+    watch(me, () => this.ifMe());
+  },
+  watch: {
+    user() {
+      this.ifMe();
+    }
   }
 })
 </script>
