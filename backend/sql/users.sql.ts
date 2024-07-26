@@ -99,3 +99,7 @@ export async function getUsernameById(id: number): Promise<string | undefined> {
 export async function getUserIdByUsername(username: string): Promise<number | undefined> {
     return (await getUserByUsername(username, ["id"]))?.id;
 }
+
+export async function getAllUsers(): Promise<Array<string>> {
+    return (await db.selectFrom("users").select("username").execute()).map(({username}) => username);
+}

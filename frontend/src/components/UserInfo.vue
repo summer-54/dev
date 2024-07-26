@@ -77,10 +77,10 @@ export default defineComponent({
     </div>
     <div class="charts">
       <div class="chart">
-        <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0, max: 100}}}" />
+        <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0, max: 100}}}"/>
       </div>
       <div class="chart">
-        <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0}}}" />
+        <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0}}}"/>
       </div>
     </div>
   </main>
@@ -125,6 +125,8 @@ export default defineComponent({
       width: 50%;
 
       canvas {
+        position: relative;
+        height: 100%;
         width: 100%;
       }
     }

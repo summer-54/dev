@@ -12,6 +12,7 @@ import {
     signIn,
     signOut
 } from "./sql/users.sql.js";
+import {searchUsers} from "./sql/search.sql.js";
 
 export default buildHandlers({
     post: {
@@ -126,6 +127,14 @@ export default buildHandlers({
             }
             if (await isUniqueCodeforcesHandle(request.params.codeforcesHandle)) response.end("1");
             else response.end("0");
+        },
+        async "/search/:username"(request, response) {
+            if (typeof request.params.username !== "string") {
+                response.status(400);
+                response.end();
+                return;
+            }
+            response.end(await searchUsers(request.params.username));
         }
     },
     patch: {
