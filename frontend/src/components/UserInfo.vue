@@ -19,14 +19,14 @@ export default defineComponent({
   data() {
     return {
       labels: [] as Array<string>,
-      datasets: [] as Array<ChartDataset<"line">>,
-      datasets2: [] as Array<ChartDataset<"line">>
+      tasksDatasets: [] as Array<ChartDataset<"line">>,
+      percentsDatasets: [] as Array<ChartDataset<"line">>
     }
   },
   methods: {
     async updateStatistics() {
       let {perContest, hardTasks, percent} = await getUserStatistics(this.user?.username ?? "");
-      this.datasets = [{
+      this.tasksDatasets = [{
         data: perContest,
         label: "Решенные задачи",
         borderColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
@@ -39,16 +39,16 @@ export default defineComponent({
         backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         tension: .5
       }];
-      this.datasets2 = [{
+      this.percentsDatasets = [{
         data: percent,
         label: "Процент решенных задач",
-        borderColor: this.$themeName === "light" ? "#850000" : "#bf0000",
-        backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
+        borderColor: this.$themeName === "light" ? "#001285" : "#0721c8",
+        backgroundColor: this.$themeName === "light" ? "#001285" : "#0721c8",
         tension: .5
       }]
       this.labels = [];
       for (let i = 1; i <= perContest.length; i++) this.labels.push(`${i} тур`);
-      console.log(this.datasets, this.labels);
+      console.log(this.tasksDatasets, this.labels);
     }
   },
   mounted() {
@@ -75,11 +75,13 @@ export default defineComponent({
       </div>
       <slot/>
     </div>
-    <div class="graph">
-      <Line :data="{labels, datasets}" :options="{scales: {y: {min: 0}}}" />
-    </div>
-    <div class="graph">
-      <Line :data="{labels, datasets: datasets2}" :options="{scales: {y: {min: 0, max: 100}}}" />
+    <div class="charts">
+      <div class="chart">
+        <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0, max: 100}}}" />
+      </div>
+      <div class="chart">
+        <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0}}}" />
+      </div>
     </div>
   </main>
 </template>
@@ -115,9 +117,17 @@ export default defineComponent({
   }
 }
 
-.graph {
-  max-height: 50vh;
-  display: flex;
-  justify-content: space-around;
+@media (min-width: 1000px) {
+  .charts {
+    display: flex;
+
+    .chart {
+      width: 50%;
+
+      canvas {
+        width: 100%;
+      }
+    }
+  }
 }
 </style>
