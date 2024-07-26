@@ -3,15 +3,29 @@ import {defineComponent} from "vue";
 import News from "./News.vue";
 import {getNews, type NewsType} from "@/api/news.js";
 import Title from "@/components/Title.vue";
+// @ts-ignore
+import SuiInput from "sffui.vue/suiInput.vue";
+// @ts-ignore
+import SuiButton from "sffui.vue/suiButton.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {News, Title},
+  components: {News, Title, SuiInput, SuiButton},
   data() {
     return {
       news_count: 0,
       news_cur: [] as NewsType,
-      news_amount: 0
+      news_amount: 0,
+      searchText: ""
+    }
+  },
+  methods: {
+    updateSearch(event: Event){
+      // @ts-ignore
+      this.searchText = event?.target?.value
+    },
+    search(){
+      this.$router.push(`/search/${this.searchText}`);
     }
   },
   mounted(){
@@ -44,6 +58,10 @@ export default defineComponent({
 
 <template>
   <main>
+    <div class="search">
+      <SuiInput :value="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" />
+      <SuiButton @click="search"><img src="@/assets/search.svg"></SuiButton>
+    </div>
     <Title text="Новости" />
     <span class="container">
       <News v-for="{id, title, description, img} in news_cur" :src="img" :title="title" :comment="description" :page="'/news/'+id" />
@@ -53,6 +71,9 @@ export default defineComponent({
 </template>
 
 <style scoped>
+* {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
 .container {
   margin-left: 20px;
   margin-right: 20px;
@@ -65,5 +86,12 @@ export default defineComponent({
 .observer {
   display: block;
   height: 30px;
+}
+.search {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px;
+  padding-top: 20px;
+  gap: 20px;
 }
 </style>
