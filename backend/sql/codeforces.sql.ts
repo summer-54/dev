@@ -32,12 +32,14 @@ export type UserResultsContestType = {
         datetime: Date,
         notOfficial: boolean
     }>,
-    problemsDoneCount: number
+    problemsDoneCount: number,
+    problemsPercentCount: number
 }
 
 export type UserStatisticsType = {
     perContest: Array<number>,
-    hardTasks: Array<number>
+    hardTasks: Array<number>,
+    percent: Array<number>
 }
 
 export async function getAllContests(): Promise<Array<ContestType>> {
@@ -177,16 +179,17 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
             solved.add(j.task);
         }
         res[i].problemsDoneCount = solved.size;
+        res[i].problemsPercentCount = solved.size*100 / Object.keys(res[i].problems).length;
     }
     return res;
-    return contests.map(({id, name, problems, standings}) => ({
-        id, name, problems,
-        standings: standings.filter(({userId}) => userId === user)
-            .map(({task, taskId, status, datetime, notOfficial}) => ({
-                task, taskId, status, datetime, notOfficial
-            })),
-        problemsDoneCount: standings.filter(({userId, status}) => userId === user && status > 0).length
-    }));
+    // return contests.map(({id, name, problems, standings}) => ({
+    //     id, name, problems,
+    //     standings: standings.filter(({userId}) => userId === user)
+    //         .map(({task, taskId, status, datetime, notOfficial}) => ({
+    //             task, taskId, status, datetime, notOfficial
+    //         })),
+    //     problemsDoneCount: standings.filter(({userId, status}) => userId === user && status > 0).length
+    // }));
 }
 
 export async function getHardTasks(contest: number, maxSolutionsCount: number = 2): Promise<Array<number>> {
@@ -209,6 +212,7 @@ export async function getUserStatistics(user: number): Promise<UserStatisticsTyp
         perContest: userResults.map(({problemsDoneCount}) => problemsDoneCount),
         hardTasks: userResults.map(({standings}, index) => standings
             .filter(({status, taskId}) => status > 0 && hardTasks[index].includes(taskId)).length
-        )
+        ),
+        percent: userResults.map(({problemsPercentCount}) => problemsPercentCount)
     }
 }

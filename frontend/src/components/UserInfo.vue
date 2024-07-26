@@ -19,12 +19,13 @@ export default defineComponent({
   data() {
     return {
       labels: [] as Array<string>,
-      datasets: [] as Array<ChartDataset<"line">>
+      datasets: [] as Array<ChartDataset<"line">>,
+      datasets2: [] as Array<ChartDataset<"line">>
     }
   },
   methods: {
     async updateStatistics() {
-      let {perContest, hardTasks} = await getUserStatistics(this.user?.username ?? "");
+      let {perContest, hardTasks, percent} = await getUserStatistics(this.user?.username ?? "");
       this.datasets = [{
         data: perContest,
         label: "Решенные задачи",
@@ -38,6 +39,13 @@ export default defineComponent({
         backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         tension: .5
       }];
+      this.datasets2 = [{
+        data: percent,
+        label: "Процент решенных задач",
+        borderColor: this.$themeName === "light" ? "#850000" : "#bf0000",
+        backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
+        tension: .5
+      }]
       this.labels = [];
       for (let i = 1; i <= perContest.length; i++) this.labels.push(`${i} тур`);
       console.log(this.datasets, this.labels);
@@ -68,6 +76,9 @@ export default defineComponent({
   </div>
   <div class="graph">
     <Line :data="{labels, datasets}" :options="{scales: {y: {min: 0}}}" />
+  </div>
+  <div class="graph">
+    <Line :data="{labels, datasets: datasets2}" :options="{scales: {y: {min: 0, max: 100}}}" />
   </div>
 </template>
 
