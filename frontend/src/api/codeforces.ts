@@ -23,7 +23,8 @@ export type FullStandingsType = {
 
 export type UserStatisticsType = {
     perContest: Array<number>,
-    hardTasks: Array<number>
+    hardTasks: Array<number>,
+    percent: Array<number>
 }
 
 export async function getAllContests(): Promise<Array<ContestType>> {

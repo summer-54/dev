@@ -33,9 +33,9 @@ export default defineComponent({
 </script>
 
 <template>
-  <template v-if="user">
+  <main v-if="user">
     <UserInfo :user="user"/>
-  </template>
+  </main>
   <Title text="Загрузка..." v-else-if="pending"/>
   <Title :text="`Пользователь ${route.params.username} не существует`" style="color: red" v-else/>
 </template>
