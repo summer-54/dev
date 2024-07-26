@@ -39,6 +39,13 @@ export default defineComponent({
 <style scoped>
 button {
   cursor: pointer;
+  position: relative;
+
+  @media (hover: hover) {
+    &:hover {
+      z-index: 100;
+    }
+  }
 }
 
 div {
