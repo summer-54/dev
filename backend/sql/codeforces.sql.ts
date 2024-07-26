@@ -94,7 +94,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
                 after_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
             }
         }
-        for(const key of Object.keys(before_solution)){
+        for(const key of Array.from(before_solution.keys())){
             console.log(`Calculating scores ${key}`);
             if(res[key] === undefined){
                 res[key] = [];
@@ -108,7 +108,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
             }
             res[key][i] += 30*after_solution_tasks/problem_amount;
         }
-        for(const key in after_solution){
+        for(const key in Array.from(after_solution.keys())){
             if(before_solution.get(key) !== undefined) continue;
             res[key][i] = 30*(after_solution.get(key)?.size ?? 0)/problem_amount;
         }
