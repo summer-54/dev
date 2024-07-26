@@ -161,6 +161,7 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
     let contests = await getAllContests();
     let res = [] as Array<UserResultsContestType>;
     for(let i = 0; i < contests.length; i++){
+        res.push({} as UserResultsContestType);
         let cur = contests[i];
         res[i].id = cur.id; 
         res[i].name = cur.name;
@@ -177,14 +178,14 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
         res[i].problemsDoneCount = solved.size;
     }
     return res;
-    // return contests.map(({id, name, problems, standings}) => ({
-    //     id, name, problems,
-    //     standings: standings.filter(({userId}) => userId === user)
-    //         .map(({task, taskId, status, datetime, notOfficial}) => ({
-    //             task, taskId, status, datetime, notOfficial
-    //         })),
-    //     problemsDoneCount: standings.filter(({userId, status}) => userId === user && status > 0).length
-    // }));
+    return contests.map(({id, name, problems, standings}) => ({
+        id, name, problems,
+        standings: standings.filter(({userId}) => userId === user)
+            .map(({task, taskId, status, datetime, notOfficial}) => ({
+                task, taskId, status, datetime, notOfficial
+            })),
+        problemsDoneCount: standings.filter(({userId, status}) => userId === user && status > 0).length
+    }));
 }
 
 export async function getHardTasks(contest: number, maxSolutionsCount: number = 2): Promise<Array<number>> {
