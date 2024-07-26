@@ -66,20 +66,22 @@ export default defineComponent({
 </script>
 
 <template>
-  <Title :text="'Информация о ' + user.username"/>
-  <div class="info">
-    <div>
-      <span>Аккаунт Codeforces: <a :href="`https://codeforces.com/profile/${user.codeforcesHandle}`" target="_blank">{{ user.codeforcesHandle }}</a></span>
-      <span>{{ user.lastName }} {{ user.firstName }}</span>
+  <main>
+    <Title :text="'Информация о ' + user.username"/>
+    <div class="info">
+      <div>
+        <span>Аккаунт Codeforces: <a :href="`https://codeforces.com/profile/${user.codeforcesHandle}`" target="_blank">{{ user.codeforcesHandle }}</a></span>
+        <span>{{ user.lastName }} {{ user.firstName }}</span>
+      </div>
+      <slot/>
     </div>
-    <slot/>
-  </div>
-  <div class="graph">
-    <Line :data="{labels, datasets}" :options="{scales: {y: {min: 0}}}" />
-  </div>
-  <div class="graph">
-    <Line :data="{labels, datasets: datasets2}" :options="{scales: {y: {min: 0, max: 100}}}" />
-  </div>
+    <div class="graph">
+      <Line :data="{labels, datasets}" :options="{scales: {y: {min: 0}}}" />
+    </div>
+    <div class="graph">
+      <Line :data="{labels, datasets: datasets2}" :options="{scales: {y: {min: 0, max: 100}}}" />
+    </div>
+  </main>
 </template>
 
 <style scoped>
