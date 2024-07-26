@@ -27,7 +27,8 @@ export default defineComponent({
           {num:  4, href: undefined, tasks_amount: 11, date: "21.06.2024—06.07.2024", route: "/summer-cup/2/solutions/4"}, // , href: "https://youtu.be/hMGGmTd5de8"},
           {num:  5, href: undefined, tasks_amount:  9, date: "26.06.2024—19.07.2024", route: "/summer-cup/2/solutions/5"}, // , href: "https://youtu.be/6z9clGg8s7E"},
           {num:  6, href: undefined, tasks_amount:  9, date: "06.07.2024—19.07.2024", route: "/summer-cup/2/solutions/6"}, // , href: "https://youtu.be/GXFJrkMJrRw"},
-          {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", route: "/summer-cup/2/solutions/7"}  // , href: "https://youtu.be/jvEdVcos6Ms"}
+          {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", route: "/summer-cup/2/solutions/7"},  // , href: "https://youtu.be/jvEdVcos6Ms"}
+          {num:  8, href: undefined, tasks_amount: 11, date: "21.07.2024—02.08.2024", route: "/summer-cup/2/solutions/8"}
         ]
       ] as Array<Array<SolutionType>>
     }

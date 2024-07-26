@@ -27,7 +27,8 @@ export default defineComponent({
           {num:  4, href: undefined, tasks_amount: 11, date: "21.06.2024—06.07.2024", solution: "hMGGmTd5de8"},
           {num:  5, href: undefined, tasks_amount:  9, date: "26.06.2024—19.07.2024", solution: "6z9clGg8s7E"},
           {num:  6, href: undefined, tasks_amount:  9, date: "06.07.2024—19.07.2024", solution: "GXFJrkMJrRw"},
-          {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", solution: "jvEdVcos6Ms"}
+          {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", solution: "jvEdVcos6Ms"},
+          {num:  8, href: undefined, tasks_amount: 11, date: "21.07.2024—02.08.2024", solution: "Zx9LE6WFeaY"}
         ]
       ]
     }
