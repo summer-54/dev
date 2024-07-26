@@ -173,6 +173,7 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
         let solved = new Set<string>();
         for(let j of res[i].standings){
             // TODO: Check if submission was before results
+            if(j.status <= 0) continue;
             solved.add(j.task);
         }
         res[i].problemsDoneCount = solved.size;
