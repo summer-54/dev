@@ -94,3 +94,9 @@ export async function getUserByUsername(username: string) {
     if (response.status === 200) return response.data;
     return null;
 }
+
+export async function searchUser(searchString: string) {
+    let response = await axios.get<Array<string>>(`${SERVER_URL}/search/${searchString}`);
+    if (response.status === 200) return response.data;
+    return null;
+}
