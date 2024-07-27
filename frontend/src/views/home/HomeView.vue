@@ -9,41 +9,18 @@ import SuiInput from "sffui.vue/suiInput.vue";
 import SuiButton from "sffui.vue/suiButton.vue";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 import searchIcon from "@/assets/search.svg"
-import {searchUser, type SearchUserType} from "@/api/users";
-import focus from "@/directives/focus";
+import UsersSearch from "@/views/home/UsersSearch.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {ThemeInvertSvg, News, Title, SuiInput, SuiButton},
+  components: {UsersSearch, ThemeInvertSvg, News, Title, SuiInput, SuiButton},
   data() {
     return {
       news_count: 0,
       news_cur: [] as NewsType,
       news_amount: 0,
-      searchText: "",
       searching: false,
-      foundUsers: [] as Array<SearchUserType & {text: string}>,
-      selectedFoundUser: -1,
       searchIcon
-    }
-  },
-  directives: {focus},
-  methods: {
-    async updateSearch() {
-      if (this.searchText === "") return this.searching = false;
-      let users = await searchUser(this.searchText);
-      if (users) this.foundUsers = users.map(user => ({
-        ...user,
-        text: user.minStr !== "username" ? `${user.username} (${user[user.minStr]})` : user.username
-      }));
-    },
-    selectUser(event: KeyboardEvent) {
-      if (event.key === "ArrowUp") {
-        this.selectedFoundUser--;
-      }
-      if (event.key === "ArrowDown") {
-        this.selectedFoundUser++;
-      }
     }
   },
   mounted(){
@@ -83,19 +60,8 @@ export default defineComponent({
       </span>
       <span class="observer" ref="observer"></span>
     </div>
-    <SuiButton @click="searching = !searching" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
-    <Transition name="searchOpen">
-      <div class="search" v-if="searching" @keydown="selectUser">
-        <SuiInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
-        <div>
-          <TransitionGroup name="foundUsers">
-            <RouterLink v-for="(user, index) in foundUsers" :key="user.username" :to="`/users/${user.username}`">
-              <SuiButton @click="$router.push(`/users/${user.username}`)" v-focus="selectedFoundUser === index">{{user.text}}</SuiButton>
-            </RouterLink>
-          </TransitionGroup>
-        </div>
-      </div>
-    </Transition>
+    <SuiButton @click="searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
+    <UsersSearch v-model:searching="searching"/>
   </main>
 </template>
 
@@ -108,6 +74,11 @@ main {
   display: flex;
   align-items: flex-start;
   overflow: hidden;
+  
+  @media (max-width: 764px) {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
 
   div:nth-child(1) {
     flex-grow: 1;
@@ -134,45 +105,5 @@ main {
 .observer {
   display: block;
   height: 30px;
-}
-
-.search {
-  padding-right: 20px;
-  padding-top: 20px;
-  flex-direction: column;
-
-  div {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    gap: 20px;
-    align-items: flex-end;
-  }
-}
-
-.searchOpen-enter-active, .searchOpen-leave-active {
-  transition: all .5s;
-}
-
-.searchOpen-enter-from, .searchOpen-leave-to {
-  transform: translate(1000px);
-}
-
-.foundUsers-move, /* apply transition to moving elements */
-.foundUsers-enter-active,
-.foundUsers-leave-active {
-  transition: all 0.5s ease;
-}
-
-.foundUsers-enter-from,
-.foundUsers-leave-to {
-  opacity: 0;
-  transform: translateX(30px);
-}
-
-/* ensure leaving items are taken out of layout flow so that moving
-   animations can be calculated correctly. */
-.foundUsers-leave-active {
-  position: absolute;
 }
 </style>
