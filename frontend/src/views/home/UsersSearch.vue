@@ -62,6 +62,10 @@ export default defineComponent({
 </template>
 
 <style scoped>
+* {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
+
 .search {
   padding-right: 20px;
   padding-top: 20px;
