@@ -60,7 +60,7 @@ export default defineComponent({
       </span>
       <span class="observer" ref="observer"></span>
     </div>
-    <SuiButton @click="searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
+    <SuiButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
     <UsersSearch v-model:searching="searching"/>
   </main>
 </template>
@@ -86,7 +86,7 @@ main {
   }
 
   > button {
-    position: absolute;
+    position: fixed;
     right: 20px;
     margin-top: 20px;
   }

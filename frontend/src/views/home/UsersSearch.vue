@@ -42,13 +42,16 @@ export default defineComponent({
         this.selectedFoundUser++;
       }
     }
-  }
+  },
+  mounted() {
+      document.body.addEventListener("click", () => this.$emit("update:searching", false));
+  },
 })
 </script>
 
 <template>
   <Transition name="searchOpen">
-    <div class="search" v-if="searching" @keydown="selectUser">
+    <div class="search" v-if="searching" @keydown="selectUser" @click="$event.stopPropagation()">
       <SuiInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
       <div>
         <TransitionGroup name="foundUsers">
@@ -67,9 +70,9 @@ export default defineComponent({
 }
 
 .search {
-  padding-right: 20px;
-  padding-top: 20px;
+  padding: 20px 20px 20px 0;
   flex-direction: column;
+
 
   @media (max-width: 764px) {
     padding-right: 0;
