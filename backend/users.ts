@@ -134,7 +134,7 @@ export default buildHandlers({
                 response.end();
                 return;
             }
-            response.end((await searchUsers(request.params.username)).map(([str]) => str));
+            response.end(await searchUsers(request.params.username));
         }
     },
     patch: {

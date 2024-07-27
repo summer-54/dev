@@ -2,6 +2,19 @@ import axios from "axios";
 import {SERVER_URL} from "@/api/index.js";
 import {ref} from "vue";
 
+export type SearchUserType = {
+    username: string,
+    codeforcesHandle: string,
+    firstName: string,
+    lastName: string,
+    usernameLength: number,
+    codeforcesHandleLength: number,
+    firstNameLength: number,
+    lastNameLength: number,
+    min: number,
+    minStr: "username" | "codeforcesHandle" | "firstName" | "lastName"
+}
+
 export let me = ref<UserType | null>(null);
 
 export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, password: string}) {
@@ -96,7 +109,7 @@ export async function getUserByUsername(username: string) {
 }
 
 export async function searchUser(searchString: string) {
-    let response = await axios.get<Array<string>>(`${SERVER_URL}/search/${searchString}`);
+    let response = await axios.get<Array<SearchUserType>>(`${SERVER_URL}/search/${searchString}`);
     if (response.status === 200) return response.data;
     return null;
 }

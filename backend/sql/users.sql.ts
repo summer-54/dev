@@ -100,6 +100,6 @@ export async function getUserIdByUsername(username: string): Promise<number | un
     return (await getUserByUsername(username, ["id"]))?.id;
 }
 
-export async function getAllUsers(): Promise<Array<string>> {
-    return (await db.selectFrom("users").select("username").execute()).map(({username}) => username);
+export async function getAllUsers(select: Array<SelectExpression<Database, "users">> = ["username"]) {
+    return db.selectFrom("users").select(select).execute();
 }

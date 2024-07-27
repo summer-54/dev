@@ -9,7 +9,7 @@ import SuiInput from "sffui.vue/suiInput.vue";
 import SuiButton from "sffui.vue/suiButton.vue";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 import searchIcon from "@/assets/search.svg"
-import {searchUser} from "@/api/users";
+import {searchUser, type SearchUserType} from "@/api/users";
 import focus from "@/directives/focus";
 
 export default defineComponent({
@@ -22,7 +22,7 @@ export default defineComponent({
       news_amount: 0,
       searchText: "",
       searching: false,
-      foundUsers: [] as Array<string>,
+      foundUsers: [] as Array<SearchUserType & {text: string}>,
       selectedFoundUser: -1,
       searchIcon
     }
@@ -32,7 +32,10 @@ export default defineComponent({
     async updateSearch() {
       if (this.searchText === "") return this.searching = false;
       let users = await searchUser(this.searchText);
-      if (users) this.foundUsers = users;
+      if (users) this.foundUsers = users.map(user => ({
+        ...user,
+        text: user.minStr !== "username" ? `${user.username} (${user[user.minStr]})` : user.username
+      }));
     },
     selectUser(event: KeyboardEvent) {
       if (event.key === "ArrowUp") {
@@ -86,8 +89,8 @@ export default defineComponent({
         <SuiInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
         <div>
           <TransitionGroup name="foundUsers">
-            <RouterLink v-for="(user, index) in foundUsers" :key="user" :to="`/users/${user}`">
-              <SuiButton @click="$router.push(`/users/${user}`)" v-focus="selectedFoundUser === index">{{user}}</SuiButton>
+            <RouterLink v-for="(user, index) in foundUsers" :key="user.username" :to="`/users/${user.username}`">
+              <SuiButton @click="$router.push(`/users/${user.username}`)" v-focus="selectedFoundUser === index">{{user.text}}</SuiButton>
             </RouterLink>
           </TransitionGroup>
         </div>
