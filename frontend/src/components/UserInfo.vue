@@ -97,6 +97,8 @@ export default defineComponent({
   align-items: flex-start;
   margin: 0 20px;
   flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
 
   div {
     display: flex;
