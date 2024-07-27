@@ -53,7 +53,7 @@ export default defineComponent({
       <div>
         <TransitionGroup name="foundUsers">
           <RouterLink v-for="(user, index) in foundUsers" :key="user.username" :to="`/users/${user.username}`">
-            <SuiButton @click="$router.push(`/users/${user.username}`)" v-focus="selectedFoundUser === index">{{user.text}}</SuiButton>
+            <SuiButton v-focus="selectedFoundUser === index">{{user.text}}</SuiButton>
           </RouterLink>
         </TransitionGroup>
       </div>
