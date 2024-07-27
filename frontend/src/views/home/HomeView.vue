@@ -86,7 +86,7 @@ export default defineComponent({
         <SuiInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
         <div>
           <TransitionGroup name="foundUsers">
-            <RouterLink v-for="(user, index) in foundUsers" :to="`/users/${user}`">
+            <RouterLink v-for="(user, index) in foundUsers" :key="user" :to="`/users/${user}`">
               <SuiButton @click="$router.push(`/users/${user}`)" v-focus="selectedFoundUser === index">{{user}}</SuiButton>
             </RouterLink>
           </TransitionGroup>
@@ -143,6 +143,7 @@ main {
     flex-direction: column;
     margin-top: 20px;
     gap: 20px;
+    align-items: flex-end;
   }
 }
 
@@ -152,5 +153,23 @@ main {
 
 .searchOpen-enter-from, .searchOpen-leave-to {
   transform: translate(1000px);
+}
+
+.foundUsers-move, /* apply transition to moving elements */
+.foundUsers-enter-active,
+.foundUsers-leave-active {
+  transition: all 0.5s ease;
+}
+
+.foundUsers-enter-from,
+.foundUsers-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.foundUsers-leave-active {
+  position: absolute;
 }
 </style>
