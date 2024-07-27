@@ -35,17 +35,19 @@ export default defineComponent({
       }));
     },
     selectUser(event: KeyboardEvent) {
-      if (event.key === "ArrowUp") {
-        this.selectedFoundUser--;
-      }
-      if (event.key === "ArrowDown") {
-        this.selectedFoundUser++;
-      }
+      if (event.key === "ArrowUp" && this.selectedFoundUser >= 0) this.selectedFoundUser--;
+      if (event.key === "ArrowDown" && this.selectedFoundUser < this.foundUsers.length - 1) this.selectedFoundUser++;
+      if (event.key === "Escape") this.$emit("update:searching", false);
     }
   },
   mounted() {
-      document.body.addEventListener("click", () => this.$emit("update:searching", false));
+    document.body.addEventListener("click", () => this.$emit("update:searching", false));
   },
+  watch: {
+    searching() {
+      if (!this.searching) this.foundUsers = [];
+    }
+  }
 })
 </script>
 
@@ -101,7 +103,8 @@ export default defineComponent({
 }
 
 .searchOpen-enter-from, .searchOpen-leave-to {
-  transform: translate(1000px);
+  opacity: 0;
+  transform: translate(160px);
 }
 
 .foundUsers-move, /* apply transition to moving elements */
