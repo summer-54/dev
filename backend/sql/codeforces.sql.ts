@@ -208,6 +208,7 @@ export async function getHardTasks(contest: number, maxSolutionsCount: number = 
 export async function getUserStatistics(user: number): Promise<UserStatisticsType> {
     let userResults = await getUserResults(user);
     let hardTasks = await Promise.all(userResults.map(async ({id}) => await getHardTasks(id)));
+    console.log(userResults[0].standings.filter(({status, taskId}) => status > 0 && hardTasks[0].includes(taskId)));
     return {
         perContest: userResults.map(({problemsDoneCount}) => problemsDoneCount),
         hardTasks: userResults.map(({standings}, index) => standings
