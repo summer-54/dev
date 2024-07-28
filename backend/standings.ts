@@ -1,5 +1,5 @@
 import {buildHandlers} from "sbackend";
-import {getAllContests, getContest, getFullStandings, getUserStatistics} from "./sql/codeforces.sql.js";
+import {getAllContests, getContest, getFullStandings, getHardTasks, getUserStatistics} from "./sql/codeforces.sql.js";
 import {getUserIdByUsername} from "./sql/users.sql.js";
 
 export default buildHandlers({
@@ -24,6 +24,9 @@ export default buildHandlers({
                 return;
             }
             response.end(await getUserStatistics(id));
+        },
+        async "/hard/:contest"(request, response) {
+            response.end(await getHardTasks(Number(request.params.contest)));
         }
     }
 });
