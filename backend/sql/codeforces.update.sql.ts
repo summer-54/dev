@@ -28,6 +28,7 @@ export async function createContestStandingsRow(contest: number, user: number, t
 }
 
 export async function updateContestStandingsRow(contest: number, user: number, task: number, status: number, notOfficial: boolean): Promise<void> {
+    console.log("updateContestStandingsRow", "contest:", contest, "user:", user, "task:", task, notOfficial);
     let [id, oldStatus] = await getStandingsRow(contest, user, task);
     if (id <= 0) return createContestStandingsRow(contest, user, task, status, notOfficial);
     if (oldStatus === status) return;
@@ -64,24 +65,24 @@ export async function updateContestStandings(groupId: string, standings?: Standi
 }
 
 export async function updateGroupStandings(groupId: string, groupStandings: {[key: string]: Standings | undefined}) {
-    let contestsToRemove = (await db.selectFrom("contests").select(["id"])
-        .where(({eb, and, or}) => and([
-            eb("groupId", '=', groupId),
-            eb("available", '=', true),
-            ...Object.keys(groupStandings).map(name => eb("name", '!=', name))
-        ]))
-        .execute()).map(({id}) => id);
-    await db.updateTable("contests").set({available: false})
-        .where(({or, eb}) =>
-            or(contestsToRemove.map(contestId => eb("id", '=', contestId)))
-        ).execute();
-    await db.updateTable("problems").set({available: false})
-        .where(({or, eb}) =>
-            or(contestsToRemove.map(contestId => eb("contest", '=', contestId)))
-        ).execute();
-    await db.updateTable("standings").set({available: false})
-        .where(({or, eb}) =>
-            or(contestsToRemove.map(contestId => eb("contest", '=', contestId)))
-        ).execute();
+    // let contestsToRemove = (await db.selectFrom("contests").select(["id"])
+    //     .where(({eb, and, or}) => and([
+    //         eb("groupId", '=', groupId),
+    //         eb("available", '=', true),
+    //         ...Object.keys(groupStandings).map(name => eb("name", '!=', name))
+    //     ]))
+    //     .execute()).map(({id}) => id);
+    // await db.updateTable("contests").set({available: false})
+    //     .where(({or, eb}) =>
+    //         or(contestsToRemove.map(contestId => eb("id", '=', contestId)))
+    //     ).execute();
+    // await db.updateTable("problems").set({available: false})
+    //     .where(({or, eb}) =>
+    //         or(contestsToRemove.map(contestId => eb("contest", '=', contestId)))
+    //     ).execute();
+    // await db.updateTable("standings").set({available: false})
+    //     .where(({or, eb}) =>
+    //         or(contestsToRemove.map(contestId => eb("contest", '=', contestId)))
+    //     ).execute();
     await Promise.all(Object.values(groupStandings).map(standings => updateContestStandings(groupId, standings)));
 }
