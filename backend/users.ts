@@ -30,6 +30,11 @@ export default buildHandlers({
                 return;
             }
             let {username, codeforcesHandle, firstName, lastName, password} = request.body;
+            if (username.length < 4 || password.length < 4) {
+                response.status(400);
+                response.end("");
+                return;
+            }
             if (!(await isUniqueUsername(username))) {
                 response.status(409);
                 response.end("username");
