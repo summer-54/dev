@@ -4,6 +4,9 @@ import {getUsernameById} from "./users.sql.js";
 export type ContestType = {
     id: number,
     name: string,
+    solutionsPublishDatetime?: Date,
+    solutionsVideoId?: string,
+    problemsPdfLink?: string,
     problems: {[title: string]: string},
     standings: Array<{
         userId: number,
@@ -24,6 +27,9 @@ export type FullStandingsType = {
 export type UserResultsContestType = {
     id: number,
     name: string,
+    solutionsPublishDatetime?: Date,
+    solutionsVideoId?: string,
+    problemsPdfLink?: string,
     problems: {[title: string]: string},
     standings: Array<{
         taskId: number,
@@ -44,7 +50,7 @@ export type UserStatisticsType = {
 
 export async function getAllContests(): Promise<Array<ContestType>> {
     let contests = await db.selectFrom("contests")
-        .select(["id", "name"])
+        .select(["id", "name", "solutionsPublishDatetime", "solutionsVideoId", "problemsPdfLink"])
         .where("available", '=', true).orderBy("name").execute();
     let problems = await db.selectFrom("problems")
         .select(["id", "contest", "title", "pdfLink"])
@@ -57,8 +63,8 @@ export async function getAllContests(): Promise<Array<ContestType>> {
     let usersMap = new Map<number, string>();
     standings.forEach(({user}) => usersMap.set(user, ""));
     await Promise.all(Array.from(usersMap.keys()).map(async (user) => usersMap.set(user, await getUsernameById(user) ?? "")));
-    return contests.map(({name, id}) => ({
-        id, name,
+    return contests.map(({name, id, solutionsPublishDatetime, solutionsVideoId, problemsPdfLink}) => ({
+        id, name, solutionsPublishDatetime, solutionsVideoId, problemsPdfLink,
         problems: Object.fromEntries(problems.filter(({contest}) => contest === id).map(({title, pdfLink}) => [title, pdfLink])),
         standings: standings.filter(({contest}) => contest === id)
             .map(({user, task, status, datetime, notOfficial}) => ({
@@ -121,7 +127,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
 
 export async function getContest(id: number): Promise<ContestType | undefined> {
     let contest = await db.selectFrom("contests")
-        .select(["id", "name"])
+        .select(["id", "name", "solutionsPublishDatetime", "solutionsVideoId", "problemsPdfLink"])
         .where(({eb, and}) => and([
             eb("available", '=', true),
             eb("id", '=', id)
@@ -147,6 +153,9 @@ export async function getContest(id: number): Promise<ContestType | undefined> {
     return {
         id: contest.id,
         name: contest.name,
+        solutionsPublishDatetime: contest.solutionsPublishDatetime,
+        solutionsVideoId: contest.solutionsVideoId,
+        problemsPdfLink: contest.problemsPdfLink,
         problems: Object.fromEntries(problems.filter(({contest}) => contest === id).map(({title, pdfLink}) => [title, pdfLink])),
         standings: standings.filter(({contest}) => contest === id)
             .map(({user, task, status, datetime, notOfficial}) => ({
@@ -167,6 +176,9 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
         let cur = contests[i];
         res[i].id = cur.id; 
         res[i].name = cur.name;
+        res[i].solutionsPublishDatetime = cur.solutionsPublishDatetime;
+        res[i].solutionsVideoId = cur.solutionsVideoId;
+        res[i].problemsPdfLink = cur.problemsPdfLink;
         res[i].problems = cur.problems;
         res[i].standings = cur.standings.filter(({userId}) => userId === user)
             .map(({task, taskId, status, datetime, notOfficial}) => ({
