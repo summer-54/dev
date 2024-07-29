@@ -1,6 +1,7 @@
 import {Standings, StandingsRow} from "../codeforces.js";
 import {db} from "./index.sql.js";
 import {getCodeforcesHandleUserIdMap} from "./users.sql.js";
+import fs from "node:fs/promises";
 
 export async function getContestId(groupId: string, contestId: number): Promise<number | undefined> {
     return (await db.selectFrom("contests").select(["id"]).where(({and, eb}) => and([
@@ -85,5 +86,6 @@ export async function updateGroupStandings(groupId: string, groupStandings: {[ke
     //     .where(({or, eb}) =>
     //         or(contestsToRemove.map(contestId => eb("contest", '=', contestId)))
     //     ).execute();
+    await fs.writeFile(`./${new Date()}.json`, JSON.stringify(Object.fromEntries(Object.entries(groupStandings).map(([key, standings]) => [key, standings?.object]))), {encoding: "utf8"});
     await Promise.all(Object.values(groupStandings).map(standings => updateContestStandings(groupId, standings)));
 }
