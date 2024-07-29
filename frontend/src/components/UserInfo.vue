@@ -39,6 +39,9 @@ export default defineComponent({
         backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         tension: .5
       }];
+      for(let i = 0; i < percent.length; i++){
+        percent[i] = Math.round(percent[i]*10)/10;
+      }
       this.percentsDatasets = [{
         data: percent,
         label: "Процент решенных задач",
