@@ -1,11 +1,15 @@
 import axios from "axios";
 import {JSDOM} from "jsdom";
 
+export function parseProblemSolutionsCount(elem: string | number): number {
+    return typeof elem === "number" ? elem : elem === "+" ? 1 : isNaN(Number(elem)) ? 0 : Number(elem) > 0 ? Number(elem) + 1 : Number(elem);
+}
+
 export class StandingsRow {
     public problems: Array<number>;
 
     public constructor(public name: string, public total: number, public penalty: number, problems: Array<string | number>, public notOfficial: boolean) {
-        this.problems = problems.map(elem => typeof elem === "number" ? elem : elem === "+" ? 1 : isNaN(Number(elem)) ? 0 : Number(elem));
+        this.problems = problems.map(elem => parseProblemSolutionsCount(elem));
     }
 
     public get object() {
