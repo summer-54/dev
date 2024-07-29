@@ -41,7 +41,7 @@ export default defineComponent({
         {src: author1, note1: "Сергей Сергеевич Князевский"},
         {src: author2, note1: "Никита Пшеничный"},
         {src: author3, note1: "Иван Клочков"},
-        {src: author4, note1: "Рамиль Хакимов"}
+        {src: author4, note1: "Рамиль Хакамов"}
       ],
       gallery_list: [
         {src: author1, id: 0},
