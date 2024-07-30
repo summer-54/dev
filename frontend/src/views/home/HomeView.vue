@@ -45,7 +45,6 @@ export default defineComponent({
       }
     }
     const observer = new IntersectionObserver(callback, options);
-    // @ts-ignore
     observer.observe(this.$refs.observer as HTMLElement);
   }
 })

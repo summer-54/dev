@@ -52,7 +52,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Transition name="searchOpen">
+  <Transition name="searchOpen" mode="out-in">
     <div class="search" v-if="searching" @keydown="selectUser" @click="$event.stopPropagation()">
       <SuiInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
       <div>
@@ -73,11 +73,17 @@ export default defineComponent({
 
 .search {
   padding: 20px 20px 20px 0;
-  flex-direction: column;
-
+  width: 20%;
+  text-align: center;
 
   @media (max-width: 764px) {
     padding-right: 0;
+    width: 100%;
+  }
+
+  input {
+    display: inline-block;
+    width: 80%;
   }
 
   div {
@@ -87,13 +93,13 @@ export default defineComponent({
     gap: 20px;
     align-items: flex-end;
 
+    * {
+      width: 100%;
+    }
+
     @media (max-width: 764px) {
       width: 100%;
       align-items: center;
-
-      input {
-        width: 80%;
-      }
     }
   }
 }
@@ -104,7 +110,7 @@ export default defineComponent({
 
 .searchOpen-enter-from, .searchOpen-leave-to {
   opacity: 0;
-  transform: translate(160px);
+  width: 0;
 }
 
 .foundUsers-move, /* apply transition to moving elements */
