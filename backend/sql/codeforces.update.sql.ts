@@ -40,9 +40,7 @@ export async function updateContestStandingsRow(contest: number, user: number, t
 export async function updateContestStandingsUser(contest: number, row: StandingsRow, problems: Array<number>, users: {[key: string]: number}): Promise<void> {
     let user = users[row.name.toLowerCase()];
     if (!user) return;
-    for (let i = 0; i < problems.length; i++) {
-        await updateContestStandingsRow(contest, user, problems[i], row.problems[i][0], row.problems[i][1]);
-    }
+    await Promise.all(problems.map((problem, index) => updateContestStandingsRow(contest, user, problem, row.problems[index][0], row.problems[index][1])));
 }
 
 export async function createContest(groupId: string, standings: Standings): Promise<number> {
