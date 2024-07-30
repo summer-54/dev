@@ -41,7 +41,7 @@ export async function updateContestStandingsUser(contest: number, row: Standings
     let user = users[row.name.toLowerCase()];
     if (!user) return;
     for (let i = 0; i < problems.length; i++) {
-        await updateContestStandingsRow(contest, user, problems[i], row.problems[i], row.notOfficial);
+        await updateContestStandingsRow(contest, user, problems[i], row.problems[i][0], row.problems[i][1]);
     }
 }
 
@@ -61,7 +61,7 @@ export async function updateContestStandings(groupId: string, standings?: Standi
     if (!contest) contest = await createContest(groupId, standings);
     let problems = await getContestProblems(contest);
     let users = await getCodeforcesHandleUserIdMap();
-    await Promise.all(standings.rows.map(row => updateContestStandingsUser(contest, row, problems, users)));
+    await Promise.all(Object.entries(standings.rows).map(([_, row]) => updateContestStandingsUser(contest, row, problems, users)));
 }
 
 export async function updateGroupStandings(groupId: string, groupStandings: {[key: string]: Standings | undefined}) {

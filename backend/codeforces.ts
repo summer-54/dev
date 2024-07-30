@@ -6,10 +6,18 @@ export function parseProblemSolutionsCount(elem: string | number): number {
 }
 
 export class StandingsRow {
-    public problems: Array<number>;
+    public problems: Array<[number, boolean]>;
 
-    public constructor(public name: string, public total: number, public penalty: number, problems: Array<string | number>, public notOfficial: boolean) {
-        this.problems = problems.map(elem => parseProblemSolutionsCount(elem));
+    public constructor(public name: string, public total: number, public penalty: number, problems: Array<string | number>, notOfficial: boolean) {
+        this.problems = problems.map(elem => [parseProblemSolutionsCount(elem), notOfficial]);
+    }
+
+    public update(problems: Array<string | number>, notOfficial: boolean) {
+        this.problems = this.problems.map(([oldElem, oldNotOfficial], index) => {
+            let newElem = parseProblemSolutionsCount(problems[index]);
+            if (Math.abs(newElem) > Math.abs(oldElem)) return [parseProblemSolutionsCount(newElem), notOfficial];
+            return [oldElem, oldNotOfficial];
+        });
     }
 
     public get object() {
@@ -17,8 +25,7 @@ export class StandingsRow {
             name: this.name,
             total: this.total,
             penalty: this.penalty,
-            problems: this.problems,
-            notOfficial: this.notOfficial
+            problems: this.problems
         };
     }
 
@@ -28,7 +35,7 @@ export class StandingsRow {
 }
 
 export class Standings {
-    public rows: Array<StandingsRow> = [];
+    public rows: {[name: string]: StandingsRow} = {};
 
     public constructor(public name: string, public contestId: number, public problems: Array<string>) {}
 
@@ -37,7 +44,7 @@ export class Standings {
             name: this.name,
             contestId: this.contestId,
             problems: this.problems,
-            rows: this.rows.map(row => row.object)
+            rows: Object.fromEntries(Object.entries(this.rows).map(([name, row]) => [name, row.object]))
         };
     }
 
@@ -45,14 +52,22 @@ export class Standings {
         return JSON.stringify(this.object);
     }
 
-    public addRow(row: StandingsRow): Standings {
-        this.rows.push(row);
+    public addRow(name: string, total: number, penalty: number, problems: Array<string | number>, notOfficial: boolean): Standings {
+        if (name in this.rows) this.rows[name].update(problems, notOfficial);
+        this.rows[name] = new StandingsRow(name, total, penalty, problems, notOfficial);
         return this;
     }
 }
 
-export function parseStandingsRow(row: Element): StandingsRow {
-    return new StandingsRow(row.children[1].querySelector("a")?.innerHTML ?? "", Number(row.children[2].innerHTML), Number(row.children[3].innerHTML), Array.from(row.children).filter((_, index) => index >= 4).map(elem => elem.children[0].innerHTML), row.children[1].innerHTML.trim().startsWith("*"));
+export function parseStandingsRow(row: Element) {
+    // return new StandingsRow(row.children[1].querySelector("a")?.innerHTML ?? "", Number(row.children[2].innerHTML), Number(row.children[3].innerHTML), Array.from(row.children).filter((_, index) => index >= 4).map(elem => elem.children[0].innerHTML), row.children[1].innerHTML.trim().startsWith("*"));
+    return {
+        name: row.children[1].querySelector("a")?.innerHTML ?? "",
+        total: Number(row.children[2].innerHTML),
+        penalty: Number(row.children[3].innerHTML),
+        problems: Array.from(row.children).filter((_, index) => index >= 4).map(elem => elem.children[0].innerHTML),
+        notOfficial: row.children[1].innerHTML.trim().startsWith("*")
+    }
 }
 
 export function parseStandings(html: JSDOM | string, contestId: number): Standings {
@@ -63,7 +78,10 @@ export function parseStandings(html: JSDOM | string, contestId: number): Standin
         Array.from(rows[0].children).filter((_, index) => index >= 4)
             .map(elem => elem.children[0].attributes.getNamedItem("title")?.value ?? elem.children[0].children[0].innerHTML)
     );
-    for (let i = 1; i < rows.length - 1; i++) standings.addRow(parseStandingsRow(rows[i]));
+    for (let i = 1; i < rows.length - 1; i++) {
+        let {name, total, penalty, problems, notOfficial} = parseStandingsRow(rows[i]);
+        standings.addRow(name, total, penalty, problems, notOfficial);
+    }
     return standings;
 }
 
