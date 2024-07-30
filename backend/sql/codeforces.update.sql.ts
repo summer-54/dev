@@ -32,7 +32,7 @@ export async function createContestStandingsRow(contest: number, user: number, t
 export async function updateContestStandingsRow(contest: number, user: number, task: number, status: number, notOfficial: boolean): Promise<void> {
     let [id, oldStatus] = await getStandingsRow(contest, user, task);
     if (id <= 0) return createContestStandingsRow(contest, user, task, status, notOfficial);
-    if (Math.abs(oldStatus) >= Math.abs(status)) return;
+    if (Math.abs(oldStatus) >= Math.abs(status) || oldStatus >= status) return;
     console.log("updateContestStandingsRow", id, "contest:", contest, "user:", user, "task:", task, "notOfficial:", notOfficial, oldStatus, status);
     await db.updateTable("standings").set({status, notOfficial, datetime: new Date()}).where("id", '=', id).execute();
 }

@@ -15,7 +15,7 @@ export class StandingsRow {
     public update(problems: Array<string | number>, notOfficial: boolean) {
         this.problems = this.problems.map(([oldElem, oldNotOfficial], index) => {
             let newElem = parseProblemSolutionsCount(problems[index]);
-            if (Math.abs(newElem) > Math.abs(oldElem)) return [parseProblemSolutionsCount(newElem), notOfficial];
+            if (Math.abs(newElem) > Math.abs(oldElem) || newElem > oldElem) return [newElem, notOfficial];
             return [oldElem, oldNotOfficial];
         });
     }
@@ -54,7 +54,7 @@ export class Standings {
 
     public addRow(name: string, total: number, penalty: number, problems: Array<string | number>, notOfficial: boolean): Standings {
         if (name in this.rows) this.rows[name].update(problems, notOfficial);
-        this.rows[name] = new StandingsRow(name, total, penalty, problems, notOfficial);
+        else this.rows[name] = new StandingsRow(name, total, penalty, problems, notOfficial);
         return this;
     }
 }
