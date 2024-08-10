@@ -39,13 +39,13 @@ export type UserResultsContestType = {
         notOfficial: boolean
     }>,
     problemsDoneCount: number,
-    problemsPercentCount: number
+    attemptsCount: number
 }
 
 export type UserStatisticsType = {
     perContest: Array<number>,
     hardTasks: Array<number>,
-    percent: Array<number>
+    attemptsCountPerTask: Array<number>
 }
 
 export async function getAllContests(): Promise<Array<ContestType>> {
@@ -184,14 +184,15 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
             .map(({task, taskId, status, datetime, notOfficial}) => ({
                 task, taskId, status, datetime, notOfficial
             }));
-        let solved = new Set<string>();
+        let solved = new Set<string>(), attemptsSum = 0;
         for(let j of res[i].standings){
             // TODO: Check if submission was before results
+            attemptsSum += Math.abs(j.status);
             if(j.status <= 0) continue;
             solved.add(j.task);
         }
         res[i].problemsDoneCount = solved.size;
-        res[i].problemsPercentCount = solved.size*100 / Object.keys(res[i].problems).length;
+        res[i].attemptsCount = attemptsSum / Object.keys(cur.problems).length;
     }
     return res;
     // return contests.map(({id, name, problems, standings}) => ({
@@ -221,11 +222,11 @@ export async function getUserStatistics(user: number): Promise<UserStatisticsTyp
     let userResults = await getUserResults(user);
     let hardTasks = await Promise.all(userResults.map(async ({id}) => await getHardTasks(id)));
     return {
-        perContest: userResults.map(({problemsDoneCount}) => problemsDoneCount),
-        hardTasks: userResults.map(({standings}, index) => (new Set(standings
+        perContest: userResults.map(({problemsDoneCount, problems}) => problemsDoneCount / Object.keys(problems).length * 100),
+        hardTasks: userResults.map(({standings, problems}, index) => (new Set(standings
             .filter(({status, taskId}) => status > 0 && hardTasks[index].includes(taskId))
-            .map(({task}) => task))).size
+            .map(({task}) => task))).size / Object.keys(problems).length * 100
         ),
-        percent: userResults.map(({problemsPercentCount}) => problemsPercentCount)
+        attemptsCountPerTask: userResults.map(({attemptsCount}) => attemptsCount)
     }
 }

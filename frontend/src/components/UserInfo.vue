@@ -25,26 +25,23 @@ export default defineComponent({
   },
   methods: {
     async updateStatistics() {
-      let {perContest, hardTasks, percent} = await getUserStatistics(this.user?.username ?? "");
+      let {perContest, hardTasks, attemptsCountPerTask} = await getUserStatistics(this.user?.username ?? "");
       this.tasksDatasets = [{
-        data: perContest,
-        label: "Решенные задачи",
+        data: perContest.map(percent => Math.round(percent * 10) / 10),
+        label: "Процент решенных задач",
         borderColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
         backgroundColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
         tension: .5
       }, {
-        data: hardTasks,
-        label: "Сложные задачи",
+        data: hardTasks.map(percent => Math.round(percent * 10) / 10),
+        label: "Процент решенных сложных задач",
         borderColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
         tension: .5
       }];
-      for(let i = 0; i < percent.length; i++){
-        percent[i] = Math.round(percent[i]*10)/10;
-      }
       this.percentsDatasets = [{
-        data: percent,
-        label: "Процент решенных задач",
+        data: attemptsCountPerTask,
+        label: "Среднее кол-во попыток на задачу",
         borderColor: this.$themeName === "light" ? "#001285" : "#0721c8",
         backgroundColor: this.$themeName === "light" ? "#001285" : "#0721c8",
         tension: .5
@@ -80,10 +77,10 @@ export default defineComponent({
     </div>
     <div class="charts">
       <div class="chart">
-        <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0, max: 100}}}"/>
+        <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0, max: 100}}}"/>
       </div>
       <div class="chart">
-        <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0}}}"/>
+        <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0}}}"/>
       </div>
     </div>
   </main>
