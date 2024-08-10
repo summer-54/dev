@@ -80,7 +80,7 @@ export default defineComponent({
   text-align: center;
 
   @media (max-width: 764px) {
-    padding-right: 0;
+    padding: 20px 0;
     width: 100%;
   }
 
