@@ -41,7 +41,10 @@ export default defineComponent({
     }
   },
   mounted() {
-    document.body.addEventListener("click", () => this.$emit("update:searching", false));
+    document.body.addEventListener("click", () => {
+      this.$emit("update:searching", false);
+      this.searchText = "";
+    });
   },
   watch: {
     searching() {
@@ -58,7 +61,7 @@ export default defineComponent({
       <div>
         <TransitionGroup name="foundUsers">
           <RouterLink v-for="(user, index) in foundUsers" :key="user.username" :to="`/users/${user.username}`">
-            <SuiButton v-focus="selectedFoundUser === index">{{user.text}}</SuiButton>
+            <SuiButton v-focus="selectedFoundUser === index" transform="1.2">{{user.text}}</SuiButton>
           </RouterLink>
         </TransitionGroup>
       </div>
@@ -72,7 +75,7 @@ export default defineComponent({
 }
 
 .search {
-  padding: 20px 20px 20px 0;
+  padding: 20px;
   width: 20%;
   text-align: center;
 
@@ -83,7 +86,7 @@ export default defineComponent({
 
   input {
     display: inline-block;
-    width: 80%;
+    width: 70%;
   }
 
   div {
@@ -94,7 +97,7 @@ export default defineComponent({
     align-items: flex-end;
 
     * {
-      width: 100%;
+      width: 95%;
     }
 
     @media (max-width: 764px) {

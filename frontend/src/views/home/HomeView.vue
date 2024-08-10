@@ -87,7 +87,15 @@ main {
   > button {
     position: fixed;
     right: 20px;
-    margin-top: 20px;
+    top: 120px;
+    
+    @media (max-width: 625px) {
+      top: 80px;
+    }
+
+    @media (max-width: 420px) {
+      top: 95px;
+    }
   }
 }
 
