@@ -37,3 +37,9 @@ export default defineComponent({
     <IconButton :icon="icon" :noText="noText" :notInvert :alt="alt"><slot/></IconButton>
   </RouterLink>
 </template>
+
+<style scoped>
+a button {
+  width: 100%;
+}
+</style>
