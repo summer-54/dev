@@ -53,7 +53,7 @@ export default buildHandlers({
                 description,
                 fullText,
                 img,
-                images: body.imagws,
+                images: body.images,
                 attachments: body.attachments
             }));
         }

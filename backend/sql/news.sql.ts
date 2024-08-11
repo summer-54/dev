@@ -37,11 +37,8 @@ export async function postNew({title, description, fullText, images, img, attach
     let promises: Array<Promise<any>> = [];
     Object.entries(attachments ?? {}).forEach(([key, value]) => {
         promises.push(addAttachment(`./newsAttachments/${article.id}/${key}`, value));
-        promises.push(db.insertInto("newsImages").values({
-            newId: article.id,
-            image: `%SERVER%/news/${article.id}/${key}`
-        }).execute());
     });
+    console.log("images:", images);
     (images ?? []).forEach((image: string) => {
         promises.push(db.insertInto("newsImages").values({
             newId: article.id,

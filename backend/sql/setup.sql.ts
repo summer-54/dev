@@ -7,14 +7,14 @@ export default async function () {
             .addColumn("datetime", "timestamp", cb => cb.notNull())
             .addColumn("title", "varchar(50)", cb => cb.notNull())
             .addColumn("description", "text", cb => cb.notNull())
-            .addColumn("img", "varchar(50)")
+            .addColumn("img", "varchar(256)")
             .addColumn("fullText", "text", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("newsImages")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("newId", "integer", cb => cb.notNull().references("news.id"))
-            .addColumn("image", "varchar(50)", cb => cb.notNull()).execute();
+            .addColumn("image", "varchar(256)", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("users")
