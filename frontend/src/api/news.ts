@@ -32,7 +32,7 @@ export async function getNews(length?: number, offset?: number): Promise<NewsTyp
 }
 
 export async function getNew(id: number): Promise<NewType | undefined> {
-    let request = await axios.get<{id: number, title: string, description: string, img?: string, datetime: string, fullText: string, images: []}>(`${SERVER_URL}/news/${id}`);
+    let request = await axios.get<{id: number, title: string, description: string, img?: string, datetime: string, fullText: string, images: Array<{id: number, newId: number, image: string}>}>(`${SERVER_URL}/news/${id}`);
     if (request.status !== 200) return undefined;
     return {
         ...request.data,
@@ -40,7 +40,8 @@ export async function getNew(id: number): Promise<NewType | undefined> {
         // @ts-ignore
         img: request.data.img ? request.data.img.replaceAll("%SERVER%", SERVER_URL) : undefined,
         // @ts-ignore
-        fullText: request.data.fullText.replaceAll("%SERVER%", SERVER_URL)
+        fullText: request.data.fullText.replaceAll("%SERVER%", SERVER_URL),
+        images: request.data.images.map(({image}) => image.replaceAll("%SERVER%", SERVER_URL))
     };
 }
 

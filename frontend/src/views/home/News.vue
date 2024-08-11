@@ -1,27 +1,32 @@
 <template>
-  <span class="all_new" v-if="page === undefined">
+  <span class="all_new" v-if="!page">
     <span class="news">
-      <img :src="src" class="img">
       <span class="title">{{ title }}</span>
+      <img :src="src" class="img">
       <span class="comment">{{ comment }}</span>
     </span>
   </span>
   <span class="all_new" v-else>
     <RouterLink :to="page">
-      <span class="news">
-        <img :src="src" class="img">
-        <span class="title">{{ title }}</span>
-        <span class="comment">{{ comment }}</span>
-      </span>
+      <SuiButton transform="1.2">
+        <span class="news">
+          <span class="title">{{ title }}</span>
+          <img :src="src" class="img">
+          <span class="comment">{{ comment }}</span>
+        </span>
+      </SuiButton>
     </RouterLink>
   </span>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
+// @ts-ignore
+import SuiButton from "sffui.vue/suiButton.vue";
 
 export default defineComponent({
   name: "News",
+  components: {SuiButton},
   props: {
     src: {
       type: String
@@ -45,8 +50,10 @@ export default defineComponent({
   margin-top: 50px;
 }
 .news {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
+  gap: 10px;
+
   @media (min-width: 1054px){
     max-width: 30em;
   }
