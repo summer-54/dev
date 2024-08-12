@@ -5,10 +5,12 @@ import News from "@/views/home/News.vue";
 import Title from "@/components/Title.vue";
 import IconButton from "@/components/ui/iconButton.vue";
 import addIcon from "@/assets/add.svg";
+import NavButton from "@/components/ui/navButton.vue";
+import FixedButton from "@/components/ui/fixedButton.vue";
 
 export default defineComponent({
   name: "NewsSubView",
-  components: {IconButton, Title, News},
+  components: {FixedButton, NavButton, IconButton, Title, News},
   data() {
     return {
       news_count: 0,
@@ -41,6 +43,11 @@ export default defineComponent({
     }
     const observer = new IntersectionObserver(callback, options);
     observer.observe(this.$refs.observer as HTMLElement);
+  },
+  computed: {
+    color() {
+      return this.$theme.color;
+    }
   }
 })
 </script>
@@ -52,7 +59,7 @@ export default defineComponent({
         <News v-for="{id, title, description, img} in news_cur" :src="img" :title="title" :comment="description" :page="'/admin/news/'+id"/>
       </span>
     <span class="observer" ref="observer"/>
-    <IconButton :icon="addIcon" class="addButton">Добавить</IconButton>
+    <FixedButton to="/admin/news/add" :icon="addIcon">Добавить</FixedButton>
   </main>
 </template>
 
@@ -70,12 +77,5 @@ export default defineComponent({
 .observer {
   display: block;
   height: 30px;
-}
-
-.addButton {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  border: 2px solid white;
 }
 </style>
