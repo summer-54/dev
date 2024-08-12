@@ -57,7 +57,7 @@ export default defineComponent({
       <span class="container">
         <News v-for="{id, title, description, img} in news_cur" :src="img" :title="title" :comment="description" :page="'/news/'+id"/>
       </span>
-      <span class="observer" ref="observer"></span>
+      <span class="observer" ref="observer"/>
     </div>
     <SuiButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
     <UsersSearch v-model:searching="searching"/>

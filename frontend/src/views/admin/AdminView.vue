@@ -36,10 +36,11 @@ export default defineComponent({
 .admin {
   display: flex;
   height: 100%;
+  align-items: flex-start;
 
   nav {
     padding: 10px;
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 20px;
 
     display: flex;

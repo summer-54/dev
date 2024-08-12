@@ -53,6 +53,7 @@ export default defineComponent({
   display: inline-flex;
   flex-direction: column;
   gap: 10px;
+  align-items: center;
 
   @media (min-width: 1054px){
     max-width: 30em;
@@ -71,6 +72,8 @@ export default defineComponent({
   text-align: justify;
 }
 .img {
+  border-radius: 10px;
+
   @media (min-width: 1274px){
     width: 275px;
   }

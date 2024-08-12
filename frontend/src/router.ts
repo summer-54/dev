@@ -96,6 +96,10 @@ const router = createRouter({
         {
           path: "news",
           component: () => import("@/views/admin/NewsSubView.vue")
+        },
+        {
+          path: "news/:id",
+          component: () => import("@/views/admin/EditNewSubView.vue")
         }
       ]
     }
