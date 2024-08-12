@@ -6,16 +6,21 @@ import SuiInput from "sffui.vue/suiInput.vue";
 import FixedButton from "@/components/ui/fixedButton.vue";
 import doneIcon from "@/assets/done.svg";
 import {postNew} from "@/api/news.js";
+import Subtitle from "@/components/Subtitle.vue";
+// @ts-ignore
+import SuiFileInput from "sffui.vue/suiFileInput.vue";
 
 export default defineComponent({
   name: "AddNewSubView",
-  components: {FixedButton, Title, SuiInput},
+  components: {Subtitle, FixedButton, Title, SuiInput, SuiFileInput},
   data() {
       return {
         title: "",
         description: "",
         fullText: "",
-        doneIcon
+        doneIcon,
+        img: [] as Array<File>,
+        images: [] as Array<File>
       }
   },
   methods: {
@@ -27,7 +32,17 @@ export default defineComponent({
       })
     },
     async post() {
-      await postNew({title: this.title, description: this.description, fullText: this.fullText});
+      await postNew({
+        title: this.title,
+        description: this.description,
+        fullText: this.fullText,
+        img: this.img[0].name.replaceAll(' ', '_'),
+        images: this.images.map(image => image.name.replaceAll(' ', '_')),
+        attachments: {
+          ...Object.fromEntries(this.images.map(image => [image.name.replaceAll(' ', '_'), image])),
+          [this.img[0].name.replaceAll(' ', '_')]: this.img[0]
+        }
+      });
       this.$router.push("/admin/news");
     }
   },
@@ -54,6 +69,8 @@ export default defineComponent({
       <SuiInput v-model="title" placeholder="Заголовок"/>
       <textarea v-model="description" placeholder="Краткое описание (показывается на главной)" ref="description"/>
       <textarea v-model="fullText" placeholder="Текст новости" ref="fullText"/>
+      <SuiFileInput v-model="img" accept="image/*">Выберите главное изображение (показывается на главной)</SuiFileInput>
+      <SuiFileInput v-model="images" multiple accept="image/*">Выберите изображения для галереи</SuiFileInput>
     </div>
     <FixedButton :icon="doneIcon" @click="post">Готово</FixedButton>
   </main>
@@ -74,6 +91,10 @@ div {
     padding: 20px;
     margin-top: 20px;
     resize: none;
+  }
+
+  label {
+    margin-top: 20px;
   }
 }
 </style>
