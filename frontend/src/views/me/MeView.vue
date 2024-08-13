@@ -42,6 +42,7 @@ export default defineComponent({
 
 <style scoped>
 nav {
+  display: flex;
   justify-content: space-around;
   margin-top: 20px;
 
