@@ -4,6 +4,9 @@ import {SERVER_URL} from "@/api/index";
 export type ContestType = {
     id: number,
     name: string,
+    solutionsPublishDatetime?: Date,
+    solutionsVideoId?: string,
+    problemsPdfLink?: string,
     problems: {[title: string]: string},
     standings: Array<{
         userId: number,
