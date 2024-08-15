@@ -76,7 +76,7 @@ export default defineComponent({
     width: 100%;
   }
 }
-.img_gallery {
+.img_gallery img {
   @media (min-width: 1200px){
     border-radius: 200px;
   }
