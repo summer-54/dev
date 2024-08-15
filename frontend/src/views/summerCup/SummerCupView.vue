@@ -65,7 +65,11 @@ export default defineComponent({
     <Subtitle style="text-align: center;" text="Система оценивания"/>
     <tex class="plain_text" :text="text"/>
     <Tabs :routes="{'I ЛКП': '/summer-cup/1', 'II ЛКП': '/summer-cup/2'}"/>
-    <RouterView/>
+    <RouterView v-slot="{Component}">
+      <Transition name="fade" mode="out-in">
+        <Component :is="Component"/>
+      </Transition>
+    </RouterView>
   </main>
 </template>
 
@@ -78,7 +82,16 @@ export default defineComponent({
     margin: 0 20px;
   }
 }
+
 h2 {
   text-align: center;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

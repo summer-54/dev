@@ -28,7 +28,13 @@ export default defineComponent({
     <NavButton to="/admin/contests" :icon="contestsIcon">Контесты</NavButton>
     <NavButton to="/admin/users" :icon="usersIcon">Пользователи</NavButton>
   </nav>
-  <div class="router"><RouterView/></div>
+  <div class="router">
+    <RouterView v-slot="{Component}">
+      <Transition name="fade" mode="out-in">
+        <Component :is="Component"/>
+      </Transition>
+    </RouterView>
+  </div>
 </div>
 </template>
 
@@ -55,5 +61,13 @@ export default defineComponent({
   .router {
     flex-grow: 1;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

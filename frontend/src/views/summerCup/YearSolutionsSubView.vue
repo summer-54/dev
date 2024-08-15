@@ -50,7 +50,11 @@ export default defineComponent({
         <SuiButton>{{num}} тур</SuiButton>
       </RouterLink>
     </nav>
-    <RouterView/>
+    <RouterView v-slot="{Component}">
+      <Transition name="fade" mode="out-in">
+        <Component :is="Component"/>
+      </Transition>
+    </RouterView>
   </div>
 </template>
 
@@ -82,5 +86,13 @@ nav {
   border: solid 2px #9297FB;
   border-radius: 20px;
   gap: 20px;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>
