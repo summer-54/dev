@@ -50,3 +50,34 @@ export async function postNew({title, description, fullText, images, img, attach
     await Promise.all(promises);
     return getNew(article.id);
 }
+
+export async function patchNew(id: number, {title, description, fullText, images, img, attachments}: {
+    title?: string,
+    description?: string,
+    fullText?: string,
+    images?: Array<string>,
+    img?: string,
+    attachments?: {[key: string]: string}
+}) {
+    let promises: Array<Promise<any>> = [];
+    promises.push(db.updateTable("news").set({title, description, fullText, img: img ? `%SERVER%/news/${id}/${img}` : undefined}).where("id", '=', id).execute());
+    Object.entries(attachments ?? {}).forEach(([key, value]) => {
+        promises.push(addAttachment(`./newsAttachments/${id}/${key}`, value));
+    });
+    promises.push((async () => {
+        await db.deleteFrom("newsImages").where("newId", '=', id).execute();
+        await Promise.all((images ?? []).map((image: string) => {
+            return db.insertInto("newsImages").values({
+                newId: id,
+                image: `%SERVER%/news/${id}/${image}`
+            }).execute();
+        }));
+    })());
+    await Promise.all(promises);
+    return getNew(id);
+}
+
+export async function removeNew(id: number) {
+    await db.deleteFrom("news").where("id", '=', id).execute();
+    await db.deleteFrom("newsImages").where("newId", '=', id).execute();
+}

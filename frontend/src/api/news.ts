@@ -59,12 +59,25 @@ export async function postNew({attachments, ...data}: PostNewType): Promise<void
     for (const key in attachments) {
         newAttachments[key] = await readFileBase64(attachments[key]);
     }
-    console.log(SERVER_URL + "/news", {
-        ...data,
-        attachments: newAttachments
-    });
     await axios.post(SERVER_URL + "/news", {
         ...data,
         attachments: newAttachments
     });
+}
+
+export async function patchNew(id: number, data: PostNewType): Promise<boolean> {
+    let newAttachments: {[key: string]: string} = {};
+    for (const key in data.attachments) {
+        newAttachments[key] = await readFileBase64(data.attachments[key]);
+    }
+    try {
+        let request = await axios.patch(`${SERVER_URL}/news/${id}`, {...data, attachments: newAttachments});
+        return request.status === 200;
+    } catch (error) {
+        return false;
+    }
+}
+
+export async function removeNew(id: number) {
+    await axios.delete(`${SERVER_URL}/news/${id}`);
 }

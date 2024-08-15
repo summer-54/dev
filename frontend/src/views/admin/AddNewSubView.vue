@@ -36,11 +36,11 @@ export default defineComponent({
         title: this.title,
         description: this.description,
         fullText: this.fullText,
-        img: this.img[0].name.replaceAll(' ', '_'),
+        img: this.img.length ? this.img[0].name.replaceAll(' ', '_') : undefined,
         images: this.images.map(image => image.name.replaceAll(' ', '_')),
         attachments: {
           ...Object.fromEntries(this.images.map(image => [image.name.replaceAll(' ', '_'), image])),
-          [this.img[0].name.replaceAll(' ', '_')]: this.img[0]
+          ...(this.img.length ? {[this.img[0].name.replaceAll(' ', '_')]: this.img[0]} : {})
         }
       });
       this.$router.push("/admin/news");

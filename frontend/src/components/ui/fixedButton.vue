@@ -30,14 +30,17 @@ export default defineComponent({
   computed: {
     color() {
       return this.$theme.color;
+    },
+    border() {
+      return this.$theme.border;
     }
   }
 })
 </script>
 
 <template>
-  <NavButton v-if="to" :to="to" :icon="icon" :class="$style.addButton"><slot/></NavButton>
-  <IconButton v-else :icon="icon" :class="$style.addButton"><slot/></IconButton>
+  <NavButton v-if="to" :to="to" :icon="icon" :class="[$style.addButton, $style.navButton]"><slot/></NavButton>
+  <IconButton v-else :icon="icon" :class="[$style.addButton, $style.iconButton]"><slot/></IconButton>
 </template>
 
 <style module>
@@ -45,9 +48,21 @@ export default defineComponent({
   position: fixed !important;
   bottom: 20px;
   right: 20px;
+}
 
-  button {
-    border: 2px solid v-bind(color);
+.navButton button {
+  border: 2px solid v-bind(color);
+}
+
+.iconButton {
+  border: 2px solid v-bind(color) !important;
+
+  @media (hover: hover) {
+    &[data-v-95bbf38c]:hover {
+      border-radius: 32px;
+      transform: scale(1.4);
+      border: v-bind(border) solid 2px !important;
+    }
   }
 }
 </style>

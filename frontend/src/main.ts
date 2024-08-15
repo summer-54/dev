@@ -29,12 +29,16 @@ const app = createApp(App);
 app.use(router);
 app.use(createVueSui({
     dark: {
+        border: "#9297FB",
         buttonBorder: "#9297FB",
-        inputBorder: "#9297FB"
+        inputBorder: "#9297FB",
+        fileInputBorder: "#9297FB"
     },
     light: {
+        border: "#9297FB",
         buttonBorder: "#9297FB",
-        inputBorder: "#9297FB"
+        inputBorder: "#9297FB",
+        fileInputBorder: "#9297FB"
     }
 }));
 app.use(createManager());
