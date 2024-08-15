@@ -43,7 +43,7 @@ export default defineComponent({
     async submit(event: Event) {
       event.preventDefault();
       this.checkUsernameLength(true);
-      if (!this.isPasswordEqual || !this.isUniqueUsername || !this.isUniqueCodeforcesHandle || !this.isUsernameEnoughLength || this.passwordStrength > 0 || this.pending) return;
+      if (!this.isPasswordEqual || !this.isUniqueUsername || !this.isUniqueCodeforcesHandle || !this.isUsernameEnoughLength || this.passwordStrength <= 0 || this.pending) return;
       this.pending = true;
       let response = await register({
         username: this.username,
@@ -81,21 +81,21 @@ export default defineComponent({
   <main>
     <Title text="Регистрация"/>
     <CustomForm>
-      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username" border="#9297FB" @change="checkUsernameLength(true)" @input="checkUsernameLength(false)"/>
+      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username" @change="checkUsernameLength(true)" @input="checkUsernameLength(false)"/>
       <FormComment v-if="!isUniqueUsername">Не уникально</FormComment>
       <FormComment v-if="!isUsernameEnoughLength">Должно быть >= 4 символов</FormComment>
-      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password"/>
       <FormComment v-if="passwordStrength === -1">Не может содержать русские буквы</FormComment>
       <FormComment color="unset">Сила пароля: {{passwordStrength}}/4</FormComment>
-      <SuiInput maxLength="50" placeholder="Повторите пароль" password v-model="passwordRepeat" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Повторите пароль" password v-model="passwordRepeat"/>
       <FormComment v-if="!isPasswordEqual">Не совпадает</FormComment>
-      <SuiInput maxLength="50" placeholder="Имя" v-model="firstName" border="#9297FB"/>
-      <SuiInput maxLength="50" placeholder="Фамилия" v-model="lastName" border="#9297FB"/>
-      <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle" border="#9297FB"/>
+      <SuiInput maxLength="50" placeholder="Имя" v-model="firstName"/>
+      <SuiInput maxLength="50" placeholder="Фамилия" v-model="lastName"/>
+      <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle"/>
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
       <span class="buttons">
-        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || !isUsernameEnoughLength || passwordStrength > 0 || pending" @click="submit" border="#9297FB">Зарегистрироваться</SuiButton>
-        <RouterLink to="/sign-in"><SuiButton border="#9297FB">Войти</SuiButton></RouterLink>
+        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || !isUsernameEnoughLength || passwordStrength <= 0 || pending" @click="submit">Зарегистрироваться</SuiButton>
+        <RouterLink to="/sign-in"><SuiButton>Войти</SuiButton></RouterLink>
       </span>
     </CustomForm>
   </main>

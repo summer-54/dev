@@ -30,7 +30,7 @@ export default async function () {
         await db.schema.createTable("sessions")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("userId", "integer", cb => cb.notNull().references("users.id"))
-            .addColumn("token", "varchar(512)", cb => cb.notNull()).execute();
+            .addColumn("token", "varchar(1024)", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("contests")

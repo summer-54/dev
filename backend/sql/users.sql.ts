@@ -27,11 +27,7 @@ export function generateRandomString() {
 }
 
 export async function generateToken() {
-    let token = "";
-    do {
-        token = generateRandomString();
-    } while (!(await isUniqueToken(token)));
-    return token;
+    return `${generateRandomString()}.${new Date().getFullYear()}.${new Date().getMonth()}.${new Date().getDate()}.${new Date().getHours()}.${new Date().getMinutes()}.${new Date().getSeconds()}.${new Date().getMilliseconds()}`;
 }
 
 export async function signIn(username: string, password: string, passwordHash?: string): Promise<string | null> {
