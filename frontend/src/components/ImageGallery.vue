@@ -76,18 +76,20 @@ export default defineComponent({
     width: 100%;
   }
 }
-.img_gallery img {
-  @media (min-width: 1200px){
-    border-radius: 200px;
-  }
-  @media (min-width: 800px) and (max-width: 1200px) {
-    border-radius: 150px;
-  }
-  @media (min-width: 500px) and (max-width: 800px){
-    border-radius: 100px;
-  }
-  @media (max-width: 500px){
-    border-radius: 65px;
+.img_gallery {
+  img {
+    @media (min-width: 1200px){
+      border-radius: 200px;
+    }
+    @media (min-width: 800px) and (max-width: 1200px) {
+      border-radius: 150px;
+    }
+    @media (min-width: 500px) and (max-width: 800px){
+      border-radius: 100px;
+    }
+    @media (max-width: 500px){
+      border-radius: 65px;
+    }
   }
 
   position: absolute;
