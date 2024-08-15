@@ -19,7 +19,7 @@ export default defineComponent({
 
 <template>
   <main>
-    <table>
+    <table rules="all">
       <thead>
         <tr>
           <th>Контест</th>
@@ -41,5 +41,10 @@ export default defineComponent({
 </template>
 
 <style scoped>
-
+* {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
+thead {
+  font-size: 20px;
+}
 </style>

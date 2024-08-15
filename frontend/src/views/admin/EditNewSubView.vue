@@ -148,4 +148,8 @@ div {
     resize: none;
   }
 }
+
+* {
+  font-family: "LXGW WenKai Mono TC", monospace;
+}
 </style>
