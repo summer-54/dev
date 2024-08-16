@@ -50,7 +50,7 @@ export default defineComponent({
         title: this.title,
         description: this.description,
         fullText: this.fullText,
-        img: this.img ?? this.img_[0] ? this.img_[0].name.replaceAll(' ', '_') : undefined,
+        img: this.img ?? (this.img_[0] ? this.img_[0].name.replaceAll(' ', '_') : undefined),
         images: [...this.images, ...this.images_.map(image => image.name.replaceAll(' ', '_'))],
         attachments: {
           ...Object.fromEntries(this.images_.map(image => [image.name.replaceAll(' ', '_'), image])),
