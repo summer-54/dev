@@ -7,10 +7,11 @@ import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/home.svg"
 import settingsIcon from "@/assets/settings.svg"
 import signOutIcon from "@/assets/signout.svg"
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "MeView",
-  components: {NavButton, SuiButton},
+  components: {ProgressIndicator, NavButton, SuiButton},
   data() {
     return {homeIcon, settingsIcon, signOutIcon};
   },
@@ -20,6 +21,11 @@ export default defineComponent({
       return;
     }
     getMe().then(user => me.value = user);
+  },
+  computed: {
+    pending() {
+      return !me.value;
+    }
   }
 });
 </script>
@@ -37,6 +43,7 @@ export default defineComponent({
         <Component :is="Component"/>
       </Transition>
     </RouterView>
+    <ProgressIndicator v-if="pending"/>
   </div>
 </template>
 

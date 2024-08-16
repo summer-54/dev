@@ -10,10 +10,11 @@ import SuiButton from "sffui.vue/suiButton.vue";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 import searchIcon from "@/assets/search.svg"
 import UsersSearch from "@/views/home/UsersSearch.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "HomeView",
-  components: {UsersSearch, ThemeInvertSvg, News, Title, SuiInput, SuiButton},
+  components: {ProgressIndicator, UsersSearch, ThemeInvertSvg, News, Title, SuiInput, SuiButton},
   data() {
     return {
       news_count: 0,
@@ -61,6 +62,7 @@ export default defineComponent({
     </div>
     <SuiButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
     <UsersSearch v-model:searching="searching"/>
+    <ProgressIndicator v-if="!news_cur.length"/>
   </main>
 </template>
 

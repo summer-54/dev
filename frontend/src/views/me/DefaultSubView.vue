@@ -34,7 +34,6 @@ export default defineComponent({
         </div>
       </UserInfo>
     </template>
-    <Title text="Загрузка..." v-else/>
   </main>
 </template>
 

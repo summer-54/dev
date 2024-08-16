@@ -7,20 +7,22 @@ import IconButton from "@/components/ui/iconButton.vue";
 import addIcon from "@/assets/add.svg";
 import NavButton from "@/components/ui/navButton.vue";
 import FixedButton from "@/components/ui/fixedButton.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "NewsSubView",
-  components: {FixedButton, NavButton, IconButton, Title, News},
+  components: {ProgressIndicator, FixedButton, NavButton, IconButton, Title, News},
   data() {
     return {
       news_count: 0,
       news_cur: [] as NewsType,
       news_amount: 0,
-      searching: false,
-      addIcon
+      addIcon,
+      pending: false
     }
   },
   mounted(){
+    this.pending = true;
     const options = {
       rootMargin: "0px",
       threshold: 1.0
@@ -37,6 +39,7 @@ export default defineComponent({
       if(entries[0].isIntersecting){
         global_this.news_count += news_at_once;
         getNews(global_this.news_count, Math.max(0, global_this.news_amount-global_this.news_count+1)).then(data=>{
+          global_this.pending = false;
           global_this.news_cur = data
         });
       }
@@ -60,6 +63,7 @@ export default defineComponent({
       </span>
     <span class="observer" ref="observer"/>
     <FixedButton to="/admin/news/add" :icon="addIcon">Добавить</FixedButton>
+    <ProgressIndicator v-if="pending"/>
   </main>
 </template>
 

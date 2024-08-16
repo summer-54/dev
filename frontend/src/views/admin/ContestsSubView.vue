@@ -7,21 +7,25 @@ import SuiInput from "sffui.vue/suiInput.vue";
 import SuiFileInput from "sffui.vue/suiFileInput.vue";
 import FixedButton from "@/components/ui/fixedButton.vue";
 import doneIcon from "@/assets/done.svg";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "ContestsSubView",
-  components: {FixedButton, SuiInput, SuiFileInput},
+  components: {ProgressIndicator, FixedButton, SuiInput, SuiFileInput},
   data() {
     return {
       contests: [] as Array<ContestType>,
       pdfFiles: [] as Array<File | undefined>,
-      doneIcon
+      doneIcon,
+      pending: false
     }
   },
   methods: {
     async get() {
+      this.pending = true;
       this.contests = await getAllContests();
       this.pdfFiles.fill(undefined, 0, this.contests.length);
+      this.pending = false;
     },
     async getDataUrl(file: File): Promise<string> {
       return new Promise((resolve, reject) => {
@@ -37,6 +41,7 @@ export default defineComponent({
       this.pdfFiles[index] = file;
     },
     async patch() {
+      this.pending = true;
       await patchContests(this.contests.map(({id, solutionsPublishDatetime, solutionsVideoId}, index) => ({
         id,
         solutionsPublishDatetime,
@@ -79,6 +84,7 @@ export default defineComponent({
       </tbody>
     </table>
     <FixedButton :icon="doneIcon" @click="patch">Готово</FixedButton>
+    <ProgressIndicator v-if="pending"/>
   </main>
 </template>
 

@@ -100,7 +100,6 @@ export default defineComponent({
         </CustomForm>
       </div>
     </template>
-    <Title text="Загрузка..." v-else/>
   </main>
 </template>
 

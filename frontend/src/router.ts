@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "@/views/home/HomeView.vue";
+import {ref} from "vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -109,5 +110,15 @@ const router = createRouter({
     }
   ]
 });
+
+export const routerPending = ref(false);
+
+router.beforeEach(() => {
+  routerPending.value = true;
+});
+
+router.afterEach(() => {
+  routerPending.value = false;
+})
 
 export default router;

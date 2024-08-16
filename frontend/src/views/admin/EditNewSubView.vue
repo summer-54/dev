@@ -13,10 +13,13 @@ import SuiButton from "sffui.vue/suiButton.vue";
 // @ts-ignore
 import SuiModalWindow from "sffui.vue/suiModalWindow.vue";
 import RemovableFileUrl from "@/views/admin/RemovableFileUrl.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "EditNewSubView",
-  components: {RemovableFileUrl, Title, FixedButton, SuiInput, SuiFileInput, SuiButton, SuiModalWindow},
+  components: {
+    ProgressIndicator,
+    RemovableFileUrl, Title, FixedButton, SuiInput, SuiFileInput, SuiButton, SuiModalWindow},
   data() {
     return {
       title: "",
@@ -42,17 +45,19 @@ export default defineComponent({
       })
     },
     async patch() {
+      this.pending = true;
       await patchNew(this.route.params.id, {
         title: this.title,
         description: this.description,
         fullText: this.fullText,
-        img: this.img ?? this.img_[0].name.replaceAll(' ', '_'),
+        img: this.img ?? this.img_[0] ? this.img_[0].name.replaceAll(' ', '_') : undefined,
         images: [...this.images, ...this.images_.map(image => image.name.replaceAll(' ', '_'))],
         attachments: {
           ...Object.fromEntries(this.images_.map(image => [image.name.replaceAll(' ', '_'), image])),
           ...(this.img_.length ? {[this.img_[0].name.replaceAll(' ', '_')]: this.img_[0]} : {})
         }
       });
+      this.pending = false;
       this.$router.push("/admin/news");
     },
     async remove() {
@@ -123,6 +128,7 @@ export default defineComponent({
       <SuiButton @click="removeModalOpened = true" color="red" border="red">Удалить</SuiButton>
     </div>
     <FixedButton :icon="doneIcon" @click="patch">Готово</FixedButton>
+    <ProgressIndicator v-if="pending"/>
     <SuiModalWindow v-model:open="removeModalOpened">
       <Title text="Вы действительно хотите удалить?"/>
       <SuiButton @click="removeModalOpened = false" style="margin-right: 20px">Отмена</SuiButton>

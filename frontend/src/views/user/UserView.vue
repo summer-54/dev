@@ -4,10 +4,11 @@ import {getMe, getUserByUsername, me, type UserType} from "@/api/users";
 import Title from "@/components/Title.vue";
 import IconButton from "@/components/ui/iconButton.vue";
 import UserInfo from "@/components/UserInfo.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "UserView",
-  components: {UserInfo, IconButton, Title},
+  components: {ProgressIndicator, UserInfo, IconButton, Title},
   data() {
     return {
       user: null as UserType | null,
@@ -47,6 +48,6 @@ export default defineComponent({
   <main v-if="user">
     <UserInfo :user="user"/>
   </main>
-  <Title text="Загрузка..." v-else-if="pending"/>
+  <ProgressIndicator v-else-if="pending"/>
   <Title :text="`Пользователь ${route.params.username} не существует`" style="color: red" v-else/>
 </template>

@@ -9,10 +9,11 @@ import {postNew} from "@/api/news.js";
 import Subtitle from "@/components/Subtitle.vue";
 // @ts-ignore
 import SuiFileInput from "sffui.vue/suiFileInput.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "AddNewSubView",
-  components: {Subtitle, FixedButton, Title, SuiInput, SuiFileInput},
+  components: {ProgressIndicator, Subtitle, FixedButton, Title, SuiInput, SuiFileInput},
   data() {
       return {
         title: "",
@@ -20,7 +21,8 @@ export default defineComponent({
         fullText: "",
         doneIcon,
         img: [] as Array<File>,
-        images: [] as Array<File>
+        images: [] as Array<File>,
+        pending: false
       }
   },
   methods: {
@@ -32,6 +34,7 @@ export default defineComponent({
       })
     },
     async post() {
+      this.pending = true;
       await postNew({
         title: this.title,
         description: this.description,
@@ -43,6 +46,7 @@ export default defineComponent({
           ...(this.img.length ? {[this.img[0].name.replaceAll(' ', '_')]: this.img[0]} : {})
         }
       });
+      this.pending = false;
       this.$router.push("/admin/news");
     }
   },
@@ -73,6 +77,7 @@ export default defineComponent({
       <SuiFileInput v-model="images" multiple accept="image/*">Выберите изображения для галереи</SuiFileInput>
     </div>
     <FixedButton :icon="doneIcon" @click="post">Готово</FixedButton>
+    <ProgressIndicator v-if="pending"/>
   </main>
 </template>
 

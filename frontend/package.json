@@ -19,7 +19,8 @@
     "vatex": "^0.1.0",
     "vue": "^3.4.21",
     "vue-chartjs": "^5.3.1",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.0",
+    "vue3-spinners": "^1.2.2"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",

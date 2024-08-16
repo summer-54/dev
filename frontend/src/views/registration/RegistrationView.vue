@@ -8,12 +8,13 @@ import Title from "@/components/Title.vue";
 import {hasToken, isUniqueCodeforcesHandle, isUniqueUsername, register} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
 import FormComment from "@/components/ui/formComment.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 const min = (...args: Array<any>) => args.sort()[0];
 
 export default defineComponent({
   name: "RegistrationView",
-  components: {FormComment, CustomForm, Title, SuiInput, SuiButton},
+  components: {ProgressIndicator, FormComment, CustomForm, Title, SuiInput, SuiButton},
   data() {
     return {
       username: "",
@@ -98,6 +99,7 @@ export default defineComponent({
         <RouterLink to="/sign-in"><SuiButton>Войти</SuiButton></RouterLink>
       </span>
     </CustomForm>
+    <ProgressIndicator v-if="pending"/>
   </main>
 </template>
 

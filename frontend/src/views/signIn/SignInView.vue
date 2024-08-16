@@ -7,10 +7,11 @@ import SuiButton from "sffui.vue/suiButton.vue"
 import Title from "@/components/Title.vue";
 import {hasToken, signIn} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "SignInView",
-  components: {CustomForm, Title, SuiButton, SuiInput},
+  components: {ProgressIndicator, CustomForm, Title, SuiButton, SuiInput},
   data() {
     return {
       username: "",
@@ -52,6 +53,7 @@ export default defineComponent({
         <RouterLink to="/registration"><SuiButton border="#9297FB">Зарегистрироваться</SuiButton></RouterLink>
       </span>
     </CustomForm>
+    <ProgressIndicator v-if="pending"/>
   </main>
 </template>
 

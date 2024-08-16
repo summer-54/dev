@@ -4,14 +4,17 @@ import {getNew, type NewType} from "@/api/news.js"
 import Title from "@/components/Title.vue";
 import Subtitle from "@/components/Subtitle.vue";
 import ImageGallery from "@/components/ImageGallery.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "NewsView",
   mounted() {
-    console.log(this.route.params.id);
+    this.pending = true;
     getNew(this.route.params.id).then(result=>{
+      this.pending = false;
       if (result) this.news = result;
     }, ()=>{
+      this.pending = false;
       this.err = true;
     });
   },
@@ -43,16 +46,18 @@ export default defineComponent({
         "img": "",
         "images": []
       } as NewType,
-      err: false
+      err: false,
+      pending: false
     }
   },
-  components: {Title, Subtitle, ImageGallery}
+  components: {ProgressIndicator, Title, Subtitle, ImageGallery}
 })
 </script>
 
 <template>
   <span class="allcont">
     <span v-if="err">Произошла ошибка. Убедитесь, что данная новость существует, и обновите страницу.</span>
+    <ProgressIndicator v-else-if="pending"/>
     <span v-else>
       <Title :text="news.title" />
       <span class="date"><img src="@/assets/clock.svg"><span>{{ date }}</span></span>

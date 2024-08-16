@@ -2,12 +2,17 @@
 import {RouterView} from 'vue-router';
 import Header from '@/components/Header.vue';
 import {defineComponent} from "vue";
+import {routerPending} from "@/router.js";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
-  components: {Header, RouterView},
+  components: {ProgressIndicator, Header, RouterView},
   computed: {
     color() {
       return this.$theme.color
+    },
+    routerPending() {
+      return routerPending.value;
     }
   }
 })
@@ -20,6 +25,7 @@ export default defineComponent({
       <Component :is="Component"/>
     </Transition>
   </RouterView>
+  <ProgressIndicator v-if="routerPending"/>
 </template>
 
 <style scoped>
