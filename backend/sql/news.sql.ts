@@ -78,6 +78,6 @@ export async function patchNew(id: number, {title, description, fullText, images
 }
 
 export async function removeNew(id: number) {
-    await db.deleteFrom("news").where("id", '=', id).execute();
     await db.deleteFrom("newsImages").where("newId", '=', id).execute();
+    await db.deleteFrom("news").where("id", '=', id).execute();
 }
