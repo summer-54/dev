@@ -25,6 +25,7 @@ export interface UsersTable {
     firstName: string;
     lastName: string;
     passwordHash: string;
+    isAdmin: boolean;
 }
 
 export interface SessionsTable {

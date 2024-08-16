@@ -58,7 +58,10 @@ export async function patchContests(data: Array<{
     solutionsVideoId?: string
 }>): Promise<boolean> {
     try {
-        let response = await axios.patch(`${SERVER_URL}/contests`, await Promise.all(data.map(async ({problemsPdf, ...other}) => ({problemsPdf: problemsPdf ? await readFileBase64(problemsPdf) : undefined, ...other}))));
+        let response = await axios.patch(`${SERVER_URL}/contests`,
+            await Promise.all(data.map(async ({problemsPdf, ...other}) => ({problemsPdf: problemsPdf ? await readFileBase64(problemsPdf) : undefined, ...other}))),
+            {headers: {Authorization: localStorage.getItem("token")}}
+        );
         return response.status === 200;
     } catch (error) {
         return false;

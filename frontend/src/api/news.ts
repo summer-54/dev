@@ -62,7 +62,7 @@ export async function postNew({attachments, ...data}: PostNewType): Promise<void
     await axios.post(SERVER_URL + "/news", {
         ...data,
         attachments: newAttachments
-    });
+    }, {headers: {Authorization: localStorage.getItem("token")}});
 }
 
 export async function patchNew(id: number, data: PostNewType): Promise<boolean> {
@@ -71,7 +71,7 @@ export async function patchNew(id: number, data: PostNewType): Promise<boolean> 
         newAttachments[key] = await readFileBase64(data.attachments[key]);
     }
     try {
-        let request = await axios.patch(`${SERVER_URL}/news/${id}`, {...data, attachments: newAttachments});
+        let request = await axios.patch(`${SERVER_URL}/news/${id}`, {...data, attachments: newAttachments}, {headers: {Authorization: localStorage.getItem("token")}});
         return request.status === 200;
     } catch (error) {
         return false;
@@ -79,5 +79,5 @@ export async function patchNew(id: number, data: PostNewType): Promise<boolean> 
 }
 
 export async function removeNew(id: number) {
-    await axios.delete(`${SERVER_URL}/news/${id}`);
+    await axios.delete(`${SERVER_URL}/news/${id}`, {headers: {Authorization: localStorage.getItem("token")}});
 }

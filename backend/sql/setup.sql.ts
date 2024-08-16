@@ -24,7 +24,8 @@ export default async function () {
             .addColumn("codeforcesHandleLowerCase", "varchar(50)", cb => cb.notNull().unique())
             .addColumn("firstName", "varchar(50)", cb => cb.notNull())
             .addColumn("lastName", "varchar(50)", cb => cb.notNull())
-            .addColumn("passwordHash", "varchar(256)", cb => cb.notNull()).execute();
+            .addColumn("passwordHash", "varchar(256)", cb => cb.notNull())
+            .addColumn("isAdmin", "boolean", cb => cb.notNull().defaultTo(false)).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("sessions")

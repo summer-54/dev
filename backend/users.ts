@@ -5,7 +5,7 @@ import {
     getAllUsers,
     getUserByToken,
     getUserByUsername,
-    getUserIdByToken,
+    getUserIdByToken, isAdmin,
     isUniqueCodeforcesHandle,
     isUniqueUsername,
     patchUser,
@@ -145,6 +145,13 @@ export default buildHandlers({
         },
         async "/users"(_, response) {
             response.end(await getAllUsers(["id", "username", "firstName", "lastName", "codeforcesHandle"]));
+        },
+        async "/is-admin"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.end("0");
+                return;
+            }
+            response.end("1");
         }
     },
     patch: {
@@ -216,6 +223,11 @@ export default buildHandlers({
             response.end("");
         },
         async "/users"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
             if (typeof request.body !== "object" || !Array.isArray(request.body)) {
                 response.status(400);
                 response.end();

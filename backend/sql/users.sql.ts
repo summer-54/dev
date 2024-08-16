@@ -12,7 +12,8 @@ export async function register({username, codeforcesHandle, firstName, lastName,
         codeforcesHandleLowerCase: codeforcesHandle.toLowerCase(),
         firstName,
         lastName,
-        passwordHash
+        passwordHash,
+        isAdmin: false
     }).executeTakeFirstOrThrow();
     return signIn(username, password, passwordHash);
 }
@@ -104,4 +105,11 @@ export async function adminUsersPatch(data: Array<{id: number, codeforcesHandle?
     await Promise.all(data.map(async ({id, codeforcesHandle}) => {
         if (codeforcesHandle) await db.updateTable("users").where("id", '=', id).set({codeforcesHandle, codeforcesHandleLowerCase: codeforcesHandle.toLowerCase()}).execute();
     }));
+}
+
+export async function isAdmin(token: string): Promise<boolean> {
+    let userId = await db.selectFrom("sessions").where("token", '=', token).select(["userId"]).executeTakeFirst();
+    if (!userId) return false;
+    let isAdmin = await db.selectFrom("users").where("id", '=', userId.userId).select(["isAdmin"]).executeTakeFirstOrThrow();
+    return isAdmin.isAdmin;
 }

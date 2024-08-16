@@ -5,6 +5,7 @@ import homeIcon from "@/assets/home.svg";
 import usersIcon from "@/assets/account.svg";
 import contestsIcon from "@/assets/cup.svg";
 import newsIcon from "@/assets/news.svg";
+import {isAdmin} from "@/api/users.js";
 
 export default defineComponent({
   name: "AdminView",
@@ -16,6 +17,11 @@ export default defineComponent({
     color() {
       return this.$themeName === "dark" ? "white" : "black";
     }
+  },
+  mounted() {
+    (async () => {
+      if (!(await isAdmin())) this.$router.push("/");
+    })();
   }
 })
 </script>

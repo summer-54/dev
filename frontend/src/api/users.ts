@@ -125,5 +125,12 @@ export async function getAllUsers(): Promise<Array<UserType & {id: number}> | nu
 }
 
 export async function adminUsersPatch(data: Array<{id: number, codeforcesHandle?: string}>) {
-    await axios.patch(`${SERVER_URL}/users`, data);
+    await axios.patch(`${SERVER_URL}/users`, data, {headers: {Authorization: localStorage.getItem("token")}});
+}
+
+export async function isAdmin() {
+    if (localStorage.getItem("token") === null) return false;
+    let response = await axios.get<boolean>(`${SERVER_URL}/is-admin`, {headers: {Authorization: localStorage.getItem("token")}});
+    if (response.status === 200) return Boolean(response.data);
+    return false;
 }

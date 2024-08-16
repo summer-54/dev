@@ -7,7 +7,7 @@ import {
     getUserResults,
     getUserStatistics, patchContests
 } from "./sql/codeforces.sql.js";
-import {getUserIdByUsername} from "./sql/users.sql.js";
+import {getUserIdByUsername, isAdmin} from "./sql/users.sql.js";
 import fs from "node:fs";
 
 export default buildHandlers({
@@ -51,6 +51,11 @@ export default buildHandlers({
     },
     patch: {
         async "/contests"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
             if (typeof request.body !== "object" || !Array.isArray(request.body)) {
                 response.status(400);
                 response.end();

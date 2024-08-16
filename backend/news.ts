@@ -1,6 +1,7 @@
 import {buildHandlers} from "sbackend";
 import * as fs from "node:fs";
 import {getNew, getNews, patchNew, postNew, removeNew} from "./sql/news.sql.js";
+import {isAdmin} from "./sql/users.sql.js";
 
 export default buildHandlers({
     get: {
@@ -31,6 +32,11 @@ export default buildHandlers({
     },
     post: {
         async "/news"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
             if (typeof request.body !== "object") {
                 response.status(400);
                 response.end("400: request.body isn't object");
@@ -61,6 +67,11 @@ export default buildHandlers({
     },
     patch: {
         async "/news/:id"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
             if (typeof request.body !== "object") {
                 response.status(400);
                 response.end("400: request.body isn't object");
@@ -82,6 +93,11 @@ export default buildHandlers({
     },
     delete: {
         async "/news/:id"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
             await removeNew(Number(request.params.id));
             response.end();
         }
