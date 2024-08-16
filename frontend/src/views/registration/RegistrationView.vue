@@ -10,8 +10,6 @@ import CustomForm from "@/components/ui/CustomForm.vue";
 import FormComment from "@/components/ui/formComment.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
-const min = (...args: Array<any>) => args.sort()[0];
-
 export default defineComponent({
   name: "RegistrationView",
   components: {ProgressIndicator, FormComment, CustomForm, Title, SuiInput, SuiButton},
@@ -72,7 +70,7 @@ export default defineComponent({
       let lowerCaseCount = this.password.split("").map(char => char >= 'a' && char <= 'z').filter(value => value).length;
       let upperCaseCount = this.password.split("").map(char => char >= 'A' && char <= 'Z').filter(value => value).length;
       let symbolsCount = this.password.split("").map(char => !(char >= '1' && char <= '9' || char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z')).filter(value => value).length;
-      return min(numbersCount, 2) + min(lowerCaseCount, 1) + min(upperCaseCount, 1) + min(symbolsCount, 2);
+      return Math.min(numbersCount, 2) + Math.min(lowerCaseCount, 1) + Math.min(upperCaseCount, 1) + Math.min(symbolsCount, 2);
     }
   }
 });
@@ -87,7 +85,7 @@ export default defineComponent({
       <FormComment v-if="!isUsernameEnoughLength">Должно быть >= 4 символов</FormComment>
       <SuiInput maxLength="50" placeholder="Пароль" password v-model="password"/>
       <FormComment v-if="passwordStrength === -1">Не может содержать русские буквы</FormComment>
-      <FormComment color="unset">Сила пароля: {{passwordStrength}}/4</FormComment>
+      <FormComment color="unset">Сила пароля: {{passwordStrength}}/6</FormComment>
       <SuiInput maxLength="50" placeholder="Повторите пароль" password v-model="passwordRepeat"/>
       <FormComment v-if="!isPasswordEqual">Не совпадает</FormComment>
       <SuiInput maxLength="50" placeholder="Имя" v-model="firstName"/>
