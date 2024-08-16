@@ -118,7 +118,7 @@ export async function getAllUsers(): Promise<Array<UserType & {id: number}> | nu
     try {
         let response = await axios.get<Array<UserType & {id: number}>>(`${SERVER_URL}/users`);
         if (response.status !== 200) return null;
-        return response.data;
+        return response.data.sort((a, b) => a.id - b.id);
     } catch (error) {
         return null;
     }
