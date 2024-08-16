@@ -2,7 +2,7 @@
 import {defineComponent} from "vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
-import {getMe, hasToken, me} from "@/api/users.js";
+import {getMe, hasToken, me, signOut} from "@/api/users.js";
 import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/home.svg"
 import settingsIcon from "@/assets/settings.svg"
@@ -20,7 +20,11 @@ export default defineComponent({
       this.$router.push("/sign-in");
       return;
     }
-    getMe().then(user => me.value = user);
+    getMe().then(user => me.value = user).catch(err => {
+      this.pending = false;
+      localStorage.removeItem("token");
+      this.$router.push("/sign-in");
+    });
   },
   computed: {
     pending() {
