@@ -1,5 +1,6 @@
 import {db} from "./index.sql.js";
 import {getUsernameById} from "./users.sql.js";
+import {addAttachment} from "../attachments.js";
 
 export type ContestType = {
     id: number,
@@ -229,4 +230,20 @@ export async function getUserStatistics(user: number): Promise<UserStatisticsTyp
         ),
         attemptsCountPerTask: userResults.map(({attemptsCount}) => attemptsCount)
     }
+}
+
+export async function patchContests(data: Array<{
+    id: number,
+    problemsPdf?: string,
+    solutionsPublishDatetime?: string | Date,
+    solutionsVideoId?: string
+}>) {
+    await Promise.all(data.map(async ({id, problemsPdf, solutionsVideoId, solutionsPublishDatetime}) => {
+        if (problemsPdf) {
+            await addAttachment(`./contestsProblems/${id}.pdf`, problemsPdf);
+            await db.updateTable("contests").where("id", '=', id).set({problemsPdfLink: `%SERVER%/problems/${id}.pdf`}).execute();
+        }
+        if (solutionsVideoId) await db.updateTable("contests").where("id", '=', id).set({solutionsVideoId}).execute();
+        if (solutionsPublishDatetime) await db.updateTable("contests").where("id", '=', id).set({solutionsPublishDatetime}).execute();
+    }));
 }

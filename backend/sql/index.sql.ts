@@ -8,7 +8,7 @@ export interface NewsTable {
     description: string;
     img?: string;
     fullText: string;
-    datetime: ColumnType<Date, Date | string>;
+    datetime: ColumnType<Date, Date | string, Date | string>;
 }
 
 export interface NewsImagesTable {
@@ -39,7 +39,7 @@ export interface ContestsTable {
     name: string;
     contestId: number;
     available: ColumnType<boolean, boolean | undefined>;
-    solutionsPublishDatetime?: ColumnType<Date, Date | string>;
+    solutionsPublishDatetime?: ColumnType<Date, Date | string, Date | string>;
     solutionsVideoId?: string;
     problemsPdfLink?: string;
 }
@@ -59,7 +59,7 @@ export interface StandingsTable {
     task: number;
     status: number;
     available: ColumnType<boolean, boolean | undefined>;
-    datetime: ColumnType<Date, Date | string>;
+    datetime: ColumnType<Date, Date | string, Date | string>;
     notOfficial: ColumnType<boolean, boolean | undefined>;
 }
 

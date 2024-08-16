@@ -5,9 +5,10 @@ import {
     getFullStandings,
     getHardTasks,
     getUserResults,
-    getUserStatistics
+    getUserStatistics, patchContests
 } from "./sql/codeforces.sql.js";
 import {getUserIdByUsername} from "./sql/users.sql.js";
+import fs from "node:fs";
 
 export default buildHandlers({
     get: {
@@ -37,6 +38,26 @@ export default buildHandlers({
         },
         async "/results/:user"(request, response) {
             response.end(await getUserResults(Number(request.params.user)));
+        },
+        async "/problems/:contest"(request, response) {
+            if (!fs.existsSync(`./newsAttachments/${request.params.contest}`)) {
+                response.status(404);
+                response.end();
+            } else {
+                response.status(200);
+                response.end(fs.readFileSync(`./newsAttachments/${request.params.contest}`));
+            }
+        }
+    },
+    patch: {
+        async "/contests"(request, response) {
+            if (typeof request.body !== "object" || !Array.isArray(request.body)) {
+                response.status(400);
+                response.end();
+                return;
+            }
+            await patchContests(request.body);
+            response.end();
         }
     }
 });

@@ -33,6 +33,7 @@ services:
       HOST: "0.0.0.0"
     volumes:
       - "newsAttachments:/app/newsAttachments"
+      - "contestsProblems:/app/contestsProblems"
     ports:
       - "9229:9229" # debug port for node.js
   nginx:
