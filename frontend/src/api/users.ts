@@ -113,3 +113,17 @@ export async function searchUser(searchString: string) {
     if (response.status === 200) return response.data;
     return null;
 }
+
+export async function getAllUsers(): Promise<Array<UserType & {id: number}> | null> {
+    try {
+        let response = await axios.get<Array<UserType & {id: number}>>(`${SERVER_URL}/users`);
+        if (response.status !== 200) return null;
+        return response.data;
+    } catch (error) {
+        return null;
+    }
+}
+
+export async function adminUsersPatch(data: Array<{id: number, codeforcesHandle?: string}>) {
+    await axios.patch(`${SERVER_URL}/users`, data);
+}

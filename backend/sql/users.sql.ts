@@ -99,3 +99,9 @@ export async function getUserIdByUsername(username: string): Promise<number | un
 export async function getAllUsers(select: Array<SelectExpression<Database, "users">> = ["username"]) {
     return db.selectFrom("users").select(select).execute();
 }
+
+export async function adminUsersPatch(data: Array<{id: number, codeforcesHandle?: string}>) {
+    await Promise.all(data.map(async ({id, codeforcesHandle}) => {
+        if (codeforcesHandle) await db.updateTable("users").where("id", '=', id).set({codeforcesHandle}).execute();
+    }));
+}

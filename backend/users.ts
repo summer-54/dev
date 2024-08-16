@@ -1,6 +1,8 @@
 import {buildHandlers} from "sbackend";
 import {compareHash} from "scryptex";
 import {
+    adminUsersPatch,
+    getAllUsers,
     getUserByToken,
     getUserByUsername,
     getUserIdByToken,
@@ -140,6 +142,9 @@ export default buildHandlers({
                 return;
             }
             response.end(await searchUsers(request.params.username));
+        },
+        async "/users"(_, response) {
+            response.end(await getAllUsers(["id", "username", "firstName", "lastName", "codeforcesHandle"]));
         }
     },
     patch: {
@@ -209,6 +214,15 @@ export default buildHandlers({
             }
             await patchUserPassword(id, newPassword);
             response.end("");
+        },
+        async "/users"(request, response) {
+            if (typeof request.body !== "object" || !Array.isArray(request.body)) {
+                response.status(400);
+                response.end();
+                return;
+            }
+            await adminUsersPatch(request.body);
+            response.end();
         }
     }
 });

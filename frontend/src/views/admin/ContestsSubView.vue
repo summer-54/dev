@@ -99,11 +99,11 @@ main {
 }
 
 thead {
-  font-size: 20px;
+  font-size: 32px;
 }
 
 tbody tr td:nth-child(1) {
-  font-size: 20px;
+  font-size: 32px;
 }
 
 td {
