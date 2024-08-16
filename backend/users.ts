@@ -7,7 +7,7 @@ import {
     getUserByUsername,
     getUserIdByToken, isAdmin,
     isUniqueCodeforcesHandle,
-    isUniqueUsername,
+    isUniqueUsername, makeAdmin,
     patchUser,
     patchUserPassword,
     register,
@@ -95,7 +95,7 @@ export default buildHandlers({
                 return;
             }
             let {authorization: token} = request.headers;
-            let user = await getUserByToken(token, ["username", "codeforcesHandle", "firstName", "lastName"]);
+            let user = await getUserByToken(token, ["username", "codeforcesHandle", "firstName", "lastName", "isAdmin"]);
             if (!user) {
                 response.status(401);
                 response.end("");
@@ -144,7 +144,7 @@ export default buildHandlers({
             response.end(await searchUsers(request.params.username));
         },
         async "/users"(_, response) {
-            response.end(await getAllUsers(["id", "username", "firstName", "lastName", "codeforcesHandle"]));
+            response.end(await getAllUsers(["id", "username", "firstName", "lastName", "codeforcesHandle", "isAdmin"]));
         },
         async "/is-admin"(request, response) {
             if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
@@ -234,6 +234,21 @@ export default buildHandlers({
                 return;
             }
             await adminUsersPatch(request.body);
+            response.end();
+        },
+        async "/admin"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
+            console.log(typeof request.body, request.body);
+            if (typeof request.body !== "number") {
+                response.status(400);
+                response.end();
+                return;
+            }
+            await makeAdmin(request.body);
             response.end();
         }
     }

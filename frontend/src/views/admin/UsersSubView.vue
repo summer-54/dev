@@ -2,14 +2,16 @@
 import {defineComponent} from 'vue'
 import FixedButton from "@/components/ui/fixedButton.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
-import {adminUsersPatch, getAllUsers, type UserType} from "@/api/users.js";
+import {adminUsersPatch, getAllUsers, makeAdmin, type UserType} from "@/api/users.js";
 import doneIcon from "@/assets/done.svg";
 // @ts-ignore
 import SuiInput from "sffui.vue/suiInput.vue";
+// @ts-ignore
+import SuiButton from "sffui.vue/suiButton.vue";
 
 export default defineComponent({
   name: "UsersSubView",
-  components: {ProgressIndicator, FixedButton, SuiInput},
+  components: {ProgressIndicator, FixedButton, SuiInput, SuiButton},
   data() {
     return {
       users: [] as Array<UserType & {id: number}>,
@@ -27,6 +29,11 @@ export default defineComponent({
     async patch() {
       this.pending = true;
       await adminUsersPatch(this.users.map(({id, codeforcesHandle}) => ({id, codeforcesHandle})));
+      await this.get();
+    },
+    async makeAdmin(id: number) {
+      this.pending = true;
+      await makeAdmin(id);
       await this.get();
     }
   },
@@ -54,12 +61,13 @@ export default defineComponent({
       </tr>
       </thead>
       <tbody>
-      <tr v-for="({id, username, firstName, lastName}, index) in users">
+      <tr v-for="({id, username, firstName, lastName, isAdmin}, index) in users">
         <td>{{id}}</td>
         <td>{{username}}</td>
         <td>{{firstName}}</td>
         <td>{{lastName}}</td>
         <td><SuiInput v-model="users[index].codeforcesHandle"/></td>
+        <td><SuiButton v-if="!isAdmin" @click="makeAdmin(id)">Сделать администратором</SuiButton></td>
       </tr>
       </tbody>
     </table>

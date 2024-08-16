@@ -43,7 +43,8 @@ export type UserType = {
     username: string,
     codeforcesHandle: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    isAdmin: boolean
 }
 
 export function hasToken(): boolean {
@@ -133,4 +134,8 @@ export async function isAdmin() {
     let response = await axios.get<boolean>(`${SERVER_URL}/is-admin`, {headers: {Authorization: localStorage.getItem("token")}});
     if (response.status === 200) return Boolean(response.data);
     return false;
+}
+
+export async function makeAdmin(id: number) {
+    await axios.patch(`${SERVER_URL}/admin`, `${id}`, {headers: {Authorization: localStorage.getItem("token"), "Content-Type": "text/plain"}});
 }

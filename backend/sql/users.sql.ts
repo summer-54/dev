@@ -53,7 +53,7 @@ export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promis
     return !Boolean(await db.selectFrom("users").where("codeforcesHandleLowerCase", '=', codeforcesHandle.toLowerCase()).select("id").executeTakeFirst());
 }
 
-export async function getUserByUsername(username: string, select: Array<SelectExpression<Database, "users">> = ["username", "codeforcesHandle", "firstName", "lastName"]) {
+export async function getUserByUsername(username: string, select: Array<SelectExpression<Database, "users">> = ["username", "codeforcesHandle", "firstName", "lastName", "isAdmin"]) {
     return db.selectFrom("users").where("username", '=', String(username)).select(select).executeTakeFirst();
 }
 
@@ -63,7 +63,7 @@ export async function getUserIdByToken(token: string): Promise<number | null> {
     return sessions[0].userId;
 }
 
-export async function getUserByToken(token: string, select: Array<SelectExpression<Database, "users">> = ["id", "username", "codeforcesHandle", "firstName", "lastName"]) {
+export async function getUserByToken(token: string, select: Array<SelectExpression<Database, "users">> = ["id", "username", "codeforcesHandle", "firstName", "lastName", "isAdmin"]) {
     let id = await getUserIdByToken(token);
     if (!id) return null;
     return db.selectFrom("users").where("id", '=', id).select(select).executeTakeFirstOrThrow();
@@ -112,4 +112,8 @@ export async function isAdmin(token: string): Promise<boolean> {
     if (!userId) return false;
     let isAdmin = await db.selectFrom("users").where("id", '=', userId.userId).select(["isAdmin"]).executeTakeFirstOrThrow();
     return isAdmin.isAdmin;
+}
+
+export async function makeAdmin(id: number) {
+    await db.updateTable("users").where("id", '=', id).set({isAdmin: true}).execute();
 }
