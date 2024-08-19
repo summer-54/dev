@@ -21,7 +21,7 @@ export default defineComponent({
       this.err = true;
     });
     (async () => {
-      /*if (await isAdmin())*/ this.admin = true;
+      if (await isAdmin()) this.admin = true;
     })();
   },
   computed: {
