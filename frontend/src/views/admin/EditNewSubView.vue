@@ -117,7 +117,7 @@ export default defineComponent({
 <template>
   <main>
     <div>
-      <Title text="Создание новости"/>
+      <Title text="Редактирование новости"/>
       <SuiInput v-model="title" placeholder="Заголовок"/>
       <textarea v-model="description" placeholder="Краткое описание (показывается на главной)" ref="description"/>
       <textarea v-model="fullText" placeholder="Текст новости" ref="fullText"/>

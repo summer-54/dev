@@ -82,6 +82,6 @@ export async function removeNew(id: number) {
     await db.deleteFrom("newsImages").where("newId", '=', id).execute();
     await db.deleteFrom("news").where("id", '=', id).execute();
     try {
-        await fs.rmdir(`./newsAttachments/${id}`);
-    } catch {}
+        await fs.rm(`./newsAttachments/${id}`, { recursive: true, force: true });
+    } catch (error) {console.error(error);}
 }
