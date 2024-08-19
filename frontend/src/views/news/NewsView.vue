@@ -5,6 +5,9 @@ import Title from "@/components/Title.vue";
 import Subtitle from "@/components/Subtitle.vue";
 import ImageGallery from "@/components/ImageGallery.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import {isAdmin} from "@/api/users.js";
+import IconButton from "@/components/ui/iconButton.vue";
+import edit from "@/assets/edit.svg";
 
 export default defineComponent({
   name: "NewsView",
@@ -17,6 +20,9 @@ export default defineComponent({
       this.pending = false;
       this.err = true;
     });
+    (async () => {
+      /*if (await isAdmin())*/ this.admin = true;
+    })();
   },
   computed: {
     route() {
@@ -47,10 +53,17 @@ export default defineComponent({
         "images": []
       } as NewType,
       err: false,
-      pending: false
+      pending: false,
+      admin: false,
+      edit
     }
   },
-  components: {ProgressIndicator, Title, Subtitle, ImageGallery}
+  methods: {
+    editMethod() {
+      this.$router.push(`/admin/news/${this.news.id}`);
+    }
+  },
+  components: {ProgressIndicator, Title, Subtitle, ImageGallery, IconButton}
 })
 </script>
 
@@ -59,6 +72,9 @@ export default defineComponent({
     <span v-if="err">Произошла ошибка. Убедитесь, что данная новость существует, и обновите страницу.</span>
     <ProgressIndicator v-else-if="pending"/>
     <span v-else>
+      <span v-if="admin" class="edit">
+        <IconButton :icon="edit" @click="editMethod()">Редактировать</IconButton>
+      </span>
       <Title :text="news.title" />
       <span class="date"><img src="@/assets/clock.svg"><span>{{ date }}</span></span>
       <span class="text">
@@ -101,5 +117,9 @@ export default defineComponent({
   @media (max-width: 530px) {
     font-size: 14px;
   }
+}
+.edit {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
