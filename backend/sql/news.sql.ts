@@ -1,5 +1,6 @@
 import {db} from "./index.sql.js";
 import {addAttachment} from "../attachments.js";
+import fs from "node:fs/promises";
 
 export async function getNews({limit, offset}: {limit?: number, offset?: number}) {
     let select = db.selectFrom("news").select(["id", "title", "img", "description", "datetime"]).orderBy("datetime", "desc");
@@ -80,4 +81,7 @@ export async function patchNew(id: number, {title, description, fullText, images
 export async function removeNew(id: number) {
     await db.deleteFrom("newsImages").where("newId", '=', id).execute();
     await db.deleteFrom("news").where("id", '=', id).execute();
+    try {
+        await fs.rmdir(`./newsAttachments/${id}`);
+    } catch {}
 }

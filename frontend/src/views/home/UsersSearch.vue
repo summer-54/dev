@@ -35,6 +35,10 @@ export default defineComponent({
       }));
     },
     selectUser(event: KeyboardEvent) {
+      if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key != "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
       if (event.key === "ArrowUp" && this.selectedFoundUser >= 0) this.selectedFoundUser--;
       if (event.key === "ArrowDown" && this.selectedFoundUser < this.foundUsers.length - 1) this.selectedFoundUser++;
       if (event.key === "Escape") this.$emit("update:searching", false);
