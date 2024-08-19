@@ -2,18 +2,19 @@
 import {defineComponent} from "vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
-import {getMe, hasToken, me, signOut} from "@/api/users.js";
+import {getMe, hasToken, me, signOut, isAdmin} from "@/api/users.js";
 import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/home.svg"
 import settingsIcon from "@/assets/settings.svg"
 import signOutIcon from "@/assets/signout.svg"
+import adminIcon from "@/assets/admin.svg"
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "MeView",
   components: {ProgressIndicator, NavButton, SuiButton},
   data() {
-    return {homeIcon, settingsIcon, signOutIcon};
+    return {homeIcon, settingsIcon, signOutIcon, adminIcon, admin: false};
   },
   mounted() {
     if (!hasToken()) {
@@ -25,6 +26,9 @@ export default defineComponent({
       localStorage.removeItem("token");
       this.$router.push("/sign-in");
     });
+    (async () => {
+      if (await isAdmin()) this.admin = true;
+    })();
   },
   computed: {
     pending() {
@@ -40,6 +44,7 @@ export default defineComponent({
       <nav>
         <NavButton to="/me" :icon="homeIcon">Главная</NavButton>
         <NavButton to="/me/settings" :icon="settingsIcon">Настройки</NavButton>
+        <NavButton to="/admin" :icon="adminIcon" v-if="admin">Администрирование</NavButton>
       </nav>
     </header>
     <RouterView v-slot="{Component}">
