@@ -11,10 +11,12 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@vue-youtube/component": "^0.0.6",
     "@vue-youtube/core": "^0.0.6",
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
+    "scryptex": "^0.1.1",
     "sffui.vue": "^0.0.5",
     "vatex": "^0.1.0",
     "vue": "^3.4.21",

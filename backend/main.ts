@@ -6,6 +6,7 @@ import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 import news from "./news.js";
 import users from "./users.js";
 import standings from "./standings.js";
+import {rsa} from "./rsa.js";
 
 async function main() {
     await setupEnv();
@@ -34,6 +35,10 @@ async function main() {
     app.get("/teapot", (request, response) => {
         response.status(418);
         response.end("This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. However, known implementations do exist.");
+    });
+
+    app.get("/key", (request, response) => {
+        response.end(rsa.publicKey);
     });
 
     app.options("*", (request, response) => {

@@ -19,7 +19,7 @@
     "pg": "^8.11.5",
     "randomstring": "^1.3.0",
     "sbackend": "^0.2.8",
-    "scryptex": "^0.1.0"
+    "scryptex": "^0.1.1"
   },
   "devDependencies": {
     "@types/damerau-levenshtein": "^1.0.2",

@@ -15,6 +15,7 @@ import {
     signOut
 } from "./sql/users.sql.js";
 import {searchUsers} from "./sql/search.sql.js";
+import {rsa} from "./rsa.js";
 
 export default buildHandlers({
     post: {
@@ -47,6 +48,7 @@ export default buildHandlers({
                 response.end("codeforcesHandle");
                 return;
             }
+            // let token = await register({username, codeforcesHandle, firstName, lastName, password: rsa.decrypt(password).toString()});
             let token = await register({username, codeforcesHandle, firstName, lastName, password});
             if (!token) {
                 response.status(500);
@@ -68,6 +70,7 @@ export default buildHandlers({
                 return;
             }
             let {username, password} = request.body;
+            // let token = await signIn(username, rsa.decrypt(password).toString());
             let token = await signIn(username, password);
             if (!token) {
                 response.status(401);
@@ -215,10 +218,12 @@ export default buildHandlers({
             }
             let {id, passwordHash} = user;
             if (!compareHash(oldPassword, passwordHash)) {
+            // if (!compareHash(rsa.decrypt(oldPassword).toString(), passwordHash)) {
                 response.status(418);
                 response.end("");
                 return;
             }
+            // await patchUserPassword(id, rsa.decrypt(newPassword).toString());
             await patchUserPassword(id, newPassword);
             response.end("");
         },

@@ -1,6 +1,11 @@
 import axios from "axios";
 import {SERVER_URL} from "@/api/index.js";
 import {ref} from "vue";
+// import {RSAEncrypt} from "scryptex";
+
+function RSAEncrypt(data: string, key: string): string {
+    return data;
+}
 
 export type SearchUserType = {
     username: string,
@@ -17,8 +22,12 @@ export type SearchUserType = {
 
 export let me = ref<UserType | null>(null);
 
+export async function getKey(): Promise<string> {
+    return (await axios.get<string>(`${SERVER_URL}/key`)).data;
+}
+
 export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, password: string}) {
-    let response = await axios.post<string>(`${SERVER_URL}/users/register`, body);
+    let response = await axios.post<string>(`${SERVER_URL}/users/register`, {...body, password: RSAEncrypt(body.password, await getKey())});
     if (response.status === 201) {
         localStorage.setItem("token", response.data);
         return 0;
@@ -31,7 +40,7 @@ export async function register(body: {username: string, firstName: string, lastN
 }
 
 export async function signIn(username: string, password: string) {
-    let response = await axios.post<string>(`${SERVER_URL}/users/signin`, {username, password});
+    let response = await axios.post<string>(`${SERVER_URL}/users/signin`, {username, password: RSAEncrypt(password, await getKey())});
     if (response.status === 200) {
         localStorage.setItem("token", response.data);
         return true;
@@ -93,7 +102,8 @@ export async function patchUser(user: Partial<UserType>): Promise<boolean> {
 
 export async function patchUserPassword(oldPassword: string, newPassword: string): Promise<boolean> {
     try {
-        let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: oldPassword, new: newPassword}, {
+        let key = await getKey();
+        let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: RSAEncrypt(oldPassword, key), new: RSAEncrypt(newPassword, key)}, {
             headers: {Authorization: localStorage.getItem("token")}
         });
         return response.status === 200;
