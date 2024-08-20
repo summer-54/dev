@@ -117,7 +117,7 @@ export default buildHandlers({
         async "/ws/news"(_, response) {
             let connection = await response.accept();
             console.log("accepted");
-            let id = Array.from(NewsConnections.keys()).reduce((previousValue, currentValue) => Math.max(previousValue, currentValue), 0);
+            let id = Array.from(NewsConnections.keys()).reduce((previousValue, currentValue) => Math.max(previousValue, currentValue), 0) + 1;
             NewsConnections.set(id, connection);
             connection.on("close", () => NewsConnections.delete(id));
         }

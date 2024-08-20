@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {getNews, type NewsType} from "@/api/news.js";
+import {getNews, type NewsType, websocketNews} from "@/api/news.js";
 import News from "@/views/home/News.vue";
 import Title from "@/components/Title.vue";
 import IconButton from "@/components/ui/iconButton.vue";
@@ -46,6 +46,12 @@ export default defineComponent({
     }
     const observer = new IntersectionObserver(callback, options);
     observer.observe(this.$refs.observer as HTMLElement);
+    websocketNews(article => {
+      if (this.news_cur.map(({id}) => id).includes(article.id)) this.news_cur[this.news_cur.findIndex(({id}) => id === article.id) ?? 0] = article;
+      else this.news_cur.unshift(article);
+    }, ID => {
+      this.news_cur = this.news_cur.filter(({id}) => id !== ID);
+    });
   },
   computed: {
     color() {
