@@ -1,19 +1,20 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
-// @ts-ignore
-import SuiFileInput from "sffui.vue/suiFileInput.vue";
-import {VueSpinnerGrid} from "vue3-spinners";
-import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
   name: "TestView",
-  components: {ProgressIndicator, VueSpinnerGrid, SuiFileInput}
+  mounted() {
+    let connection = new WebSocket(`ws://localhost/api/ws/news`);
+    connection.onmessage = (e: MessageEvent) => {
+      console.log(e);
+    }
+  }
 })
 </script>
 
 <template>
   <div>
-    <ProgressIndicator/>
+
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {readFileBase64} from "@/utils.js";
-import {SERVER_URL} from "@/api/index.js";
+import {SERVER_URL, SERVER_WS_URL} from "@/api/index.js";
 
 export type NewsType = Array<{
     id: number,
@@ -80,4 +80,13 @@ export async function patchNew(id: number, data: PostNewType): Promise<boolean> 
 
 export async function removeNew(id: number) {
     await axios.delete(`${SERVER_URL}/news/${id}`, {headers: {Authorization: localStorage.getItem("token")}});
+}
+
+export function websocketNews(updateNewHandler: (article: NewType) => void, deleteHandler: (id: number) => void) {
+    let connection = new WebSocket(`${SERVER_WS_URL}/news`);
+    connection.onmessage = (e: MessageEvent) => {
+        let data = JSON.parse(e.data);
+        if ("delete" in data && typeof data.delete === "number") deleteHandler(data.delete);
+        else updateNewHandler(data);
+    }
 }

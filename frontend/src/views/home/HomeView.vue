@@ -1,16 +1,16 @@
 <script lang="ts">
 import {defineComponent} from "vue";
 import News from "./News.vue";
-import {getNews, type NewsType} from "@/api/news.js";
+import {getNews, type NewsType, websocketNews} from "@/api/news.js";
 import Title from "@/components/Title.vue";
-// @ts-ignore
-import SuiInput from "sffui.vue/suiInput.vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 import searchIcon from "@/assets/search.svg"
 import UsersSearch from "@/views/home/UsersSearch.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+// @ts-ignore
+import SuiInput from "sffui.vue/suiInput.vue";
+// @ts-ignore
+import SuiButton from "sffui.vue/suiButton.vue";
 
 export default defineComponent({
   name: "HomeView",
@@ -47,6 +47,12 @@ export default defineComponent({
     }
     const observer = new IntersectionObserver(callback, options);
     observer.observe(this.$refs.observer as HTMLElement);
+    websocketNews(article => {
+      if (this.news_cur.map(({id}) => id).includes(article.id)) this.news_cur[this.news_cur.findIndex(({id}) => id === article.id) ?? 0] = article;
+      else this.news_cur.unshift(article);
+    }, ID => {
+      this.news_cur = this.news_cur.filter(({id}) => id !== ID);
+    });
   }
 })
 </script>

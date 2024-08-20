@@ -1,7 +1,13 @@
-import {buildHandlers} from "sbackend";
+import {buildHandlers, SBackendWSResponse} from "sbackend";
 import * as fs from "node:fs";
 import {getNew, getNews, patchNew, postNew, removeNew} from "./sql/news.sql.js";
 import {isAdmin} from "./sql/users.sql.js";
+
+let NewsConnections = new Map<number, Awaited<ReturnType<SBackendWSResponse["accept"]>>>;
+
+function emitForAll(data: object) {
+    Array.from(NewsConnections.entries()).forEach(([_, connection]) => connection.send(JSON.stringify(data)));
+}
 
 export default buildHandlers({
     get: {
@@ -55,14 +61,16 @@ export default buildHandlers({
             }
             let {title, description, fullText, img} = body;
             response.status(201);
-            response.end(await postNew({
+            let article = await postNew({
                 title,
                 description,
                 fullText,
                 img,
                 images: body.images,
                 attachments: body.attachments
-            }));
+            });
+            response.end(article);
+            emitForAll(article);
         }
     },
     patch: {
@@ -88,7 +96,9 @@ export default buildHandlers({
                 return;
             }
             let {title, description, fullText, img, images, attachments} = body;
-            response.end(await patchNew(Number(request.params.id), {title, description, fullText, img, images, attachments}));
+            let article = await patchNew(Number(request.params.id), {title, description, fullText, img, images, attachments});
+            response.end(article);
+            emitForAll(article);
         }
     },
     delete: {
@@ -100,6 +110,16 @@ export default buildHandlers({
             }
             await removeNew(Number(request.params.id));
             response.end();
+            emitForAll({delete: Number(request.params.id)});
+        }
+    },
+    websocket: {
+        async "/ws/news"(_, response) {
+            let connection = await response.accept();
+            console.log("accepted");
+            let id = Array.from(NewsConnections.keys()).reduce((previousValue, currentValue) => Math.max(previousValue, currentValue), 0);
+            NewsConnections.set(id, connection);
+            connection.on("close", () => NewsConnections.delete(id));
         }
     }
 });
