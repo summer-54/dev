@@ -78,6 +78,10 @@ header {
   *:last-child {
     margin-right: 20px;
   }
+
+  @media (max-width: 500px) {
+    justify-content: center;
+  }
 }
 
 .fade-enter-active, .fade-leave-active {
