@@ -59,6 +59,7 @@ export default defineComponent({
 <style scoped>
 nav {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   margin-top: 20px;
 
@@ -76,6 +77,10 @@ header {
 
   *:last-child {
     margin-right: 20px;
+  }
+
+  @media (max-width: 500px) {
+    justify-content: center;
   }
 }
 
