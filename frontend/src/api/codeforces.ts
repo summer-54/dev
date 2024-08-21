@@ -67,3 +67,19 @@ export async function patchContests(data: Array<{
         return false;
     }
 }
+
+export async function patchContest(id: number, file: File) {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = async () => {
+        await axios.patch(`${SERVER_URL}/contests/${id}`, reader.result, {headers: {Authorization: localStorage.getItem("token")}});
+    }
+}
+
+export async function addContest(contestId: number, file: File) {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = async () => {
+        await axios.post(`${SERVER_URL}/contests/${contestId}`, reader.result, {headers: {Authorization: localStorage.getItem("token")}});
+    }
+}

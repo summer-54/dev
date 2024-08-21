@@ -5,10 +5,13 @@ import {
     getFullStandings,
     getHardTasks,
     getUserResults,
-    getUserStatistics, patchContests
+    getUserStatistics,
+    patchContests
 } from "./sql/codeforces.sql.js";
 import {getUserIdByUsername, isAdmin} from "./sql/users.sql.js";
 import fs from "node:fs";
+import {parseStandings} from "./codeforces.js";
+import {addContest, patchContest} from "./sql/codeforces.update.sql.js";
 
 export default buildHandlers({
     get: {
@@ -62,6 +65,26 @@ export default buildHandlers({
                 return;
             }
             await patchContests(request.body);
+            response.end();
+        },
+        async "/contests/:id"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
+            await patchContest(Number(request.params.id), parseStandings(String(request.body), 0));
+            response.end();
+        }
+    },
+    post: {
+        async "/contests/:contestId"(request, response) {
+            if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
+                response.status(401);
+                response.end();
+                return;
+            }
+            await addContest(parseStandings(String(request.body), Number(request.params.contestId)));
             response.end();
         }
     }
