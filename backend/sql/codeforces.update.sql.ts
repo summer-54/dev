@@ -58,6 +58,12 @@ export async function updateContestStandings(groupId: string, standings?: Standi
     let contest = await getContestId(groupId, standings.contestId);
     if (!contest) contest = await createContest(groupId, standings);
     let problems = await getContestProblems(contest);
+    if (!problems.length) {
+        await Promise.all(standings.problems.map(title =>
+            db.insertInto("problems").values({contest, title, pdfLink: ""}).execute()
+        ));
+        problems = await getContestProblems(contest);
+    }
     let users = await getCodeforcesHandleUserIdMap();
     await Promise.all(Object.entries(standings.rows).map(([_, row]) => updateContestStandingsUser(contest, row, problems, users)));
 }
@@ -84,4 +90,20 @@ export async function updateGroupStandings(groupId: string, groupStandings: {[ke
     //     ).execute();
     await fs.writeFile(`./${new Date()}.json`, JSON.stringify(Object.fromEntries(Object.entries(groupStandings).map(([key, standings]) => [key, standings?.object]))), {encoding: "utf8"});
     await Promise.all(Object.values(groupStandings).map(standings => updateContestStandings(groupId, standings)));
+}
+
+export async function patchContest(id: number, standings: Standings): Promise<boolean> {
+    try {
+        let {contestId} = await db.selectFrom("contests").where("id", '=', id).select(["contestId"]).executeTakeFirstOrThrow();
+        standings.contestId = contestId;
+        await updateContestStandings("jOZ7EYg9HX", standings);
+        return true;
+    }
+    catch {
+        return false;
+    }
+}
+
+export async function addContest(standings: Standings) {
+    await updateContestStandings("jOZ7EYg9HX", standings);
 }
