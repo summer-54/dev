@@ -3,6 +3,7 @@ import {defineComponent} from 'vue'
 import {getNews} from '@/api/news';
 import {getAllUsers} from '@/api/users';
 import Title from '@/components/Title.vue';
+import StatisticsField from './StatisticsField.vue';
 
 export default defineComponent({
   name: "DefaultSubView",
@@ -33,7 +34,7 @@ export default defineComponent({
     });
     this.getUsers();
   },
-  components: {Title}
+  components: {Title, StatisticsField}
 })
 </script>
 
@@ -44,8 +45,10 @@ export default defineComponent({
     </span>
     <div v-else>
       <Title text="Общая статистика"/>
-      <div class="field">Количество новостей: <span class="value">{{ news_amount }}</span>.</div>
-      <div class="field">Количество пользователей: <span class="value">{{ users_amount }}</span>.</div>
+      <div class="cont">
+        <StatisticsField statName="Количество новостей" :statValue="news_amount"/>
+        <StatisticsField statName="Количество пользователей" :statValue="users_amount"/>
+      </div>
     </div>
   </main>
 </template>
@@ -54,13 +57,12 @@ export default defineComponent({
 * {
   font-family: "LXGW WenKai Mono TC", monospace;
 }
-.field {
-  font-family: 20px;
-}
-.value {
-  font-weight: bold;
-}
 main {
   margin: 0 20px;
+}
+.cont {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
 }
 </style>
