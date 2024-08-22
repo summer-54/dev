@@ -41,7 +41,7 @@ export default defineComponent({
       }];
       this.percentsDatasets = [{
         data: attemptsCountPerTask,
-        label: "Среднее кол-во попыток на задачу",
+        label: "Среднее количество попыток на задачу",
         borderColor: this.$themeName === "light" ? "#001285" : "#0721c8",
         backgroundColor: this.$themeName === "light" ? "#001285" : "#0721c8",
         tension: .5
