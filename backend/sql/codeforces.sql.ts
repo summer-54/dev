@@ -197,12 +197,12 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
         let solved = new Set<string>(), attemptsSum = 0;
         for(let j of res[i].standings){
             // TODO: Check if submission was before results
-            attemptsSum += Math.abs(j.status);
             if(j.status <= 0) continue;
+            attemptsSum += Math.abs(j.status);
             solved.add(j.task);
         }
         res[i].problemsDoneCount = solved.size;
-        res[i].attemptsCount = attemptsSum / Object.keys(cur.problems).length;
+        res[i].attemptsCount = attemptsSum / cur.standings.filter(({userId, status}) => userId === user && status > 0).length;
         res[i].place = cur.places.find(({userId}) => userId === user)?.place ?? -1;
     }
     return res;
