@@ -8,7 +8,7 @@ export function parseProblemSolutionsCount(elem: string | number): number {
 export class StandingsRow {
     public problems: Array<[number, boolean]>;
 
-    public constructor(public name: string, public total: number, public penalty: number, problems: Array<string | number>, notOfficial: boolean) {
+    public constructor(public name: string, public place: number, public total: number, public penalty: number, problems: Array<string | number>, notOfficial: boolean) {
         this.problems = problems.map(elem => [parseProblemSolutionsCount(elem), notOfficial]);
     }
 
@@ -52,9 +52,9 @@ export class Standings {
         return JSON.stringify(this.object);
     }
 
-    public addRow(name: string, total: number, penalty: number, problems: Array<string | number>, notOfficial: boolean): Standings {
+    public addRow(name: string, place: number, total: number, penalty: number, problems: Array<string | number>, notOfficial: boolean): Standings {
         if (name in this.rows) this.rows[name].update(problems, notOfficial);
-        else this.rows[name] = new StandingsRow(name, total, penalty, problems, notOfficial);
+        else this.rows[name] = new StandingsRow(name, place, total, penalty, problems, notOfficial);
         return this;
     }
 }
@@ -63,6 +63,7 @@ export function parseStandingsRow(row: Element) {
     // return new StandingsRow(row.children[1].querySelector("a")?.innerHTML ?? "", Number(row.children[2].innerHTML), Number(row.children[3].innerHTML), Array.from(row.children).filter((_, index) => index >= 4).map(elem => elem.children[0].innerHTML), row.children[1].innerHTML.trim().startsWith("*"));
     return {
         name: row.children[1].querySelector("a")?.innerHTML ?? "",
+        place: Number(row.children[0].innerHTML),
         total: Number(row.children[2].innerHTML),
         penalty: Number(row.children[3].innerHTML),
         problems: Array.from(row.children).filter((_, index) => index >= 4).map(elem => elem.children[0].innerHTML),
@@ -79,8 +80,8 @@ export function parseStandings(html: JSDOM | string, contestId: number): Standin
             .map(elem => elem.children[0].attributes.getNamedItem("title")?.value ?? elem.children[0].children[0].innerHTML)
     );
     for (let i = 1; i < rows.length - 1; i++) {
-        let {name, total, penalty, problems, notOfficial} = parseStandingsRow(rows[i]);
-        standings.addRow(name, total, penalty, problems, notOfficial);
+        let {name, place, total, penalty, problems, notOfficial} = parseStandingsRow(rows[i]);
+        standings.addRow(name, place, total, penalty, problems, notOfficial);
     }
     return standings;
 }

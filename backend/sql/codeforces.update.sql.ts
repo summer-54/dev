@@ -40,6 +40,13 @@ export async function updateContestStandingsRow(contest: number, user: number, t
 export async function updateContestStandingsUser(contest: number, row: StandingsRow, problems: Array<number>, users: {[key: string]: number}): Promise<void> {
     let user = users[row.name.toLowerCase()];
     if (!user) return;
+    let place = await db.selectFrom("usersContests").where(({and, eb}) => and([eb("contest", '=', contest), eb("user", '=', user)])).selectAll().executeTakeFirst();
+    if (!place) {
+        await db.insertInto("usersContests").values({contest, user, place: row.place}).execute();
+    }
+    else {
+        await db.updateTable("usersContests").where("id", '=', place.id).set({place: row.place}).execute();
+    }
     await Promise.all(problems.map((problem, index) => updateContestStandingsRow(contest, user, problem, row.problems[index][0], row.problems[index][1])));
 }
 

@@ -45,6 +45,13 @@ export interface ContestsTable {
     problemsPdfLink?: string;
 }
 
+export interface UsersContestsTable {
+    id: Generated<number>;
+    user: number;
+    contest: number;
+    place: number;
+}
+
 export interface ProblemsTable {
     id: Generated<number>;
     contest: number;
@@ -70,6 +77,7 @@ export interface Database {
     users: UsersTable;
     sessions: SessionsTable;
     contests: ContestsTable;
+    usersContests: UsersContestsTable;
     problems: ProblemsTable;
     standings: StandingsTable;
 }

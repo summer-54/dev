@@ -18,6 +18,7 @@ export type ContestType = {
         datetime: Date,
         notOfficial: boolean
     }>
+    places: Array<{userId: number, username: string, place: number}>
 }
 
 export type FullStandingsType = {
@@ -40,7 +41,8 @@ export type UserResultsContestType = {
         notOfficial: boolean
     }>,
     problemsDoneCount: number,
-    attemptsCount: number
+    attemptsCount: number,
+    place: number
 }
 
 export type UserStatisticsType = {
@@ -59,6 +61,8 @@ export async function getAllContests(): Promise<Array<ContestType>> {
     let standings = await db.selectFrom("standings")
         .select(["contest", "user", "task", "status", "datetime", "notOfficial"])
         .where("available", '=', true).execute();
+    let userContests = await db.selectFrom("usersContests")
+        .select(["user", "contest", "place"]).execute();
     let problemsMap = new Map<number, string>();
     problems.forEach(({id, title}) => problemsMap.set(id, title));
     let usersMap = new Map<number, string>();
@@ -74,7 +78,9 @@ export async function getAllContests(): Promise<Array<ContestType>> {
                 taskId: task,
                 task: problemsMap.get(task) ?? "",
                 status, datetime, notOfficial
-            }))
+            })),
+        places: userContests.filter(({contest}) => contest === id)
+            .map(({user, place}) => ({userId: user, username: usersMap.get(user) ?? "", place}))
     }));
 }
 
@@ -146,6 +152,9 @@ export async function getContest(id: number): Promise<ContestType | undefined> {
             eb("available", '=', true),
             eb("contest", '=', id)
         ])).execute();
+    let userContests = await db.selectFrom("usersContests")
+        .select(["user", "contest", "place"])
+        .where("contest", '=', id).execute();
     let problemsMap = new Map<number, string>();
     problems.forEach(({id, title}) => problemsMap.set(id, title));
     let usersMap = new Map<number, string>();
@@ -157,15 +166,15 @@ export async function getContest(id: number): Promise<ContestType | undefined> {
         solutionsPublishDatetime: contest.solutionsPublishDatetime,
         solutionsVideoId: contest.solutionsVideoId,
         problemsPdfLink: contest.problemsPdfLink,
-        problems: Object.fromEntries(problems.filter(({contest}) => contest === id).map(({title, pdfLink}) => [title, pdfLink])),
-        standings: standings.filter(({contest}) => contest === id)
-            .map(({user, task, status, datetime, notOfficial}) => ({
-                userId: user,
-                username: usersMap.get(user) ?? "",
-                taskId: task,
-                task: problemsMap.get(task) ?? "",
-                status, datetime, notOfficial
-            }))
+        problems: Object.fromEntries(problems.map(({title, pdfLink}) => [title, pdfLink])),
+        standings: standings.map(({user, task, status, datetime, notOfficial}) => ({
+            userId: user,
+            username: usersMap.get(user) ?? "",
+            taskId: task,
+            task: problemsMap.get(task) ?? "",
+            status, datetime, notOfficial
+        })),
+        places: userContests.map(({user, place}) => ({userId: user, username: usersMap.get(user) ?? "", place}))
     }
 }
 
@@ -194,6 +203,7 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
         }
         res[i].problemsDoneCount = solved.size;
         res[i].attemptsCount = attemptsSum / Object.keys(cur.problems).length;
+        res[i].place = cur.places.find(({userId}) => userId === user)?.place ?? -1;
     }
     return res;
     // return contests.map(({id, name, problems, standings}) => ({

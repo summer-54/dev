@@ -45,6 +45,13 @@ export default async function () {
             .addColumn("problemsPdfLink", "varchar(512)").execute();
     } catch (error) {}
     try {
+        await db.schema.createTable("usersContests")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("contest", "integer", cb => cb.notNull().references("contests.id"))
+            .addColumn("place", "integer", cb => cb.notNull()).execute();
+    } catch (error) {}
+    try {
         await db.schema.createTable("problems")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("contest", "integer", cb => cb.notNull().references("contests.id"))
