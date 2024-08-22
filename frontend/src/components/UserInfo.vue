@@ -3,7 +3,7 @@ import {defineComponent, type PropType} from 'vue';
 import {Line} from "vue-chartjs";
 import IconButton from "@/components/ui/iconButton.vue";
 import {type UserType} from "@/api/users";
-import {getUserStatistics} from "@/api/codeforces";
+import {getFullStandings, getUserStatistics} from "@/api/codeforces";
 import Title from "@/components/Title.vue";
 import type {ChartDataset} from "chart.js";
 
@@ -20,12 +20,15 @@ export default defineComponent({
     return {
       labels: [] as Array<string>,
       tasksDatasets: [] as Array<ChartDataset<"line">>,
-      percentsDatasets: [] as Array<ChartDataset<"line">>
+      percentsDatasets: [] as Array<ChartDataset<"line">>,
+      participatingInCup: false,
+      cupDatasets: [] as Array<ChartDataset<"line">>
     }
   },
   methods: {
     async updateStatistics() {
-      let {perContest, hardTasks, attemptsCountPerTask} = await getUserStatistics(this.user?.username ?? "");
+      let username = this.user?.username ?? "";
+      let {perContest, hardTasks, attemptsCountPerTask} = await getUserStatistics(username);
       this.tasksDatasets = [{
         data: perContest.map(percent => Math.round(percent * 10) / 10),
         label: "Процент решенных задач",
@@ -49,6 +52,17 @@ export default defineComponent({
       this.labels = [];
       for (let i = 1; i <= perContest.length; i++) this.labels.push(`${i} тур`);
       console.log(this.tasksDatasets, this.labels);
+      let standings = (await getFullStandings()).standings;
+      if (standings[username] !== undefined) {
+        this.participatingInCup = true;
+        this.cupDatasets = [{
+          data: standings[username],
+          label: "Баллы в ЛКП",
+          borderColor: this.$themeName === "light" ? "#ff8b00" : "#ff8b00",
+          backgroundColor: this.$themeName === "light" ? "#ff8b00" : "#ff8b00",
+          tension: .5
+        }]
+      }
     }
   },
   mounted() {
@@ -81,6 +95,9 @@ export default defineComponent({
       </div>
       <div class="chart">
         <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0}}}"/>
+      </div>
+      <div class="chart" v-if="participatingInCup">
+        <Line :data="{labels, datasets: cupDatasets}" :options="{scales: {y: {min: 0, max: 90}}}"/>
       </div>
     </div>
   </main>
