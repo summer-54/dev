@@ -81,6 +81,7 @@ header {
 
   @media (max-width: 500px) {
     justify-content: center;
+    gap: 20px;
   }
 }
 
