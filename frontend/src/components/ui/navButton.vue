@@ -3,9 +3,13 @@ import {defineComponent} from 'vue'
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
 import IconButton from "@/components/ui/iconButton.vue";
+import {ROUTER_PATH_PREFIX} from "@/serverConfig.js";
 
 export default defineComponent({
   name: "navButton",
+  data() {
+    return {ROUTER_PATH_PREFIX}
+  },
   components: {IconButton, SuiButton},
   props: {
     icon: {
@@ -33,7 +37,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <RouterLink :to="to">
+  <RouterLink :to="ROUTER_PATH_PREFIX + to">
     <IconButton :icon="icon" :noText="noText" :notInvert :alt="alt"><slot/></IconButton>
   </RouterLink>
 </template>
