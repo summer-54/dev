@@ -1,17 +1,19 @@
 import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "@/views/home/HomeView.vue";
 import {ref} from "vue";
+import {ROUTER_PATH_PREFIX} from "@/serverConfig.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: `${ROUTER_PATH_PREFIX}/`,
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      alias: ["/"]
     },
     {
-      path: '/summer-cup',
+      path: `${ROUTER_PATH_PREFIX}/summer-cup`,
       name: 'summerCup',
       component: () => import("@/views/summerCup/SummerCupView.vue"),
       children: [
@@ -29,36 +31,41 @@ const router = createRouter({
             }
           ]
         }
-      ]
+      ],
+      alias: ["/summer-cup"]
     },
     {
-      path: '/olymp',
+      path: `${ROUTER_PATH_PREFIX}/olymp`,
       name: 'olymp',
-      component: () => import("@/views/olymp/OlympView.vue")
+      component: () => import("@/views/olymp/OlympView.vue"),
+      alias: ["/olymp"]
     },
     {
-      path: '/news/:id',
+      path: `${ROUTER_PATH_PREFIX}/news/:id`,
       name: 'news',
-      component: () => import("@/views/news/NewsView.vue")
+      component: () => import("@/views/news/NewsView.vue"),
+      alias: ["/news/:id"]
     },
     {
-      path: "/test",
+      path: `${ROUTER_PATH_PREFIX}/test`,
       name: 'test',
-      component: () => import("@/views/test/TestView.vue")
+      component: () => import("@/views/test/TestView.vue"),
+      alias: ["/test"]
     },
     {
-      path: "/sign-in",
+      path: `${ROUTER_PATH_PREFIX}/sign-in`,
       name: "signIn",
-      component: () => import("@/views/signIn/SignInView.vue")
+      component: () => import("@/views/signIn/SignInView.vue"),
+      alias: ["/sign-in"]
     },
     {
-      path: "/registration",
+      path: `${ROUTER_PATH_PREFIX}/registration`,
       name: "registration",
       component: () => import("@/views/registration/RegistrationView.vue"),
-      alias: ["/reg"]
+      alias: ["/reg", "/registration"]
     },
     {
-      path: "/me",
+      path: `${ROUTER_PATH_PREFIX}/me`,
       name: "me",
       component: () => import("@/views/me/MeView.vue"),
       children: [
@@ -70,15 +77,17 @@ const router = createRouter({
           path: "settings",
           component: () => import("@/views/me/SettingsSubView.vue"),
         }
-      ]
+      ],
+      alias: ["/me"]
     },
     {
-      path: "/users/:username",
+      path: `${ROUTER_PATH_PREFIX}/users/:username`,
       name: "user",
       component: () => import("@/views/user/UserView.vue"),
+      alias: ["/users/:username"]
     },
     {
-      path: "/admin",
+      path: `${ROUTER_PATH_PREFIX}/admin`,
       name: "admin",
       component: () => import("@/views/admin/AdminView.vue"),
       children: [
@@ -106,7 +115,8 @@ const router = createRouter({
           path: "news/:id",
           component: () => import("@/views/admin/EditNewSubView.vue")
         }
-      ]
+      ],
+      alias: ["/admin"]
     }
   ]
 });

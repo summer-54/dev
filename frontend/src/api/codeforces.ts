@@ -1,5 +1,5 @@
 import axios from "axios";
-import {SERVER_URL} from "@/api/index";
+import {SERVER_URL} from "@/serverConfig.js";
 import {readFileBase64} from "@/utils.js";
 
 export type ContestType = {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {SERVER_URL} from "@/api/index.js";
+import {SERVER_URL} from "@/serverConfig.js";
 import {ref} from "vue";
 // import {RSAEncrypt} from "scryptex";
 
