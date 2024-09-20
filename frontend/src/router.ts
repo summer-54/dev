@@ -117,6 +117,11 @@ const router = createRouter({
         }
       ],
       alias: ["/admin"]
+    },
+    {
+      path: `${ROUTER_PATH_PREFIX}/summer-camp`,
+      name: "summer-camp",
+      component: () => import("@/views/summerCamp/SummerCamp.vue")
     }
   ]
 });

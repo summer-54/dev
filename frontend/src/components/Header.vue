@@ -5,6 +5,7 @@
       <NavButton to="/" :icon="homeIcon">Главная</NavButton>
       <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
       <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
+      <NavButton to="/summer-camp" :icon="campIcon">ЛШП</NavButton>
       <NavButton alt="account" to="/me" :icon="accountIcon" noText/>
       <IconButton alt="changeTheme" :icon="$themeName === 'dark' ? lightIcon : darkIcon" noText @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')"/>
     </nav>
@@ -19,6 +20,7 @@
         <NavButton to="/" :icon="homeIcon">Главная</NavButton>
         <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
         <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
+        <NavButton to="/camp" :icon="campIcon">ЛШП</NavButton>
       </nav>
     </footer>
   </teleport>
@@ -28,19 +30,20 @@
 import {defineComponent} from "vue";
 import CustomRouterLink from "@/components/ui/customRouterLink.vue";
 import NavButton from "@/components/ui/navButton.vue";
+import IconButton from "@/components/ui/iconButton.vue";
 import homeIcon from "@/assets/home.svg"
 import cupIcon from "@/assets/cup.svg"
 import olympIcon from "@/assets/olymp.svg"
 import accountIcon from "@/assets/account.svg"
 import darkIcon from "@/assets/dark.svg"
 import lightIcon from "@/assets/light.svg"
-import IconButton from "@/components/ui/iconButton.vue";
+import campIcon from "@/assets/camp.svg"
 
 export default defineComponent({
   name: "Header",
   components: {IconButton, NavButton, CustomRouterLink},
   data() {
-    return {homeIcon, cupIcon, olympIcon, accountIcon, darkIcon, lightIcon}
+    return {homeIcon, cupIcon, olympIcon, accountIcon, darkIcon, lightIcon, campIcon}
   },
 });
 </script>
