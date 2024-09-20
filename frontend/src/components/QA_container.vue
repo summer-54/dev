@@ -2,7 +2,7 @@
   <div>
     <span class="qa_container" v-for="{q, a} in qa_list">
       <Subtitle :text="q" class="subtitle"></Subtitle>
-      <span class="answer">{{ a }}</span>
+      <span class="answer" v-html="a"></span>
     </span>
   </div>
 </template>
