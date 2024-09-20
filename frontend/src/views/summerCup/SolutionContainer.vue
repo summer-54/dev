@@ -44,21 +44,23 @@ export default defineComponent({
   computed: {
     ending() {
       let result = [] as Array<string>;
-      for(let i = 0; i < this.solutions.length; i++){
+      for (let i = 0; i < this.solutions.length; i++) {
         let amount = this.solutions[i].tasks_amount;
-        if(amount === undefined){
+        if (amount === undefined) {
           result[i] = "";
           continue;
         }
-        if(10 <= amount%100 && amount%100 <= 19){
+        let last_digit = amount % 10;
+        let last_2_digits = amount % 100;
+        if (10 <= last_2_digits && last_2_digits <= 19) {
           result[i] = "";
           continue;
         }
-        if(amount%10 == 1){
+        if (last_digit == 1) {
           result[i] = "а";
           continue;
         }
-        if(2 <= amount%10 && amount%10 <= 4){
+        if (2 <= last_digit && last_digit <= 4) {
           result[i] = "и";
           continue;
         }
