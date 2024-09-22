@@ -11,7 +11,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="field"><span class="key">{{ statName }}</span><span class="value">{{ statValue }}</span></div>
+  <div class="field">
+    <span class="key">{{ statName }}</span>
+    <span class="value" v-if="statValue !== -1">{{ statValue }}</span>
+    <span class="value" v-else>Загрузка...</span>
+  </div>
 </template>
 
 <style>
