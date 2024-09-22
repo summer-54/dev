@@ -30,7 +30,11 @@ export default defineComponent({
           {num:  5, href: undefined, tasks_amount:  9, date: "26.06.2024—19.07.2024", solution: "6z9clGg8s7E"},
           {num:  6, href: undefined, tasks_amount:  9, date: "06.07.2024—19.07.2024", solution: "GXFJrkMJrRw"},
           {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", solution: "jvEdVcos6Ms"},
-          {num:  8, href: undefined, tasks_amount: 11, date: "21.07.2024—02.08.2024", solution: "Zx9LE6WFeaY"}
+          {num:  8, href: undefined, tasks_amount: 11, date: "21.07.2024—02.08.2024", solution: "Zx9LE6WFeaY"},
+          {num:  9, href: undefined, tasks_amount:  9, date: "27.07.2024—09.08.2024", solution: "1HMJNzHsW8Q"},
+          {num: 10, href: undefined, tasks_amount: 10, date: "01.08.2024—16.08.2024", solution: "kew51D-ZVFU"},
+          {num: 11, href: undefined, tasks_amount:  9, date: "11.08.2024—23.08.2024", solution: "/LKP_2_11_solutions.pdf"},
+          {num: 12, href: undefined, tasks_amount: 11, date: "21.08.2024—30.08.2024", solution: undefined}
         ]
       ]
     }
@@ -69,15 +73,17 @@ button {
     flex-direction: column;
   }
   margin: 0 40px;
+  align-items: center;
 }
 
 nav {
   display: flex;
   flex-direction: column;
+  /*flex-wrap: wrap;
+  max-height: 70vh;*/
   margin-right: 20px;
   @media (max-width: 768px){
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: space-around;
     margin-right: 0;
     margin-bottom: 20px;
