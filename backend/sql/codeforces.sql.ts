@@ -205,9 +205,10 @@ export async function getContest(id: number): Promise<ContestType | undefined> {
 export async function getUserResults(user: number): Promise<Array<UserResultsContestType>> {
     let contests = await getAllContests();
     let res = [] as Array<UserResultsContestType>;
-    for(let i = 0; i < contests.length; i++){
+    for(let j = 0; j < contests.length; j++){
         res.push({} as UserResultsContestType);
-        let cur = contests[i];
+        let cur = contests[j];
+        let i = Number(cur.name.slice(0, 2));
         res[i].id = cur.id; 
         res[i].name = cur.name;
         res[i].solutionsPublishDatetime = cur.solutionsPublishDatetime;
