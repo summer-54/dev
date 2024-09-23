@@ -204,11 +204,14 @@ export async function getContest(id: number): Promise<ContestType | undefined> {
 
 export async function getUserResults(user: number): Promise<Array<UserResultsContestType>> {
     let contests = await getAllContests();
-    let res = [] as Array<UserResultsContestType>;
-    for(let j = 0; j < contests.length; j++){
+    let res: Array<UserResultsContestType> = [];
+    for(let i = 0; i < contests.length; i++){
         res.push({} as UserResultsContestType);
-        let cur = contests[j];
-        let i = Number(cur.name.slice(0, 2));
+        let cur = contests[i];
+        // console.log(cur);
+        // let i = Number(cur.name.slice(0, 2)) - 1;
+        // console.log(i, cur.name.slice(0, 2), res.length);
+        // while (res.length <= i) {res.push({} as UserResultsContestType);}
         res[i].id = cur.id; 
         res[i].name = cur.name;
         res[i].solutionsPublishDatetime = cur.solutionsPublishDatetime;
@@ -227,10 +230,10 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
             solved.add(j.task);
         }
         res[i].problemsDoneCount = solved.size;
-        res[i].attemptsCount = attemptsSum / cur.standings.filter(({userId, status}) => userId === user && status > 0).length;
+        res[i].attemptsCount = attemptsSum;
         res[i].place = cur.places.find(({userId}) => userId === user)?.place ?? -1;
     }
-    return res;
+    return res.sort((a, b) => Number(a.name.slice(0, 2)) - Number(b.name.slice(0, 2)));
     // return contests.map(({id, name, problems, standings}) => ({
     //     id, name, problems,
     //     standings: standings.filter(({userId}) => userId === user)
@@ -258,12 +261,15 @@ export async function getUserStatistics(user: number): Promise<UserStatisticsTyp
     let userResults = await getUserResults(user);
     let hardTasks = await Promise.all(userResults.map(async ({id}) => await getHardTasks(id)));
     return {
-        perContest: userResults.map(({problemsDoneCount, problems}) => problemsDoneCount / Object.keys(problems).length * 100),
+        perContest: userResults.map(({problemsDoneCount, problems}) => {
+            console.log(problems);
+            return problemsDoneCount / Object.keys(problems).length * 100;
+        }),
         hardTasks: userResults.map(({standings, problems}, index) => (new Set(standings
             .filter(({status, taskId}) => status > 0 && hardTasks[index].includes(taskId))
             .map(({task}) => task))).size / Object.keys(problems).length * 100
         ),
-        attemptsCountPerTask: userResults.map(({attemptsCount}) => attemptsCount)
+        attemptsCountPerTask: userResults.map(({attemptsCount, problemsDoneCount}) => attemptsCount / problemsDoneCount)
     }
 }
 
