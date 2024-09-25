@@ -129,6 +129,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
             }
         }
         for (const user of Array.from(has_official.keys())) {
+            if (!res[user]) res[user] = [];
             res[user][i] = pointsByPlace(places.get(user) ?? -1)
         }
         for (const user of Array.from(before_solution.keys())) {
