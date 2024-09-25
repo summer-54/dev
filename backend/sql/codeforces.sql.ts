@@ -147,6 +147,7 @@ export async function getFullStandings(): Promise<FullStandingsType> {
             res[user][i] += 30 * after_solution_tasks / problem_amount;
         }
         for (const user in Array.from(after_solution.keys())) {
+            if (!res[user]) res[user] = [];
             if (before_solution.get(user) !== undefined) continue;
             res[user][i] = 30 * (after_solution.get(user)?.size ?? 0) / problem_amount;
         }
