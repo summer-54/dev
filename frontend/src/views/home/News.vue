@@ -1,18 +1,18 @@
 <template>
   <span class="all_new" v-if="!page">
     <span class="news">
-      <span class="title">{{ title }}</span>
+      <span class="title" v-html="title"></span>
       <img :src="src" class="img">
-      <span class="comment">{{ comment }}</span>
+      <span class="comment" v-html="comment"></span>
     </span>
   </span>
   <span class="all_new" v-else>
     <RouterLink :to="page">
       <SuiButton transform="1.2">
         <span class="news">
-          <span class="title">{{ title }}</span>
+          <span class="title" v-html="title"></span>
           <img :src="src" class="img">
-          <span class="comment">{{ comment }}</span>
+          <span class="comment" v-html="comment"></span>
         </span>
       </SuiButton>
     </RouterLink>
