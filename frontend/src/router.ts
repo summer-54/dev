@@ -121,7 +121,8 @@ const router = createRouter({
     {
       path: `${ROUTER_PATH_PREFIX}/summer-camp`,
       name: "summer-camp",
-      component: () => import("@/views/summerCamp/SummerCamp.vue")
+      component: () => import("@/views/summerCamp/SummerCamp.vue"),
+      alias: ["/summer-camp"]
     }
   ]
 });

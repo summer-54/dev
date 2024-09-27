@@ -20,7 +20,7 @@
         <NavButton to="/" :icon="homeIcon">Главная</NavButton>
         <NavButton to="/olymp" :icon="olympIcon">Олимпиада</NavButton>
         <NavButton to="/summer-cup" :icon="cupIcon">Летний кубок</NavButton>
-        <NavButton to="/camp" :icon="campIcon">ЛШП</NavButton>
+        <NavButton to="/summer-camp" :icon="campIcon">ЛШП</NavButton>
       </nav>
     </footer>
   </teleport>
