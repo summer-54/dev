@@ -77,9 +77,7 @@ export default defineComponent({
       </span>
       <Title :text="news.title" />
       <span class="date"><img src="@/assets/clock.svg"><span>{{ date }}</span></span>
-      <span class="text">
-        {{ news.fullText }}
-      </span>
+      <span class="text" v-html="news.fullText"></span>
       <span v-if="images.length > 0">
         <Subtitle style="text-align: center" text="Фотогалерея" />
         <ImageGallery :imgs_list="images" />
