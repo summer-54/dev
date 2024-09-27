@@ -96,11 +96,13 @@ export default defineComponent({
       <div class="chart">
         <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0}}}"/>
       </div>
-      <div class="chart" v-if="participatingInCup">
+    </div>
+    <div class="charts" v-if="participatingInCup">
+      <div class="chart">
         <Line :data="{labels, datasets: cupDatasets}" :options="{scales: {y: {min: 0, max: 90}}}"/>
       </div>
     </div>
-  </main>
+    </main>
 </template>
 
 <style scoped>
