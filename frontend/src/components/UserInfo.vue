@@ -1,6 +1,7 @@
 <script lang="ts">
 import {defineComponent, type PropType} from 'vue';
 import {Line} from "vue-chartjs";
+import type { Chart } from 'chart.js';
 import IconButton from "@/components/ui/iconButton.vue";
 import {type UserType} from "@/api/users";
 import {getFullStandings, getUserStatistics} from "@/api/codeforces";
@@ -90,16 +91,22 @@ export default defineComponent({
       <slot/>
     </div>
     <div class="charts">
-      <div class="chart">
-        <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0, max: 100}}}"/>
+      <div class="chartp">
+        <div class="chart">
+          <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0, max: 100}}, maintainAspectRatio: false}"/>
+        </div>
       </div>
-      <div class="chart">
-        <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0}}}"/>
+      <div class="chartp">
+        <div class="chart">
+          <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0}}, maintainAspectRatio: false}"/>
+        </div>
       </div>
     </div>
     <div class="charts" v-if="participatingInCup">
-      <div class="chart">
-        <Line :data="{labels, datasets: cupDatasets}" :options="{scales: {y: {min: 0, max: 90}}}"/>
+      <div class="chartp">
+        <div class="chart">
+          <Line :data="{labels, datasets: cupDatasets}" :options="{scales: {y: {min: 0, max: 90}}, maintainAspectRatio: false}"/>
+        </div>
       </div>
     </div>
     </main>
@@ -143,8 +150,8 @@ export default defineComponent({
     display: flex;
     justify-content: space-around;
 
-    .chart {
-      width: 50%;
+    .chartp {
+      width: 45vw;
 
       canvas {
         position: relative;
