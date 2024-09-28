@@ -141,6 +141,7 @@ export default defineComponent({
 @media (min-width: 1000px) {
   .charts {
     display: flex;
+    justify-content: space-around;
 
     .chart {
       width: 50%;
