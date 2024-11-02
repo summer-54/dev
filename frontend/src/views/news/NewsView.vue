@@ -107,7 +107,6 @@ export default defineComponent({
 .text {
   text-align: justify;
   font-size: 18px;
-  word-break: break-all;
   @media (min-width: 530px) and (max-width: 940px) {
     font-size: 16px;
   }
