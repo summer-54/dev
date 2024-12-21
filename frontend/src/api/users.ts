@@ -3,10 +3,6 @@ import {SERVER_URL} from "@/serverConfig.js";
 import {ref} from "vue";
 import {RSAEncrypt} from "scryptex";
 
-// function RSAEncrypt(data: string, key: string): string {
-//     return data;
-// }
-
 export type SearchUserType = {
     username: string,
     codeforcesHandle: string,

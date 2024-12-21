@@ -191,7 +191,6 @@ router.post<{
     }
     let token = await register({username, codeforcesHandle, firstName, lastName, password: rsaKeys[keyId].decrypt(password).toString()});
     removeKey(request.body.keyId);
-    // let token = await register({username, codeforcesHandle, firstName, lastName, password});
     if (!token) {
         response.status(500);
         response.end("");
@@ -217,7 +216,6 @@ router.post<{
 router.post<{username: string, password: string, keyId: number}>("/users/signin", async (request, response) => {
     let token = await signIn(request.body.username, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
     removeKey(request.body.keyId);
-    // let token = await signIn(username, password);
     if (!token) {
         response.status(401);
         response.end("");
@@ -239,7 +237,6 @@ router.post<{username: string, password: string, keyId: number}>("/users/signin"
 router.patch<{old: string, new: string, keyId: number}, {}, {}, {id: number, passwordHash: string}>("/me/password", async (request, response) => {
     let {old: oldPassword, new: newPassword, keyId} = request.body;
     let {id, passwordHash} = request.auth;
-    // if (!compareHash(oldPassword, passwordHash)) {
     if (!compareHash(rsaKeys[keyId].decrypt(oldPassword).toString(), passwordHash)) {
         removeKey(keyId);
         response.status(418);
@@ -248,7 +245,6 @@ router.patch<{old: string, new: string, keyId: number}, {}, {}, {id: number, pas
     }
     await patchUserPassword(id, rsaKeys[keyId].decrypt(newPassword).toString());
     removeKey(keyId);
-    // await patchUserPassword(id, newPassword);
     response.end();
 }, {
     bodyValidator: object({
