@@ -128,13 +128,13 @@ header {
   }
 
   span {
-    @media (min-width: 626px) {
-      display: none;
-    }
-
     display: flex;
     margin: 0 8px;
     gap: 8px;
+
+    @media (min-width: 626px) {
+      display: none;
+    }
   }
 }
 

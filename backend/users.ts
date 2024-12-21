@@ -15,70 +15,11 @@ import {
     signOut
 } from "./sql/users.sql.js";
 import {searchUsers} from "./sql/search.sql.js";
-import {rsa} from "./rsa.js";
+import {removeKey, rsaKeys} from "./rsa.js";
+import {int, object, string, ValidationError} from "checkeasy";
 
-export default buildHandlers({
+const router = buildHandlers({
     post: {
-        async "/users/register"(request, response) {
-            if (typeof request.body !== "object") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            if (typeof request.body.username !== "string" || typeof request.body.codeforcesHandle !== "string" ||
-                typeof request.body.firstName !== "string" || typeof request.body.lastName !== "string" ||
-                typeof request.body.password !== "string") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            let {username, codeforcesHandle, firstName, lastName, password} = request.body;
-            if (username.length < 4 || password.length < 4) {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            if (!(await isUniqueUsername(username))) {
-                response.status(409);
-                response.end("username");
-                return;
-            }
-            if (!(await isUniqueCodeforcesHandle(codeforcesHandle))) {
-                response.status(409);
-                response.end("codeforcesHandle");
-                return;
-            }
-            // let token = await register({username, codeforcesHandle, firstName, lastName, password: rsa.decrypt(password).toString()});
-            let token = await register({username, codeforcesHandle, firstName, lastName, password});
-            if (!token) {
-                response.status(500);
-                response.end("");
-                return;
-            }
-            response.status(201);
-            response.end(token);
-        },
-        async "/users/signin"(request, response) {
-            if (typeof request.body !== "object") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            if (typeof request.body.username !== "string" || typeof request.body.password !== "string") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            let {username, password} = request.body;
-            // let token = await signIn(username, rsa.decrypt(password).toString());
-            let token = await signIn(username, password);
-            if (!token) {
-                response.status(401);
-                response.end("");
-                return;
-            }
-            response.end(token);
-        },
         async "/users/signout"(request, response) {
             if (typeof request.headers.authorization !== "string") {
                 response.status(401);
@@ -192,41 +133,6 @@ export default buildHandlers({
             await Promise.all(promises);
             response.end("");
         },
-        async "/me/password"(request, response) {
-            if (typeof request.body !== "object") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            if (typeof request.body.old !== "string" || typeof request.body["new"] !== "string") {
-                response.status(400);
-                response.end("");
-                return;
-            }
-            let {old: oldPassword, new: newPassword} = request.body;
-            if (typeof request.headers.authorization !== "string") {
-                response.status(401);
-                response.end("");
-                return;
-            }
-            let {authorization: token} = request.headers;
-            let user = await getUserByToken(token, ["passwordHash", "id"]);
-            if (!user) {
-                response.status(401);
-                response.end("");
-                return;
-            }
-            let {id, passwordHash} = user;
-            if (!compareHash(oldPassword, passwordHash)) {
-            // if (!compareHash(rsa.decrypt(oldPassword).toString(), passwordHash)) {
-                response.status(418);
-                response.end("");
-                return;
-            }
-            // await patchUserPassword(id, rsa.decrypt(newPassword).toString());
-            await patchUserPassword(id, newPassword);
-            response.end("");
-        },
         async "/users"(request, response) {
             if (typeof request.headers.authorization !== "string" || !(await isAdmin(request.headers.authorization))) {
                 response.status(401);
@@ -258,3 +164,113 @@ export default buildHandlers({
         }
     }
 });
+
+router.post<{
+    username: string,
+    codeforcesHandle: string,
+    firstName: string,
+    lastName: string,
+    password: string,
+    keyId: number
+}>("/users/register", async (request, response) => {
+    let {username, codeforcesHandle, firstName, lastName, password, keyId} = request.body;
+    if (username.length < 4 || password.length < 4) {
+        response.status(400);
+        response.end("");
+        return;
+    }
+    if (!(await isUniqueUsername(username))) {
+        response.status(409);
+        response.end("username");
+        return;
+    }
+    if (!(await isUniqueCodeforcesHandle(codeforcesHandle))) {
+        response.status(409);
+        response.end("codeforcesHandle");
+        return;
+    }
+    let token = await register({username, codeforcesHandle, firstName, lastName, password: rsaKeys[keyId].decrypt(password).toString()});
+    removeKey(request.body.keyId);
+    // let token = await register({username, codeforcesHandle, firstName, lastName, password});
+    if (!token) {
+        response.status(500);
+        response.end("");
+        return;
+    }
+    response.status(201);
+    response.end(token);
+}, {
+    bodyValidator: object({
+        username: string(),
+        codeforcesHandle: string(),
+        firstName: string(),
+        lastName: string(),
+        password: string(),
+        keyId(key: any, path): number {
+            key = int()(key, path);
+            if (key >= rsaKeys.length) throw new ValidationError(`[${path}] doesn't exists`);
+            return key;
+        }
+    })
+});
+
+router.post<{username: string, password: string, keyId: number}>("/users/signin", async (request, response) => {
+    let token = await signIn(request.body.username, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
+    removeKey(request.body.keyId);
+    // let token = await signIn(username, password);
+    if (!token) {
+        response.status(401);
+        response.end("");
+        return;
+    }
+    response.end(token);
+}, {
+    bodyValidator: object({
+        username: string(),
+        password: string(),
+        keyId(key: any, path): number {
+            key = int()(key, path);
+            if (key >= rsaKeys.length) throw new ValidationError("[${path}] doesn't exists")
+            return key;
+        }
+    })
+});
+
+router.patch<{old: string, new: string, keyId: number}, {}, {}, {id: number, passwordHash: string}>("/me/password", async (request, response) => {
+    let {old: oldPassword, new: newPassword, keyId} = request.body;
+    let {id, passwordHash} = request.auth;
+    // if (!compareHash(oldPassword, passwordHash)) {
+    if (!compareHash(rsaKeys[keyId].decrypt(oldPassword).toString(), passwordHash)) {
+        removeKey(keyId);
+        response.status(418);
+        response.end("");
+        return;
+    }
+    await patchUserPassword(id, rsaKeys[keyId].decrypt(newPassword).toString());
+    removeKey(keyId);
+    // await patchUserPassword(id, newPassword);
+    response.end();
+}, {
+    bodyValidator: object({
+        old: string(),
+        new: string(),
+        keyId(key: any, path): number {
+            key = int()(key, path);
+            if (key >= rsaKeys.length) throw new ValidationError("[${path}] doesn't exists")
+            return key;
+        }
+    }),
+    async authChecker(request, response) {
+        if (typeof request.headers.authorization !== "string") {
+            response.status(401);
+            response.end("");
+            return null;
+        }
+        let {authorization: token} = request.headers;
+        let user = await getUserByToken(token, ["passwordHash", "id"]);
+        if (!user) return null;
+        return {id: user.id, passwordHash: user.passwordHash};
+    }
+})
+
+export default router;

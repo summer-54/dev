@@ -6,8 +6,9 @@ import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 import news from "./news.js";
 import users from "./users.js";
 import standings from "./standings.js";
-import {rsa} from "./rsa.js";
+import {rsaKeys, addKey} from "./rsa.js";
 import Backendium from "backendium";
+import {RSA} from "scryptex";
 
 async function main() {
     await setupEnv();
@@ -46,7 +47,7 @@ async function main() {
     });
 
     app.get("/key", (request, response) => {
-        response.end(rsa.publicKey);
+        response.end(addKey());
     });
 
     app.options("*", (request, response) => {

@@ -107,8 +107,8 @@ export function parseObjectTypes(object: {[key: string]: string}): {[key: string
     return obj;
 }
 
-export function buildHandlers(...handlersArray: Array<HandlersType>): BackendiumRouter {
-    let router = new BackendiumRouter();
+export function buildHandlers<Type = undefined>(...handlersArray: Array<HandlersType>): BackendiumRouter<Type> {
+    let router = new BackendiumRouter<Type>();
     handlersArray.forEach(handlers => {
         // Object.entries(handlers).forEach(([method, methodHandlers]: [MethodType, HandlerCallbackType]) => Object.entries(methodHandlers).forEach(([route, handler]) => {
         //     array.push([method, route, handler]);
