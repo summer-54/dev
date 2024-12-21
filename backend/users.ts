@@ -1,4 +1,4 @@
-import {buildHandlers} from "sbackend";
+import {buildHandlers} from "./legacy.js";
 import {compareHash} from "scryptex";
 import {
     adminUsersPatch,

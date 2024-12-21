@@ -1,15 +1,16 @@
-import {buildHandlers, SBackendWSResponse} from "sbackend";
+import {buildHandlers} from "./legacy.js";
 import * as fs from "node:fs";
 import {getNew, getNews, patchNew, postNew, removeNew} from "./sql/news.sql.js";
 import {isAdmin} from "./sql/users.sql.js";
+import {BackendiumWebSocket} from "backendium";
 
-let NewsConnections = new Map<number, Awaited<ReturnType<SBackendWSResponse["accept"]>>>;
+let NewsConnections = new Map<number, BackendiumWebSocket<any>>;
 
 function emitForAll(data: object) {
     Array.from(NewsConnections.entries()).forEach(([_, connection]) => connection.send(JSON.stringify(data)));
 }
 
-export default buildHandlers({
+const router = buildHandlers({
     get: {
         async "/news"(request, response) {
             response.status(200);
@@ -48,7 +49,7 @@ export default buildHandlers({
                 response.end("400: request.body isn't object");
                 return;
             }
-            let body: {[key: string]: any} = request.body;
+            let body: { [key: string]: any } = request.body;
             if (typeof body.title !== "string" || typeof body.description !== "string" || typeof body.fullText !== "string") {
                 response.status(400);
                 response.end("400: title, description ot fullText are not strings");
@@ -85,7 +86,7 @@ export default buildHandlers({
                 response.end("400: request.body isn't object");
                 return;
             }
-            let body: {[key: string]: any} = request.body;
+            let body: { [key: string]: any } = request.body;
             if (body.title && typeof body.title !== "string" ||
                 body.description && typeof body.description !== "string" ||
                 body.fullText && typeof body.fullText !== "string" ||
@@ -96,7 +97,14 @@ export default buildHandlers({
                 return;
             }
             let {title, description, fullText, img, images, attachments} = body;
-            let article = await patchNew(Number(request.params.id), {title, description, fullText, img, images, attachments});
+            let article = await patchNew(Number(request.params.id), {
+                title,
+                description,
+                fullText,
+                img,
+                images,
+                attachments
+            });
             response.end(article);
             emitForAll(article);
         }
@@ -112,14 +120,13 @@ export default buildHandlers({
             response.end();
             emitForAll({delete: Number(request.params.id)});
         }
-    },
-    websocket: {
-        async "/ws/news"(_, response) {
-            let connection = await response.accept();
-            console.log("accepted");
-            let id = Array.from(NewsConnections.keys()).reduce((previousValue, currentValue) => Math.max(previousValue, currentValue), 0) + 1;
-            NewsConnections.set(id, connection);
-            connection.on("close", () => NewsConnections.delete(id));
-        }
     }
 });
+
+router.ws("/ws/news").on("accept", (socket) => {
+    let id = Array.from(NewsConnections.keys()).reduce((previousValue, currentValue) => Math.max(previousValue, currentValue), 0) + 1;
+    NewsConnections.set(id, socket);
+    socket.on("close", () => NewsConnections.delete(id));
+});
+
+export default router;

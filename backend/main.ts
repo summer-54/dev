@@ -7,30 +7,38 @@ import news from "./news.js";
 import users from "./users.js";
 import standings from "./standings.js";
 import {rsa} from "./rsa.js";
+import Backendium from "backendium";
 
 async function main() {
     await setupEnv();
 
-    const app = new SBackend({
-        name: "test",
+    // const app = new SBackend({
+    //     name: "test",
+    //     version: "0.0.0",
+    //     logPath: "./latest.log",
+    //     host: process.env.HOST,
+    //     port: process.env.PORT
+    // });
+
+    const app = new Backendium({
+        name: "summerProject",
         version: "0.0.0",
-        logPath: "./latest.log",
         host: process.env.HOST,
-        port: process.env.PORT
+        port: Number(process.env.PORT)
     });
 
-    app.use("*", (request, response, next) => {
-        response.headers = {
+    app.use("*", (request, response, app, next) => {
+        response.expressResponse.set({
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
             "Access-Control-Allow-Headers": "*"
-        };
+        });
         next();
-    })
+    });
 
-    app.addHandlers(news);
-    app.addHandlers(users);
-    app.addHandlers(standings);
+    app.router(news);
+    app.router(users);
+    app.router(standings);
 
     app.get("/teapot", (request, response) => {
         response.status(418);
@@ -51,7 +59,7 @@ async function main() {
     });
 
     app.start(async () => {
-        console.log(app.routes);
+        // console.log(app.routes);
         // setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
     });
 }
