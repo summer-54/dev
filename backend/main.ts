@@ -1,14 +1,10 @@
 import "dotenv/config";
-import SBackend from "sbackend";
 import {setupEnv} from "./sql/index.sql.js";
-import {setupGroupStandingsUpdater} from "./codeforces.js";
-import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 import news from "./news.js";
 import users from "./users.js";
 import standings from "./standings.js";
-import {rsaKeys, addKey} from "./rsa.js";
+import {addKey} from "./rsa.js";
 import Backendium from "backendium";
-import {RSA} from "scryptex";
 
 async function main() {
     await setupEnv();
