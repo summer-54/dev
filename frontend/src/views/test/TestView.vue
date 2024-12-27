@@ -1,23 +1,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
+import PrimevueHeader from "@/views/test/primevue.vue";
 
 export default defineComponent({
   name: "TestView",
-  mounted() {
-    let connection = new WebSocket(`ws://localhost/api/ws/news`);
-    connection.onmessage = (e: MessageEvent) => {
-      console.log(e);
-    }
-  }
+  components: {PrimevueHeader}
 })
 </script>
 
 <template>
-  <div>
-
-  </div>
+<!--  <RadixHeader/>-->
+  <PrimevueHeader/>
 </template>
-
-<style scoped>
-
-</style>
