@@ -44,7 +44,7 @@ export default defineComponent({
   components: {IconButton, NavButton, CustomRouterLink},
   data() {
     return {homeIcon, cupIcon, olympIcon, accountIcon, darkIcon, lightIcon, campIcon}
-  },
+  }
 });
 </script>
 
