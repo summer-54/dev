@@ -13,6 +13,8 @@ import {
     Title as ChartJSTitle,
     Tooltip
 } from "chart.js";
+import PrimeVue from "primevue/config";
+import Aura from "@primevue/themes/aura";
 
 ChartJS.register(
     CategoryScale,
@@ -42,5 +44,10 @@ app.use(createVueSui({
     }
 }));
 app.use(createManager());
+app.use(PrimeVue, {
+    theme: {
+        preset: Aura
+    }
+});
 
 app.mount('#app');
