@@ -1,6 +1,6 @@
-
 <template>
   <div class="card">
+    <!-- @vue-skip -->
     <MegaMenu :model="items" :class="$style.megaMenu" style="border-radius: 3rem">
       <template #start>
         <h4>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h4>
