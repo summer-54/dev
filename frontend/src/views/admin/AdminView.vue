@@ -49,6 +49,9 @@ export default defineComponent({
   display: flex;
   height: 100%;
   align-items: flex-start;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 
   nav {
     padding: 10px;
@@ -56,7 +59,15 @@ export default defineComponent({
     margin-left: 20px;
 
     display: flex;
-    flex-direction: column;
+    @media (min-width: 768px) {
+      flex-direction: column;
+    }
+    @media (max-width: 768px) {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-right: 20px;
+    }
     gap: 20px;
 
     border: 2px solid v-bind(color);
