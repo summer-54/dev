@@ -31,6 +31,9 @@ services:
       DB_NAME: postgres
       PORT: 8080
       HOST: "0.0.0.0"
+      MAIL_HOST: smtp.yandex.yu
+      MAIL_USER: inf.54@yandex.ru
+      MAIL_PASS: ebyqmtqmlbdmzxhl
     volumes:
       - "newsAttachments:/app/newsAttachments"
       - "contestsProblems:/app/contestsProblems"
