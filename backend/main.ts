@@ -1,4 +1,3 @@
-import "dotenv/config";
 import {setupEnv} from "./sql/index.sql.js";
 import news from "./news.js";
 import users from "./users.js";
