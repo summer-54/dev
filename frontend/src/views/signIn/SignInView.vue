@@ -52,6 +52,9 @@ export default defineComponent({
         <SuiButton @click="submit" :disabled="pending" border="#9297FB">Войти</SuiButton>
         <RouterLink to="/registration"><SuiButton border="#9297FB">Зарегистрироваться</SuiButton></RouterLink>
       </span>
+      <span class="buttons">
+        <RouterLink to="/rec">Забыли пароль?</RouterLink>
+      </span>
     </CustomForm>
     <ProgressIndicator v-if="pending"/>
   </main>

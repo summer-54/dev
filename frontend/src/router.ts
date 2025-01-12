@@ -123,6 +123,12 @@ const router = createRouter({
       name: "summer-camp",
       component: () => import("@/views/summerCamp/SummerCamp.vue"),
       alias: ["/summer-camp"]
+    },
+    {
+      path: `${ROUTER_PATH_PREFIX}/rec`,
+      name: "rec",
+      component: () => import("@/views/recovery/RecView.vue"),
+      alias: ["/rec"]
     }
   ]
 });
