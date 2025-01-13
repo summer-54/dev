@@ -22,7 +22,7 @@ export async function getKey(): Promise<{key: string, id: number}> {
     return (await axios.get<{key: string, id: number}>(`${SERVER_URL}/key`)).data;
 }
 
-export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, password: string}) {
+export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, email: string, password: string}) {
     let {key, id} = await getKey();
     let response = await axios.post<string>(`${SERVER_URL}/users/register`, {...body, password: RSAEncrypt(body.password, key), keyId: id});
     if (response.status === 201) {
@@ -76,6 +76,12 @@ export async function getMe() {
 
 export async function isUniqueUsername(username: string): Promise<boolean | null> {
     let response = await axios.get<number>(`${SERVER_URL}/users/is-unique/username/${username}`);
+    if (response.status === 200) return Boolean(response.data);
+    return null;
+}
+
+export async function isUniqueEmail(email: string): Promise<boolean | null> {
+    let response = await axios.get<number>(`${SERVER_URL}/users/is-unique/email/${email}`);
     if (response.status === 200) return Boolean(response.data);
     return null;
 }

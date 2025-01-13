@@ -25,6 +25,7 @@ export interface UsersTable {
     firstName: string;
     lastName: string;
     passwordHash: string;
+    email: string;
     isAdmin: boolean;
 }
 

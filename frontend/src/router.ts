@@ -125,9 +125,9 @@ const router = createRouter({
       alias: ["/summer-camp"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/rec`,
+      path: `${ROUTER_PATH_PREFIX}/recovery`,
       name: "rec",
-      component: () => import("@/views/recovery/RecView.vue"),
+      component: () => import("@/views/recovery/RecoveryView.vue"),
       alias: ["/rec"]
     }
   ]

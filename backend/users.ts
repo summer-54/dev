@@ -6,7 +6,7 @@ import {
     getUserByToken,
     getUserByUsername,
     getUserIdByToken, isAdmin,
-    isUniqueCodeforcesHandle,
+    isUniqueCodeforcesHandle, isUniqueEmail,
     isUniqueUsername, makeAdmin,
     patchUser,
     patchUserPassword,
@@ -17,6 +17,7 @@ import {
 import {searchUsers} from "./sql/search.sql.js";
 import {removeKey, rsaKeys} from "./rsa.js";
 import {int, object, string, ValidationError} from "checkeasy";
+import {emailValidator} from "./mail.js";
 
 const router = buildHandlers({
     post: {
@@ -68,6 +69,15 @@ const router = buildHandlers({
                 return;
             }
             if (await isUniqueUsername(request.params.username)) response.end("1");
+            else response.end("0");
+        },
+        async "/users/is-unique/email/:email"(request, response) {
+            if (typeof request.params.email !== "string") {
+                response.status(400);
+                response.end("");
+                return;
+            }
+            if (await isUniqueEmail(request.params.email)) response.end("1");
             else response.end("0");
         },
         async "/users/is-unique/codeforces-handle/:codeforcesHandle"(request, response) {
@@ -170,10 +180,11 @@ router.post<{
     codeforcesHandle: string,
     firstName: string,
     lastName: string,
+    email: string,
     password: string,
     keyId: number
 }>("/users/register", async (request, response) => {
-    let {username, codeforcesHandle, firstName, lastName, password, keyId} = request.body;
+    let {username, codeforcesHandle, firstName, lastName, email, password, keyId} = request.body;
     if (username.length < 4 || password.length < 4) {
         response.status(400);
         response.end("");
@@ -189,7 +200,7 @@ router.post<{
         response.end("codeforcesHandle");
         return;
     }
-    let token = await register({username, codeforcesHandle, firstName, lastName, password: rsaKeys[keyId].decrypt(password).toString()});
+    let token = await register({username, codeforcesHandle, firstName, lastName, email, password: rsaKeys[keyId].decrypt(password).toString()});
     removeKey(request.body.keyId);
     if (!token) {
         response.status(500);
@@ -204,6 +215,7 @@ router.post<{
         codeforcesHandle: string(),
         firstName: string(),
         lastName: string(),
+        email: emailValidator(),
         password: string(),
         keyId(key: any, path): number {
             key = int()(key, path);

@@ -1,7 +1,7 @@
 <template>
   <Title text="Восстановление пароля"></Title>
   <CustomForm>
-    <SuiInput placeholder="Почта" />
+    <SuiInput placeholder="Почта"/>
     <SuiButton>Восстановить пароль</SuiButton>
   </CustomForm>
 </template>
@@ -16,7 +16,7 @@ import SuiInput from 'sffui.vue/suiInput.vue';
 import Title from '@/components/Title.vue';
 
 export default defineComponent({
-  name: "RecView",
+  name: "RecoveryView",
   components: {CustomForm, SuiButton, SuiInput, Title}
 });
 </script>

@@ -5,7 +5,7 @@ import SuiInput from "sffui.vue/suiInput.vue"
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
 import Title from "@/components/Title.vue";
-import {hasToken, isUniqueCodeforcesHandle, isUniqueUsername, register} from "@/api/users.js";
+import {hasToken, isUniqueCodeforcesHandle, isUniqueEmail, isUniqueUsername, register} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
 import FormComment from "@/components/ui/formComment.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
@@ -20,8 +20,10 @@ export default defineComponent({
       passwordRepeat: "",
       firstName: "",
       lastName: "",
+      email: "",
       codeforcesHandle: "",
       isUniqueUsername: true,
+      isUniqueEmail: true,
       isUsernameEnoughLength: true,
       isUniqueCodeforcesHandle: true,
       pending: false
@@ -34,6 +36,9 @@ export default defineComponent({
     username() {
       isUniqueUsername(this.username).then(unique => this.isUniqueUsername = Boolean(unique));
     },
+    email() {
+      isUniqueEmail(this.email).then(unique => this.isUniqueEmail = Boolean(unique));
+    },
     codeforcesHandle() {
       isUniqueCodeforcesHandle(this.codeforcesHandle).then(unique => this.isUniqueCodeforcesHandle = Boolean(unique));
     }
@@ -42,13 +47,14 @@ export default defineComponent({
     async submit(event: Event) {
       event.preventDefault();
       this.checkUsernameLength(true);
-      if (!this.isPasswordEqual || !this.isUniqueUsername || !this.isUniqueCodeforcesHandle || !this.isUsernameEnoughLength || this.passwordStrength <= 0 || this.pending) return;
+      if (!this.isPasswordEqual || !this.isUniqueUsername || !this.isUniqueEmail || !this.isUniqueCodeforcesHandle || !this.isUsernameEnoughLength || this.passwordStrength <= 0 || this.pending) return;
       this.pending = true;
       let response = await register({
         username: this.username,
         password: this.password,
         firstName: this.firstName,
         lastName: this.lastName,
+        email: this.email,
         codeforcesHandle: this.codeforcesHandle
       });
       this.pending = false;
@@ -92,8 +98,10 @@ export default defineComponent({
       <SuiInput maxLength="50" placeholder="Фамилия" v-model="lastName"/>
       <SuiInput maxLength="50" placeholder="Ник на Codeforces" v-model="codeforcesHandle"/>
       <FormComment v-if="!isUniqueCodeforcesHandle">Не уникально</FormComment>
+      <SuiInput maxLength="64" placeholder="Email" v-model="email"/>
+      <FormComment v-if="!isUniqueEmail">Не уникально</FormComment>
       <span class="buttons">
-        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueCodeforcesHandle || !isUsernameEnoughLength || passwordStrength <= 0 || pending" @click="submit">Зарегистрироваться</SuiButton>
+        <SuiButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueEmail || !isUniqueCodeforcesHandle || !isUsernameEnoughLength || passwordStrength <= 0 || pending" @click="submit">Зарегистрироваться</SuiButton>
         <RouterLink to="/sign-in"><SuiButton>Войти</SuiButton></RouterLink>
       </span>
     </CustomForm>

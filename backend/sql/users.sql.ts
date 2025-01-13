@@ -4,7 +4,7 @@ import {compareHash, hash} from "scryptex";
 import {SelectExpression} from "kysely";
 import {UpdateObjectExpression} from "kysely/dist/cjs/parser/update-set-parser.js";
 
-export async function register({username, codeforcesHandle, firstName, lastName, password}: {username: string, codeforcesHandle: string, firstName: string, lastName: string, password: string}) {
+export async function register({username, codeforcesHandle, firstName, lastName, email, password}: {username: string, codeforcesHandle: string, firstName: string, lastName: string, email: string, password: string}) {
     let passwordHash = hash(password);
     await db.insertInto("users").values({
         username,
@@ -12,6 +12,7 @@ export async function register({username, codeforcesHandle, firstName, lastName,
         codeforcesHandleLowerCase: codeforcesHandle.toLowerCase(),
         firstName,
         lastName,
+        email: email.toLowerCase(),
         passwordHash,
         isAdmin: false
     }).executeTakeFirstOrThrow();
@@ -53,6 +54,10 @@ export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promis
     return !Boolean(await db.selectFrom("users").where("codeforcesHandleLowerCase", '=', codeforcesHandle.toLowerCase()).select("id").executeTakeFirst());
 }
 
+export async function isUniqueEmail(email: string): Promise<boolean> {
+    return !Boolean(await db.selectFrom("users").where("email", '=', email.toLowerCase()).select("id").executeTakeFirst());
+}
+
 export async function getUserByUsername(username: string, select: Array<SelectExpression<Database, "users">> = ["username", "codeforcesHandle", "firstName", "lastName", "isAdmin"]) {
     return db.selectFrom("users").where("username", '=', String(username)).select(select).executeTakeFirst();
 }
@@ -91,6 +96,10 @@ export async function getUserById(id: number, select: Array<SelectExpression<Dat
 
 export async function getUsernameById(id: number): Promise<string | undefined> {
     return (await getUserById(id, ["username"]))?.username;
+}
+
+export async function getIdByEmail(email: string): Promise<number | undefined> {
+    return (await db.selectFrom("users").where("email", '=', email.toLowerCase()).select(["id"]).executeTakeFirst())?.id;
 }
 
 export async function getUserIdByUsername(username: string): Promise<number | undefined> {

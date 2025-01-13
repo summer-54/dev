@@ -2,6 +2,7 @@ import {setupEnv} from "./sql/index.sql.js";
 import news from "./news.js";
 import users from "./users.js";
 import standings from "./standings.js";
+import recovery from "./recovery.js";
 import {addKey} from "./rsa.js";
 import Backendium from "backendium";
 
@@ -35,6 +36,7 @@ async function main() {
     app.router(news);
     app.router(users);
     app.router(standings);
+    app.router(recovery);
 
     app.get("/teapot", (request, response) => {
         response.status(418);
