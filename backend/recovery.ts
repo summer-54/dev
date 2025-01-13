@@ -16,19 +16,19 @@ router.patch<Buffer, {key: string}>("/recovery/:key", async (request) => {
     })
 });
 
-router.patch<{mail: string}>("/recovery", async (request, response) => {
-    let id = await getIdByEmail(request.body.mail);
+router.patch<{email: string}>("/recovery", async (request, response) => {
+    let id = await getIdByEmail(request.body.email);
     if (!id) {
         return {code: 404};
     }
     let key = cryptoRandomString({length: 128, type: 'url-safe'});
     let link = `http://176.123.165.201/recovery/${key}`;
     urlKeys.set(key, id);
-    await sendRecoveryMail(request.body.mail, link);
+    await sendRecoveryMail(request.body.email, link);
     response.end();
 }, {
     bodyValidator: object({
-        mail: emailValidator()
+        email: emailValidator()
     })
 });
 

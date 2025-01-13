@@ -53,7 +53,7 @@ export default defineComponent({
         <RouterLink to="/registration"><SuiButton border="#9297FB">Зарегистрироваться</SuiButton></RouterLink>
       </span>
       <span class="buttons">
-        <RouterLink to="/rec">Забыли пароль?</RouterLink>
+        <RouterLink to="/recovery">Забыли пароль?</RouterLink>
       </span>
     </CustomForm>
     <ProgressIndicator v-if="pending"/>
