@@ -195,6 +195,11 @@ router.post<{
         response.end("username");
         return;
     }
+    if (!(await isUniqueEmail(email))) {
+        response.status(409);
+        response.end("email");
+        return;
+    }
     if (!(await isUniqueCodeforcesHandle(codeforcesHandle))) {
         response.status(409);
         response.end("codeforcesHandle");
