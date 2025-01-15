@@ -19,4 +19,4 @@ export async function sendRecoveryMail(to: string, link: string) {
     });
 }
 
-export function emailValidator() {return string({pattern: /[a-zA-Z_.-]+@[a-zA-Z_.-]+\.(ru|com)/});}
+export function emailValidator() {return string({pattern: /[a-zA-Z0-9_.-]+@[a-zA-Z_.-0-9]+\.(ru|com)/});}
