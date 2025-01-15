@@ -3,7 +3,7 @@
     <Title text="Восстановление пароля"></Title>
     <Title :text="`Письмо отправлено на ${email}`" v-if="done"/>
     <Title text="При отправке возникла проблема" v-else-if="failed"/>
-    <CustomForm v-else>
+    <CustomForm v-if="!done">
       <SuiInput placeholder="Почта" v-model="email"/>
       <SuiButton @click="recovery" :disabled="pending">Восстановить пароль</SuiButton>
     </CustomForm>
