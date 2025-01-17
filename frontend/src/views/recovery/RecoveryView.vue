@@ -1,44 +1,25 @@
 <template>
   <main>
-    <Title text="Восстановление пароля"></Title>
-    <Title :text="`Письмо отправлено на ${email}`" v-if="done"/>
-    <Title text="При отправке возникла проблема" v-else-if="failed"/>
-    <CustomForm v-if="!done">
-      <SuiInput placeholder="Почта" v-model="email"/>
-      <SuiButton @click="recovery" :disabled="pending">Восстановить пароль</SuiButton>
-    </CustomForm>
-    <ProgressIndicator v-if="pending"/>
+
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import CustomForm from '@/components/ui/CustomForm.vue';
-// @ts-ignore
-import SuiButton from 'sffui.vue/suiButton.vue';
-// @ts-ignore
-import SuiInput from 'sffui.vue/suiInput.vue';
-import Title from '@/components/Title.vue';
-import {recovery} from "@/api/recovery.js";
+import {defineComponent} from 'vue';
 
 export default defineComponent({
   name: "RecoveryView",
-  components: {CustomForm, SuiButton, SuiInput, Title},
+  components: {},
   data() {
     return {
-      email: "",
       pending: false,
       done: false,
       failed: false
     }
   },
-  methods: {
-    async recovery(event: Event) {
-      event.preventDefault();
-      this.pending = true;
-      if (await recovery(this.email)) this.done = true;
-      else this.failed = true;
-      this.pending = false;
+  computed: {
+    route() {
+      return Object(this.$router).currentRoute.value;
     }
   }
 });
