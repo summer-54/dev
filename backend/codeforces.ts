@@ -1,5 +1,5 @@
-import axios from "axios";
 import {JSDOM} from "jsdom";
+import {commitError, get} from "./codeforcesRequests.js";
 
 export function parseProblemSolutionsCount(elem: string | number): number {
     return typeof elem === "number" ? elem : elem === "+" ? 1 : isNaN(Number(elem)) ? 0 : Number(elem) > 0 ? Number(elem) + 1 : Number(elem);
@@ -88,9 +88,13 @@ export function parseStandings(html: JSDOM | string, contestId: number): Standin
 
 export async function getStandings(contestId: number, groupId?: string): Promise<Standings | undefined> {
     try {
-        let html = (await axios.get<string>(groupId ? `https://codeforces.com/group/${groupId}/contest/${contestId}/standings?showUnofficial=true` : `https://codeforces.com/contest/${contestId}/standings?showUnofficial=true`)).data;
+        let html = await get(groupId ? `https://codeforces.com/group/${groupId}/contest/${contestId}/standings/groupmates/true?showUnofficial=true` : `https://codeforces.com/contest/${contestId}/standings?showUnofficial=true`);
         return parseStandings(html, contestId);
-    } catch (error) {}
+    } catch (error) {
+        console.error(error);
+        commitError();
+        return getStandings(contestId, groupId);
+    }
 }
 
 export function parseGroupContest(row: Element): [string, number] {
@@ -110,7 +114,7 @@ export function parseGroupContests(html: JSDOM | string): {[key: string]: number
 }
 
 export async function getGroupContests(groupId: string): Promise<{[key: string]: number}> {
-    let html = (await axios.get<string>(`https://codeforces.com/group/${groupId}/contests`)).data;
+    let html = await get(`https://codeforces.com/group/${groupId}/contests`);
     return parseGroupContests(html);
 }
 
@@ -120,7 +124,7 @@ export async function getGroupStandings(groupId: string): Promise<{[key: string]
     )));
 }
 
-export function setupGroupStandingsUpdater(groupId: string, callback: (standings: {[key: string]: Standings | undefined}) => void | Promise<void>, ms: number = 60000): void {
+export function setupGroupStandingsUpdater(groupId: string, callback: (standings: {[key: string]: Standings | undefined}) => void | Promise<void>, ms: number = 10000): void {
     async function func() {
         try {
             let data = callback(await getGroupStandings(groupId));
@@ -128,9 +132,17 @@ export function setupGroupStandingsUpdater(groupId: string, callback: (standings
             setTimeout(func, ms);
         } catch (error) {
             console.error(error);
-            setTimeout(func, ms * 100);
+            setTimeout(func, ms * 1000);
         }
     }
 
     func();
 }
+
+// getGroupStandings("jOZ7EYg9HX").then(console.log);
+
+// async function test() {
+//     console.log();
+// }
+//
+// test();

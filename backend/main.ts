@@ -5,6 +5,8 @@ import standings from "./standings.js";
 import recovery from "./recovery.js";
 import {addKey} from "./rsa.js";
 import Backendium from "backendium";
+import {setupGroupStandingsUpdater} from "./codeforces.js";
+import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 
 async function main() {
     await setupEnv();
@@ -58,7 +60,7 @@ async function main() {
 
     app.start(async () => {
         // console.log(app.routes);
-        // setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
+        setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
     });
 }
 

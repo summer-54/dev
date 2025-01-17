@@ -1,4 +1,4 @@
-FROM node:22.4.0-alpine3.19 as frontend-builder
+FROM node:22.4.0-alpine3.19 AS frontend-builder
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ COPY ./frontend .
 RUN npm i
 RUN npm run build
 
-FROM nginx:1.27.0-alpine3.19 as server
+FROM nginx:1.27.0-alpine3.19 AS server
 
 COPY --from=frontend-builder /app/dist /frontend
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
