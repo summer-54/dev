@@ -1,8 +1,8 @@
 <template>
   <main>
     <Title text="Восстановление пароля"></Title>
-    <Subtitle :text="`Письмо отправлено на ${email}`" v-if="done"/>
-    <Subtitle text="При отправке возникла проблема" v-else-if="failed"/>
+    <Subtitle class="centered" :text="`Письмо отправлено на ${email}`" v-if="done"/>
+    <Subtitle class="centered" text="При отправке возникла проблема" v-else-if="failed"/>
     <CustomForm v-if="!done">
       <SuiInput placeholder="Почта" v-model="email"/>
       <SuiButton @click="recovery" :disabled="pending">Восстановить пароль</SuiButton>
@@ -44,3 +44,9 @@ export default defineComponent({
   }
 });
 </script>
+
+<style scoped>
+.centered {
+  text-align: center;
+}
+</style>
