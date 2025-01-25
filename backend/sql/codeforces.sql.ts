@@ -87,42 +87,42 @@ export async function getAllContests(): Promise<Array<ContestType>> {
 export async function getFullStandings(): Promise<FullStandingsType> {
     let contests = await getAllContests();
     let res = {} as {[user: string]: Array<number>};
-    for(let i = 0; i < contests.length; i++){
+    for (let i = 0; i < contests.length; i++) {
         let before_solution = new Map<string, Set<string>>();
         let after_solution = new Map();
         let problem_amount = Object.keys(contests[i].problems).length;
-        for(let j = 0; j < contests[i].standings.length; j++){
-            if(contests[i].standings[j].status <= 0) continue;
-            if(new Date(contests[i].standings[j].datetime) <= new Date()){ // SOLUTION POSTED DATE&TIME
-                if(before_solution.get(contests[i].standings[j].username) === undefined){
+        for (let j = 0; j < contests[i].standings.length; j++) {
+            if (contests[i].standings[j].status <= 0) continue;
+            if (new Date(contests[i].standings[j].datetime) <= new Date()) { // SOLUTION POSTED DATE&TIME
+                if (before_solution.get(contests[i].standings[j].username) === undefined) {
                     before_solution.set(contests[i].standings[j].username, new Set());
                 }
                 console.log(`Added ${contests[i].standings[j].task} to user ${contests[i].standings[j].username} (before)`);
                 before_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
-            } else if(new Date(contests[i].standings[j].datetime) <= new Date()) { // RESULTS POSTED DATE&TIME
-                if(after_solution.get(contests[i].standings[j].username) === undefined){
+            } else if (new Date(contests[i].standings[j].datetime) <= new Date()) { // RESULTS POSTED DATE&TIME
+                if (after_solution.get(contests[i].standings[j].username) === undefined) {
                     after_solution.set(contests[i].standings[j].username, new Set());
                 }
                 console.log(`Added ${contests[i].standings[j].task} to user ${contests[i].standings[j].username} (after)`);
                 after_solution.get(contests[i].standings[j].username)?.add(contests[i].standings[j].task);
             }
         }
-        for(const key of Array.from(before_solution.keys())){
+        for (const key of Array.from(before_solution.keys())) {
             console.log(`Calculating scores ${key}`);
-            if(res[key] === undefined){
+            if (res[key] === undefined) {
                 res[key] = [];
             }
             res[key][i] = 60*(before_solution.get(key)?.size ?? 0)/problem_amount;
-            if(after_solution.get(key) === undefined) continue;
+            if (after_solution.get(key) === undefined) continue;
             let after_solution_tasks = 0;
-            for(let val in after_solution.get(key)){
-                if(before_solution.get(key)?.has(val)) continue;
+            for (let val in after_solution.get(key)) {
+                if (before_solution.get(key)?.has(val)) continue;
                 after_solution_tasks++;
             }
             res[key][i] += 30*after_solution_tasks/problem_amount;
         }
-        for(const key in Array.from(after_solution.keys())){
-            if(before_solution.get(key) !== undefined) continue;
+        for (const key in Array.from(after_solution.keys())) {
+            if (before_solution.get(key) !== undefined) continue;
             res[key][i] = 30*(after_solution.get(key)?.size ?? 0)/problem_amount;
         }
     }
@@ -181,7 +181,7 @@ export async function getContest(id: number): Promise<ContestType | undefined> {
 export async function getUserResults(user: number): Promise<Array<UserResultsContestType>> {
     let contests = await getAllContests();
     let res = [] as Array<UserResultsContestType>;
-    for(let i = 0; i < contests.length; i++){
+    for (let i = 0; i < contests.length; i++) {
         res.push({} as UserResultsContestType);
         let cur = contests[i];
         res[i].id = cur.id; 
@@ -195,10 +195,10 @@ export async function getUserResults(user: number): Promise<Array<UserResultsCon
                 task, taskId, status, datetime, notOfficial
             }));
         let solved = new Set<string>(), attemptsSum = 0;
-        for(let j of res[i].standings){
+        for (let j of res[i].standings) {
             // TODO: Check if submission was before results
             attemptsSum += Math.abs(j.status);
-            if(j.status <= 0) continue;
+            if (j.status <= 0) continue;
             solved.add(j.task);
         }
         res[i].problemsDoneCount = solved.size;
