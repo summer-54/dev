@@ -74,7 +74,7 @@ export default defineComponent({
 
 .note1, .note2 {
   @media (min-width: 1288px){
-    max-width: 278px;
+    max-width: 21vw;
   }
 
   @media (min-width: 1105px) and (max-width: 1288px){
