@@ -1,15 +1,16 @@
 Host: codeforces.com
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: en-US,en;q=0.5
+Accept-Language: ru
 Accept-Encoding: gzip, deflate, br, zstd
-Referer: https://codeforces.com/enter?back=%2Fgroup%2FjOZ7EYg9HX%2Fcontests
+Referer: https://codeforces.com/groups/my
+Sec-GPC: 1
 Upgrade-Insecure-Requests: 1
 Sec-Fetch-Dest: document
 Sec-Fetch-Mode: navigate
 Sec-Fetch-Site: same-origin
 Sec-Fetch-User: ?1
 Connection: keep-alive
-Cookie: lastOnlineTimeUpdaterInvocation=1737133165232; JSESSIONID=5F699506A043703BD51F8E5C53B8BECF; 39ce7=CFEbOOwz; _ga_K230KVN22K=GS1.1.1737132440.2.1.1737133160.0.0.0; _ga=GA1.2.453156168.1737128753; _gid=GA1.2.1455740026.1737128753; pow=64a866640cfda03d7b280a93eb2974340be82dc3; evercookie_etag=c73hiicl6dm8u6r65e; evercookie_cache=c73hiicl6dm8u6r65e; evercookie_png=c73hiicl6dm8u6r65e; 70a7c28f3de=c73hiicl6dm8u6r65e; cf_clearance=GUALeHLH6ujDLsFMqOygWtYPXnG0jjdEB4vziZArH5I-1737132441-1.2.1.1-_biQ.pL96nmfb7LcTf78op2iG6tl.Yae0gsiAN1id1aCvT9tqeAfP0IS8X9oJsA3hjhVe3UefRuPjD_krfgvKgFhC5mHKFH6HmwQiyoPRG_3UwGQ32MyV1J6.ht2oQLm2ENBTk2xk4WJuzeW73qfYyOCnqObRijO2Kxii3Lx4LCiquz1xVB4xJM7heVxui4l48URQB5RMy8LOhsmKqc3CJ_2Yhgyrm_gf9Is9gNv71dfGPD_xCq1Ox3mKm.XtAVxUpq6EZYbhfDog.qgVrSNhe5O2dFtRCkPlUUSrTOBFYSe7YVyUyVLKFMrjh9Jd7lmbaWcUTrQ54S8J7W_bgr4uA; _gat_gtag_UA_743380_5=1; X-User-Sha1=2e8b44da3da2445c8519696ecde21196a379b573; X-User=c508e0811b56b52b8b39c0ab4395e7c0a7083154a20958a8314b183e40049fc238dfcb73d02da9a0
+Cookie: JSESSIONID=CC5DB0844F712CEEFEB6927709F8A70F; 39ce7=CFhlm3OH; _ga_K230KVN22K=GS1.1.1739722143.25.1.1739722244.0.0.0; _ga=GA1.2.327671088.1739722214; _gid=GA1.2.1375573647.1739722214; _gat_gtag_UA_743380_5=1; pow=342a1fb70ec1a4bc5f929ec2ed7bf123fca1a83f; cf_clearance=m4tkP3iPbCNX.ZAdzncLHS_VjHNxal7nEOjC3m1sa6c-1739722216-1.2.1.1-GQckPBAJHRqf4SlLc17bwQX.kJm1AA3U0Jmf3shc0A01Lj9s7X6eTiyFdlmw7hOGjYbqS3wJNkTkrqftTXSEWyCXY2Rn40Yy.rDODuZFDRRtvtLL_ozzIOkEQRR3z27p5XxHBPx7qW0CkVSko1JqW_STPp_G7mWYDukjQmfIhrpUmFSQJulNA_H4JzdX4k9oUvxpNY7ZFaNtkkJIRMwubrrn8HuoqHSFNypEyxxS.PXICdXpjwbeBpw7F4AkW1gKh2avUEz5ddb14W9xioljoFVQvf2JIJPT1PyOxVnecw986vQtG8X8QYMwfQdZmZovj3IBg77qmz3N_NAKusquKw; evercookie_cache=h883zev6pvu2zd2wuf; evercookie_etag=h883zev6pvu2zd2wuf; evercookie_png=h883zev6pvu2zd2wuf; 70a7c28f3de=h883zev6pvu2zd2wuf; X-User-Sha1=2e8b44da3da2445c8519696ecde21196a379b573; X-User=64212bc63a072543b47841c80b4da64ef55ed78da3770d2a330a4511a2162903b64d0161b8457be6; lastOnlineTimeUpdaterInvocation=1739722243421
 Priority: u=0, i
 TE: trailers

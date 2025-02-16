@@ -15,7 +15,7 @@ export async function get(url: string): Promise<string> {
 export function commitError() {
     clearInterval(interval);
     setTimeout(() => {
-        interval = setInterval(main, 500);
+        interval = setInterval(main, 2000);
     }, 80000);
 }
 
@@ -36,4 +36,4 @@ async function main() {
     commitError();
 }
 
-let interval = setInterval(main, 500);
+let interval = setInterval(main, 2000);
