@@ -1,14 +1,21 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import PrimevueHeader from "@/views/test/primevue.vue";
+import RadixHeader from "@/views/test/radix.vue";
+import Animation from "@/components/ui/animation.vue";
 
 export default defineComponent({
   name: "TestView",
-  components: {PrimevueHeader}
+  components: {Animation, RadixHeader, PrimevueHeader}
 })
 </script>
 
 <template>
-<!--  <RadixHeader/>-->
+  <RadixHeader/>
   <PrimevueHeader/>
+  <animation animation="flip">test</animation>
 </template>
+
+<style scoped>
+
+</style>

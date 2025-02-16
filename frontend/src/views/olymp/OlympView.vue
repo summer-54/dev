@@ -16,10 +16,11 @@ import author1 from "@/assets/author1.jpg";
 import author2 from "@/assets/author2.jpg";
 import author3 from "@/assets/author3.jpg";
 import author4 from "@/assets/author4.jpg";
+import Animation from "@/components/ui/animation.vue";
 
 export default defineComponent({
   name: "OlympView",
-  components: {QA_container, Subtitle, CircledImage_container, ImageGallery, Title, OlympMaterials},
+  components: {Animation, QA_container, Subtitle, CircledImage_container, ImageGallery, Title, OlympMaterials},
   data() {
     return {
       rules: [
@@ -57,13 +58,13 @@ export default defineComponent({
 <template>
   <main>
     <Title text="Олимпиада по программированию"></Title>
-    <span class="subtitle"><Subtitle text="Правила"></Subtitle></span>
+    <animation animation="flip"><Subtitle text="Правила"/></animation>
     <QA_container :qa_list="rules"></QA_container>
-    <span class="subtitle"><Subtitle text="Организационный комитет"></Subtitle></span>
+    <animation animation="flip"><Subtitle text="Организационный комитет"></Subtitle></animation>
     <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
-    <span class="subtitle"><Subtitle text="Методическая комиссия"></Subtitle></span>
+    <animation animation="flip"><Subtitle text="Методическая комиссия"></Subtitle></animation>
     <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
-    <span class="subtitle"><Subtitle text="Фотогалерея"></Subtitle></span>
+    <animation animation="flip"><Subtitle text="Фотогалерея"></Subtitle></animation>
     <ImageGallery :imgs_list="gallery_list"></ImageGallery>
     <OlympMaterials/>
     <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>
@@ -71,6 +72,11 @@ export default defineComponent({
 </template>
 
 <style scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .link_p {
   margin-top: 100px;
   display: block;
@@ -90,8 +96,5 @@ export default defineComponent({
   @media (max-width: 530px) {
     font-size: 12px;
   }
-}
-.subtitle {
-  text-align: center;
 }
 </style>

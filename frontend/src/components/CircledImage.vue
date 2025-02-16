@@ -1,8 +1,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
+import Animation from "@/components/ui/animation.vue";
 
 export default defineComponent({
   name: "CircledImage",
+  components: {Animation},
   props: {
     src: {
       type: String,
@@ -12,17 +14,23 @@ export default defineComponent({
       type: String,
       required: true
     },
-    note2: String
+    note2: String,
+    delay: {
+      type: Number,
+      required: true
+    }
   }
 });
 </script>
 
 <template>
-  <span class="image_with_note">
-    <img :src="src" class="circled_image" alt="image">
-    <span class="note1">{{ note1 }}</span>
-    <span class="note2">{{ note2 }}</span>
-  </span>
+  <animation animation="flip" :delay="delay">
+    <span class="image_with_note">
+      <img :src="src" class="circled_image" alt="image">
+      <span class="note1">{{ note1 }}</span>
+      <span class="note2">{{ note2 }}</span>
+    </span>
+  </animation>
 </template>
 <style scoped>
 .circled_image {
