@@ -1,6 +1,6 @@
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import {computed, ref} from 'vue'
 import {
   NavigationMenuContent,
   NavigationMenuIndicator,
@@ -10,20 +10,19 @@ import {
   NavigationMenuRoot,
   NavigationMenuTrigger,
   NavigationMenuViewport,
-} from 'radix-vue'
+} from 'radix-vue';
 import './styles.css'
 
-import NavigationMenuListItem from './NavigationMenuListItem.vue'
+import NavigationMenuListItem from './NavigationMenuListItem.vue';
 
-export default defineComponent({
-  name: "RadixHeader",
-  components: {NavigationMenuList, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuRoot, NavigationMenuTrigger, NavigationMenuViewport, NavigationMenuListItem},
-  data() {
-    return {
-      currentTrigger: "radix-v-"
-    }
-  }
-})
+const currentTrigger = ref('radix-v-1');
+
+const colors = ref({
+  bg: "#2c2c2c",
+  hoverColor: "var(--grass-12)" // 3
+});
+
+const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => colors.value.hoverColor);
 </script>
 
 <template>
@@ -62,18 +61,21 @@ export default defineComponent({
             <NavigationMenuListItem
                 href="https://stitches.dev/"
                 title="Stitches"
+                :colors="colors"
             >
               CSS-in-JS with best-in-class developer experience.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 href="/colors"
                 title="Colors"
+                :colors="colors"
             >
               Beautiful, thought-out palettes with auto dark mode.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 href="https://icons.radix-ui.com/"
                 title="Icons"
+                :colors="colors"
             >
               A crisp set of 15x15 icons, balanced and consistent.
             </NavigationMenuListItem>
@@ -96,36 +98,42 @@ export default defineComponent({
             <NavigationMenuListItem
                 title="Introduction"
                 href="/docs/primitives/overview/introduction"
+                :colors="colors"
             >
               Build high-quality, accessible design systems and web apps.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 title="Getting started"
                 href="/docs/primitives/overview/getting-started"
+                :colors="colors"
             >
               A quick tutorial to get you up and running with Radix Primitives.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 title="Styling"
                 href="/docs/primitives/guides/styling"
+                :colors="colors"
             >
               Unstyled and compatible with any styling solution.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 title="Animation"
                 href="/docs/primitives/guides/animation"
+                :colors="colors"
             >
               Use CSS keyframes or any animation library of your choice.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 title="Accessibility"
                 href="/docs/primitives/overview/accessibility"
+                :colors="colors"
             >
               Tested in a range of browsers and assistive technologies.
             </NavigationMenuListItem>
             <NavigationMenuListItem
                 title="Releases"
                 href="/docs/primitives/overview/releases"
+                :colors="colors"
             >
               Radix Primitives releases and their changelogs.
             </NavigationMenuListItem>
@@ -175,7 +183,7 @@ export default defineComponent({
 .NavigationMenuList {
   display: flex;
   justify-content: center;
-  background-color: white;
+  background-color: v-bind(bgColor);
   padding: 4px;
   border-radius: 6px;
   list-style: none;
@@ -185,6 +193,8 @@ export default defineComponent({
 
 .NavigationMenuTrigger,
 .NavigationMenuLink {
+  all: unset;
+
   padding: 8px 12px;
   outline: none;
   user-select: none;
@@ -193,7 +203,7 @@ export default defineComponent({
   border-radius: 4px;
   font-size: 15px;
   color: var(--grass-11);
-  text-decoration: none;
+  transition: background-color 2000ms ease-in-out;
 }
 .NavigationMenuTrigger:focus,
 .NavigationMenuLink:focus {
@@ -201,7 +211,7 @@ export default defineComponent({
 }
 .NavigationMenuTrigger:hover,
 .NavigationMenuLink:hover {
-  background-color: var(--grass-3);
+  background-color: v-bind(hoverColor);
 }
 
 .NavigationMenuTrigger {
@@ -209,9 +219,6 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
   gap: 2px;
-  background: transparent;
-  outline: none;
-  border: none;
 }
 
 .NavigationMenuLink {
@@ -269,7 +276,7 @@ export default defineComponent({
   transform-origin: top center;
   margin-top: 10px;
   width: 100%;
-  background-color: white;
+  background-color: v-bind(bgColor);
   border-radius: 6px;
   overflow: hidden;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
@@ -305,36 +312,6 @@ export default defineComponent({
     grid-auto-flow: column;
     grid-template-rows: repeat(3, 1fr);
   }
-}
-
-.ListItemLink {
-  display: block;
-  outline: none;
-  text-decoration: none;
-  user-select: none;
-  padding: 12px;
-  border-radius: 6px;
-  font-size: 15px;
-  line-height: 1;
-}
-.ListItemLink:focus {
-  box-shadow: 0 0 0 2px var(--grass-7);
-}
-.ListItemLink:hover {
-  background-color: var(--mauve-3);
-}
-
-.ListItemHeading {
-  font-weight: 500;
-  line-height: 1.2;
-  margin-bottom: 5px;
-  color: var(--grass-12);
-}
-
-.ListItemText {
-  color: var(--mauve-11);
-  line-height: 1.4;
-  font-weight: initial;
 }
 
 .Callout {
@@ -392,7 +369,7 @@ export default defineComponent({
 .Arrow {
   position: relative;
   top: 70%;
-  background-color: white;
+  background-color: v-bind(bgColor);
   width: 10px;
   height: 10px;
   transform: rotate(45deg);
