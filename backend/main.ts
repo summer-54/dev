@@ -60,7 +60,7 @@ async function main() {
 
     app.start(async () => {
         // console.log(app.routes);
-        setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
+        // setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
     });
 }
 
