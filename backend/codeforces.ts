@@ -124,7 +124,7 @@ export async function getGroupStandings(groupId: string): Promise<{[key: string]
     )));
 }
 
-export function setupGroupStandingsUpdater(groupId: string, callback: (standings: {[key: string]: Standings | undefined}) => void | Promise<void>, ms: number = 40000): void {
+export function setupGroupStandingsUpdater(groupId: string, callback: (standings: {[key: string]: Standings | undefined}) => void | Promise<void>, ms: number = 120000): void {
     async function func() {
         try {
             let data = callback(await getGroupStandings(groupId));

@@ -13,10 +13,11 @@ export async function get(url: string): Promise<string> {
 }
 
 export function commitError() {
+    console.log("Error");
     clearInterval(interval);
     setTimeout(() => {
-        interval = setInterval(main, 2000);
-    }, 80000);
+        interval = setInterval(main, 5000);
+    }, 300000);
 }
 
 async function main() {
@@ -31,9 +32,12 @@ async function main() {
             resolve(response.data);
             return;
         }
-    } catch (error) {}
+        console.log(response.status, response.statusText);
+    } catch (error) {
+        console.log(error);
+    }
     requestQueue.unshift([url, resolve]);
     commitError();
 }
 
-let interval = setInterval(main, 2000);
+let interval = setInterval(main, 5000);

@@ -1,5 +1,5 @@
 Host: codeforces.com
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:135.0) Gecko/20100101 Firefox/135.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: ru
 Accept-Encoding: gzip, deflate, br, zstd
@@ -9,8 +9,7 @@ Upgrade-Insecure-Requests: 1
 Sec-Fetch-Dest: document
 Sec-Fetch-Mode: navigate
 Sec-Fetch-Site: same-origin
-Sec-Fetch-User: ?1
 Connection: keep-alive
-Cookie: JSESSIONID=CC5DB0844F712CEEFEB6927709F8A70F; 39ce7=CFhlm3OH; _ga_K230KVN22K=GS1.1.1739722143.25.1.1739722244.0.0.0; _ga=GA1.2.327671088.1739722214; _gid=GA1.2.1375573647.1739722214; _gat_gtag_UA_743380_5=1; pow=342a1fb70ec1a4bc5f929ec2ed7bf123fca1a83f; cf_clearance=m4tkP3iPbCNX.ZAdzncLHS_VjHNxal7nEOjC3m1sa6c-1739722216-1.2.1.1-GQckPBAJHRqf4SlLc17bwQX.kJm1AA3U0Jmf3shc0A01Lj9s7X6eTiyFdlmw7hOGjYbqS3wJNkTkrqftTXSEWyCXY2Rn40Yy.rDODuZFDRRtvtLL_ozzIOkEQRR3z27p5XxHBPx7qW0CkVSko1JqW_STPp_G7mWYDukjQmfIhrpUmFSQJulNA_H4JzdX4k9oUvxpNY7ZFaNtkkJIRMwubrrn8HuoqHSFNypEyxxS.PXICdXpjwbeBpw7F4AkW1gKh2avUEz5ddb14W9xioljoFVQvf2JIJPT1PyOxVnecw986vQtG8X8QYMwfQdZmZovj3IBg77qmz3N_NAKusquKw; evercookie_cache=h883zev6pvu2zd2wuf; evercookie_etag=h883zev6pvu2zd2wuf; evercookie_png=h883zev6pvu2zd2wuf; 70a7c28f3de=h883zev6pvu2zd2wuf; X-User-Sha1=2e8b44da3da2445c8519696ecde21196a379b573; X-User=64212bc63a072543b47841c80b4da64ef55ed78da3770d2a330a4511a2162903b64d0161b8457be6; lastOnlineTimeUpdaterInvocation=1739722243421
+Cookie: 39ce7=CFbrW8dj; _ga_K230KVN22K=GS1.1.1742128315.16.1.1742128323.0.0.0; _ga=GA1.2.1041278400.1740818562; X-User-Sha1=2e8b44da3da2445c8519696ecde21196a379b573; X-User=9c53494eb8ec9781a506eb88bfd3719da49cc3b8ca3706d44bf4710fd0229e25240e27ee82e84383; JSESSIONID=059642D6C6DD35A0877EBDF65D86B9E6; lastOnlineTimeUpdaterInvocation=1741788337065; _gid=GA1.2.218400708.1742128315; _gat_gtag_UA_743380_5=1; evercookie_etag=qihwdu7cljgoh9sho8; evercookie_cache=qihwdu7cljgoh9sho8; cf_clearance=fGwP6ZOLFVQrnCyTxE.mO5uPhs8JRFq6BGYtSMQ8aLk-1742128317-1.2.1.1-PK0xvmX.mthn0wo2S5.zlL.Bdfnh4yjqo6toedvOD.nh8kmzOQz9g_iSoIADlB0cVJ7ZBgvd6alT21t.biDQpKZGyeT_J2cGVEUaxwoncl8fkm2gRePmb_6ynAcjPcTZXeDVITgswCf.0cw1dkbfzb.z10y21diHeI7hOahnUmHKbjNUlyr2wPTYFRIlsUQLYkKboum2DTCxC0H_R.l7lJ4SCHm_tOS75qMUYZP_4p6ZbKCqp0wx4SY4pUVRSSWm4KcW0Wx9AHzO.l.U9_2aFB8nogc81.epZLIwBUC8ytM5oScGPK65LvKc6fTafFmM.Nr5E0PM8.bSsbFTRlb5M5ZRofRiyrigcWULIwzNZYU; evercookie_png=qihwdu7cljgoh9sho8; 70a7c28f3de=qihwdu7cljgoh9sho8
 Priority: u=0, i
 TE: trailers
