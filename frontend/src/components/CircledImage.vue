@@ -48,7 +48,7 @@ export default defineComponent({
     width: 130px;
   }
   @media (max-width: 702px){
-    width: 70px;
+    width: 50vw;
   }
 }
 .image_with_note {
@@ -98,7 +98,8 @@ export default defineComponent({
   }
 
   @media (max-width: 702px){
-    max-width: 72px;
+    max-width: 60vw;
   }
+  margin-bottom: 30px;
 }
 </style>
