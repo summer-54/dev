@@ -11,9 +11,11 @@ export default defineComponent({
 </script>
 
 <template>
-  <RadixHeader/>
-  <PrimevueHeader/>
-  <animation animation="flip">test</animation>
+  <div>
+    <RadixHeader/>
+    <PrimevueHeader/>
+    <animation animation="flip">test</animation>
+  </div>
 </template>
 
 <style scoped>

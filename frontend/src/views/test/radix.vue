@@ -11,7 +11,8 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from 'radix-vue';
-import './styles.css'
+import './styles.css';
+import menu_olymp from '@/assets/menu_olymp.jpg'
 
 import NavigationMenuListItem from './NavigationMenuListItem.vue';
 
@@ -23,6 +24,7 @@ const colors = ref({
 });
 
 const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => colors.value.hoverColor);
+
 </script>
 
 <template>
@@ -31,30 +33,52 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
       :class="$style.NavigationMenuRoot"
   >
     <NavigationMenuList :class="$style.NavigationMenuList">
+      <!-- <NavigationMenuItem>
+        
+        <NavigationMenuLink
+            :class="$style.NavigationMenuLink"
+            href="/"
+        >
+          Главная
+        </NavigationMenuLink>
+      </NavigationMenuItem> -->
+      
+      <NavigationMenuItem>
+        <RouterLink to="/">
+          <Icon
+            icon="radix-icons:file-text"
+          />
+          Новости
+        </RouterLink>
+      </NavigationMenuItem>
+
       <NavigationMenuItem>
         <NavigationMenuTrigger
-            :class="$style.NavigationMenuTrigger"
+          :class="$style.NavigationMenuTrigger"
         >
-          Learn
           <Icon
-              icon="radix-icons:caret-down"
-              :class="$style.CaretDown"
+            icon="radix-icons:home"
+          />
+          Соревнования
+          <Icon
+            icon="radix-icons:caret-down"
+            :class="$style.CaretDown"
           />
         </NavigationMenuTrigger>
         <NavigationMenuContent
-            :class="$style.NavigationMenuContent"
+          :class="$style.NavigationMenuContent"
         >
           <ul :class="[$style.List, $style.one]">
             <li :style="{ gridRow: 'span 3' }">
               <NavigationMenuLink as-child>
-                <a
+                <RouterLink
                     :class="$style.Callout"
-                    href="/"
+                    to="/olymp"
                 >
-                  <img src="https://www.radix-vue.com/logo.svg">
-                  <div :class="$style.CalloutHeading">Radix Primitives</div>
-                  <p :class="$style.CalloutText">Unstyled, accessible components for Vue.</p>
-                </a>
+                  <img :src="menu_olymp" style="height: 50vh;">
+                  <div :class="$style.CalloutHeading">Внутрення олимпиада</div>
+                  <p :class="$style.CalloutText">Апрель. 3 часа. 5-8 задач. Вы.<br>Изменённый IOI-формат.</p>
+                </RouterLink>
               </NavigationMenuLink>
             </li>
 
@@ -64,20 +88,6 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
                 :colors="colors"
             >
               CSS-in-JS with best-in-class developer experience.
-            </NavigationMenuListItem>
-            <NavigationMenuListItem
-                href="/colors"
-                title="Colors"
-                :colors="colors"
-            >
-              Beautiful, thought-out palettes with auto dark mode.
-            </NavigationMenuListItem>
-            <NavigationMenuListItem
-                href="https://icons.radix-ui.com/"
-                title="Icons"
-                :colors="colors"
-            >
-              A crisp set of 15x15 icons, balanced and consistent.
             </NavigationMenuListItem>
           </ul>
         </NavigationMenuContent>
@@ -139,15 +149,6 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
             </NavigationMenuListItem>
           </ul>
         </NavigationMenuContent>
-      </NavigationMenuItem>
-
-      <NavigationMenuItem>
-        <NavigationMenuLink
-            :class="$style.NavigationMenuLink"
-            href="https://github.com/unovue/radix-vue"
-        >
-          Github
-        </NavigationMenuLink>
       </NavigationMenuItem>
 
       <NavigationMenuIndicator
