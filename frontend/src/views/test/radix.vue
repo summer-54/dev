@@ -81,7 +81,7 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
                 >
                   <img :src="menu_olymp" style="height: 50vh;">
                   <div :class="$style.CalloutHeading">Внутрення олимпиада</div>
-                  <p :class="$style.CalloutText">Апрель. 3 часа. 5-8 задач. Вы.<br>Изменённый IOI-формат.</p>
+                  <p :class="$style.CalloutText">Апрель. Вы. 3 часа. 5-8 задач.<br>Изменённый IOI-формат.</p>
                 </RouterLink>
               </NavigationMenuLink>
             </li>

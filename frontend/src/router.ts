@@ -134,6 +134,11 @@ const router = createRouter({
       path: `${ROUTER_PATH_PREFIX}/recovery/:token`,
       name: "recovery",
       component: () => import("@/views/recovery/RecoveryView.vue")
+    },
+    {
+      path: `${ROUTER_PATH_PREFIX}/honor`,
+      name: "honor",
+      component: () => import("@/views/honor/HonorView.vue")
     }
   ]
 });
