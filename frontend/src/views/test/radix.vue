@@ -83,11 +83,12 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
             </li>
 
             <NavigationMenuListItem
-                href="https://stitches.dev/"
-                title="Stitches"
+                title="Летний кубок"
                 :colors="colors"
             >
-              CSS-in-JS with best-in-class developer experience.
+              <RouterLink to="/summer-cup" style="text-decoration: none;">
+                Соревнование, которое длится почти всё лето!
+              </RouterLink>
             </NavigationMenuListItem>
           </ul>
         </NavigationMenuContent>
