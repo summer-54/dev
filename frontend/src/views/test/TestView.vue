@@ -13,7 +13,7 @@ export default defineComponent({
 <template>
   <div>
     <RadixHeader/>
-    <PrimevueHeader/>
+    <!-- <PrimevueHeader/> -->
     <animation animation="flip">test</animation>
   </div>
 </template>

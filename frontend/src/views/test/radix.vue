@@ -20,7 +20,7 @@ const currentTrigger = ref('radix-v-1');
 
 const colors = ref({
   bg: "#2c2c2c",
-  hoverColor: "var(--grass-12)" // 3
+  hoverColor: "#154311" // 3
 });
 
 const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => colors.value.hoverColor);
@@ -44,12 +44,16 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
       </NavigationMenuItem> -->
       
       <NavigationMenuItem>
-        <RouterLink to="/">
-          <Icon
-            icon="radix-icons:file-text"
-          />
-          Новости
-        </RouterLink>
+        <NavigationMenuTrigger
+          :class="$style.NavigationMenuTrigger"
+        >
+          <RouterLink to="/">
+            <Icon
+              icon="radix-icons:file-text"
+            />
+            Новости
+          </RouterLink>
+        </NavigationMenuTrigger>
       </NavigationMenuItem>
 
       <NavigationMenuItem>
@@ -204,7 +208,7 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
   line-height: 1;
   border-radius: 4px;
   font-size: 15px;
-  color: var(--grass-11);
+  color: #138900;
   transition: background-color 2000ms ease-in-out;
 }
 .NavigationMenuTrigger:focus,
