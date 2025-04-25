@@ -54,7 +54,7 @@ const hoverColor = computed(() => props.colors.hoverColor);
   font-weight: 500;
   line-height: 1.2;
   margin-bottom: 5px;
-  color: var(--grass-12);
+  color: #138900;
 }
 
 .ListItemText {

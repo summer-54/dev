@@ -12,11 +12,14 @@ import {
   NavigationMenuViewport,
 } from 'radix-vue';
 import './styles.css';
-import menu_olymp from '@/assets/menu_olymp.jpg'
+import menu_olymp from '@/assets/menu_olymp.jpg';
+import { useRouter } from 'vue-router';
 
 import NavigationMenuListItem from './NavigationMenuListItem.vue';
 
-const currentTrigger = ref('radix-v-1');
+const router = useRouter();
+
+const currentTrigger = ref('radix-v-2');
 
 const colors = ref({
   bg: "#2c2c2c",
@@ -25,6 +28,10 @@ const colors = ref({
 
 const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => colors.value.hoverColor);
 
+function toNews(event: Event) {
+  event.preventDefault();
+  router.push("/");
+}
 </script>
 
 <template>
@@ -44,16 +51,12 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
       </NavigationMenuItem> -->
       
       <NavigationMenuItem>
-        <NavigationMenuTrigger
-          :class="$style.NavigationMenuTrigger"
-        >
-          <RouterLink to="/">
-            <Icon
-              icon="radix-icons:file-text"
-            />
-            Новости
-          </RouterLink>
-        </NavigationMenuTrigger>
+        <NavigationMenuLink href="/" @click="toNews" :class="$style.NavigationMenuLink" style="cursor: pointer;">
+          <Icon
+            icon="radix-icons:file-text"
+          />
+          Новости
+        </NavigationMenuLink>
       </NavigationMenuItem>
 
       <NavigationMenuItem>
@@ -76,19 +79,19 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
             <li :style="{ gridRow: 'span 3' }">
               <NavigationMenuLink as-child>
                 <RouterLink
-                    :class="$style.Callout"
-                    to="/olymp"
+                  :class="$style.Callout"
+                  to="/olymp"
                 >
                   <img :src="menu_olymp" style="height: 50vh;">
                   <div :class="$style.CalloutHeading">Внутрення олимпиада</div>
-                  <p :class="$style.CalloutText">Апрель. Вы. 3 часа. 5-8 задач.<br>Изменённый IOI-формат.</p>
+                  <p :class="$style.CalloutText">Апрель. Вы. 3 часа. 5-8 задач.<br>ICPC-формат.</p>
                 </RouterLink>
               </NavigationMenuLink>
             </li>
 
             <NavigationMenuListItem
-                title="Летний кубок"
-                :colors="colors"
+              title="Летний кубок"
+              :colors="colors"
             >
               <RouterLink to="/summer-cup" style="text-decoration: none;">
                 Соревнование, которое длится почти всё лето!
@@ -100,12 +103,12 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
 
       <NavigationMenuItem>
         <NavigationMenuTrigger
-            :class="$style.NavigationMenuTrigger"
+          :class="$style.NavigationMenuTrigger"
         >
           Overview
           <Icon
-              icon="radix-icons:caret-down"
-              :class="$style.CaretDown"
+            icon="radix-icons:caret-down"
+            :class="$style.CaretDown"
           />
         </NavigationMenuTrigger>
         <NavigationMenuContent :class="$style.NavigationMenuContent">
@@ -213,7 +216,7 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
 }
 .NavigationMenuTrigger:focus,
 .NavigationMenuLink:focus {
-  box-shadow: 0 0 0 2px var(--grass-7);
+  box-shadow: 0 0 0 2px var(--grass-7); /**/
 }
 .NavigationMenuTrigger:hover,
 .NavigationMenuLink:hover {
