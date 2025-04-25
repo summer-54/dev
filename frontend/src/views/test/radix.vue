@@ -11,6 +11,10 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from 'radix-vue';
+import news from '@/assets/news2.svg';
+import cup from '@/assets/cup.svg';
+import article from '@/assets/article.svg';
+import account from '@/assets/account.svg';
 import './styles.css';
 import menu_olymp from '@/assets/menu_olymp.jpg';
 import { useRouter } from 'vue-router';
@@ -32,6 +36,12 @@ function toNews(event: Event) {
   event.preventDefault();
   router.push("/");
 }
+
+function toArticles(event: Event) {
+  event.preventDefault();
+  router.push("/");
+}
+
 </script>
 
 <template>
@@ -39,7 +49,7 @@ function toNews(event: Event) {
       v-model="currentTrigger"
       :class="$style.NavigationMenuRoot"
   >
-    <NavigationMenuList :class="$style.NavigationMenuList">
+    <NavigationMenuList :class="[$style.NavigationMenuList, $style.flex]">
       <!-- <NavigationMenuItem>
         
         <NavigationMenuLink
@@ -51,26 +61,53 @@ function toNews(event: Event) {
       </NavigationMenuItem> -->
       
       <NavigationMenuItem>
-        <NavigationMenuLink href="/" @click="toNews" :class="$style.NavigationMenuLink" style="cursor: pointer;">
-          <Icon
-            icon="radix-icons:file-text"
-          />
-          Новости
-        </NavigationMenuLink>
+        <NavigationMenuTrigger
+          :class="$style.NavigationMenuTrigger"
+        >
+          <NavigationMenuLink href="/" @click="toNews" :class="$style.NavigationMenuLink" style="cursor: pointer;">
+            <div :class="$style.flex">
+              <img :src="news"/>
+              <span>
+                Новости
+                <Icon
+                  icon="radix-icons:caret-down"
+                  :class="$style.CaretDown"
+                />
+              </span>
+            </div>
+          </NavigationMenuLink>
+        </NavigationMenuTrigger>
+        <NavigationMenuContent
+          :class="$style.NavigationMenuContent"
+          style="max-width: 30vw;"
+        >
+          <ul :class="[$style.List, $style.three]">
+            <NavigationMenuLink href="/" @click="toArticles" :class="$style.NavigationMenuLink" style="cursor: pointer;">
+              <div :class="$style.flex">
+                <img :src="article"/>
+                <span>
+                  Статьи
+                </span>
+              </div>
+            </NavigationMenuLink>
+          </ul>
+        </NavigationMenuContent>
       </NavigationMenuItem>
 
       <NavigationMenuItem>
         <NavigationMenuTrigger
           :class="$style.NavigationMenuTrigger"
         >
-          <Icon
-            icon="radix-icons:home"
-          />
-          Соревнования
-          <Icon
-            icon="radix-icons:caret-down"
-            :class="$style.CaretDown"
-          />
+          <div :class="$style.flex">
+            <img :src="cup"/>
+            <span>
+              Соревнования
+              <Icon
+                icon="radix-icons:caret-down"
+                :class="$style.CaretDown"
+              />
+            </span>
+          </div>
         </NavigationMenuTrigger>
         <NavigationMenuContent
           :class="$style.NavigationMenuContent"
@@ -105,11 +142,16 @@ function toNews(event: Event) {
         <NavigationMenuTrigger
           :class="$style.NavigationMenuTrigger"
         >
-          Overview
-          <Icon
-            icon="radix-icons:caret-down"
-            :class="$style.CaretDown"
-          />
+          <div :class="$style.flex">
+            <img :src="account"/>
+            <span>
+              Аккаунт
+              <Icon
+                icon="radix-icons:caret-down"
+                :class="$style.CaretDown"
+              />
+            </span>
+          </div>
         </NavigationMenuTrigger>
         <NavigationMenuContent :class="$style.NavigationMenuContent">
           <ul :class="[$style.List, $style.two]">
@@ -181,6 +223,17 @@ function toNews(event: Event) {
 @import '@radix-ui/colors/green.css';
 @import '@radix-ui/colors/grass.css';
 
+.NavigationMenuLink span, .NavigationMenuTrigger span {
+  color: #138900;
+}
+
+.flex {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-direction: row;
+}
+
 .NavigationMenuRoot {
   position: relative;
   display: flex;
@@ -230,7 +283,7 @@ function toNews(event: Event) {
   gap: 2px;
 }
 
-.NavigationMenuLink {
+.NavigationMenuLink, .NavigationMenuLink span {
   display: block;
   text-decoration: none;
   font-size: 15px;
@@ -318,6 +371,10 @@ function toNews(event: Event) {
   }
   .List.two {
     width: 600px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .List.three {
     grid-auto-flow: column;
     grid-template-rows: repeat(3, 1fr);
   }
