@@ -17,6 +17,22 @@ services:
       - db-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: "curl -f http://localhost:9000/minio/health/live"
+      interval: 5s
+      timeout: 60s
+      retries: 20
   backend:
     build: ./backend
     command: node --inspect=0.0.0.0:9229 ./dist/main.js
@@ -39,6 +55,27 @@ services:
       - "contestsProblems:/app/contestsProblems"
     ports:
       - "9229:9229" # debug port for node.js
+  article54:
+    image: vssizoff/article54server
+    depends_on:
+      minio:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      HOST: "0.0.0.0"
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: PROD
+      DB_NAME: postgres
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      PUSH_CHECK: "http://backend:8080/push-check"
+      PULL_CHECK: "http://backend:8080/pull-check"
   nginx:
     build:
       context: .
@@ -53,3 +90,4 @@ volumes:
   db-data:
   newsAttachments:
   contestsProblems:
+  minio_data:
