@@ -71,4 +71,19 @@ export default async function () {
             .addColumn("datetime", "timestamp", cb => cb.notNull())
             .addColumn("notOfficial", "boolean", cb => cb.defaultTo(false)).execute();
     } catch (error) {}
+    try {
+        await db.schema.createTable("articleRepos")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("repo", "text", cb => cb.notNull().unique())
+            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("datetime", "timestamp", cb => cb.notNull()).execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("articlePermissions")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("article", "integer", cb => cb.notNull().references("articleRepos.id"))
+            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("read", "boolean", cb => cb.defaultTo(false))
+            .addColumn("write", "boolean", cb => cb.defaultTo(false)).execute();
+    } catch (error) {}
 }

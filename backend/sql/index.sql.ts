@@ -72,6 +72,21 @@ export interface StandingsTable {
     notOfficial: ColumnType<boolean, boolean | undefined>;
 }
 
+export interface ArticleReposTable {
+    id: Generated<number>;
+    repo: string;
+    user: number;
+    datetime: ColumnType<Date, Date | string, Date | string>;
+}
+
+export interface ArticlePermissionsTable {
+    id: Generated<number>;
+    article: number;
+    user: number;
+    read: boolean;
+    write: boolean;
+}
+
 export interface Database {
     news: NewsTable;
     newsImages: NewsImagesTable;
@@ -81,6 +96,8 @@ export interface Database {
     usersContests: UsersContestsTable;
     problems: ProblemsTable;
     standings: StandingsTable;
+    articleRepos: ArticleReposTable;
+    articlePermissions: ArticlePermissionsTable;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;
