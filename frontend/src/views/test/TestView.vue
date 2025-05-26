@@ -1,20 +1,22 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
-import PrimevueHeader from "@/views/test/primevue.vue";
-import RadixHeader from "@/views/test/radix.vue";
-import Animation from "@/components/ui/animation.vue";
+//import PrimevueHeader from "@/views/test/primevue.vue";
+//import RadixHeader from "@/views/test/radix.vue";
+//import Animation from "@/components/ui/animation.vue";
+import DeepseekMenu from './DeepseekMenu.vue';
 
 export default defineComponent({
   name: "TestView",
-  components: {Animation, RadixHeader, PrimevueHeader}
+  components: {/*Animation, RadixHeader, PrimevueHeader,*/DeepseekMenu}
 })
 </script>
 
 <template>
   <div>
-    <RadixHeader/>
+    <!-- <RadixHeader/>-->
     <!-- <PrimevueHeader/> -->
-    <animation animation="flip">test</animation>
+    <DeepseekMenu/>
+    <!--<animation animation="flip">test</animation>-->
   </div>
 </template>
 

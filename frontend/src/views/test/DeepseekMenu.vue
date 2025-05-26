@@ -1,18 +1,19 @@
 <template>
   <div class="nav-menu">
     <ul class="menu-list">
-      <li 
-        v-for="item in menuItems" 
-        :key="item.name"
-        @mouseover="item.hasDropdown ? toggleDropdown(item.name, true) : null"
-        @mouseleave="item.hasDropdown ? toggleDropdown(item.name, false) : null"
-      >
-        <a href="#" class="menu-item">{{ item.name }}</a>
-        <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name] }">
-          <li v-for="subItem in item.items" :key="subItem">
-            <a href="#" class="dropdown-item">{{ subItem }}</a>
-          </li>
-        </ul>
+      <li v-for="item in menuItems" :key="item.name">
+        <div 
+          class="menu-item-wrapper"
+          @mouseover="item.hasDropdown ? toggleDropdown(item.name, true) : null"
+          @mouseleave="item.hasDropdown ? toggleDropdown(item.name, false) : null"
+        >
+          <a href="#" class="menu-item">{{ item.name }}</a>
+          <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name] }">
+            <li v-for="subItem in item.items" :key="subItem">
+              <a href="#" class="dropdown-item">{{ subItem }}</a>
+            </li>
+          </ul>
+        </div>
       </li>
     </ul>
   </div>
@@ -25,7 +26,6 @@ export default {
       isOpen: {
         News: false,
         Contests: false,
-        Account: false
       },
       menuItems: [
         { 
@@ -49,9 +49,6 @@ export default {
   methods: {
     toggleDropdown(menu, show) {
       this.isOpen[menu] = show;
-    },
-    closeDropdown(menu) {
-      this.isOpen[menu] = false;
     }
   }
 }
@@ -76,6 +73,11 @@ export default {
   position: relative;
 }
 
+.menu-item-wrapper {
+  position: relative;
+  padding-bottom: 10px; /* Creates overlap area for smooth transition */
+}
+
 .menu-item {
   padding: 10px 15px;
   text-decoration: none;
@@ -93,14 +95,13 @@ export default {
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 100%;
+  top: calc(100% - 10px); /* Overlaps with parent's padding-bottom */
   left: 0;
   background-color: white;
   min-width: 160px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   border-radius: 4px;
   padding: 0.5rem 0;
-  margin-top: 5px;
 }
 
 .dropdown-menu.show {
