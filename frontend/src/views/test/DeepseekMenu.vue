@@ -69,6 +69,17 @@ export default defineComponent({
     toggleDropdown(menu, show) {
       this.isOpen[menu] = show;
     }
+  },
+  computed: {
+    buttonBg() {
+      return (this.$themeName === "dark" ? "#f8f9fa" : "#292521");
+    },
+    buttonColor() {
+      return (this.$themeName === "dark" ? "#333" : "white");
+    },
+    dropdownColor() {
+      return (this.$themeName === "dark" ? "white" : "black");
+    }
   }
 });
 </script>
@@ -100,11 +111,11 @@ export default defineComponent({
 .menu-item {
   padding: 10px 15px;
   text-decoration: none;
-  color: #333;
+  color: v-bind(buttonColor);
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: #f8f9fa;
+  background-color: v-bind(buttonBg);
   border-radius: 4px;
   transition: background-color 0.3s;
 }
@@ -118,7 +129,7 @@ export default defineComponent({
   position: absolute;
   top: calc(100% - 10px); /* Overlaps with parent's padding-bottom */
   left: 0;
-  background-color: white;
+  background-color: v-bind(dropdownColor);
   min-width: 160px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   border-radius: 4px;
@@ -130,7 +141,7 @@ export default defineComponent({
 }
 
 .dropdown-item {
-  color: #333;
+  color: v-bind(buttonColor);
   padding: 10px 15px;
   text-decoration: none;
   display: block;
@@ -138,7 +149,7 @@ export default defineComponent({
 }
 
 .dropdown-item:hover {
-  background-color: #f8f9fa;
+  background-color: v-bind(buttonBg);
 }
 
 .center-align {
