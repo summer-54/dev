@@ -1,26 +1,36 @@
 <template>
-  <div class="nav-menu">
-    <ul class="menu-list">
-      <li v-for="item in menuItems" :key="item.name">
-        <div 
-          class="menu-item-wrapper"
-          @mouseover="item.hasDropdown ? toggleDropdown(item.name, true) : null"
-          @mouseleave="item.hasDropdown ? toggleDropdown(item.name, false) : null"
-        >
-          <a href="#" class="menu-item">{{ item.name }}</a>
-          <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name] }">
-            <li v-for="subItem in item.items" :key="subItem">
-              <a href="#" class="dropdown-item">{{ subItem }}</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
+  <div class="center-align">
+    <div class="nav-menu">
+      <ul class="menu-list">
+        <li v-for="item in menuItems" :key="item.name">
+          <div 
+            class="menu-item-wrapper"
+            @mouseover="item.hasDropdown ? toggleDropdown(item.name, true) : null"
+            @mouseleave="item.hasDropdown ? toggleDropdown(item.name, false) : null"
+          >
+            <RouterLink v-if="item.link" :to="item.link" class="menu-item"><img v-if="item.icon" :src="item.icon">{{ item.name }}</RouterLink>
+            <span v-else class="menu-item"><img v-if="item.icon" :src="item.icon">{{ item.name }}</span>
+            <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name] }">
+              <li v-for="subItem in item.items" :key="subItem">
+                <RouterLink :to="subItem.to" class="dropdown-item">{{ subItem.name }}</RouterLink>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
+import { defineComponent } from 'vue';
+import { RouterLink } from 'vue-router';
+import newsIcon from '@/assets/news2.svg';
+import contestIcon from '@/assets/cup.svg';
+import accountIcon from '@/assets/account.svg';
+
+export default defineComponent({
+  name: "DeepseekMenu",
   data() {
     return {
       isOpen: {
@@ -29,17 +39,26 @@ export default {
       },
       menuItems: [
         { 
-          name: 'News', 
+          name: 'Новости',
+          link: '/',
+          icon: newsIcon,
           hasDropdown: true,
-          items: ['Articles']
+          items: [{name: 'Статьи', to: '/'}]
         },
         { 
-          name: 'Contests', 
+          name: 'Соревнования',
+          icon: contestIcon,
           hasDropdown: true,
-          items: ['Olympiad', 'Summer Cup', 'Summer Camp']
+          items: [
+            {name: 'Олимпиада', to: '/olymp'},
+            {name: 'Летний кубок', to: '/summer-cup'},
+            {name: 'ЛШП', to: '/summer-camp'}
+          ]
         },
         { 
-          name: 'Account', 
+          name: 'Аккакунт',
+          icon: accountIcon,
+          link: '/me',
           hasDropdown: false,
           items: []
         }
@@ -51,7 +70,7 @@ export default {
       this.isOpen[menu] = show;
     }
   }
-}
+});
 </script>
 
 <style>
@@ -82,7 +101,9 @@ export default {
   padding: 10px 15px;
   text-decoration: none;
   color: #333;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   background-color: #f8f9fa;
   border-radius: 4px;
   transition: background-color 0.3s;
@@ -118,5 +139,10 @@ export default {
 
 .dropdown-item:hover {
   background-color: #f8f9fa;
+}
+
+.center-align {
+  display: flex;
+  justify-content: space-around;
 }
 </style>
