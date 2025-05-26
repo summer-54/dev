@@ -11,13 +11,17 @@ export default defineComponent({
     alt: {
       type: String,
       required: true
+    },
+    inverted: {
+      type: Boolean,
+      required: false
     }
   }
 })
 </script>
 
 <template>
-<img :src="src" :alt="alt" :class="{[$style.invert]: $themeName === 'light'}"/>
+<img :src="src" :alt="alt" :class="{[$style.invert]: $themeName === (inverted ? 'dark' : 'light')}"/>
 </template>
 
 <style module>

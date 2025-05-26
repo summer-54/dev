@@ -8,8 +8,8 @@
             @mouseover="item.hasDropdown ? toggleDropdown(item.name, true) : null"
             @mouseleave="item.hasDropdown ? toggleDropdown(item.name, false) : null"
           >
-            <RouterLink v-if="item.link" :to="item.link" class="menu-item"><img v-if="item.icon" :src="item.icon">{{ item.name }}</RouterLink>
-            <span v-else class="menu-item"><img v-if="item.icon" :src="item.icon">{{ item.name }}</span>
+            <RouterLink v-if="item.link" :to="item.link" class="menu-item"><ThemeInvertSvg v-if="item.icon" alt="icon" inverted :src="item.icon"/>{{ item.name }}</RouterLink>
+            <span v-else class="menu-item"><ThemeInvertSvg v-if="item.icon" alt="icon" inverted :src="item.icon"/>{{ item.name }}</span>
             <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name] }">
               <li v-for="subItem in item.items" :key="subItem">
                 <RouterLink :to="subItem.to" class="dropdown-item">{{ subItem.name }}</RouterLink>
@@ -28,6 +28,7 @@ import { RouterLink } from 'vue-router';
 import newsIcon from '@/assets/news2.svg';
 import contestIcon from '@/assets/cup.svg';
 import accountIcon from '@/assets/account.svg';
+import ThemeInvertSvg from '@/components/ui/ThemeInvertSvg.vue';
 
 export default defineComponent({
   name: "DeepseekMenu",
@@ -79,8 +80,12 @@ export default defineComponent({
     },
     dropdownColor() {
       return (this.$themeName === "dark" ? "white" : "black");
+    },
+    buttonHoverColor() {
+      return (this.$themeName === "dark" ? "#e9ecef" : "#2d2d2d");
     }
-  }
+  },
+  components: {ThemeInvertSvg}
 });
 </script>
 
@@ -121,7 +126,7 @@ export default defineComponent({
 }
 
 .menu-item:hover {
-  background-color: #e9ecef;
+  background-color: v-bind(buttonHoverColor);
 }
 
 .dropdown-menu {
