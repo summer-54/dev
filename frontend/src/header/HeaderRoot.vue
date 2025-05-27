@@ -113,6 +113,16 @@ const currentTrigger = ref("");
   perspective: 2000px;
 }
 
+.Arrow {
+  position: relative;
+  top: 70%;
+  background-color: v-bind(bgColor);
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border-top-left-radius: 2px;
+}
+
 @keyframes enterFromRight {
   from {
     opacity: 0;
