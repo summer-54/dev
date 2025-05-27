@@ -4,7 +4,11 @@ import {computed, type PropType, ref} from "vue";
 import type {RouteLocationRaw} from "vue-router";
 
 const props = defineProps({
-  navigateTo: Object as PropType<RouteLocationRaw>
+  navigateTo: Object as PropType<RouteLocationRaw>,
+  contentLess: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const colors = ref({
@@ -16,7 +20,7 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
 </script>
 
 <template>
-  <NavigationMenuItem>
+  <NavigationMenuItem v-if="!contentLess">
     <RouterLink v-if="navigateTo" :to="navigateTo" :class="$style.routerLink">
       <NavigationMenuTrigger :class="$style.NavigationMenuTrigger">
         <slot name="heading"/>
@@ -28,6 +32,14 @@ const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => col
     <NavigationMenuContent :class="$style.NavigationMenuContent" style="max-width: 30vw;">
       <slot/>
     </NavigationMenuContent>
+  </NavigationMenuItem>
+  <NavigationMenuItem v-else-if="!navigateTo" :class="$style.NavigationMenuTrigger">
+    <slot name="heading"/>
+  </NavigationMenuItem>
+  <NavigationMenuItem v-else>
+    <RouterLink :to="navigateTo" :class="$style.NavigationMenuTrigger">
+      <slot name="heading"/>
+    </RouterLink>
   </NavigationMenuItem>
 </template>
 

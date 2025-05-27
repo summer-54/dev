@@ -69,7 +69,6 @@ const hoverColor = computed(() => colors.value.hoverColor);
 }
 
 .ListItemText {
-  color: var(--mauve-11);
   line-height: 1.4;
   font-weight: initial;
 }

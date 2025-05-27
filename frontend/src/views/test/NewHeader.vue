@@ -18,12 +18,12 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
         <div :class="$style.flex">
           <img :src="news"/>
           <span>
-                Новости и статьи
-                <Icon
-                    icon="radix-icons:caret-down"
-                    :class="$style.CaretDown"
-                />
-              </span>
+            Новости и статьи
+            <Icon
+                icon="radix-icons:caret-down"
+                :class="$style.CaretDown"
+            />
+          </span>
         </div>
       </template>
       <PrimaryLayout>
@@ -50,12 +50,12 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
         <div :class="$style.flex">
           <img :src="cup"/>
           <span>
-              Соревнования и поездки
-              <Icon
-                  icon="radix-icons:caret-down"
-                  :class="$style.CaretDown"
-              />
-            </span>
+            Соревнования и поездки
+            <Icon
+              icon="radix-icons:caret-down"
+              :class="$style.CaretDown"
+            />
+          </span>
         </div>
       </template>
       <PrimaryLayout>
@@ -75,20 +75,15 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
         </HeaderListItem>
       </PrimaryLayout>
     </HeaderRootItem>
-    <HeaderRootItem>
+    <HeaderRootItem content-less navigate-to="/me">
       <template #heading>
         <div :class="$style.flex">
           <img :src="account"/>
           <span>
               Аккаунт
-              <Icon
-                  icon="radix-icons:caret-down"
-                  :class="$style.CaretDown"
-              />
-            </span>
+          </span>
         </div>
       </template>
-      test
     </HeaderRootItem>
   </HeaderRoot>
 </template>
