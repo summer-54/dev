@@ -41,7 +41,7 @@ const hoverColor = computed(() => props.colors.hoverColor);
   border-radius: 6px;
   font-size: 15px;
   line-height: 1;
-  transition: background-color 2000ms ease-in-out;
+  transition: background-color 0.6s ease-in-out;
 }
 .ListItemLink:focus {
   box-shadow: 0 0 0 2px var(--grass-7);

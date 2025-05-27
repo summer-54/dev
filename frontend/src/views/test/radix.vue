@@ -15,6 +15,7 @@ import news from '@/assets/news2.svg';
 import cup from '@/assets/cup.svg';
 import article from '@/assets/article.svg';
 import account from '@/assets/account.svg';
+import home from '@/assets/home.svg';
 import './styles.css';
 import menu_olymp from '@/assets/menu_olymp.jpg';
 import { useRouter } from 'vue-router';
@@ -23,7 +24,7 @@ import NavigationMenuListItem from './NavigationMenuListItem.vue';
 
 const router = useRouter();
 
-const currentTrigger = ref('radix-v-2');
+const currentTrigger = ref('radix-v-6');
 
 const colors = ref({
   bg: "#2c2c2c",
@@ -61,35 +62,75 @@ function toArticles(event: Event) {
       </NavigationMenuItem> -->
       
       <NavigationMenuItem>
-        <NavigationMenuTrigger
-          :class="$style.NavigationMenuTrigger"
-        >
-          <NavigationMenuLink href="/" @click="toNews" :class="$style.NavigationMenuLink" style="cursor: pointer;">
+        <RouterLink to="/" :class="$style.routerLink">
+          <NavigationMenuTrigger
+              :class="$style.NavigationMenuTrigger"
+          >
+            <!--          <NavigationMenuLink href="/" @click="toNews" :class="$style.NavigationMenuLink" style="cursor: pointer;">-->
             <div :class="$style.flex">
               <img :src="news"/>
               <span>
-                Новости
+                Новости и статьи
                 <Icon
-                  icon="radix-icons:caret-down"
-                  :class="$style.CaretDown"
+                    icon="radix-icons:caret-down"
+                    :class="$style.CaretDown"
                 />
               </span>
             </div>
-          </NavigationMenuLink>
-        </NavigationMenuTrigger>
+            <!--          </NavigationMenuLink>-->
+          </NavigationMenuTrigger>
+        </RouterLink>
         <NavigationMenuContent
           :class="$style.NavigationMenuContent"
           style="max-width: 30vw;"
         >
-          <ul :class="[$style.List, $style.three]">
-            <NavigationMenuLink href="/" @click="toArticles" :class="$style.NavigationMenuLink" style="cursor: pointer;">
-              <div :class="$style.flex">
-                <img :src="article"/>
-                <span>
-                  Статьи
-                </span>
-              </div>
-            </NavigationMenuLink>
+<!--          <ul :class="[$style.List, $style.three]">-->
+<!--            <NavigationMenuLink href="/" @click="toArticles" :class="$style.NavigationMenuLink" style="cursor: pointer;">-->
+<!--              <div :class="$style.flex">-->
+<!--                <img :src="article"/>-->
+<!--                <span>-->
+<!--                  Статьи-->
+<!--                </span>-->
+<!--              </div>-->
+<!--            </NavigationMenuLink>-->
+<!--          </ul>-->
+          <ul :class="[$style.List, $style.one]">
+            <li :style="{ gridRow: 'span 3' }">
+              <NavigationMenuLink as-child>
+                <RouterLink
+                    :class="$style.Callout"
+                    to="/olymp"
+                >
+                  <img :src="home" style="width: 100%">
+                  <div :class="$style.CalloutHeading">Нововти</div>
+                </RouterLink>
+              </NavigationMenuLink>
+            </li>
+
+            <NavigationMenuListItem
+                title="Школьная информатика"
+                :colors="colors"
+            >
+              <RouterLink to="/summer-cup" style="text-decoration: none;">
+                Темы, проходимые на уроках; ОГЭ; ЕГЭ
+              </RouterLink>
+            </NavigationMenuListItem>
+            <NavigationMenuListItem
+                title="Олимпиадная информатика"
+                :colors="colors"
+            >
+              <RouterLink to="/summer-cup" style="text-decoration: none;">
+                Подробные конспекты лекций
+              </RouterLink>
+            </NavigationMenuListItem>
+            <NavigationMenuListItem
+                title="Промышленная разработка"
+                :colors="colors"
+            >
+              <RouterLink to="/summer-cup" style="text-decoration: none;">
+                Статьи про реальные навыки, необходимые для программистов, и подготовка к PROD и высшей пробе по промышленному программированию
+              </RouterLink>
+            </NavigationMenuListItem>
           </ul>
         </NavigationMenuContent>
       </NavigationMenuItem>
@@ -101,7 +142,7 @@ function toArticles(event: Event) {
           <div :class="$style.flex">
             <img :src="cup"/>
             <span>
-              Соревнования
+              Соревнования и поездки
               <Icon
                 icon="radix-icons:caret-down"
                 :class="$style.CaretDown"
@@ -119,7 +160,7 @@ function toArticles(event: Event) {
                   :class="$style.Callout"
                   to="/olymp"
                 >
-                  <img :src="menu_olymp" style="height: 50vh;">
+                  <img :src="menu_olymp" style="width: 100%">
                   <div :class="$style.CalloutHeading">Внутрення олимпиада</div>
                   <p :class="$style.CalloutText">Апрель. Вы. 3 часа. 5-8 задач.<br>ICPC-формат.</p>
                 </RouterLink>
@@ -234,6 +275,10 @@ function toArticles(event: Event) {
   flex-direction: row;
 }
 
+.routerLink {
+  text-decoration: none;
+}
+
 .NavigationMenuRoot {
   position: relative;
   display: flex;
@@ -265,7 +310,7 @@ function toArticles(event: Event) {
   border-radius: 4px;
   font-size: 15px;
   color: #138900;
-  transition: background-color 2000ms ease-in-out;
+  transition: background-color 0.6s ease-in-out;
 }
 .NavigationMenuTrigger:focus,
 .NavigationMenuLink:focus {
