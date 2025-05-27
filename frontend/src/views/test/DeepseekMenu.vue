@@ -5,13 +5,13 @@
         <li v-for="item in menuItems" :key="item.name">
           <div 
             class="menu-item-wrapper"
-            @mouseover="item.hasDropdown ? toggleDropdown(item.name, true) : null"
-            @mouseleave="item.hasDropdown ? toggleDropdown(item.name, false) : null"
+            @mouseover="item.hasDropdown ? toggleDropdown(item.name as 'Новости' | 'Соревнования', true) : null"
+            @mouseleave="item.hasDropdown ? toggleDropdown(item.name as 'Новости' | 'Соревнования', false) : null"
           >
             <RouterLink v-if="item.link" :to="item.link" class="menu-item"><ThemeInvertSvg v-if="item.icon" alt="icon" inverted :src="item.icon"/>{{ item.name }}</RouterLink>
             <span v-else class="menu-item"><ThemeInvertSvg v-if="item.icon" alt="icon" inverted :src="item.icon"/>{{ item.name }}</span>
-            <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name] }">
-              <li v-for="subItem in item.items" :key="subItem">
+            <ul v-if="item.hasDropdown" class="dropdown-menu" :class="{ show: isOpen[item.name as 'Новости' | 'Соревнования'] }">
+              <li v-for="subItem in item.items" :key="subItem.name">
                 <RouterLink :to="subItem.to" class="dropdown-item">{{ subItem.name }}</RouterLink>
               </li>
             </ul>
@@ -22,9 +22,8 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from 'vue';
-import { RouterLink } from 'vue-router';
+<script lang="ts">
+import {defineComponent} from 'vue';
 import newsIcon from '@/assets/news2.svg';
 import contestIcon from '@/assets/cup.svg';
 import accountIcon from '@/assets/account.svg';
@@ -35,19 +34,19 @@ export default defineComponent({
   data() {
     return {
       isOpen: {
-        News: false,
-        Contests: false,
+        'Новости': false,
+        'Соревнования': false,
       },
       menuItems: [
         { 
-          name: 'Новости',
+          name: 'Новости' as "Новости" | "Соревнования",
           link: '/',
           icon: newsIcon,
           hasDropdown: true,
           items: [{name: 'Статьи', to: '/'}]
         },
         { 
-          name: 'Соревнования',
+          name: 'Соревнования' as "Новости" | "Соревнования",
           icon: contestIcon,
           hasDropdown: true,
           items: [
@@ -67,7 +66,7 @@ export default defineComponent({
     }
   },
   methods: {
-    toggleDropdown(menu, show) {
+    toggleDropdown(menu: "Новости" | "Соревнования", show: boolean) {
       this.isOpen[menu] = show;
     }
   },

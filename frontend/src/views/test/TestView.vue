@@ -9,7 +9,7 @@ import NewHeader from "@/views/test/NewHeader.vue";
 export default defineComponent({
   name: "TestView",
   components: {
-    NewHeader: NewHeader,
+    NewHeader,
     /*Animation, PrimevueHeader,*/DeepseekMenu, RadixHeader}
 })
 </script>
