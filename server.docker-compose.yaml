@@ -4,7 +4,7 @@ services:
     image: postgres:alpine3.19
     restart: always
     environment:
-      POSTGRES_PASSWORD: "uqT6dKI3C6qIMb1EoRAKIy46RspR6mUCarXqDtQSMAX1Hl1TKN5F10dNTQQicEWq"
+      POSTGRES_PASSWORD: ihA99valZICIIngq
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "postgres"
     healthcheck:
@@ -43,7 +43,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
-      DB_PASSWORD: "uqT6dKI3C6qIMb1EoRAKIy46RspR6mUCarXqDtQSMAX1Hl1TKN5F10dNTQQicEWq"
+      DB_PASSWORD: ihA99valZICIIngq
       DB_NAME: postgres
       PORT: 8080
       HOST: "0.0.0.0"
@@ -66,7 +66,7 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
-      DB_PASSWORD: "uqT6dKI3C6qIMb1EoRAKIy46RspR6mUCarXqDtQSMAX1Hl1TKN5F10dNTQQicEWq"
+      DB_PASSWORD: ihA99valZICIIngq
       DB_NAME: postgres
       MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
