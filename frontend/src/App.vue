@@ -4,6 +4,7 @@ import Header from '@/components/Header.vue';
 import {defineComponent} from "vue";
 import {routerPending} from "@/router.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import {themeName} from "@/utils.js";
 
 export default defineComponent({
   components: {ProgressIndicator, Header, RouterView},
@@ -14,6 +15,14 @@ export default defineComponent({
     routerPending() {
       return routerPending.value;
     }
+  },
+  watch: {
+    $themeName() {
+      themeName.value = this.$themeName as "light" | "dark";
+    }
+  },
+  mounted() {
+    themeName.value = this.$themeName as "light" | "dark";
   }
 })
 </script>

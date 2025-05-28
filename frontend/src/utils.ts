@@ -1,3 +1,5 @@
+import {ref} from "vue";
+
 export function arrayBufferToBase64String(buffer: ArrayBuffer): string {
     let binary = '';
     let bytes = new Uint8Array( buffer );
@@ -22,3 +24,5 @@ export async function readFile(file: File): Promise<ArrayBuffer> {
 export async function readFileBase64(file: File): Promise<string> {
     return arrayBufferToBase64String(await readFile(file));
 }
+
+export const themeName = ref<"light" | "dark">();

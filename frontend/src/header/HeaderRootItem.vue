@@ -2,6 +2,7 @@
 import {NavigationMenuContent, NavigationMenuItem, NavigationMenuTrigger} from "radix-vue";
 import {computed, type PropType, ref} from "vue";
 import type {RouteLocationRaw} from "vue-router";
+import {colors} from "@/header/colors.js";
 
 const props = defineProps({
   navigateTo: Object as PropType<RouteLocationRaw>,
@@ -11,12 +12,7 @@ const props = defineProps({
   }
 });
 
-const colors = ref({
-  bg: "#2c2c2c",
-  hoverColor: "#154311" // 3
-});
-
-const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => colors.value.hoverColor);
+const hoverColor = computed(() => colors.value.hoverColor);
 </script>
 
 <template>

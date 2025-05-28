@@ -9,6 +9,7 @@ import {Icon} from "@iconify/vue";
 import cup from "@/assets/cup.svg";
 import account from "@/assets/account.svg";
 import menu_olymp from "@/assets/menu_olymp.jpg";
+import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 </script>
 
 <template>
@@ -16,21 +17,18 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
     <HeaderRootItem navigate-to="/">
       <template #heading>
         <div :class="$style.flex">
-          <img :src="news"/>
+          <ThemeInvertSvg :src="news" alt=""/>
           <span>
             Новости и статьи
-            <Icon
-                icon="radix-icons:caret-down"
-                :class="$style.CaretDown"
-            />
+            <Icon icon="radix-icons:caret-down" :class="$style.CaretDown"/>
           </span>
         </div>
       </template>
       <PrimaryLayout>
         <template #primary>
           <RouterLink :class="$style.Callout" to="/olymp">
-              <img :src="home" style="width: 100%">
-              <div :class="$style.CalloutHeading">Нововти</div>
+            <img :src="home" style="width: 100%">
+            <div :class="$style.CalloutHeading">Нововти</div>
           </RouterLink>
         </template>
 
@@ -48,23 +46,17 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
     <HeaderRootItem>
       <template #heading>
         <div :class="$style.flex">
-          <img :src="cup"/>
+          <ThemeInvertSvg :src="cup" alt=""/>
           <span>
             Соревнования и поездки
-            <Icon
-              icon="radix-icons:caret-down"
-              :class="$style.CaretDown"
-            />
+            <Icon icon="radix-icons:caret-down" :class="$style.CaretDown"/>
           </span>
         </div>
       </template>
       <PrimaryLayout>
         <template #primary>
-          <RouterLink
-              :class="$style.Callout"
-              to="/olymp"
-          >
-            <img :src="menu_olymp" style="width: 100%">
+          <RouterLink :class="$style.Callout" to="/olymp">
+            <ThemeInvertSvg :src="menu_olymp" style="width: 100%" alt=""/>
             <div :class="$style.CalloutHeading">Внутрення олимпиада</div>
             <p :class="$style.CalloutText">Апрель. Вы. 3 часа. 5-8 задач.<br>ICPC-формат.</p>
           </RouterLink>
@@ -78,7 +70,7 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
     <HeaderRootItem content-less navigate-to="/me">
       <template #heading>
         <div :class="$style.flex">
-          <img :src="account"/>
+          <ThemeInvertSvg :src="account" alt=""/>
           <span>
               Аккаунт
           </span>
@@ -128,6 +120,13 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
   top: 1px;
   transition: transform 250ms ease;
 }
+
+.CalloutText {
+  color: var(--mauve-4);
+  font-size: 14px;
+  line-height: 1.3;
+}
+
 [data-state='open'] > .CaretDown {
   transform: rotate(-180deg);
 }

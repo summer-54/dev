@@ -1,13 +1,9 @@
 <script setup lang="ts">
 import {NavigationMenuIndicator, NavigationMenuList, NavigationMenuRoot, NavigationMenuViewport} from "radix-vue";
 import {computed, ref} from "vue";
+import {colors} from "@/header/colors.js";
 
-const colors = ref({
-  bg: "#2c2c2c",
-  hoverColor: "#154311" // 3
-});
-
-const bgColor = computed(() => colors.value.bg), hoverColor = computed(() => colors.value.hoverColor);
+const bgColor = computed(() => colors.value.bg);
 
 const currentTrigger = ref("");
 </script>
@@ -60,6 +56,7 @@ const currentTrigger = ref("");
   list-style: none;
   box-shadow: 0 2px 10px var(--black-a7);
   margin: 0;
+  transition: background-color .6s, color .6s;
 }
 
 .NavigationMenuIndicator {
