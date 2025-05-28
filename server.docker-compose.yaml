@@ -2,16 +2,17 @@ version: "3"
 services:
   db:
     image: postgres:alpine3.19
+    restart: always
     environment:
       POSTGRES_PASSWORD: ihA99valZICIIngq
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "postgres"
-    command: postgres -c password_encryption=md5
     healthcheck:
       test: "pg_isready -d postgres -U postgres"
       interval: 5s
       timeout: 60s
       retries: 20
+    user: postgres
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
