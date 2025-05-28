@@ -1,0 +1,92 @@
+version: "3"
+services:
+  db:
+    image: postgres:alpine3.19
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: "UohTx1&+ada3G@5e0n$N@nabL3aSU9aue+Vr5+W?6ET6.RGQhcD6_ZVA8ytilLdG"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
+    healthcheck:
+      test: "pg_isready -d postgres -U postgres"
+      interval: 5s
+      timeout: 60s
+      retries: 20
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  minio:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: "W3--A5q$4J~fV0M+B.3vnk9cm8SajkSKP0wL2m7n*YAXvL2yZ6n27bNGkCAEnWS3"
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: "curl -f http://localhost:9000/minio/health/live"
+      interval: 5s
+      timeout: 60s
+      retries: 20
+  backend:
+    build: ./backend
+    command: node ./dist/main.js
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: "UohTx1&+ada3G@5e0n$N@nabL3aSU9aue+Vr5+W?6ET6.RGQhcD6_ZVA8ytilLdG"
+      DB_NAME: postgres
+      PORT: 8080
+      HOST: "0.0.0.0"
+      MAIL_HOST: smtp.yandex.ru
+      MAIL_USER: inf.54@yandex.ru
+      MAIL_PASS: ebyqmtqmlbdmzxhl
+    volumes:
+      - "newsAttachments:/app/newsAttachments"
+      - "contestsProblems:/app/contestsProblems"
+  article54:
+    image: vssizoff/article54server
+    depends_on:
+      minio:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      HOST: "0.0.0.0"
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: "UohTx1&+ada3G@5e0n$N@nabL3aSU9aue+Vr5+W?6ET6.RGQhcD6_ZVA8ytilLdG"
+      DB_NAME: postgres
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: "W3--A5q$4J~fV0M+B.3vnk9cm8SajkSKP0wL2m7n*YAXvL2yZ6n27bNGkCAEnWS3"
+      PUSH_CHECK: "http://backend:8080/push-check"
+      PULL_CHECK: "http://backend:8080/pull-check"
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+      target: server
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
+      - article54
+volumes:
+  db-data:
+  newsAttachments:
+  contestsProblems:
+  minio_data:
