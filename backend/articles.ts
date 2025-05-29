@@ -16,7 +16,7 @@ router.get<Buffer, {repo: string}, {}, {id: number, username: string}>("/article
     }
 });
 
-router.post<Buffer, {repo: string}, {}, {id: number, username: string}, {authorization: string}>("/articles/create", async (request, response) => {
+router.post<Buffer, {repo: string}, {}, {id: number, username: string}, {authorization: string}>("/article/:repo/create", async (request, response) => {
     if (!canCreate(request.params.repo, request.auth.id, request.auth.username)) {
         response.status(409);
         response.end();
