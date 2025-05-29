@@ -1,9 +1,41 @@
 import {BackendiumRouter} from "backendium";
 import {object, string} from "checkeasy";
-import {getPermissions} from "./sql/articles.sql.js";
-import {getUserByToken} from "./sql/users.sql.js";
+import {canCreate, create, getPermissions} from "./sql/articles.sql.js";
+import {checkAuth, checkAuthRetID} from "./authChecker.js";
 
 const router = new BackendiumRouter();
+
+router.get<Buffer, {repo: string}, {}, {id: number, username: string}>("/article/:repo/canCreate", (request, response) => {
+    response.end(canCreate(request.params.repo, request.auth.id, request.auth.username));
+}, {
+    paramsValidator: object({
+        repo: string()
+    }, {ignoreUnknown: true}),
+    async authChecker(request, response) {
+        return checkAuth(request?.body?.headers?.authorization, ["id", "username"], response);
+    }
+});
+
+router.post<Buffer, {repo: string}, {}, {id: number, username: string}, {authorization: string}>("/articles/create", async (request, response) => {
+    if (!canCreate(request.params.repo, request.auth.id, request.auth.username)) {
+        response.status(409);
+        response.end();
+        return;
+    }
+    await create(request.params.repo, request.auth.id);
+    response.status(201);
+    response.end();
+}, {
+    paramsValidator: object({
+        repo: string()
+    }, {ignoreUnknown: true}),
+    headersValidator: object({
+        authorization: string()
+    }, {ignoreUnknown: true}),
+    async authChecker(request, response) {
+        return checkAuth(request?.body?.headers?.authorization, ["id", "username"], response);
+    }
+});
 
 router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/articles/push-check", async (request, response) => {
     const permissions = await getPermissions(request.auth, request.body.repo.toLowerCase());
@@ -19,15 +51,7 @@ router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/
         repo: string()
     }, {ignoreUnknown: true}),
     async authChecker(request, response) {
-        if (typeof request?.body?.headers?.authorization !== "string") {
-            response.status(401);
-            response.end("");
-            return null;
-        }
-        let {authorization: token} = request.body.headers;
-        let user = await getUserByToken(token, ["id"]);
-        if (!user) return null;
-        return user.id;
+        return checkAuthRetID(request?.body?.headers?.authorization, response);
     }
 });
 
@@ -45,36 +69,6 @@ router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/
         repo: string()
     }, {ignoreUnknown: true}),
     async authChecker(request, response) {
-        if (typeof request?.body?.headers?.authorization !== "string") {
-            response.status(401);
-            response.end("");
-            return null;
-        }
-        let {authorization: token} = request.body.headers;
-        let user = await getUserByToken(token, ["id"]);
-        if (!user) return null;
-        return user.id;
-    }
-});
-
-router.post<string, {}, {}, number, {authorization: string}>("/articles/create", async (request, response) => {
-
-}, {
-    bodyValidator: (value, key) => {
-        return string()(value.toString(), key);
-    },
-    headersValidator: object({
-        authorization: string()
-    }, {ignoreUnknown: true}),
-    async authChecker(request, response) {
-        if (typeof request?.body?.headers?.authorization !== "string") {
-            response.status(401);
-            response.end("");
-            return null;
-        }
-        let {authorization: token} = request.body.headers;
-        let user = await getUserByToken(token, ["id"]);
-        if (!user) return null;
-        return user.id;
+        return checkAuthRetID(request?.body?.headers?.authorization, response);
     }
 });

@@ -18,6 +18,7 @@ import {searchUsers} from "./sql/search.sql.js";
 import {removeKey, rsaKeys} from "./rsa.js";
 import {int, object, string, ValidationError} from "checkeasy";
 import {emailValidator} from "./mail.js";
+import { checkAuth } from "./authChecker.js";
 
 const router = buildHandlers({
     post: {
@@ -274,15 +275,7 @@ router.patch<{old: string, new: string, keyId: number}, {}, {}, {id: number, pas
         }
     }),
     async authChecker(request, response) {
-        if (typeof request.headers.authorization !== "string") {
-            response.status(401);
-            response.end("");
-            return null;
-        }
-        let {authorization: token} = request.headers;
-        let user = await getUserByToken(token, ["passwordHash", "id"]);
-        if (!user) return null;
-        return {id: user.id, passwordHash: user.passwordHash};
+        return checkAuth(request?.body?.headers?.authorization, ["passwordHash", "id"], response);
     }
 })
 
