@@ -1,11 +1,11 @@
-FROM oven/bun:latest AS frontend-builder
+FROM node:22.4.0-alpine3.19 AS frontend-builder
 
 WORKDIR /app
 
 COPY ./frontend .
 
-RUN bun i
-RUN bun run build
+RUN npm i
+RUN npm run build
 
 FROM nginx:1.27.0-alpine3.19 AS server
 
