@@ -30,6 +30,7 @@ export default defineComponent({
   },
   mounted() {
     themeName.value = this.$themeName as "light" | "dark";
+    if (this.$themeName === "dark") document.documentElement.classList.add("dark");
   }
 })
 </script>
