@@ -6,7 +6,7 @@
         <h4>Информатика в <a href="https://moscowschool54.ru/" target="_blank">школе №54</a></h4>
       </template>
       <template #item="{ item }">
-        <NavButton v-if="item.root && 'to' in item" :icon="item.image" :to="item.to" class="root">
+        <NavButton v-if="item.root && 'to' in item" :icon="item.image" :to="item.to" class="desktop">
           {{ item.label }}
         </NavButton>
         <IconButton v-else-if="item.root" alt="" :icon="item.image">
@@ -29,9 +29,6 @@ import {Avatar, Button, MegaMenu} from "primevue";
 import homeIcon from "@/assets/home.svg";
 import cupIcon from "@/assets/cup.svg";
 import olympIcon from "@/assets/olymp.svg";
-import accountIcon from "@/assets/account.svg";
-import darkIcon from "@/assets/dark.svg";
-import lightIcon from "@/assets/light.svg";
 import campIcon from "@/assets/camp.svg";
 import NavButton from "@/components/ui/navButton.vue";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
@@ -77,7 +74,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.root {
+.desktop {
 
 }
 </style>

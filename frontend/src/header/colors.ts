@@ -10,9 +10,9 @@ export const colors = computed(() => {
         itemTextColor: "white",
         itemTextHoverColor: "black"
     } : {
-        bg: "white",
+        bg: "#d6d6fb",
         hoverColor: "#9297FB",
-        itemHeadingColor: "#9297FB",
+        itemHeadingColor: "#7b81ff",
         itemHeadingHoverColor: "black",
         itemTextColor: "black",
         itemTextHoverColor: "black"

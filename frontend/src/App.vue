@@ -1,13 +1,13 @@
 <script lang="ts">
 import {RouterView} from 'vue-router';
-import Header from '@/components/Header.vue';
 import {defineComponent} from "vue";
 import {routerPending} from "@/router.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import {themeName} from "@/utils.js";
+import Header from "@/header/Header.vue";
 
 export default defineComponent({
-  components: {ProgressIndicator, Header, RouterView},
+  components: {Header, ProgressIndicator, RouterView},
   computed: {
     color() {
       return this.$theme.color
@@ -28,7 +28,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <Header/>
+  <Header class="header"/>
   <RouterView v-slot="{Component}">
     <Transition name="fade" mode="out-in">
       <Component :is="Component"/>

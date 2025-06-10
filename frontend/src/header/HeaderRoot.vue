@@ -52,11 +52,19 @@ const currentTrigger = ref("");
   justify-content: center;
   background-color: v-bind(bgColor);
   padding: 4px;
-  border-radius: 6px;
+  border-radius: 100px;
   list-style: none;
   box-shadow: 0 2px 10px var(--black-a7);
   margin: 0;
   transition: background-color .6s, color .6s;
+}
+
+.NavigationMenuList li:first-child > * > *, .NavigationMenuList li:first-child > *, .NavigationMenuList li:first-child {
+  border-radius: 20px 10px 10px 20px;
+}
+
+.NavigationMenuList li:last-child > * > *, .NavigationMenuList li:last-child > *, .NavigationMenuList li:last-child {
+  border-radius: 10px 20px 20px 10px;
 }
 
 .NavigationMenuIndicator {
@@ -84,7 +92,7 @@ const currentTrigger = ref("");
   background-color: v-bind(bgColor);
   border-radius: 6px;
   overflow: hidden;
-  box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
+  box-shadow: hsl(206 22% 7% / 35%) 0 10px 38px -10px, hsl(206 22% 7% / 20%) 0 10px 20px -15px;
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 300ms ease;
 }

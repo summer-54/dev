@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {NavigationMenuContent, NavigationMenuItem, NavigationMenuTrigger} from "radix-vue";
-import {computed, type PropType, ref} from "vue";
+import {computed, type PropType} from "vue";
 import type {RouteLocationRaw} from "vue-router";
 import {colors} from "@/header/colors.js";
 
@@ -44,8 +44,7 @@ const hoverColor = computed(() => colors.value.hoverColor);
   text-decoration: none;
 }
 
-.NavigationMenuTrigger,
-.NavigationMenuLink {
+.NavigationMenuTrigger {
   all: unset;
 
   padding: 8px 12px;
@@ -53,17 +52,15 @@ const hoverColor = computed(() => colors.value.hoverColor);
   user-select: none;
   font-weight: 500;
   line-height: 1;
-  border-radius: 4px;
+  border-radius: 10px;
   font-size: 15px;
   color: #138900;
   transition: background-color 0.6s ease-in-out;
 }
-.NavigationMenuTrigger:focus,
-.NavigationMenuLink:focus {
-  box-shadow: 0 0 0 2px var(--grass-7); /**/
+.NavigationMenuTrigger:focus {
+  box-shadow: 0 0 0 2px var(--grass-7);
 }
-.NavigationMenuTrigger:hover,
-.NavigationMenuLink:hover {
+.NavigationMenuTrigger:hover {
   background-color: v-bind(hoverColor);
 }
 
@@ -74,7 +71,7 @@ const hoverColor = computed(() => colors.value.hoverColor);
   gap: 2px;
 }
 
-.NavigationMenuLink, .NavigationMenuLink span {
+.NavigationMenuLink span {
   display: block;
   text-decoration: none;
   font-size: 15px;
