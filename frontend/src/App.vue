@@ -14,11 +14,18 @@ export default defineComponent({
     },
     routerPending() {
       return routerPending.value;
-    }
+    },
+    theme() {return this.$themeName}
   },
   watch: {
     $themeName() {
       themeName.value = this.$themeName as "light" | "dark";
+      // PrimeVue.changeTheme(this.$themeName);
+      // this.$primevue.changeTheme(
+      //     `lara-${this.$themeName}-blue`
+      // );
+      if (this.$themeName === "dark") document.documentElement.classList.add("dark");
+      else document.documentElement.classList.remove("dark");
     }
   },
   mounted() {
@@ -50,6 +57,7 @@ body {
   padding: 0;
   margin: 0;
   min-height: 100vh;
+  color-scheme: v-bind(theme);
 }
 
 * {

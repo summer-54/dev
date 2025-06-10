@@ -46,7 +46,10 @@ app.use(createVueSui({
 app.use(createManager());
 app.use(PrimeVue, {
     theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+            darkModeSelector: ".dark"
+        }
     }
 });
 
