@@ -196,7 +196,7 @@ const sideBarOpened = ref(false);
 @import '@radix-ui/colors/grass.css';
 
 .desktop {
-  @media (width < 800px) {
+  @media (width < 700px) {
     display: none;
   }
 
@@ -210,7 +210,7 @@ const sideBarOpened = ref(false);
 }
 
 .mobile {
-  @media (width >= 800px) {
+  @media (width >= 700px) {
     display: none;
   }
 

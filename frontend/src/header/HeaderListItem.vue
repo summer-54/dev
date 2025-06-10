@@ -70,11 +70,25 @@ const hoverColor = computed(() => colors.value.hoverColor),
   text-align: left;
 }
 
-.ListItemLink:focus {
+.ListItemLink:focus-visible {
   box-shadow: 0 0 0 2px var(--grass-7);
 }
 
-.ListItemLink:hover {
+@media (hover: hover) {
+  .ListItemLink:hover {
+    background-color: v-bind(hoverColor);
+
+    .ListItemHeading {
+      color: v-bind(itemHeadingHoverColor);
+    }
+
+    .ListItemText {
+      color: v-bind(itemTextHoverColor);
+    }
+  }
+}
+
+.ListItemLink:active {
   background-color: v-bind(hoverColor);
 
   .ListItemHeading {

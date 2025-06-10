@@ -55,12 +55,20 @@ const hoverColor = computed(() => colors.value.hoverColor);
   border-radius: 10px;
   font-size: 15px;
   color: #138900;
-  transition: background-color 0.6s ease-in-out;
+  transition: background-color .6s ease-in-out;
 }
-.NavigationMenuTrigger:focus {
+
+.NavigationMenuTrigger:focus-visible {
   box-shadow: 0 0 0 2px var(--grass-7);
 }
-.NavigationMenuTrigger:hover {
+
+@media (hover: hover) {
+  .NavigationMenuTrigger:hover {
+    background-color: v-bind(hoverColor);
+  }
+}
+
+.NavigationMenuTrigger:active {
   background-color: v-bind(hoverColor);
 }
 
