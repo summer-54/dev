@@ -20,32 +20,35 @@ export default defineComponent({
       // UPD: href is now link to page of this tour, not to solutions!!!
       solutions: [
         [
-          {num:  1, href: undefined, tasks_amount: undefined, date: undefined, solution: "kSqRWlDEJHo"},
-          {num:  2, href: undefined, tasks_amount: undefined, date: undefined, solution: "Enuq2_ftRnk"},
-          {num:  3, href: undefined, tasks_amount: undefined, date: undefined, solution: "xd7ybW3XkpQ"},
-          {num:  4, href: undefined, tasks_amount: undefined, date: undefined, solution: "8wHtb8fsXvU"},
-          {num:  5, href: undefined, tasks_amount: undefined, date: undefined, solution: "r8AFfgb8bvY"},
-          {num:  6, href: undefined, tasks_amount: undefined, date: undefined, solution: "f7-pjyDR3OE"},
-          {num:  7, href: undefined, tasks_amount: undefined, date: undefined, solution: "kVicb6GQB8o"},
-          {num:  8, href: undefined, tasks_amount: undefined, date: undefined, solution: "FI9UPkaPPWc"},
-          {num:  9, href: undefined, tasks_amount: undefined, date: undefined, solution: "AqIf9P7YT8k"},
-          {num: 10, href: undefined, tasks_amount: undefined, date: undefined, solution: "2Zy77NRHSMk"}
+          {num:  1, tasks_amount: undefined, date: undefined, solution: "kSqRWlDEJHo"},
+          {num:  2, tasks_amount: undefined, date: undefined, solution: "Enuq2_ftRnk"},
+          {num:  3, tasks_amount: undefined, date: undefined, solution: "xd7ybW3XkpQ"},
+          {num:  4, tasks_amount: undefined, date: undefined, solution: "8wHtb8fsXvU"},
+          {num:  5, tasks_amount: undefined, date: undefined, solution: "r8AFfgb8bvY"},
+          {num:  6, tasks_amount: undefined, date: undefined, solution: "f7-pjyDR3OE"},
+          {num:  7, tasks_amount: undefined, date: undefined, solution: "kVicb6GQB8o"},
+          {num:  8, tasks_amount: undefined, date: undefined, solution: "FI9UPkaPPWc"},
+          {num:  9, tasks_amount: undefined, date: undefined, solution: "AqIf9P7YT8k"},
+          {num: 10, tasks_amount: undefined, date: undefined, solution: "2Zy77NRHSMk"}
         ],
         [
-          {num:  1, href: undefined, tasks_amount: 11, date: "01.06.2024—14.06.2024", solution: "mCj1RIXx_qw"},
-          {num:  2, href: undefined, tasks_amount:  9, date: "08.06.2024—21.06.2024", solution: "gg-MsmrzUaY"},
-          {num:  3, href: undefined, tasks_amount:  8, date: "15.06.2024—28.06.2024", solution: "eXphcfz4AzI"},
-          {num:  4, href: undefined, tasks_amount: 11, date: "21.06.2024—06.07.2024", solution: "hMGGmTd5de8"},
-          {num:  5, href: undefined, tasks_amount:  9, date: "26.06.2024—19.07.2024", solution: "6z9clGg8s7E"},
-          {num:  6, href: undefined, tasks_amount:  9, date: "06.07.2024—19.07.2024", solution: "GXFJrkMJrRw"},
-          {num:  7, href: undefined, tasks_amount: 11, date: "14.07.2024—27.07.2024", solution: "jvEdVcos6Ms"}
+          {num:  1, tasks_amount: 11, date: "01.06.2024—14.06.2024", solution: "mCj1RIXx_qw"},
+          {num:  2, tasks_amount:  9, date: "08.06.2024—21.06.2024", solution: "gg-MsmrzUaY"},
+          {num:  3, tasks_amount:  8, date: "15.06.2024—28.06.2024", solution: "eXphcfz4AzI"},
+          {num:  4, tasks_amount: 11, date: "21.06.2024—06.07.2024", solution: "hMGGmTd5de8"},
+          {num:  5, tasks_amount:  9, date: "26.06.2024—19.07.2024", solution: "6z9clGg8s7E"},
+          {num:  6, tasks_amount:  9, date: "06.07.2024—19.07.2024", solution: "GXFJrkMJrRw"},
+          {num:  7, tasks_amount: 11, date: "14.07.2024—27.07.2024", solution: "jvEdVcos6Ms"}
+        ],
+        [
+          {num:  1, tasks_amount: 6, date: "01.06.2025—14.06.2025", solution: ""}
         ]
       ],
       text: "Один тур оценивается в 90 баллов, общий балл за кубок — сумма баллов за все туры, кроме 2 худших. 30 баллов выставляется за место в виртуальном участии (за 1 место - 30, 2 - 28, 3 - 26, 4 - 24, 5 - 22, 6 - 20, 7 - 19, 8 - 18 и т.д.), но не решившие ни одной задачи не получают баллов за место. Оставшиеся 60 баллов участник получает за задачи. За каждую задачу, сданную до разбора, участник получает $\\dfrac{60}{n}$ баллов, а после разбора — $\\dfrac{30}{n}$ баллов, где $n$ - количество задач."
     }
   },
   mounted() {
-    if (!("year" in this.route.params)) this.$router.push("/summer-cup/2");
+    if (!("year" in this.route.params)) this.$router.push(`/summer-cup/${this.solutions.length}`);
     for (let i = 0; i < this.solutions.length; i++){
       this.solutions[i].reverse();
     }
