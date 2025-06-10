@@ -37,6 +37,13 @@ export default defineComponent({
           results: "https://codeforces.com/spectator/ranklist/5b07c464e44e728aaa349f638ef1bfe2",
           gym: "https://codeforces.com/gym/105136",
           solutions: "https://youtu.be/iac53dNDHbg"
+        },
+        {
+          year: 2025,
+          tasks: "/tasks25.pdf",
+          results: "https://codeforces.com/spectator/ranklist/1e14d24fe35f078ac5a18181557e0d11",
+          gym: "https://codeforces.com/contestInvitation/a2431f05cb0f66b9855a0d6b8da0f3e04eca9523",
+          solutions: "/solutions25.pdf"
         }
       ]
     }
