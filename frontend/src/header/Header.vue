@@ -46,7 +46,7 @@ const sideBarOpened = ref(false);
       </template>
       <SecondaryLayout>
         <HeaderListItem title="Школьная информатика">
-          Темы, проходимые на уроках; ОГЭ; ЕГЭ
+          Темы уроков; ОГЭ; ЕГЭ
         </HeaderListItem>
         <HeaderListItem title="Олимпиадная информатика">
           Подробные конспекты лекций
@@ -77,6 +77,9 @@ const sideBarOpened = ref(false);
 
         <HeaderListItem title="Летний кубок" navigateTo="/summer-cup">
           Соревнование, которое длится почти всё лето!
+        </HeaderListItem>
+        <HeaderListItem title="ЛШП" navigateTo="/summer-camp">
+          Выездная летняя школа по программированию
         </HeaderListItem>
       </PrimaryLayout>
     </HeaderRootItem>
@@ -167,6 +170,11 @@ const sideBarOpened = ref(false);
           {
             label: 'Летний кубок',
             route: '/summer-cup',
+            command() {sideBarOpened = false}
+          },
+          {
+            label: 'ЛШП',
+            route: '/summer-camp',
             command() {sideBarOpened = false}
           }
         ]
