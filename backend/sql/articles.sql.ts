@@ -11,8 +11,9 @@ export async function getPermissions(user: number, article: number | string): Pr
     return !data ? {read: false, write: false, exists: true} : {...data, exists: true};
 }
 
-export function canCreate(repo: string, id: number, username: string): boolean {
-    return repo.startsWith(username + '.') && repo.substring(username.length + 1).match(/[a-zA-Z0-9-_]*/gm)?.length === 2;
+export async function canCreate(repo: string, id: number, username: string): Promise<boolean> {
+    return (await db.selectFrom("articleRepos").where("repo", '=', repo).select(["id"]).executeTakeFirst()) === undefined
+        && repo.startsWith(username + '.') && repo.substring(username.length + 1).match(/[a-zA-Z0-9-_]*/gm)?.length === 2;
 }
 
 export async function create(repo: string, user: number) {

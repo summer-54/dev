@@ -5,27 +5,18 @@ import {checkAuth, checkAuthRetID} from "./authChecker.js";
 
 const router = new BackendiumRouter();
 
-router.get<Buffer, {repo: string}, {}, {id: number, username: string}>("/article/:repo/canCreate", (request, response) => {
-    response.end(canCreate(request.params.repo, request.auth.id, request.auth.username));
-}, {
-    paramsValidator: object({
-        repo: string()
-    }, {ignoreUnknown: true}),
-    async authChecker(request, response) {
-        return checkAuth(request?.body?.headers?.authorization, ["id", "username"], response);
-    }
-});
+// router.get<Buffer, {repo: string}, {}, {id: number, username: string}>("/article/:repo/canCreate", (request, response) => {
+//     response.end(canCreate(request.params.repo, request.auth.id, request.auth.username));
+// }, {
+//     paramsValidator: object({
+//         repo: string()
+//     }, {ignoreUnknown: true}),
+//     async authChecker(request, response) {
+//         return checkAuth(request?.body?.headers?.authorization, ["id", "username"], response);
+//     }
+// });
 
-router.post<Buffer, {repo: string}, {}, {id: number, username: string}, {authorization: string}>("/article/:repo/create", async (request, response) => {
-    if (!canCreate(request.params.repo, request.auth.id, request.auth.username)) {
-        response.status(409);
-        response.end();
-        return;
-    }
-    await create(request.params.repo, request.auth.id);
-    response.status(201);
-    response.end();
-}, {
+router.get("/:repo/canCreate", {
     paramsValidator: object({
         repo: string()
     }, {ignoreUnknown: true}),
@@ -33,11 +24,42 @@ router.post<Buffer, {repo: string}, {}, {id: number, username: string}, {authori
         authorization: string()
     }, {ignoreUnknown: true}),
     async authChecker(request, response) {
-        return checkAuth(request?.body?.headers?.authorization, ["id", "username"], response);
+        return checkAuth(request?.headers?.authorization, ["id", "username"], response);
     }
+}, async (request, response) => {
+    response.end(await canCreate(request.params.repo, request.auth.id, request.auth.username));
 });
 
-router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/articles/push-check", async (request, response) => {
+router.post("/:repo/create", {
+    paramsValidator: object({
+        repo: string()
+    }, {ignoreUnknown: true}),
+    headersValidator: object({
+        authorization: string()
+    }, {ignoreUnknown: true}),
+    async authChecker(request, response) {
+        return checkAuth(request?.headers?.authorization, ["id", "username"], response);
+    }
+}, async (request, response) => {
+    if (!(await canCreate(request.params.repo, request.auth.id, request.auth.username))) {
+        response.status(409);
+        response.end();
+        return;
+    }
+    await create(request.params.repo, request.auth.id);
+    response.status(201);
+    response.end();
+});
+
+router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/push-check", {
+    bodyValidator: object({
+        headers: object({authorization: string()}, {ignoreUnknown: true}),
+        repo: string()
+    }, {ignoreUnknown: true}),
+    async authChecker(request, response) {
+        return checkAuthRetID(JSON.parse(request.body.toString())?.headers?.authorization, response);
+    }
+}, async (request, response) => {
     const permissions = await getPermissions(request.auth, request.body.repo.toLowerCase());
     if (!permissions.write) {
         response.status(404);
@@ -45,17 +67,17 @@ router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/
         return;
     }
     response.end(request.body.repo.toLowerCase());
-}, {
+});
+
+router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/pull-check", {
     bodyValidator: object({
         headers: object({authorization: string()}, {ignoreUnknown: true}),
         repo: string()
     }, {ignoreUnknown: true}),
     async authChecker(request, response) {
-        return checkAuthRetID(request?.body?.headers?.authorization, response);
+        return checkAuthRetID(JSON.parse(request.body.toString())?.headers?.authorization, response);
     }
-});
-
-router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/articles/pull-check", async (request, response) => {
+}, async (request, response) => {
     const permissions = await getPermissions(request.auth, request.body.repo.toLowerCase());
     if (!permissions.read) {
         response.status(404);
@@ -63,12 +85,6 @@ router.post<{headers: {authorization: string}, repo: string}, {}, {}, number>("/
         return;
     }
     response.end(request.body.repo.toLowerCase());
-}, {
-    bodyValidator: object({
-        headers: object({authorization: string()}, {ignoreUnknown: true}),
-        repo: string()
-    }, {ignoreUnknown: true}),
-    async authChecker(request, response) {
-        return checkAuthRetID(request?.body?.headers?.authorization, response);
-    }
 });
+
+export default router;

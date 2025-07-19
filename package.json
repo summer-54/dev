@@ -5,7 +5,8 @@
     "build": "docker compose build",
     "up": "docker compose up",
     "start": "npm run build && npm run up",
-    "dev": "nodemon --exec \"npm start\""
+    "dev": "nodemon --exec \"npm start\"",
+    "rebuild": "podman-compose down && podman-compose up -d --build"
   },
   "devDependencies": {
     "@types/pg": "^8.11.6",

@@ -7,7 +7,7 @@ COPY ./frontend .
 RUN npm i
 RUN npm run build
 
-FROM nginx:1.27.0-alpine3.19 AS server
+FROM nginx:1.29.0-alpine3.22 AS server
 
 COPY --from=frontend-builder /app/dist /frontend
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf

@@ -35,15 +35,38 @@ export interface SessionsTable {
     token: string;
 }
 
+export interface ContestGroupsTable {
+    id: Generated<number>;
+    name: string;
+    link: string;
+}
+
 export interface ContestsTable {
     id: Generated<number>;
-    groupId: string;
+    groupId?: string;
     name: string;
     contestId: number;
     available: ColumnType<boolean, boolean | undefined>;
     solutionsPublishDatetime?: ColumnType<Date, Date | string, Date | string>;
     solutionsVideoId?: string;
     problemsPdfLink?: string;
+    resultsLink: string;
+}
+
+export interface OfficialResultsTable {
+    id: Generated<number>;
+    contestId: number;
+    user: string;
+    result: number;
+    datetime: ColumnType<Date, Date | string, Date | string>;
+}
+
+export interface UnofficialResultsTable {
+    id: Generated<number>;
+    contestId: number;
+    user: string;
+    result: number;
+    datetime: ColumnType<Date, Date | string, Date | string>;
 }
 
 export interface UsersContestsTable {
@@ -92,7 +115,10 @@ export interface Database {
     newsImages: NewsImagesTable;
     users: UsersTable;
     sessions: SessionsTable;
+    contestGroups: ContestGroupsTable;
     contests: ContestsTable;
+    officialResults: OfficialResultsTable;
+    unofficialResults: UnofficialResultsTable;
     usersContests: UsersContestsTable;
     problems: ProblemsTable;
     standings: StandingsTable;

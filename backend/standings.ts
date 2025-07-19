@@ -10,8 +10,8 @@ import {
 } from "./sql/codeforces.sql.js";
 import {getUserIdByUsername, isAdmin} from "./sql/users.sql.js";
 import fs from "node:fs";
-import {parseStandings} from "./codeforces.js";
-import {addContest, patchContest} from "./sql/codeforces.update.sql.js";
+// import {parseStandings} from "./codeforces.js";
+// import {addContest, patchContest} from "./sql/codeforces.update.sql.js";
 
 export default buildHandlers({
     get: {
@@ -73,7 +73,7 @@ export default buildHandlers({
                 response.end();
                 return;
             }
-            await patchContest(Number(request.params.id), parseStandings(String(request.body), 0));
+            // await patchContest(Number(request.params.id), parseStandings(String(request.body), 0));
             response.end();
         }
     },
@@ -84,7 +84,7 @@ export default buildHandlers({
                 response.end();
                 return;
             }
-            await addContest(parseStandings(String(request.body), Number(request.params.contestId)));
+            // await addContest(parseStandings(String(request.body), Number(request.params.contestId)));
             response.end();
         }
     }

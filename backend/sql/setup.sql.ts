@@ -35,15 +35,37 @@ export default async function () {
             .addColumn("token", "varchar(1024)", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
+        await db.schema.createTable("contestGroups")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("name", "varchar(512)", cb => cb.notNull())
+            .addColumn("link", "varchar(512)", cb => cb.notNull()).execute();
+    } catch (error) {}
+    try {
         await db.schema.createTable("contests")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("groupId", "varchar(16)", cb => cb.notNull())
+            .addColumn("groupId", "varchar(16)")
             .addColumn("name", "varchar(512)", cb => cb.notNull())
             .addColumn("contestId", "integer", cb => cb.notNull())
             .addColumn("available", "boolean", cb => cb.defaultTo(true))
             .addColumn("solutionsPublishDatetime", "timestamp")
             .addColumn("solutionsVideoId", "varchar(64)")
             .addColumn("problemsPdfLink", "varchar(512)").execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("officialResults")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("contestId", "integer", cb => cb.notNull().references("contests.id"))
+            .addColumn("user", "varchar(64)", cb => cb.notNull())
+            .addColumn("result", "integer", cb => cb.notNull())
+            .addColumn("datetime", "timestamp", cb => cb.notNull()).execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("unofficialResults")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("contestId", "integer", cb => cb.notNull().references("contests.id"))
+            .addColumn("user", "varchar(64)", cb => cb.notNull())
+            .addColumn("result", "integer", cb => cb.notNull())
+            .addColumn("datetime", "timestamp", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("usersContests")

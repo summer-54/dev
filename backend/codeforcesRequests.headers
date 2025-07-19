@@ -1,15 +1,16 @@
-Host: codeforces.com
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:136.0) Gecko/20100101 Firefox/136.0
+Host: scp25.contest.codeforces.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
 Accept-Language: ru
 Accept-Encoding: gzip, deflate, br, zstd
-Referer: https://codeforces.com/groups/my
+Referer: https://scp25.contest.codeforces.com/group/37W85IFj7A/contests
 Sec-GPC: 1
+Connection: keep-alive
+Cookie: lastOnlineTimeUpdaterInvocation=1750852461408; lastOnlineTimeUpdaterInvocation=1750853548711; _ga_K230KVN22K=GS2.1.s1750850545$o7$g1$t1750850590$j15$l0$h0; _ga=GA1.2.1755716556.1746301700; cf_clearance=G0s1WLvYNej21ClovlIX.JZtGXiYU1ZdvS1.7gUWO_4-1750850545-1.2.1.1-Ij37D4To.45.lf.1XoUcFF8pwkp75i_LXsJXUB5aN9OPZP8tI96u0bXyKBjo1QT8C72D2NQBdU4g6LlLTXPA.1DpOh42HonXZ4yFqg__kAzvU0FWZ3tmlEwU.QgS0CIzPF5rIRROnfmXZw6MNDDFblObG.28QKXguXrN37Nr4Me.9M91Tqg4Pwbw56Ju2mm4C74yaT81OKSepb8PwUEnCGlfoMOC78O2y0v.0mP6ZQ0FBqTK8mvOHv9w1kDsDzSMbWCyQowR5453kLqM54vAnJDa4tMbJ.56kvrVX7_BlUgLrPn_zy46fqxS2LKFxBqylWxBRNB8i6i4f63H6EdKrsEFiUc_psnlHm9oafdvxok; 39ce7=CFX8o8SJ; X-User-Sha1=89707fd3b472bf60b439b939e0e731b36c9ee864; X-User=7485bf7fdf13bb98d92ef2777659c7e336c28b9349c2aa27885ee461339de33045456824337a0995; JSESSIONID=3CCE699BDB8A73BBD022C91395F47672; _gid=GA1.2.1111690084.1750850546; evercookie_cache=v4f0x3fkzij8pnw92v; evercookie_etag=v4f0x3fkzij8pnw92v; evercookie_png=v4f0x3fkzij8pnw92v; 70a7c28f3de=v4f0x3fkzij8pnw92v; evercookie_png=v4f0x3fkzij8pnw92v; evercookie_cache=v4f0x3fkzij8pnw92v; evercookie_etag=v4f0x3fkzij8pnw92v; 70a7c28f3de=v4f0x3fkzij8pnw92v
 Upgrade-Insecure-Requests: 1
 Sec-Fetch-Dest: document
 Sec-Fetch-Mode: navigate
 Sec-Fetch-Site: same-origin
-Connection: keep-alive
-Cookie: 39ce7=CFbrW8dj; _ga_K230KVN22K=GS1.1.1742128315.16.1.1742128323.0.0.0; _ga=GA1.2.1041278400.1740818562; X-User-Sha1=2e8b44da3da2445c8519696ecde21196a379b573; X-User=9c53494eb8ec9781a506eb88bfd3719da49cc3b8ca3706d44bf4710fd0229e25240e27ee82e84383; JSESSIONID=059642D6C6DD35A0877EBDF65D86B9E6; lastOnlineTimeUpdaterInvocation=1741788337065; _gid=GA1.2.218400708.1742128315; _gat_gtag_UA_743380_5=1; evercookie_etag=qihwdu7cljgoh9sho8; evercookie_cache=qihwdu7cljgoh9sho8; cf_clearance=fGwP6ZOLFVQrnCyTxE.mO5uPhs8JRFq6BGYtSMQ8aLk-1742128317-1.2.1.1-PK0xvmX.mthn0wo2S5.zlL.Bdfnh4yjqo6toedvOD.nh8kmzOQz9g_iSoIADlB0cVJ7ZBgvd6alT21t.biDQpKZGyeT_J2cGVEUaxwoncl8fkm2gRePmb_6ynAcjPcTZXeDVITgswCf.0cw1dkbfzb.z10y21diHeI7hOahnUmHKbjNUlyr2wPTYFRIlsUQLYkKboum2DTCxC0H_R.l7lJ4SCHm_tOS75qMUYZP_4p6ZbKCqp0wx4SY4pUVRSSWm4KcW0Wx9AHzO.l.U9_2aFB8nogc81.epZLIwBUC8ytM5oScGPK65LvKc6fTafFmM.Nr5E0PM8.bSsbFTRlb5M5ZRofRiyrigcWULIwzNZYU; evercookie_png=qihwdu7cljgoh9sho8; 70a7c28f3de=qihwdu7cljgoh9sho8
 Priority: u=0, i
-TE: trailers
+Pragma: no-cache
+Cache-Control: no-cache

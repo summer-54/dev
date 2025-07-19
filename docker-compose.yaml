@@ -34,7 +34,7 @@ services:
       retries: 20
   backend:
     build: ./backend
-    command: node --inspect=0.0.0.0:9229 ./dist/main.js
+    command: bun --inspect=0.0.0.0:9229 ./main.ts
     depends_on:
       db:
         condition: service_healthy
@@ -73,8 +73,8 @@ services:
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
-      PUSH_CHECK: "http://backend:8080/push-check"
-      PULL_CHECK: "http://backend:8080/pull-check"
+      PUSH_CHECK: "http://backend:8080/articles/push-check"
+      PULL_CHECK: "http://backend:8080/articles/pull-check"
   nginx:
     build:
       context: .

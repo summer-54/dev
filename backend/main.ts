@@ -3,10 +3,11 @@ import news from "./news.js";
 import users from "./users.js";
 import standings from "./standings.js";
 import recovery from "./recovery.js";
+import articles from "./articles.js";
 import {addKey} from "./rsa.js";
 import Backendium from "backendium";
-import {setupGroupStandingsUpdater} from "./codeforces.js";
-import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
+// import {setupGroupStandingsUpdater} from "./codeforces.js";
+// import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 
 async function main() {
     await setupEnv();
@@ -39,6 +40,7 @@ async function main() {
     app.router(users);
     app.router(standings);
     app.router(recovery);
+    app.router(articles, "/articles");
 
     app.get("/teapot", (request, response) => {
         response.status(418);
