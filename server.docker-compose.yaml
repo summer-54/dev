@@ -15,12 +15,12 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "54001:5432"
   minio:
     image: minio/minio
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "54002:9000"
+      - "54003:9001"
     volumes:
       - minio_data:/data
     environment:
@@ -79,8 +79,7 @@ services:
       dockerfile: ./nginx/Dockerfile
       target: server
     ports:
-      - "80:80"
-      - "443:443"
+      - "54000:80"
     depends_on:
       - backend
       - article54
