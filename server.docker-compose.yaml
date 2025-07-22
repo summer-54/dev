@@ -34,7 +34,7 @@ services:
       retries: 20
   backend:
     build: ./backend
-    command: node ./dist/main.js
+    command: bun ./main.ts
     depends_on:
       db:
         condition: service_healthy
