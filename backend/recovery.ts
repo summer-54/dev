@@ -2,7 +2,7 @@ import {emailValidator, sendRecoveryMail} from "./mail.js";
 import {BackendiumRouter} from "backendium";
 import {int, object, string, ValidationError} from "checkeasy";
 import cryptoRandomString from "crypto-random-string";
-import {getIdByEmail, patchUserPassword} from "./sql/users.sql.js";
+import {getIdByEmail, patchUserPassword, signInById} from "./sql/users.sql.js";
 import {rsaKeys} from "./rsa.js";
 
 let router = new BackendiumRouter;
@@ -21,11 +21,12 @@ router.patch("/recovery/:key", {
             return key;
         }
     })
-}, async (request) => {
+}, async (request, response) => {
     if (!urlKeys.has(request.params.key)) return;
     await patchUserPassword(urlKeys.get(request.params.key) ?? 0, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
+    const token = await signInById(urlKeys.get(request.params.key) ?? 0);
     urlKeys.delete(request.params.key);
-    return {code: 200};
+    response.end(token, 200);
 });
 
 router.patch("/recovery", {

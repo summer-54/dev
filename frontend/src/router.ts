@@ -131,7 +131,7 @@ const router = createRouter({
       alias: ["/rec"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/recovery/:token`,
+      path: `${ROUTER_PATH_PREFIX}/recovery/:key`,
       name: "recovery",
       component: () => import("@/views/recovery/RecoveryView.vue")
     },

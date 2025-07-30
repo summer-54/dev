@@ -46,6 +46,13 @@ export async function signIn(username: string, password: string, passwordHash?: 
     return token;
 }
 
+export async function signInById(id: number): Promise<string | null> {
+    let token = await generateToken();
+    // let {id} = await db.selectFrom("users").select("id").where("username", '=', username).executeTakeFirstOrThrow();
+    await db.insertInto("sessions").values({userId: id, token}).executeTakeFirstOrThrow();
+    return token;
+}
+
 export async function isUniqueUsername(username: string): Promise<boolean> {
     return !Boolean(await db.selectFrom("users").where("username", '=', username).select("id").executeTakeFirst());
 }
