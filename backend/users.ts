@@ -176,15 +176,21 @@ const router = buildHandlers({
     }
 });
 
-router.post<{
-    username: string,
-    codeforcesHandle: string,
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    keyId: number
-}>("/users/register", async (request, response) => {
+router.post("/users/register", {
+    bodyValidator: object({
+        username: string(),
+        codeforcesHandle: string(),
+        firstName: string(),
+        lastName: string(),
+        email: emailValidator(),
+        password: string(),
+        keyId(key: any, path): number {
+            key = int()(key, path);
+            if (key >= rsaKeys.length) throw new ValidationError(`[${path}] doesn't exists`);
+            return key;
+        }
+    })
+}, async (request, response) => {
     let {username, codeforcesHandle, firstName, lastName, email, password, keyId} = request.body;
     if (username.length < 4 || password.length < 4) {
         response.status(400);
@@ -215,32 +221,9 @@ router.post<{
     }
     response.status(201);
     response.end(token);
-}, {
-    bodyValidator: object({
-        username: string(),
-        codeforcesHandle: string(),
-        firstName: string(),
-        lastName: string(),
-        email: emailValidator(),
-        password: string(),
-        keyId(key: any, path): number {
-            key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ValidationError(`[${path}] doesn't exists`);
-            return key;
-        }
-    })
 });
 
-router.post<{username: string, password: string, keyId: number}>("/users/signin", async (request, response) => {
-    let token = await signIn(request.body.username, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
-    removeKey(request.body.keyId);
-    if (!token) {
-        response.status(401);
-        response.end("");
-        return;
-    }
-    response.end(token);
-}, {
+router.post("/users/signin", {
     bodyValidator: object({
         username: string(),
         password: string(),
@@ -250,21 +233,18 @@ router.post<{username: string, password: string, keyId: number}>("/users/signin"
             return key;
         }
     })
-});
-
-router.patch<{old: string, new: string, keyId: number}, {}, {}, {id: number, passwordHash: string}>("/me/password", async (request, response) => {
-    let {old: oldPassword, new: newPassword, keyId} = request.body;
-    let {id, passwordHash} = request.auth;
-    if (!compareHash(rsaKeys[keyId].decrypt(oldPassword).toString(), passwordHash)) {
-        removeKey(keyId);
-        response.status(418);
+}, async (request, response) => {
+    let token = await signIn(request.body.username, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
+    removeKey(request.body.keyId);
+    if (!token) {
+        response.status(401);
         response.end("");
         return;
     }
-    await patchUserPassword(id, rsaKeys[keyId].decrypt(newPassword).toString());
-    removeKey(keyId);
-    response.end();
-}, {
+    response.end(token);
+});
+
+router.patch("/me/password", {
     bodyValidator: object({
         old: string(),
         new: string(),
@@ -277,6 +257,18 @@ router.patch<{old: string, new: string, keyId: number}, {}, {}, {id: number, pas
     async authChecker(request, response) {
         return checkAuth(request?.body?.headers?.authorization, ["passwordHash", "id"], response);
     }
-})
+}, async (request, response) => {
+    let {old: oldPassword, new: newPassword, keyId} = request.body;
+    let {id, passwordHash} = request.auth;
+    if (!compareHash(rsaKeys[keyId].decrypt(oldPassword).toString(), passwordHash)) {
+        removeKey(keyId);
+        response.status(418);
+        response.end("");
+        return;
+    }
+    await patchUserPassword(id, rsaKeys[keyId].decrypt(newPassword).toString());
+    removeKey(keyId);
+    response.end();
+});
 
 export default router;

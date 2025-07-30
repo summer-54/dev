@@ -9,12 +9,7 @@ let router = new BackendiumRouter;
 
 let urlKeys = new Map<string, number>();
 
-router.patch<{password: string, keyId: number}, {key: string}>("/recovery/:key", async (request) => {
-    if (!urlKeys.has(request.params.key)) return;
-    await patchUserPassword(urlKeys.get(request.params.key) ?? 0, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
-    urlKeys.delete(request.params.key);
-    return {code: 200};
-}, {
+router.patch("/recovery/:key", {
     paramsValidator: object({
         key: string()
     }),
@@ -26,9 +21,19 @@ router.patch<{password: string, keyId: number}, {key: string}>("/recovery/:key",
             return key;
         }
     })
+}, async (request) => {
+    if (!urlKeys.has(request.params.key)) return;
+    await patchUserPassword(urlKeys.get(request.params.key) ?? 0, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
+    urlKeys.delete(request.params.key);
+    return {code: 200};
 });
 
-router.patch<{email: string}>("/recovery", async (request, response) => {
+router.patch("/recovery", {
+    bodyValidator: object({
+        email: emailValidator()
+    })
+}, async (request, response) => {
+    console.log(request);
     let id = await getIdByEmail(request.body.email);
     if (!id) {
         return {code: 404};
@@ -37,7 +42,7 @@ router.patch<{email: string}>("/recovery", async (request, response) => {
     do {
         key = cryptoRandomString({length: 128, type: 'url-safe'});
     } while (urlKeys.has(key));
-    let link = `http://176.123.165.201/recovery/${key}`;
+    let link = `https://inf54.ru/recovery/${key}`;
     urlKeys.set(key, id);
     setTimeout(() => {
         if (!urlKeys.has(key)) return;
@@ -45,10 +50,6 @@ router.patch<{email: string}>("/recovery", async (request, response) => {
     }, 1800000)
     await sendRecoveryMail(request.body.email, link);
     response.end();
-}, {
-    bodyValidator: object({
-        email: emailValidator()
-    })
 });
 
 export default router;
