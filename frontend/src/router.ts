@@ -139,6 +139,11 @@ const router = createRouter({
       path: `${ROUTER_PATH_PREFIX}/honor`,
       name: "honor",
       component: () => import("@/views/honor/HonorView.vue")
+    },
+    {
+      path: `${ROUTER_PATH_PREFIX}/outer-sign-in`,
+      name: "outer-sign-in",
+      component: () => import("@/views/outerSignIn/OuterSignInView.vue")
     }
   ]
 });
