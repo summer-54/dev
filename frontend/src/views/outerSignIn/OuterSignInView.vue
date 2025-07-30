@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter();
 
 onMounted(() => {
   const token = localStorage.getItem("token");
   if (!token) {
-    console.error("No token found in localStorage");
+    console.log("No token found in localStorage");
+    router.push({path:"/", query: {next: "https://contest.inf54.ru/get-token"}});
     return;
   }
   try {
