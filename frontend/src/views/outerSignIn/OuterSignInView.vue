@@ -8,7 +8,7 @@ onMounted(() => {
   const token = localStorage.getItem("token");
   if (!token) {
     console.log("No token found in localStorage");
-    router.push({path:"/", query: {next: "https://contest.inf54.ru/get-token"}});
+    router.push({path:"/login", query: {next: "https://contest.inf54.ru/get-token"}});
     return;
   }
   try {
