@@ -110,6 +110,69 @@ export interface ArticlePermissionsTable {
     write: boolean;
 }
 
+export interface AppsTable {
+    id: string;
+    owner: number;
+    imgUrl: string;
+    displayName: string;
+    description: string;
+}
+
+export interface AppMaintainersTable {
+    id: Generated<number>;
+    user: number;
+    app: string;
+}
+
+export type ValueType = string | number | boolean;
+
+export interface ExposedAppPermissionsTable {
+    permission: string;
+    parent: string;
+    exposer: string;
+    danger: number;
+    imgUrl: string;
+    displayName: string;
+    description: string;
+    type: "string" | "boolean" | "int" | "float";
+    defaultValue: ValueType;
+    fullValue: ValueType;
+}
+
+export interface RequiredAppPermissionsTable {
+    id: Generated<number>;
+    permission: string;
+    app: string;
+    required: boolean;
+}
+
+export interface AppPermissionsTable {
+    id: Generated<number>;
+    permission: string;
+    app: string;
+    value: ValueType;
+}
+
+export interface ExposedPermissionsTable {
+    permission: string;
+    parent: string;
+    exposer: string;
+    danger: number;
+    imgUrl: string;
+    displayName: string;
+    description: string;
+    type: "string" | "boolean" | "int" | "float";
+    defaultValue: ValueType;
+    fullValue: ValueType;
+}
+
+export interface PermissionsTable {
+    id: Generated<number>;
+    permission: string;
+    user: number;
+    value: ValueType;
+}
+
 export interface Database {
     news: NewsTable;
     newsImages: NewsImagesTable;
@@ -124,6 +187,13 @@ export interface Database {
     standings: StandingsTable;
     articleRepos: ArticleReposTable;
     articlePermissions: ArticlePermissionsTable;
+    apps: AppsTable;
+    appMaintainers: AppMaintainersTable;
+    exposedAppPermissions: ExposedAppPermissionsTable;
+    requiredAppPermissions: RequiredAppPermissionsTable;
+    appPermissions: AppPermissionsTable;
+    exposedPermissions: ExposedPermissionsTable;
+    permissions: PermissionsTable;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;

@@ -1,5 +1,5 @@
 import {BackendiumRouter} from "backendium";
-import {object, string} from "checkeasy";
+import {object, string} from "parsium";
 import {canCreate, create, getPermissions} from "./sql/articles.sql.js";
 import {checkAuth, checkAuthRetID} from "./authChecker.js";
 

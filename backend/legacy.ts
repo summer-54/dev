@@ -111,7 +111,7 @@ export function buildHandlers<Type = undefined>(...handlersArray: Array<Handlers
     let router = new BackendiumRouter<Type>();
     handlersArray.forEach(handlers => {
         METHODS.forEach(method => Object.entries(handlers[method] ?? {}).forEach(([route, handler]) => {
-            router[method](route, (request, response, app, next) => {
+            router[method](route, {}, (request, response, app, next) => {
                 let end = response.expressResponse.end.bind(response.expressResponse);
                 // @ts-ignore
                 handler({

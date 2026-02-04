@@ -6,6 +6,7 @@ import recovery from "./recovery.js";
 import articles from "./articles.js";
 import {addKey} from "./rsa.js";
 import Backendium from "backendium";
+import apps from "./apps.js";
 // import {setupGroupStandingsUpdater} from "./codeforces.js";
 // import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 
@@ -21,14 +22,14 @@ async function main() {
     // });
 
     const app = new Backendium({
-        name: "summerProject",
+        name: "inf54",
         version: "0.0.0",
         host: process.env.HOST,
-        port: Number(process.env.PORT)
+        port: Number(process.env.PORT ?? 8080)
     });
 
-    app.use("*", (request, response, app, next) => {
-        response.expressResponse.set({
+    app.express.use("*", (request, response, next) => {
+        response.set({
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
             "Access-Control-Allow-Headers": "*"
@@ -41,21 +42,22 @@ async function main() {
     app.router(standings);
     app.router(recovery);
     app.router(articles, "/articles");
+    app.router(apps, "/apps")
 
-    app.get("/teapot", (request, response) => {
+    app.get("/teapot", {}, (request, response) => {
         response.status(418);
         response.end("This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. However, known implementations do exist.");
     });
 
-    app.get("/key", (request, response) => {
+    app.get("/key", {}, (request, response) => {
         response.end(addKey());
     });
 
-    app.options("*", (request, response) => {
+    app.options("*", {}, (request, response) => {
         response.end();
     });
 
-    app.use("*", (request, response) => {
+    app.use("*", {}, (request, response) => {
         response.status(404);
         response.end("404 Not Found");
     });

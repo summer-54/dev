@@ -16,8 +16,7 @@ import {
 } from "./sql/users.sql.js";
 import {searchUsers} from "./sql/search.sql.js";
 import {removeKey, rsaKeys} from "./rsa.js";
-import {int, object, string, ValidationError} from "checkeasy";
-import {emailValidator} from "./mail.js";
+import {int, object, string, ParsingError, createParser, email} from "parsium";
 import { checkAuth } from "./authChecker.js";
 
 const router = buildHandlers({
@@ -182,13 +181,13 @@ router.post("/users/register", {
         codeforcesHandle: string(),
         firstName: string(),
         lastName: string(),
-        email: emailValidator(),
+        email: email(),
         password: string(),
-        keyId(key: any, path): number {
+        keyId: createParser((key: any, path) => {
             key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ValidationError(`[${path}] doesn't exists`);
+            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
             return key;
-        }
+        })
     })
 }, async (request, response) => {
     let {username, codeforcesHandle, firstName, lastName, email, password, keyId} = request.body;
@@ -227,11 +226,11 @@ router.post("/users/signin", {
     bodyValidator: object({
         username: string(),
         password: string(),
-        keyId(key: any, path): number {
+        keyId: createParser((key: any, path) => {
             key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ValidationError("[${path}] doesn't exists")
+            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
             return key;
-        }
+        })
     })
 }, async (request, response) => {
     let token = await signIn(request.body.username, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
@@ -248,11 +247,11 @@ router.patch("/me/password", {
     bodyValidator: object({
         old: string(),
         new: string(),
-        keyId(key: any, path): number {
+        keyId: createParser((key: any, path) => {
             key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ValidationError("[${path}] doesn't exists")
+            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
             return key;
-        }
+        })
     }),
     async authChecker(request, response) {
         return checkAuth(request?.body?.headers?.authorization, ["passwordHash", "id"], response);

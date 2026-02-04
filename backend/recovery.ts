@@ -1,6 +1,6 @@
-import {emailValidator, sendRecoveryMail} from "./mail.js";
+import {sendRecoveryMail} from "./mail.js";
 import {BackendiumRouter} from "backendium";
-import {int, object, string, ValidationError} from "checkeasy";
+import {createParser, email, int, object, ParsingError, string} from "parsium";
 import cryptoRandomString from "crypto-random-string";
 import {getIdByEmail, patchUserPassword, signInById} from "./sql/users.sql.js";
 import {rsaKeys} from "./rsa.js";
@@ -15,11 +15,11 @@ router.patch("/recovery/:key", {
     }),
     bodyValidator: object({
         password: string(),
-        keyId(key: any, path): number {
+        keyId: createParser((key: any, path) => {
             key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ValidationError("[${path}] doesn't exists")
+            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
             return key;
-        }
+        })
     })
 }, async (request, response) => {
     if (!urlKeys.has(request.params.key)) return;
@@ -31,7 +31,7 @@ router.patch("/recovery/:key", {
 
 router.patch("/recovery", {
     bodyValidator: object({
-        email: emailValidator()
+        email: email()
     })
 }, async (request, response) => {
     console.log(request);
