@@ -1,7 +1,7 @@
 import {buildHandlers} from "./legacy.js";
-import {compareHash} from "scryptex";
 import {
-    adminUsersPatch, checkUseragent,
+    adminUsersPatch,
+    checkUseragent,
     getAllUsers,
     getUserByToken,
     getUserByUsername,
@@ -19,8 +19,9 @@ import {
 } from "./sql/users.sql.js";
 import {searchUsers} from "./sql/search.sql.js";
 import {email, object, optional, string} from "parsium";
-import {checkAuth} from "./authChecker.js";
+import {checkAuth, checkAuthRetData} from "./authChecker.js";
 import {generateAccessToken, verifyAppToken, verifyRefreshToken} from "./jwt.js";
+import bcrypt from "bcrypt";
 
 const router = buildHandlers({
     get: {
@@ -236,12 +237,6 @@ router.post("/users/signin", {
         sameSite: "strict",
         path: "/api/refresh-token"
     });
-    response.expressResponse.cookie("refreshToken", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: "strict",
-        path: "/api/users/signout"
-    });
     response.end("ok");
 });
 
@@ -256,7 +251,7 @@ router.patch("/me/password", {
 }, async (request, response) => {
     let {old: oldPassword, new: newPassword} = request.body;
     let {id, passwordHash} = request.auth;
-    if (!compareHash(oldPassword, passwordHash)) {
+    if (!(await bcrypt.compare(oldPassword, passwordHash))) {
         response.status(418);
         response.end();
         return;
@@ -278,11 +273,17 @@ router.get("/refresh-token", {
     }
     const data = await verifyRefreshToken(token);
     if (!data || !(await checkUseragent(request.headers["user-agent"], data.jti))) {
+        response.expressResponse.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: "strict",
+            path: "/api/refresh-token"
+        });
         response.status(401);
         response.end();
         return;
     }
-    response.end(await generateAccessToken(data.id, data.app));
+    response.end(await generateAccessToken(data.id, data.jti, data.app));
 });
 
 router.post("/refresh-token", {
@@ -308,38 +309,23 @@ router.post("/refresh-token", {
         }
         app = data.app;
     }
-    response.end(await generateAccessToken(data.id, app));
+    response.end(await generateAccessToken(data.id, data.jti, app));
 });
 
 router.post("/users/signout", {
     headersValidator: object({
         "user-agent": string()
-    })
+    }),
+    async authChecker(request, response) {
+        return checkAuthRetData(request.headers?.authorization, response);
+    }
 }, async (request, response) => {
-    const token = request.expressRequest.cookies.refreshToken as string | undefined;
-    if (!token) {
-        response.status(401);
-        response.end();
-        return;
-    }
-    const data = await verifyRefreshToken(token);
-    if (!data || !(await checkUseragent(request.headers["user-agent"], data.jti))) {
-        response.status(401);
-        response.end();
-        return;
-    }
-    await signOut(data.jti);
+    await signOut(request.auth.jti);
     response.expressResponse.clearCookie("refreshToken", {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: "strict",
         path: "/api/refresh-token"
-    });
-    response.expressResponse.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: "strict",
-        path: "/api/users/signout"
     });
     response.end();
 });

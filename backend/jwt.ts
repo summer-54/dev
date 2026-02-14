@@ -3,14 +3,16 @@ import {db} from "./sql/index.sql.js";
 
 export interface JwtRefreshPayload {
     id: number;
-    jti: number;
     app: string;
+    jti: number;
+    r: true;
     iat: number;
 }
 
 export interface JwtAccessPayload {
     id: number;
     app: string;
+    jti: number;
     iat: number;
     exp: number;
 }
@@ -22,7 +24,7 @@ export interface JwtAppPayload {
 export function generateRefreshToken(id: number, jti: number, app: string): Promise<string> {
     return new Promise((resolve, reject) => {
         jwt.sign({
-            id, jti, app
+            id, jti, app, r: true
         }, process.env.JWT_SECRET ?? "", {
             algorithm: 'HS256' as const
         }, (err, token) => {
@@ -32,10 +34,10 @@ export function generateRefreshToken(id: number, jti: number, app: string): Prom
     });
 }
 
-export function generateAccessToken(id: number, app: string): Promise<string> {
+export function generateAccessToken(id: number, jti: number, app: string): Promise<string> {
     return new Promise((resolve, reject) => {
         jwt.sign({
-            id, app
+            id, jti, app
         }, process.env.JWT_SECRET ?? "", {
             algorithm: 'HS256' as const,
             expiresIn: '5m'
@@ -56,7 +58,7 @@ export async function verifyRefreshToken(token: string | undefined | null): Prom
             else if (typeof data === "object") resolve(data as unknown as JwtAccessPayload | JwtRefreshPayload);
         });
     }));
-    if (!data || !("id" in data) || !("jti" in data) || (await db.selectFrom("sessions").where("id", '=', data.jti).execute()).length === 0) return false;
+    if (!data || !("id" in data) || !("r" in data) || (await db.selectFrom("sessions").where("id", '=', data.jti).execute()).length === 0) return false;
     return data;
 }
 
@@ -70,7 +72,7 @@ export async function verifyAccessToken(token: string | undefined | null): Promi
             else if (typeof data === "object") resolve(data as unknown as JwtAccessPayload | JwtRefreshPayload);
         });
     });
-    if (data === false || !("id" in data) || "jti" in data) return false;
+    if (data === false || !("id" in data) || "r" in data) return false;
     return data;
 }
 

@@ -4,7 +4,6 @@ import users from "./users.js";
 import standings from "./standings.js";
 import recovery from "./recovery.js";
 import articles from "./articles.js";
-import {addKey} from "./rsa.js";
 import Backendium from "backendium";
 import cookieParser from "cookie-parser";
 import apps from "./apps.js";
@@ -49,10 +48,6 @@ async function main() {
     app.get("/teapot", {}, (request, response) => {
         response.status(418);
         response.end("This code was defined in 1998 as one of the traditional IETF April Fools' jokes, in RFC 2324, Hyper Text Coffee Pot Control Protocol, and is not expected to be implemented by actual HTTP servers. However, known implementations do exist.");
-    });
-
-    app.get("/key", {}, (request, response) => {
-        response.end(addKey());
     });
 
     app.options("*", {}, (request, response) => {

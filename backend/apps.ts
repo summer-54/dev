@@ -1,8 +1,7 @@
 import {BackendiumRouter} from "backendium";
-import {object, string, uuid} from "parsium";
-import {checkAuthRetID} from "./authChecker.js";
-import {verifyAppToken} from "./jwt.js";
-import {signInById} from "./sql/users.sql.js";
+import {object, uuid} from "parsium";
+import {checkAuthRetData, checkAuthRetID} from "./authChecker.js";
+import {generateRefreshToken, verifyAppToken} from "./jwt.js";
 
 const router = new BackendiumRouter();
 
@@ -48,7 +47,7 @@ const router = new BackendiumRouter();
 //
 // router.put("/:app/exposed-permissions")
 
-let oauthSessions: Record<string, {app: string, status: boolean | null, user: number, useragent: string}> = {};
+let oauthSessions: Record<string, {app: string, status: boolean | null, user: number, jti: number}> = {};
 
 function findFreeUUID() {
     let id;
@@ -75,7 +74,7 @@ router.post("/oauth/start", {
     }
 }, async (request, response) => {
     let sessionUUID = findFreeUUID();
-    oauthSessions[sessionUUID] = {app: request.auth, status: null, user: 0, useragent: ""};
+    oauthSessions[sessionUUID] = {app: request.auth, status: null, user: 0, jti: 0};
     response.end(sessionUUID);
 });
 
@@ -109,19 +108,16 @@ router.get("/oauth/status/:uuid", {
         return;
     }
     let status = oauthSessions[request.params.uuid].status;
-    response.end({status, token: status ? await signInById(oauthSessions[request.params.uuid].user, oauthSessions[request.params.uuid].useragent, request.auth) : ""});
+    response.end({status, token: status ? await generateRefreshToken(oauthSessions[request.params.uuid].user, oauthSessions[request.params.uuid].jti, request.auth) : ""});
     if (status !== null) delete oauthSessions[request.params.uuid];
 });
 
 router.post("/oauth/approve/:uuid", {
-    headersValidator: object({
-        "user-agent": string()
-    }),
     paramsValidator: object({
         uuid: uuid()
     }),
     async authChecker(request, response) {
-        return checkAuthRetID(request.headers?.authorization, response);
+        return checkAuthRetData(request.headers?.authorization, response);
     }
 }, async (request, response) => {
     if (!(request.params.uuid in oauthSessions)) {
@@ -135,8 +131,8 @@ router.post("/oauth/approve/:uuid", {
         return;
     }
     oauthSessions[request.params.uuid].status = true;
-    oauthSessions[request.params.uuid].user = request.auth;
-    oauthSessions[request.params.uuid].useragent = request.headers["user-agent"];
+    oauthSessions[request.params.uuid].user = request.auth.id;
+    oauthSessions[request.params.uuid].jti = request.auth.jti;
     response.end();
 });
 

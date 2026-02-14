@@ -53,7 +53,10 @@ export async function hasToken(): Promise<boolean> {
 }
 
 export async function signOut() {
-    await axios.post<void>(`${SERVER_URL}/users/signout`, "");
+    await authWrapper(async () => {
+        let response = await axios.post<void>(`${SERVER_URL}/users/signout`, "", {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status === 401) return null;
+    });
     localStorage.removeItem("token");
 }
 

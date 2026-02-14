@@ -1,6 +1,6 @@
 import randomstring from "randomstring";
 import {Database, db} from "./index.sql.js";
-import {compareHash, hash} from "scryptex";
+import bcrypt from "bcrypt";
 import {SelectExpression} from "kysely";
 import {UpdateObjectExpression} from "kysely/dist/cjs/parser/update-set-parser.js";
 import {generateRefreshToken, verifyAccessToken} from "../jwt.js";
@@ -8,7 +8,7 @@ import useragent from "useragent";
 import isMobile from "is-mobile";
 
 export async function register({username, codeforcesHandle, firstName, lastName, email, password}: {username: string, codeforcesHandle: string, firstName: string, lastName: string, email: string, password: string}, useragent: string, app: string) {
-    let passwordHash = hash(password);
+    let passwordHash = await bcrypt.hash(password, 12);
     await db.insertInto("users").values({
         username,
         codeforcesHandle,
@@ -49,7 +49,7 @@ export async function signIn(username: string, password: string, useragent: stri
         let {passwordHash} = await db.selectFrom("users").select("passwordHash").where("username", '=', username).executeTakeFirstOrThrow();
         passHash = passwordHash;
     }
-    if (!compareHash(password, passHash)) return null;
+    if (!(await bcrypt.compare(password, passHash))) return null;
     let {id} = await db.selectFrom("users").select("id").where("username", '=', username).executeTakeFirstOrThrow();
     return signInById(id, useragent, app);
 }
@@ -90,7 +90,7 @@ export async function patchUser(id: number, patch: UpdateObjectExpression<Databa
 }
 
 export async function patchUserPassword(id: number, password: string) {
-    await db.updateTable("users").set({passwordHash: hash(password)}).where("id", '=', id).executeTakeFirstOrThrow();
+    await db.updateTable("users").set({passwordHash: await bcrypt.hash(password, 12)}).where("id", '=', id).executeTakeFirstOrThrow();
 }
 
 export async function signOut(jti: number) {
@@ -139,20 +139,20 @@ export async function makeAdmin(id: number) {
 }
 
 export async function checkUseragent(useragentStr: string, jti: number) {
-    const data = await db.selectFrom("sessions")
-        .where("id", '=', jti)
-        .select(["device", "os", "browser", "mobile"])
-        .executeTakeFirstOrThrow();
-    const ua = useragent.parse(useragentStr);
-    const current = {
-        device: ua.device.family,
-        os: ua.os.family,
-        browser: ua.family,
-        mobile: isMobile({ua: useragentStr, tablet: true})
-    } as const;
-    for (const key in current) {
-        // @ts-ignore
-        if (data[key] !== current[key]) return false;
-    }
+    // const data = await db.selectFrom("sessions")
+    //     .where("id", '=', jti)
+    //     .select(["device", "os", "browser", "mobile"])
+    //     .executeTakeFirstOrThrow();
+    // const ua = useragent.parse(useragentStr);
+    // const current = {
+    //     device: ua.device.family,
+    //     os: ua.os.family,
+    //     browser: ua.family,
+    //     mobile: isMobile({ua: useragentStr, tablet: true})
+    // } as const;
+    // for (const key in current) {
+    //     // @ts-ignore
+    //     if (data[key] !== current[key]) return false;
+    // }
     return true;
 }

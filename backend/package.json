@@ -9,11 +9,13 @@
   },
   "type": "module",
   "dependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/useragent": "^2.3.4",
-    "axios": "^1.8.4",
+    "axios": "1.13.5",
     "backendium": "^0.0.21",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "crypto-random-string": "^5.0.0",
     "damerau-levenshtein": "^1.0.8",
@@ -26,7 +28,6 @@
     "parsium": "^0.1.3",
     "pg": "^8.11.5",
     "randomstring": "^1.3.0",
-    "scryptex": "^0.1.8",
     "useragent": "^2.3.0"
   },
   "devDependencies": {

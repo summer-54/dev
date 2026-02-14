@@ -1,9 +1,8 @@
 import {sendRecoveryMail} from "./mail.js";
 import {BackendiumRouter} from "backendium";
-import {createParser, email, int, object, ParsingError, string} from "parsium";
+import {email, object, string} from "parsium";
 import cryptoRandomString from "crypto-random-string";
 import {getIdByEmail, patchUserPassword, signInById} from "./sql/users.sql.js";
-import {rsaKeys} from "./rsa.js";
 
 let router = new BackendiumRouter;
 
@@ -14,17 +13,15 @@ router.patch("/recovery/:key", {
         key: string()
     }),
     bodyValidator: object({
-        password: string(),
-        keyId: createParser((key: any, path) => {
-            key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
-            return key;
-        })
+        password: string()
+    }),
+    headersValidator: object({
+        "user-agent": string()
     })
 }, async (request, response) => {
     if (!urlKeys.has(request.params.key)) return;
-    await patchUserPassword(urlKeys.get(request.params.key) ?? 0, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
-    const token = await signInById(urlKeys.get(request.params.key) ?? 0);
+    await patchUserPassword(urlKeys.get(request.params.key) ?? 0, request.body.password);
+    const token = await signInById(urlKeys.get(request.params.key) ?? 0, request.headers["user-agent"], "main");
     urlKeys.delete(request.params.key);
     response.end(token, 200);
 });
@@ -34,7 +31,6 @@ router.patch("/recovery", {
         email: email()
     })
 }, async (request, response) => {
-    console.log(request);
     let id = await getIdByEmail(request.body.email);
     if (!id) {
         return {code: 404};
