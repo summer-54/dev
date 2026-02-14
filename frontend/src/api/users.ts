@@ -1,7 +1,9 @@
 import axios from "axios";
 import {SERVER_URL} from "@/serverConfig.js";
 import {ref} from "vue";
-import {RSAEncrypt} from "scryptex";
+import {authWrapper} from "@/api/authWrapper.js";
+
+axios.defaults.validateStatus = () => true;
 
 export type SearchUserType = {
     username: string,
@@ -18,15 +20,9 @@ export type SearchUserType = {
 
 export let me = ref<UserType | null>(null);
 
-export async function getKey(): Promise<{key: string, id: number}> {
-    return (await axios.get<{key: string, id: number}>(`${SERVER_URL}/key`)).data;
-}
-
 export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, email: string, password: string}) {
-    let {key, id} = await getKey();
-    let response = await axios.post<string>(`${SERVER_URL}/users/register`, {...body, password: RSAEncrypt(body.password, key), keyId: id});
+    let response = await axios.post<string>(`${SERVER_URL}/users/register`, body);
     if (response.status === 201) {
-        localStorage.setItem("token", response.data);
         return 0;
     }
     if (response.status === 409) {
@@ -37,13 +33,8 @@ export async function register(body: {username: string, firstName: string, lastN
 }
 
 export async function signIn(username: string, password: string) {
-    let {key, id} = await getKey();
-    let response = await axios.post<string>(`${SERVER_URL}/users/signin`, {username, password: RSAEncrypt(password, key), keyId: id});
-    if (response.status === 200) {
-        localStorage.setItem("token", response.data);
-        return true;
-    }
-    return false;
+    let response = await axios.post<string>(`${SERVER_URL}/users/signin`, {username, password});
+    return response.status === 200;
 }
 
 export type UserType = {
@@ -54,24 +45,27 @@ export type UserType = {
     isAdmin: boolean
 }
 
-export function hasToken(): boolean {
-    return localStorage.getItem("token") !== null;
+export async function hasToken(): Promise<boolean> {
+    return await authWrapper(async () => {
+        if (localStorage.getItem("token") !== null) return true;
+        return null;
+    }) ?? false;
 }
 
 export async function signOut() {
-    let response = await axios.post<void>(`${SERVER_URL}/users/signout`, "", {
-        headers: {Authorization: localStorage.getItem("token")}
-    });
+    await axios.post<void>(`${SERVER_URL}/users/signout`, "");
     localStorage.removeItem("token");
 }
 
 export async function getMe() {
     if (!localStorage.getItem("token")) return null;
-    let response = await axios.get<UserType>(`${SERVER_URL}/me`, {
-        headers: {Authorization: localStorage.getItem("token")}
-    });
-    if (response.status === 200) return response.data;
-    return null;
+    return (await authWrapper(async () => {
+        let response = await axios.get<UserType>(`${SERVER_URL}/me`, {
+            headers: {Authorization: localStorage.getItem("token")}
+        });
+        if (response.status === 200) return response.data;
+        if (response.status === 401) return null;
+    })) ?? null;
 }
 
 export async function isUniqueUsername(username: string): Promise<boolean | null> {
@@ -94,10 +88,13 @@ export async function isUniqueCodeforcesHandle(codeforcesHandle: string): Promis
 
 export async function patchUser(user: Partial<UserType>): Promise<boolean> {
     try {
-        let response = await axios.patch<void>(`${SERVER_URL}/me`, user, {
-            headers: {Authorization: localStorage.getItem("token")}
-        });
-        return response.status === 200;
+        return await authWrapper(async () => {
+            let response = await axios.patch<void>(`${SERVER_URL}/me`, user, {
+                headers: {Authorization: localStorage.getItem("token")}
+            });
+            if (response.status === 401) return null;
+            return response.status === 200;
+        }) ?? false;
     }
     catch (error) {
         return false;
@@ -106,11 +103,13 @@ export async function patchUser(user: Partial<UserType>): Promise<boolean> {
 
 export async function patchUserPassword(oldPassword: string, newPassword: string): Promise<boolean> {
     try {
-        let {key, id} = await getKey();
-        let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: RSAEncrypt(oldPassword, key), new: RSAEncrypt(newPassword, key), keyId: id}, {
-            headers: {Authorization: localStorage.getItem("token")}
-        });
-        return response.status === 200;
+        return await authWrapper(async () => {
+            let response = await axios.patch<void>(`${SERVER_URL}/me/password`, {old: oldPassword, new: newPassword}, {
+                headers: {Authorization: localStorage.getItem("token")}
+            });
+            if (response.status === 401) return null;
+            return response.status === 200;
+        }) ?? false;
     }
     catch (error) {
         return false;
@@ -140,16 +139,25 @@ export async function getAllUsers(): Promise<Array<UserType & {id: number}> | nu
 }
 
 export async function adminUsersPatch(data: Array<{id: number, codeforcesHandle?: string}>) {
-    await axios.patch(`${SERVER_URL}/users`, data, {headers: {Authorization: localStorage.getItem("token")}});
+    await authWrapper(async () => {
+        let response = await axios.patch(`${SERVER_URL}/users`, data, {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status === 401) return null;
+    });
 }
 
 export async function isAdmin() {
     if (localStorage.getItem("token") === null) return false;
-    let response = await axios.get<number>(`${SERVER_URL}/is-admin`, {headers: {Authorization: localStorage.getItem("token")}});
-    if (response.status === 200) return Boolean(response.data);
-    return false;
+    return await authWrapper(async () => {
+        let response = await axios.get<number>(`${SERVER_URL}/is-admin`, {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status === 401) return null;
+        if (response.status === 200) return Boolean(response.data);
+        return false;
+    }) ?? false;
 }
 
 export async function makeAdmin(id: number) {
-    await axios.patch(`${SERVER_URL}/admin`, `${id}`, {headers: {Authorization: localStorage.getItem("token"), "Content-Type": "text/plain"}});
+    await authWrapper(async () => {
+        let response = await axios.patch(`${SERVER_URL}/admin`, `${id}`, {headers: {Authorization: localStorage.getItem("token"), "Content-Type": "text/plain"}});
+        if (response.status === 401) return null;
+    });
 }

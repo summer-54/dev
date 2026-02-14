@@ -1,40 +1,164 @@
 import {BackendiumRouter} from "backendium";
-import {object, string} from "parsium";
-import {checkAuth} from "./authChecker.js";
-import {getBooleanPermission} from "./sql/permissions.js";
-import {db} from "./sql/index.sql.js";
-import {isAppIdUsed} from "./sql/apps.sql.js";
+import {object, string, uuid} from "parsium";
+import {checkAuthRetID} from "./authChecker.js";
+import {verifyAppToken} from "./jwt.js";
+import {signInById} from "./sql/users.sql.js";
 
 const router = new BackendiumRouter();
 
-router.post("/", {
-    bodyValidator: object({
-        id: string(),
-        imgUrl: string(),
-        displayName: string(),
-        description: string()
-    }),
+// router.post("/", {
+//     bodyValidator: object({
+//         id: string(),
+//         imgUrl: string(),
+//         displayName: string(),
+//         description: string()
+//     }),
+//     async authChecker(request, response) {
+//         return checkAuth(request?.headers?.authorization, ["id"], response);
+//     }
+// }, async (request, response) => {
+//     if (!(await getBooleanPermission(request.auth.id, "apps/create"))) {
+//         response.status(403);
+//         response.end();
+//         return;
+//     }
+//
+//     if (await isAppIdUsed(request.body.id)) {
+//         response.status(409);
+//         response.end();
+//         return;
+//     }
+//
+//     await db.insertInto("apps")
+//         .values({...request.body, owner: request.auth.id})
+//         .execute();
+//
+//     await db.insertInto("permissions")
+//         .values({
+//             permission: `apps/maintainers/${request.body.id}`,
+//             reference: "apps/maintainers/$",
+//             user: request.auth.id,
+//             value: true
+//         })
+//         .execute();
+//
+//     response.status(201);
+//     response.end();
+// });
+//
+// router.put("/:app/exposed-permissions")
+
+let oauthSessions: Record<string, {app: string, status: boolean | null, user: number, useragent: string}> = {};
+
+function findFreeUUID() {
+    let id;
+    do {
+        id = Bun.randomUUIDv7();
+    } while (id in oauthSessions);
+    return id;
+}
+
+router.post("/oauth/start", {
     async authChecker(request, response) {
-        return checkAuth(request?.headers?.authorization, ["id"], response);
+        if (!("authorization" in request.headers)) {
+            return null;
+        }
+        const data = await verifyAppToken(request.headers.authorization);
+        if (data === false) {
+            return null;
+        }
+        return data.app;
+    },
+    authFailed(_, response) {
+        response.status(401);
+        response.end();
     }
 }, async (request, response) => {
-    if (!(await getBooleanPermission(request.auth.id, "apps/create"))) {
+    let sessionUUID = findFreeUUID();
+    oauthSessions[sessionUUID] = {app: request.auth, status: null, user: 0, useragent: ""};
+    response.end(sessionUUID);
+});
+
+router.get("/oauth/status/:uuid", {
+    paramsValidator: object({
+        uuid: uuid()
+    }),
+    async authChecker(request, response) {
+        if (!("authorization" in request.headers)) {
+            return null;
+        }
+        const data = await verifyAppToken(request.headers.authorization);
+        if (data === false) {
+            return null;
+        }
+        return data.app;
+    },
+    authFailed(_, response) {
+        response.status(401);
+        response.end();
+    }
+}, async (request, response) => {
+    if (!(request.params.uuid in oauthSessions)) {
+        response.status(404);
+        response.end();
+        return;
+    }
+    if (oauthSessions[request.params.uuid].app !== request.auth) {
         response.status(403);
         response.end();
         return;
     }
+    let status = oauthSessions[request.params.uuid].status;
+    response.end({status, token: status ? await signInById(oauthSessions[request.params.uuid].user, oauthSessions[request.params.uuid].useragent, request.auth) : ""});
+    if (status !== null) delete oauthSessions[request.params.uuid];
+});
 
-    if (await isAppIdUsed(request.body.id)) {
+router.post("/oauth/approve/:uuid", {
+    headersValidator: object({
+        "user-agent": string()
+    }),
+    paramsValidator: object({
+        uuid: uuid()
+    }),
+    async authChecker(request, response) {
+        return checkAuthRetID(request.headers?.authorization, response);
+    }
+}, async (request, response) => {
+    if (!(request.params.uuid in oauthSessions)) {
+        response.status(404);
+        response.end();
+        return;
+    }
+    if (oauthSessions[request.params.uuid].status !== null) {
         response.status(409);
         response.end();
         return;
     }
+    oauthSessions[request.params.uuid].status = true;
+    oauthSessions[request.params.uuid].user = request.auth;
+    oauthSessions[request.params.uuid].useragent = request.headers["user-agent"];
+    response.end();
+});
 
-    await db.insertInto("apps")
-        .values({...request.body, owner: request.auth.id})
-        .execute();
-
-    response.status(201);
+router.post("/oauth/cancel/:uuid", {
+    paramsValidator: object({
+        uuid: uuid()
+    }),
+    async authChecker(request, response) {
+        return checkAuthRetID(request.headers?.authorization, response);
+    }
+}, async (request, response) => {
+    if (!(request.params.uuid in oauthSessions)) {
+        response.status(404);
+        response.end();
+        return;
+    }
+    if (oauthSessions[request.params.uuid].status !== null) {
+        response.status(409);
+        response.end();
+        return;
+    }
+    oauthSessions[request.params.uuid].status = false;
     response.end();
 });
 

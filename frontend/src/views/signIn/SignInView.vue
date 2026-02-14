@@ -20,8 +20,8 @@ export default defineComponent({
       pending: false
     }
   },
-  mounted() {
-    if (hasToken()) this.$router.push("/me");
+  async mounted() {
+    if (await hasToken()) this.$router.push("/me");
   },
   methods: {
     async submit(event: Event) {
@@ -29,6 +29,7 @@ export default defineComponent({
       this.pending = true;
       try {
         let response = await signIn(this.username, this.password);
+        console.log(this.$route.query);
         if (response) this.$router.push("/me");
         else this.wrong = true;
       }

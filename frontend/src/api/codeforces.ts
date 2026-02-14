@@ -1,6 +1,7 @@
 import axios from "axios";
 import {SERVER_URL} from "@/serverConfig.js";
 import {readFileBase64} from "@/utils.js";
+import {authWrapper} from "@/api/authWrapper.js";
 
 export type ContestType = {
     id: number,
@@ -58,11 +59,14 @@ export async function patchContests(data: Array<{
     solutionsVideoId?: string
 }>): Promise<boolean> {
     try {
-        let response = await axios.patch(`${SERVER_URL}/contests`,
-            await Promise.all(data.map(async ({problemsPdf, ...other}) => ({problemsPdf: problemsPdf ? await readFileBase64(problemsPdf) : undefined, ...other}))),
-            {headers: {Authorization: localStorage.getItem("token")}}
-        );
-        return response.status === 200;
+        return (await authWrapper(async () => {
+            let response = await axios.patch(`${SERVER_URL}/contests`,
+                await Promise.all(data.map(async ({problemsPdf, ...other}) => ({problemsPdf: problemsPdf ? await readFileBase64(problemsPdf) : undefined, ...other}))),
+                {headers: {Authorization: localStorage.getItem("token")}}
+            );
+            if (response.status === 401) return null;
+            return response.status === 200;
+        })) ?? false;
     } catch (error) {
         return false;
     }
@@ -72,7 +76,10 @@ export async function patchContest(id: number, file: File) {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = async () => {
-        await axios.patch(`${SERVER_URL}/contests/${id}`, reader.result, {headers: {Authorization: localStorage.getItem("token")}});
+        await authWrapper(async () => {
+            let response = await axios.patch(`${SERVER_URL}/contests/${id}`, reader.result, {headers: {Authorization: localStorage.getItem("token")}});
+            if (response.status === 401) return null;
+        })
     }
 }
 
@@ -80,6 +87,9 @@ export async function addContest(contestId: number, file: File) {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = async () => {
-        await axios.post(`${SERVER_URL}/contests/${contestId}`, reader.result, {headers: {Authorization: localStorage.getItem("token")}});
+        await authWrapper(async () => {
+            let response = await axios.post(`${SERVER_URL}/contests/${contestId}`, reader.result, {headers: {Authorization: localStorage.getItem("token")}});
+            if (response.status === 401) return null;
+        })
     }
 }

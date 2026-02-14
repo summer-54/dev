@@ -1,13 +1,16 @@
 import {buildHandlers} from "./legacy.js";
 import {compareHash} from "scryptex";
 import {
-    adminUsersPatch,
+    adminUsersPatch, checkUseragent,
     getAllUsers,
     getUserByToken,
     getUserByUsername,
-    getUserIdByToken, isAdmin,
-    isUniqueCodeforcesHandle, isUniqueEmail,
-    isUniqueUsername, makeAdmin,
+    getUserIdByToken,
+    isAdmin,
+    isUniqueCodeforcesHandle,
+    isUniqueEmail,
+    isUniqueUsername,
+    makeAdmin,
     patchUser,
     patchUserPassword,
     register,
@@ -15,23 +18,11 @@ import {
     signOut
 } from "./sql/users.sql.js";
 import {searchUsers} from "./sql/search.sql.js";
-import {removeKey, rsaKeys} from "./rsa.js";
-import {int, object, string, ParsingError, createParser, email} from "parsium";
-import { checkAuth } from "./authChecker.js";
+import {email, object, optional, string} from "parsium";
+import {checkAuth} from "./authChecker.js";
+import {generateAccessToken, verifyAppToken, verifyRefreshToken} from "./jwt.js";
 
 const router = buildHandlers({
-    post: {
-        async "/users/signout"(request, response) {
-            if (typeof request.headers.authorization !== "string") {
-                response.status(401);
-                response.end("");
-                return;
-            }
-            let {authorization: token} = request.headers;
-            await signOut(token);
-            response.end();
-        }
-    },
     get: {
         async "/me"(request, response) {
             if (typeof request.headers.authorization !== "string") {
@@ -182,91 +173,174 @@ router.post("/users/register", {
         firstName: string(),
         lastName: string(),
         email: email(),
-        password: string(),
-        keyId: createParser((key: any, path) => {
-            key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
-            return key;
-        })
+        password: string()
+    }),
+    headersValidator: object({
+        "user-agent": string()
     })
 }, async (request, response) => {
-    let {username, codeforcesHandle, firstName, lastName, email, password, keyId} = request.body;
-    if (username.length < 4 || password.length < 4) {
+    if (request.body.username.length < 4 || request.body.password.length < 4) {
         response.status(400);
         response.end("");
         return;
     }
-    if (!(await isUniqueUsername(username))) {
+    if (!(await isUniqueUsername(request.body.username))) {
         response.status(409);
         response.end("username");
         return;
     }
-    if (!(await isUniqueEmail(email))) {
+    if (!(await isUniqueEmail(request.body.email))) {
         response.status(409);
         response.end("email");
         return;
     }
-    if (!(await isUniqueCodeforcesHandle(codeforcesHandle))) {
+    if (!(await isUniqueCodeforcesHandle(request.body.codeforcesHandle))) {
         response.status(409);
         response.end("codeforcesHandle");
         return;
     }
-    let token = await register({username, codeforcesHandle, firstName, lastName, email, password: rsaKeys[keyId].decrypt(password).toString()});
-    removeKey(request.body.keyId);
+    let token = await register(request.body, request.headers["user-agent"], "main");
     if (!token) {
         response.status(500);
         response.end("");
         return;
     }
     response.status(201);
-    response.end(token);
+    response.expressResponse.cookie("refreshToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: "strict",
+        path: "/api/refresh-token"
+    });
+    response.end("ok");
 });
 
 router.post("/users/signin", {
     bodyValidator: object({
         username: string(),
-        password: string(),
-        keyId: createParser((key: any, path) => {
-            key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
-            return key;
-        })
+        password: string()
+    }),
+    headersValidator: object({
+        "user-agent": string()
     })
 }, async (request, response) => {
-    let token = await signIn(request.body.username, rsaKeys[request.body.keyId].decrypt(request.body.password).toString());
-    removeKey(request.body.keyId);
+    let token = await signIn(request.body.username, request.body.password, request.headers["user-agent"], "main");
     if (!token) {
         response.status(401);
         response.end("");
         return;
     }
-    response.end(token);
+    response.expressResponse.cookie("refreshToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: "strict",
+        path: "/api/refresh-token"
+    });
+    response.expressResponse.cookie("refreshToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: "strict",
+        path: "/api/users/signout"
+    });
+    response.end("ok");
 });
 
 router.patch("/me/password", {
     bodyValidator: object({
         old: string(),
-        new: string(),
-        keyId: createParser((key: any, path) => {
-            key = int()(key, path);
-            if (key >= rsaKeys.length) throw new ParsingError("[${path}] doesn't exists")
-            return key;
-        })
+        new: string()
     }),
     async authChecker(request, response) {
-        return checkAuth(request?.body?.headers?.authorization, ["passwordHash", "id"], response);
+        return checkAuth(request.headers?.authorization, ["passwordHash", "id"], response);
     }
 }, async (request, response) => {
-    let {old: oldPassword, new: newPassword, keyId} = request.body;
+    let {old: oldPassword, new: newPassword} = request.body;
     let {id, passwordHash} = request.auth;
-    if (!compareHash(rsaKeys[keyId].decrypt(oldPassword).toString(), passwordHash)) {
-        removeKey(keyId);
+    if (!compareHash(oldPassword, passwordHash)) {
         response.status(418);
-        response.end("");
+        response.end();
         return;
     }
-    await patchUserPassword(id, rsaKeys[keyId].decrypt(newPassword).toString());
-    removeKey(keyId);
+    await patchUserPassword(id, newPassword);
+    response.end();
+});
+
+router.get("/refresh-token", {
+    headersValidator: object({
+        "user-agent": string()
+    })
+}, async (request, response) => {
+    const token = request.expressRequest.cookies.refreshToken as string | undefined;
+    if (!token) {
+        response.status(401);
+        response.end();
+        return;
+    }
+    const data = await verifyRefreshToken(token);
+    if (!data || !(await checkUseragent(request.headers["user-agent"], data.jti))) {
+        response.status(401);
+        response.end();
+        return;
+    }
+    response.end(await generateAccessToken(data.id, data.app));
+});
+
+router.post("/refresh-token", {
+    bodyValidator: string(),
+    headersValidator: object({
+        "user-agent": string(),
+        authorization: optional(string())
+    })
+}, async (request, response) => {
+    const data = await verifyRefreshToken(request.body);
+    if (!data || !(await checkUseragent(request.headers["user-agent"], data.jti))) {
+        response.status(401);
+        response.end();
+        return;
+    }
+    let app = "main";
+    if ("authorization" in request.headers) {
+        const data = await verifyAppToken(request.headers.authorization);
+        if (data === false) {
+            response.status(418);
+            response.end();
+            return;
+        }
+        app = data.app;
+    }
+    response.end(await generateAccessToken(data.id, app));
+});
+
+router.post("/users/signout", {
+    headersValidator: object({
+        "user-agent": string()
+    })
+}, async (request, response) => {
+    const token = request.expressRequest.cookies.refreshToken as string | undefined;
+    if (!token) {
+        response.status(401);
+        response.end();
+        return;
+    }
+    const data = await verifyRefreshToken(token);
+    if (!data || !(await checkUseragent(request.headers["user-agent"], data.jti))) {
+        response.status(401);
+        response.end();
+        return;
+    }
+    await signOut(data.jti);
+    response.expressResponse.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: "strict",
+        path: "/api/refresh-token"
+    });
+    response.expressResponse.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: "strict",
+        path: "/api/users/signout"
+    });
     response.end();
 });
 

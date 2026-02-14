@@ -3,8 +3,11 @@ import {Database, db} from "./index.sql.js";
 import {compareHash, hash} from "scryptex";
 import {SelectExpression} from "kysely";
 import {UpdateObjectExpression} from "kysely/dist/cjs/parser/update-set-parser.js";
+import {generateRefreshToken, verifyAccessToken} from "../jwt.js";
+import useragent from "useragent";
+import isMobile from "is-mobile";
 
-export async function register({username, codeforcesHandle, firstName, lastName, email, password}: {username: string, codeforcesHandle: string, firstName: string, lastName: string, email: string, password: string}) {
+export async function register({username, codeforcesHandle, firstName, lastName, email, password}: {username: string, codeforcesHandle: string, firstName: string, lastName: string, email: string, password: string}, useragent: string, app: string) {
     let passwordHash = hash(password);
     await db.insertInto("users").values({
         username,
@@ -16,12 +19,7 @@ export async function register({username, codeforcesHandle, firstName, lastName,
         passwordHash,
         isAdmin: false
     }).executeTakeFirstOrThrow();
-    return signIn(username, password, passwordHash);
-}
-
-async function isUniqueToken(token: string) {
-    let result = await db.selectFrom("sessions").where("token", '=', token).select("id").executeTakeFirst();
-    return !Boolean(result);
+    return signIn(username, password, useragent, app, passwordHash);
 }
 
 export function generateRandomString() {
@@ -32,25 +30,28 @@ export async function generateToken() {
     return `${generateRandomString()}.${new Date().getFullYear()}.${new Date().getMonth()}.${new Date().getDate()}.${new Date().getHours()}.${new Date().getMinutes()}.${new Date().getSeconds()}.${new Date().getMilliseconds()}`;
 }
 
-export async function signIn(username: string, password: string, passwordHash?: string): Promise<string | null> {
-    let passHash: string = "";
+export async function signInById(id: number, useragentStr: string, app: string): Promise<string | null> {
+    const ua = useragent.parse(useragentStr);
+    const jti = (await db.insertInto("sessions").values({
+        userId: id,
+        device: ua.device.family,
+        os: ua.os.family,
+        browser: ua.family,
+        mobile: isMobile({ua: useragentStr, tablet: true})
+    }).returning(["id"]).executeTakeFirstOrThrow()).id;
+    return generateRefreshToken(id, jti, app);
+}
+
+export async function signIn(username: string, password: string, useragent: string, app: string, passwordHash?: string): Promise<string | null> {
+    let passHash: string;
     if (passwordHash) passHash = passwordHash;
     else {
         let {passwordHash} = await db.selectFrom("users").select("passwordHash").where("username", '=', username).executeTakeFirstOrThrow();
         passHash = passwordHash;
     }
     if (!compareHash(password, passHash)) return null;
-    let token = await generateToken();
     let {id} = await db.selectFrom("users").select("id").where("username", '=', username).executeTakeFirstOrThrow();
-    await db.insertInto("sessions").values({userId: id, token}).executeTakeFirstOrThrow();
-    return token;
-}
-
-export async function signInById(id: number): Promise<string | null> {
-    let token = await generateToken();
-    // let {id} = await db.selectFrom("users").select("id").where("username", '=', username).executeTakeFirstOrThrow();
-    await db.insertInto("sessions").values({userId: id, token}).executeTakeFirstOrThrow();
-    return token;
+    return signInById(id, useragent, app);
 }
 
 export async function isUniqueUsername(username: string): Promise<boolean> {
@@ -70,9 +71,12 @@ export async function getUserByUsername(username: string, select: Array<SelectEx
 }
 
 export async function getUserIdByToken(token: string): Promise<number | null> {
-    let sessions = await db.selectFrom("sessions").where("token", '=', token).select("userId").execute();
-    if (!sessions.length) return null;
-    return sessions[0].userId;
+    // let sessions = await db.selectFrom("sessions").where("token", '=', token).select("userId").execute();
+    // if (!sessions.length) return null;
+    // return sessions[0].userId;
+    let data = await verifyAccessToken(token);
+    if (!data) return null;
+    return data.id;
 }
 
 export async function getUserByToken(token: string, select: Array<SelectExpression<Database, "users">> = ["id", "username", "codeforcesHandle", "firstName", "lastName", "isAdmin"]) {
@@ -89,8 +93,8 @@ export async function patchUserPassword(id: number, password: string) {
     await db.updateTable("users").set({passwordHash: hash(password)}).where("id", '=', id).executeTakeFirstOrThrow();
 }
 
-export async function signOut(token: string) {
-    await db.deleteFrom("sessions").where("token", '=', token).execute();
+export async function signOut(jti: number) {
+    await db.deleteFrom("sessions").where("id", '=', jti).execute();
 }
 
 export async function getCodeforcesHandleUserIdMap(): Promise<{[key: string]: number}> {
@@ -124,12 +128,31 @@ export async function adminUsersPatch(data: Array<{id: number, codeforcesHandle?
 }
 
 export async function isAdmin(token: string): Promise<boolean> {
-    let userId = await db.selectFrom("sessions").where("token", '=', token).select(["userId"]).executeTakeFirst();
+    let userId = await getUserIdByToken(token);
     if (!userId) return false;
-    let isAdmin = await db.selectFrom("users").where("id", '=', userId.userId).select(["isAdmin"]).executeTakeFirstOrThrow();
+    let isAdmin = await db.selectFrom("users").where("id", '=', userId).select(["isAdmin"]).executeTakeFirstOrThrow();
     return isAdmin.isAdmin;
 }
 
 export async function makeAdmin(id: number) {
     await db.updateTable("users").where("id", '=', id).set({isAdmin: true}).execute();
+}
+
+export async function checkUseragent(useragentStr: string, jti: number) {
+    const data = await db.selectFrom("sessions")
+        .where("id", '=', jti)
+        .select(["device", "os", "browser", "mobile"])
+        .executeTakeFirstOrThrow();
+    const ua = useragent.parse(useragentStr);
+    const current = {
+        device: ua.device.family,
+        os: ua.os.family,
+        browser: ua.family,
+        mobile: isMobile({ua: useragentStr, tablet: true})
+    } as const;
+    for (const key in current) {
+        // @ts-ignore
+        if (data[key] !== current[key]) return false;
+    }
+    return true;
 }

@@ -1,6 +1,7 @@
 import axios from "axios";
 import {readFileBase64} from "@/utils.js";
 import {SERVER_URL, SERVER_WS_URL} from "@/serverConfig.js";
+import {authWrapper} from "@/api/authWrapper.js";
 
 export type NewsType = Array<{
     id: number,
@@ -59,10 +60,13 @@ export async function postNew({attachments, ...data}: PostNewType): Promise<void
     for (const key in attachments) {
         newAttachments[key] = await readFileBase64(attachments[key]);
     }
-    await axios.post(SERVER_URL + "/news", {
-        ...data,
-        attachments: newAttachments
-    }, {headers: {Authorization: localStorage.getItem("token")}});
+    await authWrapper(async () => {
+        let response = await axios.post(SERVER_URL + "/news", {
+            ...data,
+            attachments: newAttachments
+        }, {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status === 401) return null;
+    });
 }
 
 export async function patchNew(id: number, data: PostNewType): Promise<boolean> {
@@ -71,15 +75,21 @@ export async function patchNew(id: number, data: PostNewType): Promise<boolean> 
         newAttachments[key] = await readFileBase64(data.attachments[key]);
     }
     try {
-        let request = await axios.patch(`${SERVER_URL}/news/${id}`, {...data, attachments: newAttachments}, {headers: {Authorization: localStorage.getItem("token")}});
-        return request.status === 200;
+        return await authWrapper(async () => {
+            let response = await axios.patch(`${SERVER_URL}/news/${id}`, {...data, attachments: newAttachments}, {headers: {Authorization: localStorage.getItem("token")}});
+            if (response.status === 401) return null;
+            return response.status === 200;
+        }) ?? false;
     } catch (error) {
         return false;
     }
 }
 
 export async function removeNew(id: number) {
-    await axios.delete(`${SERVER_URL}/news/${id}`, {headers: {Authorization: localStorage.getItem("token")}});
+    await authWrapper(async () => {
+        let response = await axios.delete(`${SERVER_URL}/news/${id}`, {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status === 401) return null;
+    });
 }
 
 export function websocketNews(updateNewHandler: (article: NewType) => void, deleteHandler: (id: number) => void) {

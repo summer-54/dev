@@ -32,7 +32,10 @@ export default async function () {
         await db.schema.createTable("sessions")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("userId", "integer", cb => cb.notNull().references("users.id"))
-            .addColumn("token", "varchar(1024)", cb => cb.notNull()).execute();
+            .addColumn("device", "text")
+            .addColumn("os", "text")
+            .addColumn("browser", "text")
+            .addColumn("mobile", "boolean").execute();
     } catch (error) {}
     try {
         await db.schema.createTable("contestGroups")
@@ -116,57 +119,59 @@ export default async function () {
             .addColumn("displayName", "varchar(128)", cb => cb.notNull())
             .addColumn("description", "varchar(512)", cb => cb.notNull()).execute();
     } catch (error) {}
-    try {
-        await db.schema.createTable("appMaintainers")
-            .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
-            .addColumn("app", "integer", cb => cb.notNull().references("apps.id")).execute();
-    } catch (error) {}
-    try {
-        await db.schema.createTable("exposedAppPermissions")
-            .addColumn("permission", "text", cb => cb.notNull().primaryKey().unique())
-            .addColumn("parent", "text", cb => cb.references("exposedAppPermissions.permission"))
-            .addColumn("exposer", "varchar(64)", cb => cb.notNull().references("apps.id"))
-            .addColumn("danger", "integer", cb => cb.notNull())
-            .addColumn("imgUrl", "varchar(256)", cb => cb.notNull())
-            .addColumn("displayName", "varchar(128)", cb => cb.notNull())
-            .addColumn("description", "varchar(512)", cb => cb.notNull())
-            .addColumn("type", "varchar(7)", cb => cb.notNull())
-            .addColumn("defaultValue", "jsonb", cb => cb.notNull())
-            .addColumn("fullValue", "jsonb", cb => cb.notNull()).execute();
-    } catch (error) {}
-    try {
-        await db.schema.createTable("requiredAppPermissions")
-            .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("permission", "text", cb => cb.notNull().references("exposedAppPermissions.permission"))
-            .addColumn("app", "varchar(64)", cb => cb.notNull().references("apps.id"))
-            .addColumn("required", "boolean", cb => cb.notNull()).execute();
-    } catch (error) {}
-    try {
-        await db.schema.createTable("appPermissions")
-            .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("permission", "text", cb => cb.notNull().references("exposedPermissions.permission"))
-            .addColumn("app", "varchar(64)", cb => cb.notNull().references("apps.id"))
-            .addColumn("value", "jsonb", cb => cb.notNull()).execute();
-    } catch (error) {}
-    try {
-        await db.schema.createTable("exposedPermissions")
-            .addColumn("permission", "text", cb => cb.notNull().primaryKey().unique())
-            .addColumn("parent", "text", cb => cb.references("exposedPermissions.permission"))
-            .addColumn("exposer", "varchar(64)", cb => cb.notNull().references("apps.id"))
-            .addColumn("danger", "integer", cb => cb.notNull())
-            .addColumn("imgUrl", "varchar(256)", cb => cb.notNull())
-            .addColumn("displayName", "varchar(128)", cb => cb.notNull())
-            .addColumn("description", "varchar(512)", cb => cb.notNull())
-            .addColumn("type", "varchar(7)", cb => cb.notNull())
-            .addColumn("defaultValue", "jsonb", cb => cb.notNull())
-            .addColumn("fullValue", "jsonb", cb => cb.notNull()).execute();
-    } catch (error) {}
-    try {
-        await db.schema.createTable("permissions")
-            .addColumn("id", "serial", cb => cb.primaryKey().unique())
-            .addColumn("permission", "text", cb => cb.notNull().references("exposedPermissions.permission"))
-            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
-            .addColumn("value", "jsonb", cb => cb.notNull()).execute();
-    } catch (error) {}
+    // try {
+    //     await db.schema.createTable("appMaintainers")
+    //         .addColumn("id", "serial", cb => cb.primaryKey().unique())
+    //         .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+    //         .addColumn("app", "integer", cb => cb.notNull().references("apps.id")).execute();
+    // } catch (error) {}
+    // try {
+    //     await db.schema.createTable("exposedAppPermissions")
+    //         .addColumn("permission", "text", cb => cb.notNull().primaryKey().unique())
+    //         .addColumn("parent", "text", cb => cb.references("exposedAppPermissions.permission"))
+    //         .addColumn("exposer", "varchar(64)", cb => cb.notNull().references("apps.id"))
+    //         .addColumn("danger", "integer", cb => cb.notNull())
+    //         .addColumn("imgUrl", "varchar(256)", cb => cb.notNull())
+    //         .addColumn("displayName", "varchar(128)", cb => cb.notNull())
+    //         .addColumn("description", "varchar(512)", cb => cb.notNull())
+    //         .addColumn("type", "varchar(7)", cb => cb.notNull())
+    //         .addColumn("defaultValue", "jsonb", cb => cb.notNull())
+    //         .addColumn("fullValue", "jsonb", cb => cb.notNull()).execute();
+    // } catch (error) {}
+    // try {
+    //     await db.schema.createTable("requiredAppPermissions")
+    //         .addColumn("id", "serial", cb => cb.primaryKey().unique())
+    //         .addColumn("permission", "text", cb => cb.notNull().references("exposedAppPermissions.permission"))
+    //         .addColumn("app", "varchar(64)", cb => cb.notNull().references("apps.id"))
+    //         .addColumn("required", "boolean", cb => cb.notNull()).execute();
+    // } catch (error) {}
+    // try {
+    //     await db.schema.createTable("appPermissions")
+    //         .addColumn("id", "serial", cb => cb.primaryKey().unique())
+    //         .addColumn("permission", "text", cb => cb.notNull())
+    //         .addColumn("reference", "text", cb => cb.notNull().references("exposedAppPermissions.permission"))
+    //         .addColumn("app", "varchar(64)", cb => cb.notNull().references("apps.id"))
+    //         .addColumn("value", "jsonb", cb => cb.notNull()).execute();
+    // } catch (error) {}
+    // try {
+    //     await db.schema.createTable("exposedPermissions")
+    //         .addColumn("permission", "text", cb => cb.notNull().primaryKey().unique())
+    //         .addColumn("parent", "text", cb => cb.references("exposedPermissions.permission"))
+    //         .addColumn("exposer", "varchar(64)", cb => cb.notNull().references("apps.id"))
+    //         .addColumn("danger", "integer", cb => cb.notNull())
+    //         .addColumn("imgUrl", "varchar(256)", cb => cb.notNull())
+    //         .addColumn("displayName", "varchar(128)", cb => cb.notNull())
+    //         .addColumn("description", "varchar(512)", cb => cb.notNull())
+    //         .addColumn("type", "varchar(7)", cb => cb.notNull())
+    //         .addColumn("defaultValue", "jsonb", cb => cb.notNull())
+    //         .addColumn("fullValue", "jsonb", cb => cb.notNull()).execute();
+    // } catch (error) {}
+    // try {
+    //     await db.schema.createTable("permissions")
+    //         .addColumn("id", "serial", cb => cb.primaryKey().unique())
+    //         .addColumn("permission", "text", cb => cb.notNull())
+    //         .addColumn("reference", "text", cb => cb.notNull().references("exposedPermissions.permission"))
+    //         .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+    //         .addColumn("value", "jsonb", cb => cb.notNull()).execute();
+    // } catch (error) {}
 }

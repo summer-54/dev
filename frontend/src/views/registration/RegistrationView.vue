@@ -29,8 +29,8 @@ export default defineComponent({
       pending: false
     }
   },
-  mounted() {
-    if (hasToken()) this.$router.push("/me");
+  async mounted() {
+    if (await hasToken()) this.$router.push("/me");
   },
   watch: {
     username() {

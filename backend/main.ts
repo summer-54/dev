@@ -6,6 +6,7 @@ import recovery from "./recovery.js";
 import articles from "./articles.js";
 import {addKey} from "./rsa.js";
 import Backendium from "backendium";
+import cookieParser from "cookie-parser";
 import apps from "./apps.js";
 // import {setupGroupStandingsUpdater} from "./codeforces.js";
 // import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
@@ -36,6 +37,7 @@ async function main() {
         });
         next();
     });
+    app.express.use(cookieParser());
 
     app.router(news);
     app.router(users);

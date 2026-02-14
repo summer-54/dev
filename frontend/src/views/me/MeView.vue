@@ -16,8 +16,8 @@ export default defineComponent({
   data() {
     return {homeIcon, settingsIcon, signOutIcon, adminIcon, admin: false};
   },
-  mounted() {
-    if (!hasToken()) {
+  async mounted() {
+    if (!(await hasToken())) {
       this.$router.push("/sign-in");
       return;
     }
@@ -26,9 +26,7 @@ export default defineComponent({
       localStorage.removeItem("token");
       this.$router.push("/sign-in");
     });
-    (async () => {
-      if (await isAdmin()) this.admin = true;
-    })();
+    if (await isAdmin()) this.admin = true;
   },
   computed: {
     pending() {

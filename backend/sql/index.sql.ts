@@ -32,7 +32,10 @@ export interface UsersTable {
 export interface SessionsTable {
     id: Generated<number>;
     userId: number;
-    token: string;
+    device?: string;
+    os?: string;
+    browser?: string;
+    mobile?: boolean;
 }
 
 export interface ContestGroupsTable {
@@ -149,6 +152,7 @@ export interface RequiredAppPermissionsTable {
 export interface AppPermissionsTable {
     id: Generated<number>;
     permission: string;
+    reference: string;
     app: string;
     value: ValueType;
 }
@@ -169,6 +173,7 @@ export interface ExposedPermissionsTable {
 export interface PermissionsTable {
     id: Generated<number>;
     permission: string;
+    reference: string;
     user: number;
     value: ValueType;
 }
@@ -188,12 +193,12 @@ export interface Database {
     articleRepos: ArticleReposTable;
     articlePermissions: ArticlePermissionsTable;
     apps: AppsTable;
-    appMaintainers: AppMaintainersTable;
-    exposedAppPermissions: ExposedAppPermissionsTable;
-    requiredAppPermissions: RequiredAppPermissionsTable;
-    appPermissions: AppPermissionsTable;
-    exposedPermissions: ExposedPermissionsTable;
-    permissions: PermissionsTable;
+    // appMaintainers: AppMaintainersTable;
+    // exposedAppPermissions: ExposedAppPermissionsTable;
+    // requiredAppPermissions: RequiredAppPermissionsTable;
+    // appPermissions: AppPermissionsTable;
+    // exposedPermissions: ExposedPermissionsTable;
+    // permissions: PermissionsTable;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;
