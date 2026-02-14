@@ -59,6 +59,12 @@ const router = createRouter({
       alias: ["/sign-in"]
     },
     {
+      path: `${ROUTER_PATH_PREFIX}/oauth/:uuid`,
+      name: "oauth",
+      component: () => import("@/views/oauth/OauthView.vue"),
+      alias: ["/oauth/:uuid"]
+    },
+    {
       path: `${ROUTER_PATH_PREFIX}/registration`,
       name: "registration",
       component: () => import("@/views/registration/RegistrationView.vue"),

@@ -21,7 +21,11 @@ export default defineComponent({
     }
   },
   async mounted() {
-    if (await hasToken()) this.$router.push("/me");
+    if (await hasToken()) {
+      let to = this.$router.currentRoute.value.query.next?.toString() ?? "/me";
+      if (to.startsWith("/")) this.$router.push(to);
+      else window.location.href = to;
+    }
   },
   methods: {
     async submit(event: Event) {
@@ -29,8 +33,11 @@ export default defineComponent({
       this.pending = true;
       try {
         let response = await signIn(this.username, this.password);
-        console.log(this.$route.query);
-        if (response) this.$router.push("/me");
+        if (response) {
+          let to = this.$router.currentRoute.value.query.next?.toString() ?? "/me";
+          if (to.startsWith("/")) this.$router.push(to);
+          else window.location.href = to;
+        }
         else this.wrong = true;
       }
       catch (error) {
