@@ -63,6 +63,9 @@ async function main() {
         // console.log(app.routes);
         // setupGroupStandingsUpdater("jOZ7EYg9HX", standings => updateGroupStandings("jOZ7EYg9HX", standings));
     });
+
+    process.on("SIGINT", () => process.exit());
+    process.on("SIGTERM", () => process.exit());
 }
 
 main();
