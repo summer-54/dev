@@ -54,6 +54,7 @@ services:
     volumes:
       - "newsAttachments:/app/newsAttachments"
       - "contestsProblems:/app/contestsProblems"
+      - "./keys:/keys"
   article54:
     image: vssizoff/article54server
     depends_on:
@@ -85,6 +86,8 @@ services:
     depends_on:
       - backend
       - article54
+    volumes:
+      - "./keys:/keys"
 volumes:
   db-data:
   newsAttachments:
