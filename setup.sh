@@ -3,7 +3,8 @@ if [[ ! -f "./.env" ]]; then
 MAIL_HOST=MAIL_HOST
 MAIL_USER=MAIL_USER
 MAIL_PASS=MAIL_PASS
-MINIO_SECRET_KEY=MINIO_SECRET_KEY" > ./.env
+MINIO_SECRET_KEY=MINIO_SECRET_KEY
+JWT_SECRET=SECRET" > ./.env
 fi
 
 if [[ ! -e "./keys" ]]; then

@@ -85,7 +85,7 @@ export async function verifyAppToken(token: string | undefined | null): Promise<
         return false;
     }
     let data = await new Promise<false | JwtAppPayload>(resolve => {
-        jwt.verify(token, publicKey, {algorithms: ['ES256']}, (err, data) => {
+        jwt.verify(token, process.env.JWT_SECRET ?? "", {algorithms: ['HS256']}, (err, data) => {
             if (err) return resolve(false);
             else if (typeof data === "object") resolve(data as unknown as JwtAppPayload);
         });
