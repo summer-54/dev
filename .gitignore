@@ -4,3 +4,5 @@ backend/node_modules/*
 */package-lock.json
 package-lock.json
 frontend/components.d.ts
+.env
+*.pem
