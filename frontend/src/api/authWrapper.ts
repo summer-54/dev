@@ -6,7 +6,9 @@ export async function authWrapper<T>(func: () => Promise<T | null>): Promise<T |
     let response = await axios.get<string>("/api/refresh-token");
     if (response.status === 200) {
         localStorage.setItem("token", response.data);
-        return await func();
+        res = await func();
+        if (res === null) localStorage.removeItem("token");
+        return res;
     }
     return null;
 }
