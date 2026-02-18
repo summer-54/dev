@@ -1,7 +1,7 @@
 import {BackendiumRouter} from "backendium";
-import {object, uuid} from "parsium";
+import {object, string, uuid} from "parsium";
 import {checkAuthRetData, checkAuthRetID} from "./authChecker.js";
-import {generateRefreshToken, verifyAppToken} from "./jwt.js";
+import {generateRefreshToken, verifyAccessToken, verifyAppToken} from "./jwt.js";
 
 const router = new BackendiumRouter();
 
@@ -58,7 +58,7 @@ function findFreeUUID() {
 }
 
 router.post("/oauth/start", {
-    async authChecker(request, response) {
+    async authChecker(request) {
         if (!("authorization" in request.headers)) {
             return null;
         }
@@ -82,7 +82,7 @@ router.get("/oauth/status/:uuid", {
     paramsValidator: object({
         uuid: uuid()
     }),
-    async authChecker(request, response) {
+    async authChecker(request) {
         if (!("authorization" in request.headers)) {
             return null;
         }
@@ -156,6 +156,31 @@ router.post("/oauth/cancel/:uuid", {
     }
     oauthSessions[request.params.uuid].status = false;
     response.end();
+});
+
+router.post("/verify", {
+    async authChecker(request) {
+        if (!("authorization" in request.headers)) {
+            return null;
+        }
+        const data = await verifyAppToken(request.headers.authorization);
+        if (data === false) {
+            return null;
+        }
+        return data.app;
+    },
+    authFailed(_, response) {
+        response.status(401);
+        response.end();
+    },
+    bodyValidator: string()
+}, async (request, response) => {
+    const data = await verifyAccessToken(request.body);
+    if (!data || data.app !== request.auth) {
+        response.end({correct: false});
+        return;
+    }
+    response.end({...data, correct: true});
 });
 
 export default router;
