@@ -7,8 +7,8 @@ export async function authWrapper<T>(func: () => Promise<T | null>): Promise<T |
     if (response.status === 200) {
         localStorage.setItem("token", response.data);
         res = await func();
-        if (res === null) localStorage.removeItem("token");
         return res;
     }
+    localStorage.removeItem("token");
     return null;
 }
