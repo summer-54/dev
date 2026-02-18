@@ -35,7 +35,8 @@ export default async function () {
             .addColumn("device", "text")
             .addColumn("os", "text")
             .addColumn("browser", "text")
-            .addColumn("mobile", "boolean").execute();
+            .addColumn("mobile", "boolean")
+            .addColumn("lastRefresh", "timestamp", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("contestGroups")

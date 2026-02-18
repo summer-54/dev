@@ -36,6 +36,7 @@ export interface SessionsTable {
     os?: string;
     browser?: string;
     mobile?: boolean;
+    lastRefresh: ColumnType<Date, Date | string, Date | string>;
 }
 
 export interface ContestGroupsTable {

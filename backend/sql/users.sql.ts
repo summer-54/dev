@@ -37,7 +37,8 @@ export async function signInById(id: number, useragentStr: string, app: string):
         device: ua.device.family,
         os: ua.os.family,
         browser: ua.family,
-        mobile: isMobile({ua: useragentStr, tablet: true})
+        mobile: isMobile({ua: useragentStr, tablet: true}),
+        lastRefresh: new Date()
     }).returning(["id"]).executeTakeFirstOrThrow()).id;
     return generateRefreshToken(id, jti, app);
 }
@@ -155,4 +156,8 @@ export async function checkUseragent(useragentStr: string, jti: number) {
     //     if (data[key] !== current[key]) return false;
     // }
     return true;
+}
+
+export async function updateLastRefreshTimestamp(jti: number) {
+    await db.updateTable("sessions").where("id", '=', jti).set({lastRefresh: new Date()}).execute();
 }

@@ -15,7 +15,7 @@ import {
     patchUserPassword,
     register,
     signIn,
-    signOut
+    signOut, updateLastRefreshTimestamp
 } from "./sql/users.sql.js";
 import {searchUsers} from "./sql/search.sql.js";
 import {email, object, optional, string} from "parsium";
@@ -283,6 +283,7 @@ router.get("/refresh-token", {
         response.end();
         return;
     }
+    await updateLastRefreshTimestamp(data.jti);
     response.end(await generateAccessToken(data.id, data.jti, data.app));
 });
 
@@ -309,6 +310,7 @@ router.post("/refresh-token", {
         }
         app = data.app;
     }
+    await updateLastRefreshTimestamp(data.jti);
     response.end(await generateAccessToken(data.id, data.jti, app));
 });
 
