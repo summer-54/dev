@@ -1,0 +1,106 @@
+version: "3"
+services:
+  db:
+    image: postgres:17.5-alpine3.21
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "postgres"
+    healthcheck:
+      test: "pg_isready -d postgres -U postgres"
+      interval: 5s
+      timeout: 60s
+      retries: 20
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "54001:5432"
+    networks:
+      inf54_network:
+  minio:
+    image: minio/minio
+    ports:
+      - "54002:9000"
+      - "54003:9001"
+    volumes:
+      - minio_data:/data
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: "curl -f http://localhost:9000/minio/health/live"
+      interval: 5s
+      timeout: 60s
+      retries: 20
+  backend:
+    build: ./backend
+    command: bun ./main.ts
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: postgres
+      PORT: 8080
+      HOST: "0.0.0.0"
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_USER: ${MAIL_USER}
+      MAIL_PASS: ${MAIL_PASS}
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: development
+    volumes:
+      - "newsAttachments:/app/newsAttachments"
+      - "contestsProblems:/app/contestsProblems"
+      - "./keys:/keys"
+    networks:
+      inf54_network:
+    ports:
+      - "54004:8080"
+  article54:
+    image: vssizoff/article54server
+    depends_on:
+      minio:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 8080
+      HOST: "0.0.0.0"
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: postgres
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      PUSH_CHECK: "http://backend:8080/push-check"
+      PULL_CHECK: "http://backend:8080/pull-check"
+  nginx:
+    build:
+      context: .
+      dockerfile: ./nginx/dev.Dockerfile
+      target: server
+    depends_on:
+      - backend
+      - article54
+    volumes:
+      - "./keys:/keys"
+    environment:
+      - HOST_URL=http://host.containers.internal:5173
+    network_mode: host
+volumes:
+  db-data:
+  newsAttachments:
+  contestsProblems:
+  minio_data:
+networks:
+  inf54_network:
+    external: true
+    name: inf54_network

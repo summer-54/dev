@@ -93,3 +93,7 @@ volumes:
   newsAttachments:
   contestsProblems:
   minio_data:
+networks:
+  inf54_network:
+    external: true
+    name: inf54_network

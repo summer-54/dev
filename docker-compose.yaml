@@ -16,6 +16,8 @@ services:
       - db-data:/var/lib/postgresql/data
     ports:
       - "54001:5432"
+    networks:
+      inf54_network:
   minio:
     image: minio/minio
     ports:
@@ -55,6 +57,8 @@ services:
       - "newsAttachments:/app/newsAttachments"
       - "contestsProblems:/app/contestsProblems"
       - "./keys:/keys"
+    networks:
+      inf54_network:
   article54:
     image: vssizoff/article54server
     depends_on:
@@ -93,3 +97,7 @@ volumes:
   newsAttachments:
   contestsProblems:
   minio_data:
+networks:
+  inf54_network:
+    external: true
+    name: inf54_network
