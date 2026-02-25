@@ -6,6 +6,7 @@ import DeepseekMenu from './DeepseekMenu.vue';
 import NewHeader from "@/views/test/NewHeader.vue";
 import TermInput from "@/components/termui/TermInput.vue";
 import TermButton from "@/components/termui/TermButton.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
 </script>
 
 <template>
@@ -17,9 +18,24 @@ import TermButton from "@/components/termui/TermButton.vue";
     <!--<animation animation="flip">test</animation>-->
     <TermInput label="root@inf54:~# username:" placeholder="Имя пользователя"/>
     <TermButton>testtest</TermButton>
+    <TermWindow class="window">
+      <template #header>
+        test
+      </template>
+
+      test
+    </TermWindow>
   </div>
 </template>
 
 <style scoped>
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.window {
+  min-width: 800px;
+}
 </style>
