@@ -16,14 +16,13 @@ import TermWindow from "@/components/termui/TermWindow.vue";
     <!-- <PrimevueHeader/> -->
 <!--    <DeepseekMenu/>-->
     <!--<animation animation="flip">test</animation>-->
-    <TermInput label="root@inf54:~# username:" placeholder="Имя пользователя"/>
-    <TermButton>testtest</TermButton>
     <TermWindow class="window">
       <template #header>
         test
       </template>
 
-      test
+      <TermInput label="root@inf54:~# username:" placeholder="Имя пользователя"/>
+      <TermButton>testtest</TermButton>
     </TermWindow>
   </div>
 </template>
@@ -33,9 +32,10 @@ div {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 }
 
 .window {
-  min-width: 800px;
+  //min-width: 800px;
 }
 </style>

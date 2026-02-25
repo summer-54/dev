@@ -42,7 +42,7 @@ onMounted(() => {
 
 <style scoped>
 section {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   box-shadow: 0 0 5px #95EAA7FF;
   border-radius: 5px;
