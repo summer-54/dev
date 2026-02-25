@@ -25,7 +25,6 @@
   align-items: center;
   font-family: 'Courier New', Courier, monospace;
   width: fit-content;
-  margin: 20px auto;
   gap: 10px;
   position: relative;
   cursor: pointer;

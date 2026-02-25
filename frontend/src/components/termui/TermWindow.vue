@@ -5,7 +5,8 @@ defineProps({
   noHeader: {
     type: Boolean,
     default: false
-  }
+  },
+  prompt: String
 });
 
 const h = ref("");
@@ -31,6 +32,7 @@ onMounted(() => {
   <span class="border corner corner-bottom-left">└</span>
   <span class="border corner corner-bottom-right">┘</span>
 
+  <div class="prompt" v-if="prompt">{{prompt}}</div>
   <div class="header" v-if="!noHeader">
     <slot name="header"/>
   </div>
@@ -50,17 +52,28 @@ section {
   position: relative;
   overflow: hidden;
   padding: 10px;
+  font-family: 'Courier New', Courier, monospace;
 
   .header {
-    font-size: 16px;
+    font-size: 30px;
     font-weight: bold;
     text-align: center;
+    color: #95EAA7FF;
+    text-shadow: 0 0 5px #95EAA7FF;
+    margin-top: 10px;
+  }
+
+  .prompt {
     color: #95EAA7FF;
     text-shadow: 0 0 5px #95EAA7FF;
   }
 
   .content {
-
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 
   .border {
@@ -87,7 +100,7 @@ section {
   }
 
   .border-top {
-    top: -6px;
+    top: -5px;
   }
 
   .border-right {
@@ -95,7 +108,7 @@ section {
   }
 
   .border-bottom {
-    bottom: -4px;
+    bottom: -5px;
   }
 
   .corner {
@@ -105,21 +118,25 @@ section {
   .corner-top-left {
     top: -5px;
     left: 0;
+    border-bottom-right-radius: 10px;
   }
 
   .corner-top-right {
     top: -5px;
     right: -5px;
+    border-bottom-left-radius: 10px;
   }
 
   .corner-bottom-left {
     bottom: -5px;
     left: 0;
+    border-top-right-radius: 10px;
   }
 
   .corner-bottom-right {
     bottom: -5px;
     right: -5px;
+    border-top-left-radius: 10px;
   }
 }
 </style>

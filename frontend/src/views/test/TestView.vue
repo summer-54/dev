@@ -16,7 +16,7 @@ import TermWindow from "@/components/termui/TermWindow.vue";
     <!-- <PrimevueHeader/> -->
 <!--    <DeepseekMenu/>-->
     <!--<animation animation="flip">test</animation>-->
-    <TermWindow class="window">
+    <TermWindow class="window" prompt="root@inf54:~# ./register.sh">
       <template #header>
         test
       </template>
