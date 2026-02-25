@@ -75,11 +75,11 @@ section {
     writing-mode: vertical-rl;
     text-orientation: upright;
 
-    top: 22px;
+    top: 18px;
   }
 
   .border-top, .border-bottom {
-    left: 20px;
+    left: 15px;
   }
 
   .border-left {
