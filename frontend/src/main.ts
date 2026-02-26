@@ -42,7 +42,7 @@ app.use(createVueSui({
         inputBorder: "#9297FB",
         fileInputBorder: "#9297FB"
     }
-}));
+}, {default: "dark"}));
 app.use(createManager());
 app.use(PrimeVue, {
     theme: {

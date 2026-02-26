@@ -1,5 +1,5 @@
 <template>
-  <label class="terminal-wrapper">
+  <label class="terminal-wrapper" :class="{dark: $themeName === 'dark'}">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
@@ -70,7 +70,7 @@ onMounted(() => {
 .bracket {
   width: 5px;
   height: 40px;
-  border: 2px solid #95EAA7FF;
+  border: 2px solid black;
   opacity: 0.6;
   position: absolute;
   transition: all ease-in-out 0.2s;
@@ -91,7 +91,7 @@ onMounted(() => {
   align-items: center;
   white-space: nowrap;
   padding: 5px 10px;
-  border: 1px solid #95EAA720;
+  border: 1px solid gray;
   transition: all ease-in-out 0.2s;
   width: 100%;
 }
@@ -99,13 +99,11 @@ onMounted(() => {
 .prompt {
   font-weight: bold;
   user-select: none;
-  color: #95EAA7FF;
-  text-shadow: 0 0 5px #95EAA7FF;
   transition: text-shadow ease-in-out 0.2s;
 }
 
 .optional {
-  color: #b4c3b7;
+  color: gray;
 }
 
 .terminal-input {
@@ -116,7 +114,6 @@ onMounted(() => {
   outline: none;
   width: 100%;
   padding: 0;
-  caret-color: #95EAA7FF;
   caret-shape: block;
   margin: 0 0 0 8px;
 }
@@ -124,7 +121,7 @@ onMounted(() => {
 @media (hover: hover) {
   .terminal-wrapper:hover {
     .prompt {
-      text-shadow: 0 0 8px #95EAA7FF;
+      text-shadow: 0 0 8px #60e17b;
     }
 
     .bracket {
@@ -144,7 +141,7 @@ onMounted(() => {
     }
 
     .terminal-content {
-      background: #95EAA710;
+      background: #60e17b30;
       border-color: #95EAA730;
       border-radius: 5px;
     }
@@ -153,7 +150,7 @@ onMounted(() => {
 
 .terminal-wrapper:focus-within {
   .prompt {
-    text-shadow: 0 0 8px #95EAA7FF;
+    text-shadow: 0 0 8px #60e17b;
   }
 
   .bracket {
@@ -173,9 +170,62 @@ onMounted(() => {
   }
 
   .terminal-content {
-    background: #95EAA710;
+    background: #60e17b30;
     border-color: #95EAA730;
     border-radius: 5px;
+  }
+}
+
+.dark {
+  .bracket {
+    border: 2px solid #95EAA7FF;
+  }
+
+  .bracket-left {
+    border-right: none;
+  }
+
+  .bracket-right {
+    border-left: none;
+  }
+
+  .terminal-content {
+    border: 1px solid #95EAA720;
+  }
+
+  .prompt {
+    color: #95EAA7FF;
+    text-shadow: 0 0 5px #95EAA7FF;
+  }
+
+  .optional {
+    color: #b4c3b7;
+  }
+
+
+
+  @media (hover: hover) {
+    .terminal-wrapper:hover {
+      .prompt {
+        text-shadow: 0 0 8px #95EAA7FF;
+      }
+
+      .terminal-content {
+        background: #95EAA710;
+        border-color: #95EAA730;
+      }
+    }
+  }
+
+  .terminal-wrapper:focus-within {
+    .prompt {
+      text-shadow: 0 0 8px #95EAA7FF;
+    }
+
+    .terminal-content {
+      background: #95EAA710;
+      border-color: #95EAA730;
+    }
   }
 }
 </style>

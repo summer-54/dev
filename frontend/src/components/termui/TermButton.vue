@@ -1,5 +1,5 @@
 <template>
-  <button class="terminal-wrapper">
+  <button class="terminal-wrapper" :class="{dark: $themeName === 'dark'}">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
@@ -34,7 +34,7 @@
 .bracket {
   width: 5px;
   height: 40px;
-  border: 2px solid #95EAA7FF;
+  border: 2px solid black;
   opacity: 0.6;
   position: absolute;
   transition: all ease-in-out 0.2s;
@@ -55,15 +55,15 @@
   align-items: center;
   white-space: nowrap;
   padding: 5px 10px;
-  border: 1px solid #95EAA720;
+  border: 1px solid gray;
   font-size: 16px;
   transition: all ease-in-out 0.2s;
-  text-shadow: 0 0 5px #95EAA7FF;
-  color: #95EAA7FF;
 }
 
 @media (hover: hover) {
   .terminal-wrapper:hover {
+    background: #60e17b30;
+
     .bracket {
       height: 45px;
     }
@@ -81,15 +81,16 @@
     }
 
     .terminal-content {
-      background: #95EAA710;
-      border-color: #95EAA730;
+      border-color: #60e17b30;
       border-radius: 5px;
-      text-shadow: 0 0 8px #95EAA7FF;
+      text-shadow: 0 0 8px #60e17bFF;
     }
   }
 }
 
 .terminal-wrapper:focus-visible {
+  background: #60e17b30;
+
   .bracket {
     height: 45px;
   }
@@ -107,14 +108,15 @@
   }
 
   .terminal-content {
-    background: #95EAA710;
-    border-color: #95EAA730;
+    border-color: #60e17b30;
     border-radius: 5px;
-    text-shadow: 0 0 8px #95EAA7FF;
+    text-shadow: 0 0 8px #60e17bFF;
   }
 }
 
 .terminal-wrapper:active {
+  background: #60e17b30;
+
   .bracket {
     transition-duration: 0.02s;
   }
@@ -128,11 +130,59 @@
   }
 
   .terminal-content {
-    background: #95EAA710;
-    border-color: #95EAA730;
+    border-color: #60e17b30;
     border-radius: 5px;
-    text-shadow: 0 0 10px #95EAA7FF, 0 0 15px #95EAA7FF;
+    text-shadow: 0 0 10px #60e17bFF, 0 0 15px #60e17bFF;
     transition-duration: 0.02s;
+  }
+}
+
+.dark {
+  .bracket {
+    border: 2px solid #95EAA7FF;
+  }
+
+  .bracket-left {
+    border-right: none;
+  }
+
+  .bracket-right {
+    border-left: none;
+  }
+
+  .terminal-content {
+    border: 1px solid #95EAA720;
+    text-shadow: 0 0 5px #95EAA7FF;
+    color: #95EAA7FF;
+  }
+
+  @media (hover: hover) {
+    .terminal-wrapper:hover {
+      .terminal-content {
+        background: #95EAA710;
+        border-color: #95EAA730;
+        text-shadow: 0 0 8px #95EAA7FF;
+      }
+    }
+  }
+
+  .terminal-wrapper:focus-visible {
+    .terminal-content {
+      background: #95EAA710;
+      border-color: #95EAA730;
+      border-radius: 5px;
+      text-shadow: 0 0 8px #95EAA7FF;
+    }
+  }
+
+  .terminal-wrapper:active {
+    .terminal-content {
+      background: #95EAA710;
+      border-color: #95EAA730;
+      border-radius: 5px;
+      text-shadow: 0 0 10px #95EAA7FF, 0 0 15px #95EAA7FF;
+      transition-duration: 0.02s;
+    }
   }
 }
 </style>

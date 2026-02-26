@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-<section>
+<section :class="{dark: $themeName === 'dark'}">
   <span class="border border-top">{{h}}</span>
   <span class="border border-left">{{v}}</span>
   <span class="border border-right">{{v}}</span>
@@ -46,14 +46,12 @@ onMounted(() => {
 section {
   display: inline-flex;
   flex-direction: column;
-  box-shadow: 0 0 5px #95EAA7FF;
   border-radius: 5px;
   outline-offset: -5px;
   position: relative;
   overflow: hidden;
   padding: 10px;
   font-family: 'Courier New', Courier, monospace;
-  background: #00000050;
   margin: 5px;
 
   .header {
@@ -61,14 +59,7 @@ section {
     font-size: 30px;
     font-weight: bold;
     text-align: center;
-    color: #95EAA7FF;
-    text-shadow: 0 0 5px #95EAA7FF;
     margin-top: 10px;
-  }
-
-  .prompt {
-    color: #95EAA7FF;
-    text-shadow: 0 0 5px #95EAA7FF;
   }
 
   .content {
@@ -83,8 +74,6 @@ section {
     position: absolute;
     font-size: 16px;
     letter-spacing: 5px;
-    color: #95EAA7FF;
-    //text-shadow: 0 0 5px #95EAA7FF, 0 0 10px #95EAA7FF;
   }
 
   .border-right, .border-left {
@@ -115,7 +104,7 @@ section {
   }
 
   .corner {
-    background-color: rgb(18, 18, 18);
+    background-color: white;
   }
 
   .corner-top-left {
@@ -140,6 +129,29 @@ section {
     bottom: -5px;
     right: -5px;
     border-top-left-radius: 10px;
+  }
+}
+
+.dark {
+  background: #00000050;
+  box-shadow: 0 0 5px #95EAA7FF;
+
+  .header {
+    color: #95EAA7FF;
+    text-shadow: 0 0 5px #95EAA7FF;
+  }
+
+  .prompt {
+    color: #95EAA7FF;
+    text-shadow: 0 0 5px #95EAA7FF;
+  }
+
+  .border {
+    color: #95EAA7FF;
+  }
+
+  .corner {
+    background-color: rgb(18, 18, 18);
   }
 }
 </style>

@@ -7,6 +7,12 @@ import NewHeader from "@/views/test/NewHeader.vue";
 import TermInput from "@/components/termui/TermInput.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
+import {computed, onMounted} from "vue";
+import {usePrimeVue} from "primevue";
+
+const isDark = computed(() => {
+  return document.documentElement.classList.contains('dark');
+});
 </script>
 
 <template>
