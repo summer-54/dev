@@ -18,10 +18,16 @@ import TermWindow from "@/components/termui/TermWindow.vue";
     <!--<animation animation="flip">test</animation>-->
     <TermWindow class="window" prompt="root@inf54:~# ./register.sh">
       <template #header>
-        test
+        Добро пожаловать. Регистрация
       </template>
 
-      <TermInput label="root@inf54:~# username:" placeholder="Имя пользователя"/>
+      <TermInput label="root@inf54:~# username:" mLabel="> username:" placeholder="Имя пользователя"/>
+      <TermInput label="root@inf54:~# email:" mLabel="> email:" placeholder="Email"/>
+      <TermInput label="root@inf54:~# password:" mLabel="> password:" placeholder="Пароль"/>
+      <TermInput label="root@inf54:~# confirm:" mLabel="> confirm:" placeholder="Повторите пароль"/>
+      <TermInput label="root@inf54:~# name:" mLabel="> name:" placeholder="Имя"/>
+      <TermInput label="root@inf54:~# surname:" mLabel="> surname:" placeholder="Фамилия"/>
+      <TermInput label="root@inf54:~# codeforces:" mLabel="> codeforces:" placeholder="Ник на Codeforces (опц.)" optional/>
       <TermButton>testtest</TermButton>
     </TermWindow>
   </div>

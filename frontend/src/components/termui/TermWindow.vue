@@ -53,8 +53,11 @@ section {
   overflow: hidden;
   padding: 10px;
   font-family: 'Courier New', Courier, monospace;
+  background: #00000050;
+  margin: 5px;
 
   .header {
+    padding: 10px;
     font-size: 30px;
     font-weight: bold;
     text-align: center;

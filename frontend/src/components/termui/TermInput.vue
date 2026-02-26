@@ -3,7 +3,7 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span class="prompt">{{label}}</span>
+      <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
       <input
           :type="password ? 'password' : 'text'"
           v-model="inputValue"
@@ -17,10 +17,16 @@
 </template>
 
 <script setup lang="ts">
+import {onMounted, ref} from "vue";
+
 const inputValue = defineModel({ type: String });
 
-defineProps({
+const props = defineProps({
   label: {
+    type: String,
+    required: true
+  },
+  mLabel: {
     type: String,
     required: true
   },
@@ -28,8 +34,24 @@ defineProps({
   password: {
     type: Boolean,
     required: false
+  },
+  optional: {
+    type: Boolean,
+    default: false
   }
-})
+});
+
+const prompt = ref(props.label);
+
+function selectPrompt() {
+  if (window.matchMedia("(width >= 540px)").matches) prompt.value = props.label;
+  else prompt.value = props.mLabel;
+}
+
+onMounted(() => {
+  selectPrompt();
+  window.addEventListener("resize", selectPrompt);
+});
 </script>
 
 <style scoped>
@@ -37,7 +59,7 @@ defineProps({
   display: flex;
   align-items: center;
   font-family: 'Courier New', Courier, monospace;
-  width: fit-content;
+  width: 100%;
   gap: 10px;
   position: relative;
   cursor: text;
@@ -71,6 +93,7 @@ defineProps({
   padding: 5px 10px;
   border: 1px solid #95EAA720;
   transition: all ease-in-out 0.2s;
+  width: 100%;
 }
 
 .prompt {
@@ -81,13 +104,17 @@ defineProps({
   transition: text-shadow ease-in-out 0.2s;
 }
 
+.optional {
+  color: #b4c3b7;
+}
+
 .terminal-input {
   background: transparent;
   border: none;
   font-family: inherit;
   font-size: inherit;
   outline: none;
-  width: 200px;
+  width: 100%;
   padding: 0;
   caret-color: #95EAA7FF;
   caret-shape: block;
