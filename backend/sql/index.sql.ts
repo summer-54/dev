@@ -179,6 +179,31 @@ export interface PermissionsTable {
     value: ValueType;
 }
 
+export interface EventsTable {
+    id: Generated<number>;
+    owner: number;
+    imgUrl: string;
+    displayName: string;
+    description: string;
+    autoAccept: boolean;
+    formFields: object;
+}
+
+export interface EventAdminsTable {
+    id: Generated<number>;
+    event: number;
+    user: number;
+}
+
+export interface EventParticipantsTable {
+    id: Generated<number>;
+    event: number;
+    user: number;
+    formFields: object;
+    accepted: boolean;
+    visited: boolean;
+}
+
 export interface Database {
     news: NewsTable;
     newsImages: NewsImagesTable;

@@ -13,6 +13,7 @@ const hoverColor = computed(() => colors.value.hoverColor),
     itemHeadingHoverColor = computed(() => colors.value.itemHeadingHoverColor),
     itemTextColor = computed(() => colors.value.itemTextColor),
     itemTextHoverColor = computed(() => colors.value.itemTextHoverColor);
+const primaryColor = computed(() => colors.value.primaryColor);
 </script>
 
 <template>
@@ -44,7 +45,7 @@ const hoverColor = computed(() => colors.value.hoverColor),
 .ListItemHeading {
   line-height: 1.2;
   margin-bottom: 5px;
-  color: #95EAA7FF;
+  color: v-bind(primaryColor);
   transition: color 0.6s ease-in-out;
   font-weight: bold;
 }
@@ -82,7 +83,7 @@ li {
 }
 
 .bracket {
-  border: 2px solid #95EAA7FF;
+  border: 2px solid v-bind(primaryColor);
 }
 
 .bracket {

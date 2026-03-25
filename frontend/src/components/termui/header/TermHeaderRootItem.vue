@@ -12,7 +12,8 @@ const props = defineProps({
   }
 });
 
-const hoverColor = computed(() => colors.value.hoverColor);
+const primaryColor = computed(() => colors.value.primaryColor);
+const filterString = computed(() => colors.value.filterString);
 </script>
 
 <template>
@@ -53,7 +54,7 @@ const hoverColor = computed(() => colors.value.hoverColor);
 
 <style module>
 .bracket {
-  border: 2px solid #95EAA7FF;
+  border: 2px solid v-bind(primaryColor);
 }
 
 .bracket {
@@ -121,9 +122,9 @@ const hoverColor = computed(() => colors.value.hoverColor);
 
 .NavigationMenuTrigger:hover {
   * {
-    color: #95EAA7FF;
+    color: v-bind(primaryColor);
     img {
-      filter: brightness(0) saturate(100%) invert(86%) sepia(32%) saturate(478%) hue-rotate(71deg) brightness(99%) contrast(85%);
+      filter: v-bind(filterString);
     }
   }
 

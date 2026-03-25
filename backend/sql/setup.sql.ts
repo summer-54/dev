@@ -175,4 +175,29 @@ export default async function () {
     //         .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
     //         .addColumn("value", "jsonb", cb => cb.notNull()).execute();
     // } catch (error) {}
+    try {
+        await db.schema.createTable("events")
+            .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
+            .addColumn("owner", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("imgUrl", "varchar(256)", cb => cb.notNull())
+            .addColumn("displayName", "varchar(128)", cb => cb.notNull())
+            .addColumn("description", "varchar(512)", cb => cb.notNull())
+            .addColumn("autoAccept", "boolean", cb => cb.defaultTo(false))
+            .addColumn("formFields", "jsonb", cb => cb.defaultTo({})).execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("eventAdmins")
+            .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
+            .addColumn("event", "integer", cb => cb.notNull().references("events.id"))
+            .addColumn("user", "integer", cb => cb.notNull().references("users.id")).execute();
+    } catch (error) {}
+    try {
+        await db.schema.createTable("eventParticipants")
+            .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
+            .addColumn("event", "integer", cb => cb.notNull().references("events.id"))
+            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("formFields", "jsonb", cb => cb.notNull())
+            .addColumn("accepted", "boolean", cb => cb.defaultTo(false))
+            .addColumn("visited", "boolean", cb => cb.defaultTo(false)).execute();
+    } catch (error) {}
 }

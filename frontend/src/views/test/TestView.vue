@@ -26,9 +26,9 @@ const isDark = computed(() => {
       <TermInput label="root@inf54:~# codeforces:" mLabel="> codeforces:" placeholder="Ник на Codeforces (опц.)" optional/>
       <TermButton>testtest</TermButton>
     </TermWindow>
-  </div>
 
-  <TermHeader/>
+    <TermHeader/>
+  </div>
 </template>
 
 <style scoped>

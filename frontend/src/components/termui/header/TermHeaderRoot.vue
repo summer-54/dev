@@ -3,7 +3,7 @@ import {NavigationMenuIndicator, NavigationMenuList, NavigationMenuRoot, Navigat
 import {computed, ref} from "vue";
 import {colors} from "./colors.js";
 
-const bgColor = computed(() => colors.value.bg);
+const primaryColor = computed(() => colors.value.primaryColor);
 
 const currentTrigger = ref("");
 </script>
@@ -33,7 +33,7 @@ const currentTrigger = ref("");
 
 <style scoped>
 .bracket {
-  border: 2px solid #95EAA7FF;
+  border: 2px solid v-bind(primaryColor);
 }
 
 .bracket-left {

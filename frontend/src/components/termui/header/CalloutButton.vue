@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import menu_olymp from "@/assets/menu_olymp.jpg";
+import {computed} from "vue";
+import {colors} from "@/components/termui/header/colors.js";
+
+const primaryColor = computed(() => colors.value.primaryColor);
 </script>
 
 <template>
@@ -14,7 +18,7 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
 
 <style scoped>
 .bracket {
-  border: 2px solid #95EAA7FF;
+  border: 2px solid v-bind(primaryColor);
 }
 
 .bracket {
@@ -93,11 +97,10 @@ import menu_olymp from "@/assets/menu_olymp.jpg";
   line-height: 1.2;
   margin-top: 16px;
   margin-bottom: 7px;
-  color: #95EAA7FF;
+  color: v-bind(primaryColor);
 }
 
 .CalloutText {
-  color: var(--mauve-4);
   font-size: 14px;
   line-height: 1.3;
 }
