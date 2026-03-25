@@ -72,10 +72,10 @@ const router = createRouter({
     },
     {
       path: `${ROUTER_PATH_PREFIX}/me`,
-      name: "me",
       component: () => import("@/views/me/MeView.vue"),
       children: [
         {
+          name: "me",
           path: "",
           component: () => import("@/views/me/DefaultSubView.vue"),
         },
@@ -94,10 +94,10 @@ const router = createRouter({
     },
     {
       path: `${ROUTER_PATH_PREFIX}/admin`,
-      name: "admin",
       component: () => import("@/views/admin/AdminView.vue"),
       children: [
         {
+          name: "admin",
           path: "",
           component: () => import("@/views/admin/DefaultSubView.vue")
         },

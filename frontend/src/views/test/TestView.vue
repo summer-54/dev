@@ -1,14 +1,9 @@
 <script lang="ts" setup>
-//import PrimevueHeader from "@/views/test/primevue.vue";
-import RadixHeader from "@/views/test/radix.vue";
-//import Animation from "@/components/ui/animation.vue";
-import DeepseekMenu from './DeepseekMenu.vue';
-import NewHeader from "@/views/test/NewHeader.vue";
 import TermInput from "@/components/termui/TermInput.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
-import {computed, onMounted} from "vue";
-import {usePrimeVue} from "primevue";
+import {computed} from "vue";
+import TermHeader from "@/components/termui/header/TermHeader.vue";
 
 const isDark = computed(() => {
   return document.documentElement.classList.contains('dark');
@@ -17,11 +12,6 @@ const isDark = computed(() => {
 
 <template>
   <div>
-<!--    <RadixHeader/>-->
-<!--    <NewHeader/>-->
-    <!-- <PrimevueHeader/> -->
-<!--    <DeepseekMenu/>-->
-    <!--<animation animation="flip">test</animation>-->
     <TermWindow class="window" prompt="root@inf54:~# ./register.sh">
       <template #header>
         Добро пожаловать. Регистрация
@@ -37,6 +27,8 @@ const isDark = computed(() => {
       <TermButton>testtest</TermButton>
     </TermWindow>
   </div>
+
+  <TermHeader/>
 </template>
 
 <style scoped>
