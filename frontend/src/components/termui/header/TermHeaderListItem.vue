@@ -17,6 +17,7 @@ const hoverColor = computed(() => colors.value.hoverColor),
 
 <template>
   <li>
+    <span class="bracket bracket-left"></span>
 <!--    <NavigationMenuLink as-child>-->
     <RouterLink v-if="navigateTo" :to="navigateTo" class="ListItemLink">
       <div class="ListItemHeading">
@@ -35,6 +36,7 @@ const hoverColor = computed(() => colors.value.hoverColor),
       </p>
     </button>
 <!--    </NavigationMenuLink>-->
+    <span class="bracket bracket-right"></span>
   </li>
 </template>
 
@@ -42,7 +44,7 @@ const hoverColor = computed(() => colors.value.hoverColor),
 .ListItemHeading {
   line-height: 1.2;
   margin-bottom: 5px;
-  color: v-bind(itemHeadingColor);
+  color: #95EAA7FF;
   transition: color 0.6s ease-in-out;
   font-weight: bold;
 }
@@ -74,29 +76,61 @@ const hoverColor = computed(() => colors.value.hoverColor),
   box-shadow: 0 0 0 2px var(--grass-7);
 }
 
-@media (hover: hover) {
-  .ListItemLink:hover {
-    background-color: v-bind(hoverColor);
-
-    .ListItemHeading {
-      color: v-bind(itemHeadingHoverColor);
-    }
-
-    .ListItemText {
-      color: v-bind(itemTextHoverColor);
-    }
-  }
+li {
+  position: relative;
+  display: flex;
 }
 
-.ListItemLink:active {
-  background-color: v-bind(hoverColor);
+.bracket {
+  border: 2px solid #95EAA7FF;
+}
 
-  .ListItemHeading {
-    color: v-bind(itemHeadingHoverColor);
+.bracket {
+  width: 5px;
+  opacity: 0;
+  position: absolute;
+  transition: all ease-in-out 0.2s;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bracket-left {
+  border-right: none;
+  left: 0;
+}
+
+.bracket-right {
+  border-left: none;
+  right: 0;
+}
+
+.bracket {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.bracket-left {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.bracket-right {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+li:hover {
+  .bracket {
+    opacity: 1;
+    height: calc(100% + 10px);
   }
 
-  .ListItemText {
-    color: v-bind(itemTextHoverColor);
+  .bracket-left {
+    left: -8px;
+  }
+
+  .bracket-right {
+    right: -8px;
   }
 }
 </style>

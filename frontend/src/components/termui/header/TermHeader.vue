@@ -10,7 +10,6 @@ import cup from "@/assets/cup.svg";
 import account from "@/assets/account.svg";
 import inf54 from "@/assets/inf54.ico";
 //import menu from "@/assets/menu.svg";
-import menu_olymp from "@/assets/menu_olymp.jpg";
 import darkIcon from "@/assets/dark.svg";
 import lightIcon from "@/assets/light.svg";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
@@ -18,6 +17,7 @@ import TermSecondaryLayout from "./TermSecondaryLayout.vue";
 import {ref} from "vue";
 import Drawer from "primevue/drawer";
 import PanelMenu from "primevue/panelmenu";
+import CalloutButton from "@/components/termui/header/CalloutButton.vue";
 
 const sideBarOpened = ref(false);
 </script>
@@ -66,10 +66,11 @@ const sideBarOpened = ref(false);
       </template>
       <TermPrimaryLayout>
         <template #primary>
-          <RouterLink :class="$style.Callout" to="/olymp">
-            <img :src="menu_olymp" style="width: 100%" alt=""/>
-            <div :class="$style.CalloutHeading">Внутрення олимпиада</div>
-            <p :class="$style.CalloutText">Апрель. Вы. 3 часа. 5-8 задач.<br>ICPC-формат.</p>
+          <RouterLink :class="$style.CalloutRouterLink" to="/olymp">
+            <CalloutButton>
+              <template #heading>Внутрення олимпиада</template>
+              Апрель. Вы. 3 часа. 5-8 задач.<br>ICPC-формат.
+            </CalloutButton>
           </RouterLink>
         </template>
 
@@ -243,45 +244,17 @@ const sideBarOpened = ref(false);
   flex-direction: row;
 }
 
-.Callout {
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, var(--green-9) 0%, var(--indigo-9) 100%);
-  border-radius: 6px;
-  padding: 25px;
-  text-decoration: none;
-  outline: none;
-  user-select: none;
-}
-.Callout:focus {
-  box-shadow: 0 0 0 2px var(--grass-7);
-}
-
-.CalloutHeading {
-  color: white;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.2;
-  margin-top: 16px;
-  margin-bottom: 7px;
-}
-
 .CaretDown {
   position: relative;
   top: 1px;
   transition: transform 250ms ease;
 }
 
-.CalloutText {
-  color: var(--mauve-4);
-  font-size: 14px;
-  line-height: 1.3;
-}
-
 [data-state='open'] > .CaretDown {
   transform: rotate(-180deg);
+}
+
+.CalloutRouterLink {
+  text-decoration: none;
 }
 </style>

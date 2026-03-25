@@ -131,9 +131,10 @@ const currentTrigger = ref("");
   width: 100%;
   border-radius: 6px;
   overflow: hidden;
-  //box-shadow: hsl(206 22% 7% / 35%) 0 10px 38px -10px, hsl(206 22% 7% / 20%) 0 10px 20px -15px;
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 300ms ease;
+  background: rgba(96, 151, 109, 0.06);
+  border: 1px solid #95EAA730;
 }
 .NavigationMenuViewport[data-state='open'] {
   animation: scaleIn 200ms ease;
