@@ -19,13 +19,14 @@ router.post("/", {
     }),
     auth: true
 }, async (request, response) => {
-    const user = await getUserById(request.globalAuth.id);
+    const user = await getUserById(request.globalAuth.id, ["id", "isAdmin"]);
     if (!user) return;
     if (!user.isAdmin) {
         response.status(409);
         response.end();
         return;
     }
+    
 });
 
 export default router;

@@ -39,13 +39,16 @@ services:
       db:
         condition: service_healthy
     environment:
+      PORT: 8080
+      HOST: "0.0.0.0"
       DB_HOST: db
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: postgres
-      PORT: 8080
-      HOST: "0.0.0.0"
+      MINIO_PORT: 9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
       MAIL_HOST: ${MAIL_HOST}
       MAIL_USER: ${MAIL_USER}
       MAIL_PASS: ${MAIL_PASS}

@@ -23,6 +23,7 @@
     "jsdom": "^24.1.0",
     "jsonwebtoken": "^9.0.3",
     "kysely": "^0.27.3",
+    "minio": "^8.0.7",
     "node-fetch": "^3.3.2",
     "nodemailer": "7.0.11",
     "parsium": "^0.1.3",
