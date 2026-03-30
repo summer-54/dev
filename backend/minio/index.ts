@@ -10,14 +10,17 @@ export const minio = new Client({
     secretKey: process.env.MINIO_SECRET_KEY
 });
 
-export async function generateFileName(fileName: string, content: Buffer) {
+export function generateFileName(fileName: string, content?: Buffer) {
     let file: string;
     let hasher = crypto.createHash("md5");
-    hasher.update(content);
-    file = `${cryptoRandomString({length: 8, type: "url-safe"})}_${hasher.digest("hex")}.${fileName}`
+    if (content) hasher.update(content);
+    file = `${cryptoRandomString({length: 8, type: "url-safe"})}_${content ? hasher.digest("hex") : ""}.${fileName}`
     return file;
 }
 
 export async function initMinio() {
-    
+    const buckets = (await minio.listBuckets()).map(({name}) => name);
+    if (!buckets.includes("event-img")) {
+        await minio.makeBucket("event-img");
+    }
 }

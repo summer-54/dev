@@ -186,6 +186,8 @@ export interface EventsTable {
     displayName: string;
     description: string;
     autoAccept: boolean;
+    showInList: boolean;
+    opened: boolean;
     formFields: object;
 }
 
@@ -198,7 +200,6 @@ export interface EventAdminsTable {
 export interface EventParticipantsTable {
     id: Generated<number>;
     event: number;
-    user: number;
     formFields: object;
     accepted: boolean;
     visited: boolean;
@@ -225,6 +226,9 @@ export interface Database {
     // appPermissions: AppPermissionsTable;
     // exposedPermissions: ExposedPermissionsTable;
     // permissions: PermissionsTable;
+    events: EventsTable;
+    eventAdmins: EventAdminsTable;
+    eventParticipants: EventParticipantsTable;
 }
 
 export let pool: pg.Pool, dialect: PostgresDialect, db: Kysely<Database>;

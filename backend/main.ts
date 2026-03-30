@@ -8,11 +8,13 @@ import Backendium from "backendium";
 import cookieParser from "cookie-parser";
 import apps from "./apps.js";
 import events from "./events.js";
+import {initMinio} from "./minio/index.js";
 // import {setupGroupStandingsUpdater} from "./codeforces.js";
 // import {updateGroupStandings} from "./sql/codeforces.update.sql.js";
 
 async function main() {
     await setupEnv();
+    await initMinio();
 
     // const app = new SBackend({
     //     name: "test",

@@ -46,6 +46,7 @@ services:
       DB_USER: postgres
       DB_PASSWORD: ${DB_PASSWORD}
       DB_NAME: postgres
+      MINIO_ENDPOINT: minio
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}

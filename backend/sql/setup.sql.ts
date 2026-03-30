@@ -183,6 +183,8 @@ export default async function () {
             .addColumn("displayName", "varchar(128)", cb => cb.notNull())
             .addColumn("description", "varchar(512)", cb => cb.notNull())
             .addColumn("autoAccept", "boolean", cb => cb.defaultTo(false))
+            .addColumn("showInList", "boolean", cb => cb.defaultTo(true))
+            .addColumn("opened", "boolean", cb => cb.defaultTo(true))
             .addColumn("formFields", "jsonb", cb => cb.defaultTo({})).execute();
     } catch (error) {}
     try {
@@ -195,7 +197,6 @@ export default async function () {
         await db.schema.createTable("eventParticipants")
             .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
             .addColumn("event", "integer", cb => cb.notNull().references("events.id"))
-            .addColumn("user", "integer", cb => cb.notNull().references("users.id"))
             .addColumn("formFields", "jsonb", cb => cb.notNull())
             .addColumn("accepted", "boolean", cb => cb.defaultTo(false))
             .addColumn("visited", "boolean", cb => cb.defaultTo(false)).execute();
