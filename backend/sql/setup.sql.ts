@@ -185,7 +185,7 @@ export default async function () {
             .addColumn("autoAccept", "boolean", cb => cb.defaultTo(false))
             .addColumn("showInList", "boolean", cb => cb.defaultTo(true))
             .addColumn("opened", "boolean", cb => cb.defaultTo(true))
-            .addColumn("formFields", "jsonb", cb => cb.defaultTo({})).execute();
+            .addColumn("formFields", "jsonb", cb => cb.defaultTo("{}")).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("eventAdmins")

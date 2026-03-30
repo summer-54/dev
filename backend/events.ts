@@ -32,12 +32,17 @@ router.post("/", {
         response.end();
         return;
     }
-    await db.insertInto("events").values({
-        ...body,
-        owner: user.id,
-        imgUrl: await putImage(img.filename ?? "", Readable.from(img.createReadStream())),
-        formFields: formFields as object
-    }).execute();
+    const id = await db.transaction().execute(async trx => {
+        const {id} = await trx.insertInto("events").values({
+            ...body,
+            owner: user.id,
+            imgUrl: await putImage(img.filename ?? "", Readable.from(img.createReadStream())),
+            formFields: formFields as object
+        }).returning("id").executeTakeFirstOrThrow();
+        await trx.insertInto("eventAdmins").values({user: user.id, event: id}).execute();
+        return id;
+    });
+    response.end(id);
 });
 
 export default router;

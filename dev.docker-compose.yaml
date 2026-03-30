@@ -52,6 +52,7 @@ services:
       MINIO_PORT: 9000
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+      MINIO_DOMAIN: ${MINIO_DOMAIN}
       MAIL_HOST: ${MAIL_HOST}
       MAIL_USER: ${MAIL_USER}
       MAIL_PASS: ${MAIL_PASS}
