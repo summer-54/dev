@@ -38,6 +38,8 @@ services:
     build: ./backend
     command: bun ./main.ts
     depends_on:
+      minio:
+        condition: service_healthy
       db:
         condition: service_healthy
     environment:
@@ -90,11 +92,11 @@ services:
       context: .
       dockerfile: ./nginx/Dockerfile
       target: server
-    ports:
-      - "54000:80"
     depends_on:
       - backend
       - article54
+    ports:
+      - "54000:80"
     volumes:
       - "./keys:/keys"
 volumes:

@@ -1,4 +1,5 @@
 import {db} from "./index.sql.js";
+import {sql} from "kysely";
 
 export default async function () {
     try {
@@ -177,28 +178,39 @@ export default async function () {
     // } catch (error) {}
     try {
         await db.schema.createTable("events")
-            .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
-            .addColumn("owner", "integer", cb => cb.notNull().references("users.id"))
+            .addColumn("id", "uuid", cb => cb.notNull().defaultTo(sql`gen_random_uuid()`).primaryKey().unique())
             .addColumn("imgUrl", "varchar(256)", cb => cb.notNull())
             .addColumn("displayName", "varchar(128)", cb => cb.notNull())
             .addColumn("description", "varchar(512)", cb => cb.notNull())
-            .addColumn("autoAccept", "boolean", cb => cb.defaultTo(false))
-            .addColumn("showInList", "boolean", cb => cb.defaultTo(true))
-            .addColumn("opened", "boolean", cb => cb.defaultTo(true))
-            .addColumn("formFields", "jsonb", cb => cb.defaultTo("{}")).execute();
+            .addColumn("autoAccept", "boolean", cb => cb.notNull().defaultTo(false))
+            .addColumn("showInList", "boolean", cb => cb.notNull().defaultTo(true))
+            .addColumn("opened", "boolean", cb => cb.notNull().defaultTo(true))
+            .addColumn("editable", "boolean", cb => cb.notNull().defaultTo(true))
+            .addColumn("account", "boolean", cb => cb.notNull().defaultTo(true))
+            .addColumn("emailConfirm", "boolean", cb => cb.notNull().defaultTo(true))
+            .addColumn("summaryUrl", "varchar(256)", cb => cb.notNull().defaultTo(""))
+            .addColumn("formFields", "jsonb", cb => cb.notNull().defaultTo("{}"))
+            .addColumn("registerStart", "timestamp")
+            .addColumn("registerEnd", "timestamp")
+            .addColumn("datetime", "timestamp").execute();
     } catch (error) {}
     try {
         await db.schema.createTable("eventAdmins")
             .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
-            .addColumn("event", "integer", cb => cb.notNull().references("events.id"))
+            .addColumn("event", "uuid", cb => cb.notNull().references("events.id"))
             .addColumn("user", "integer", cb => cb.notNull().references("users.id")).execute();
     } catch (error) {}
     try {
         await db.schema.createTable("eventParticipants")
             .addColumn("id", "serial", cb => cb.notNull().primaryKey().unique())
-            .addColumn("event", "integer", cb => cb.notNull().references("events.id"))
+            .addColumn("event", "uuid", cb => cb.notNull().references("events.id"))
+            .addColumn("user", "integer", cb => cb.references("users.id"))
             .addColumn("formFields", "jsonb", cb => cb.notNull())
+            .addColumn("originalFormFields", "jsonb", cb => cb.notNull())
             .addColumn("accepted", "boolean", cb => cb.defaultTo(false))
-            .addColumn("visited", "boolean", cb => cb.defaultTo(false)).execute();
+            .addColumn("rejected", "boolean", cb => cb.defaultTo(false))
+            .addColumn("visited", "boolean", cb => cb.defaultTo(false))
+            .addColumn("datetime", "timestamp", cb => cb.notNull())
+            .addColumn("editDatetime", "timestamp", cb => cb.notNull()).execute();
     } catch (error) {}
 }

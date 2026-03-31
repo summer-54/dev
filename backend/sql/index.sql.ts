@@ -180,29 +180,40 @@ export interface PermissionsTable {
 }
 
 export interface EventsTable {
-    id: Generated<number>;
-    owner: number;
+    id: Generated<string>;
     imgUrl: string;
     displayName: string;
     description: string;
-    autoAccept: boolean;
-    showInList: boolean;
-    opened: boolean;
-    formFields: object;
+    autoAccept: ColumnType<boolean, boolean | undefined, boolean>;
+    showInList: ColumnType<boolean, boolean | undefined, boolean>;
+    opened: ColumnType<boolean, boolean | undefined, boolean>;
+    editable: ColumnType<boolean, boolean | undefined, boolean>;
+    account: ColumnType<boolean, boolean | undefined, boolean>;
+    emailConfirm: ColumnType<boolean, boolean | undefined, boolean>;
+    summaryUrl: ColumnType<string, string | undefined, string>;
+    formFields?: ColumnType<object, object | undefined, object>;
+    registerStart?: ColumnType<Date, Date | string, Date | string>;
+    registerEnd?: ColumnType<Date, Date | string, Date | string>;
+    datetime?: ColumnType<Date, Date | string, Date | string>;
 }
 
 export interface EventAdminsTable {
     id: Generated<number>;
-    event: number;
+    event: string;
     user: number;
 }
 
 export interface EventParticipantsTable {
     id: Generated<number>;
-    event: number;
+    event: string;
+    user?: number;
     formFields: object;
-    accepted: boolean;
-    visited: boolean;
+    originalFormFields: object;
+    accepted: ColumnType<boolean, boolean | undefined, boolean>;
+    rejected: ColumnType<boolean, boolean | undefined, boolean>;
+    visited: ColumnType<boolean, boolean | undefined, boolean>;
+    datetime: ColumnType<Date, Date | string, Date | string>;
+    editDatetime: ColumnType<Date, Date | string, Date | string>;
 }
 
 export interface Database {
