@@ -1,0 +1,28 @@
+import axios from "axios";
+import {authWrapper} from "@/api/authWrapper.js";
+import {SERVER_URL} from "@/serverConfig.js";
+
+export type Event = {
+    "id": string,
+    "imgUrl": string,
+    "displayName": string,
+    "description": string,
+    "showInList": boolean,
+    "opened": boolean,
+    "editable": boolean,
+    "account": boolean,
+    "summaryUrl": string,
+    "type": "admin" | "my" | "open",
+    "registerStart": string | null,
+    "registerEnd": string | null,
+    "datetime": string | null
+}
+
+export async function getEvents(): Promise<Array<Event> | false | null> {
+    return await authWrapper(async () => {
+        const response = await axios.get<Array<Event>>(`${SERVER_URL}/events`, {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status == 401) return null;
+        if (response.status != 200) return false;
+        return response.data;
+    });
+}

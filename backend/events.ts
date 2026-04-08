@@ -51,6 +51,7 @@ router.post("/", {
         await trx.insertInto("eventAdmins").values({user: user.id, event: id}).execute();
         return id;
     });
+    response.status(201);
     response.end(id);
 });
 

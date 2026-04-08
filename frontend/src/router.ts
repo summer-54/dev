@@ -82,6 +82,10 @@ const router = createRouter({
         {
           path: "settings",
           component: () => import("@/views/me/SettingsSubView.vue"),
+        },
+        {
+          path: "events",
+          component: () => import("@/views/me/EventsSubView.vue")
         }
       ],
       alias: ["/me"]

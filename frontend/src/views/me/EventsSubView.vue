@@ -1,0 +1,32 @@
+<script setup lang="ts">
+import {onMounted, ref} from "vue";
+import {getEvents, type Event} from "@/api/events.js";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import EventButton from "@/components/EventButton.vue";
+
+const events = ref<Array<Event> | null | false>([]);
+const pending = ref<boolean>(true);
+
+onMounted(async () => {
+  events.value = await getEvents();
+  pending.value = false;
+});
+</script>
+
+<template>
+  <main>
+    <template v-if="events === false || events === null">Ошибка доступа (или ещё какая-то)</template>
+    <ul v-else>
+      <li v-for="event in events" :key="event.id">
+        <EventButton :event="event"/>
+      </li>
+    </ul>
+  </main>
+  <ProgressIndicator v-if="pending"/>
+</template>
+
+<style scoped>
+ul, li {
+  list-style: none;
+}
+</style>
