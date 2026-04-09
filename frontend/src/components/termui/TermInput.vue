@@ -24,11 +24,11 @@ const inputValue = defineModel({ type: String });
 const props = defineProps({
   label: {
     type: String,
-    required: true
+    default: ""
   },
   mLabel: {
     type: String,
-    required: true
+    default: ""
   },
   placeholder: String,
   password: {

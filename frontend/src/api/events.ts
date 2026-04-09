@@ -16,7 +16,36 @@ export type Event = {
     "registerStart": string | null,
     "registerEnd": string | null,
     "datetime": string | null,
-    "formFields": object
+    "formFields": Array<{
+        key: string,
+        title: string,
+        ref?: Array<any>,
+        optional?: boolean
+    } & ({
+        type: "text",
+        min: number,
+        max: number,
+        pattern: string
+    } | {
+        type: "int",
+        min: number,
+        max: number
+    } | {
+        type: "float",
+        min: number,
+        max: number
+    } | {
+        type: "date",
+        min: string,
+        max: string
+    } | {
+        type: "datetime",
+        min: string,
+        max: string
+    } | {
+        type: "select",
+        variants: Array<any>
+    })>
 }
 
 export async function getEvents(): Promise<Array<Omit<Event, "formFields">> | false | null> {
