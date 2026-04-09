@@ -15,13 +15,13 @@ const props = defineProps({
 
 <template>
   <TermWindow class="window" noHeader>
-    <div class="content">
-      <div class="main">
-        <img :src="event.imgUrl" :alt="event.displayName">
-        <div class="text">
-          <h4>{{event.displayName}}</h4>
-          <p>{{event.description}}</p>
-        </div>
+    <div class="main">
+      <div class="content">
+        <h4>{{event.displayName}}</h4>
+        <p>
+          <img :src="event.imgUrl" :alt="event.displayName">
+          {{event.description}}
+        </p>
       </div>
       <div class="buttons">
         <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
@@ -42,37 +42,43 @@ const props = defineProps({
   width: 100%;
 }
 
-.main {
-  display: flex;
-}
-
 .buttons {
   gap: 20px;
+  width: 100%;
 
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
 
-  margin-top: 10px;
+  //margin-top: 10px;
 }
 
 img {
   width: 120px;
+  float: left;
+  margin-right: 10px;
 }
 
-.text {
-  margin-left: 20px;
+h4 {
+  color: #95EAA7FF;
+  text-shadow: 0 0 5px #95EAA7FF;
+  font-weight: bold;
+  font-size: 24px;
+  margin: 0;
 
-  * {
-    margin: 0;
-  }
+  display: block;
+  word-break: break-word;
+  white-space: normal;
+}
 
-  h4 {
-    margin-bottom: 10px;
-    color: #95EAA7FF;
-    text-shadow: 0 0 5px #95EAA7FF;
-    font-weight: bold;
-    font-size: 24px;
-  }
+p {
+  width: 100%;
+
+  word-break: break-word;
+  white-space: normal;
+}
+
+.main {
+  gap: 10px;
 }
 </style>

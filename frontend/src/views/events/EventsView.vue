@@ -37,4 +37,9 @@ ul, li {
   padding: 0 10px 0 6px;
   width: 100%;
 }
+
+li {
+  display: flex;
+  justify-content: center;
+}
 </style>
