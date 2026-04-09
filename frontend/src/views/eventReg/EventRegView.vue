@@ -20,7 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <main>
     <template v-if="event.incorrect">Ошибка доступа (или ещё какая-то)</template>
     <TermWindow v-else class="window" prompt="root@inf54:~# ./register.sh">
       <template #header>
@@ -36,9 +36,13 @@ onMounted(async () => {
 
       <TermButton>Зарегистрироваться</TermButton>
     </TermWindow>
-  </div>
+  </main>
 </template>
 
 <style scoped>
-
+main {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
 </style>

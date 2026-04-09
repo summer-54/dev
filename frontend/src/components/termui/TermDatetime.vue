@@ -44,6 +44,10 @@ const props = defineProps({
 const prompt = ref(props.label);
 
 function selectPrompt() {
+  if (props.mLabel === "") {
+    prompt.value = props.label;
+    return;
+  }
   if (window.matchMedia("(width >= 540px)").matches) prompt.value = props.label;
   else prompt.value = props.mLabel;
 }
