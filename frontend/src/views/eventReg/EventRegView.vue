@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {type Event, getEvent} from "@/api/events.js";
+import {type Event, getEvent, register} from "@/api/events.js";
 import {useRoute} from "vue-router";
 import TermInput from "@/components/termui/TermInput.vue";
 import TermButton from "@/components/termui/TermButton.vue";
@@ -12,11 +12,16 @@ import TermDatetime from "@/components/termui/TermDatetime.vue";
 const route = useRoute();
 
 const event = ref<{event: Event, incorrect: false} | {event: null, incorrect: true}>({incorrect: true, event: null});
+const response = ref<Record<string, any>>({});
 
 onMounted(async () => {
   const data = await getEvent(route.params.id.toString());
   if (data !== false && data !== null) event.value = {event: data, incorrect: false};
 });
+
+function send() {
+  register(response.value, route.params.id.toString());
+}
 </script>
 
 <template>
@@ -28,13 +33,13 @@ onMounted(async () => {
       </template>
 
       <template v-for="field in event.event.formFields">
-        <TermInput v-if="field.type === 'text' || field.type === 'int' || field.type === 'float'" :label="field.title"/>
-        <TermSelect v-if="field.type === 'select'" :label="field.title" :options="field.variants"/>
-        <TermDate v-if="field.type === 'date'" :label="field.title"/>
-        <TermDatetime v-if="field.type === 'datetime'" :label="field.title"/>
+        <TermInput v-if="field.type === 'text' || field.type === 'int' || field.type === 'float'" :label="field.title" v-model="response[field.key]"/>
+        <TermSelect v-if="field.type === 'select'" :label="field.title" :options="field.variants" v-model="response[field.key]"/>
+        <TermDate v-if="field.type === 'date'" :label="field.title" :modelValue="response[field.key]" @update:modelValue="response[field.key] = (new Date($event)).toISOString()"/>
+        <TermDatetime v-if="field.type === 'datetime'" :label="field.title" v-model="response[field.key]"/>
       </template>
 
-      <TermButton>Зарегистрироваться</TermButton>
+      <TermButton @click="send">Зарегистрироваться</TermButton>
     </TermWindow>
   </main>
 </template>

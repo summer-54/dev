@@ -65,3 +65,12 @@ export async function getEvent(id: string): Promise<Event | false | null> {
         return response.data;
     });
 }
+
+export async function register(responses: Record<string, string>, id: string) {
+    return await authWrapper(async () => {
+        const response = await axios.post<Event>(`${SERVER_URL}/events/${id}`, responses, {headers: {Authorization: localStorage.getItem("token")}});
+        if (response.status == 401) return null;
+        if (response.status != 200) return false;
+        return response.data;
+    });
+}
