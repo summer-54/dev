@@ -21,12 +21,20 @@ onMounted(async () => {
         <EventButton :event="event"/>
       </li>
     </ul>
+    <ProgressIndicator v-if="pending"/>
   </main>
-  <ProgressIndicator v-if="pending"/>
 </template>
 
 <style scoped>
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 ul, li {
   list-style: none;
+  padding: 0 10px 0 6px;
+  width: 100%;
 }
 </style>

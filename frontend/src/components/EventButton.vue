@@ -3,6 +3,7 @@ import type {PropType} from "vue";
 import type {Event} from "@/api/events.js";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import TermButton from "@/components/termui/TermButton.vue";
+import HiddenLink from "@/components/HiddenLink.vue";
 
 const props = defineProps({
   event: {
@@ -16,7 +17,7 @@ const props = defineProps({
   <TermWindow class="window" noHeader>
     <div class="content">
       <div class="main">
-        <img :src="event.imgUrl">
+        <img :src="event.imgUrl" :alt="event.displayName">
         <div class="text">
           <h4>{{event.displayName}}</h4>
           <p>{{event.description}}</p>
@@ -24,7 +25,7 @@ const props = defineProps({
       </div>
       <div class="buttons">
         <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
-        <TermButton v-if="event.summaryUrl">Подробнее</TermButton>
+        <HiddenLink :to="event.summaryUrl"><TermButton v-if="event.summaryUrl">Подробнее</TermButton></HiddenLink>
         <TermButton>Зарегестрироваться</TermButton>
       </div>
     </div>
@@ -46,13 +47,17 @@ const props = defineProps({
 }
 
 .buttons {
-  display: flex;
-  justify-content: flex-end;
   gap: 20px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+
+  margin-top: 10px;
 }
 
 img {
-  max-width: 120px;
+  width: 120px;
 }
 
 .text {
@@ -63,7 +68,7 @@ img {
   }
 
   h4 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: #95EAA7FF;
     text-shadow: 0 0 5px #95EAA7FF;
     font-weight: bold;

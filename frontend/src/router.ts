@@ -1,32 +1,31 @@
 import {createRouter, createWebHistory} from "vue-router";
 import HomeView from "@/views/home/HomeView.vue";
 import {ref} from "vue";
-import {ROUTER_PATH_PREFIX} from "@/serverConfig.js";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: `${ROUTER_PATH_PREFIX}/`,
+      path: "/",
       name: 'home',
       component: HomeView,
       alias: ["/"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/summer-cup`,
+      path: "/summer-cup",
       name: 'summerCup',
       component: () => import("@/views/summerCup/SummerCupView.vue"),
       children: [
         {
-          path: ":year",
+          path: "/:year",
           component: () => import("@/views/summerCup/SolutionsSubView.vue")
         },
         {
-          path: ":year/solutions",
+          path: "/:year/solutions",
           component: () => import("@/views/summerCup/YearSolutionsSubView.vue"),
           children: [
             {
-              path: ":contest",
+              path: "/:contest",
               component: () => import("@/views/summerCup/ContestSolutionsSubView.vue"),
             }
           ]
@@ -35,125 +34,126 @@ const router = createRouter({
       alias: ["/summer-cup"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/olymp`,
+      path: "/olymp",
       name: 'olymp',
       component: () => import("@/views/olymp/OlympView.vue"),
       alias: ["/olymp"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/news/:id`,
+      path: "/news/:id",
       name: 'news',
       component: () => import("@/views/news/NewsView.vue"),
       alias: ["/news/:id"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/test`,
+      path: "/test",
       name: 'test',
       component: () => import("@/views/test/TestView.vue"),
       alias: ["/test"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/sign-in`,
-      name: "signIn",
+      path: "/sign-in",
+      name: "/signIn",
       component: () => import("@/views/signIn/SignInView.vue"),
       alias: ["/sign-in"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/oauth/:uuid`,
-      name: "oauth",
+      path: "/oauth/:uuid",
+      name: "/oauth",
       component: () => import("@/views/oauth/OauthView.vue"),
       alias: ["/oauth/:uuid"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/registration`,
-      name: "registration",
+      path: "/registration",
+      name: "/registration",
       component: () => import("@/views/registration/RegistrationView.vue"),
-      alias: ["/reg", "/registration"]
+      alias: ["/reg", "//registration"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/me`,
+      path: "/me",
       component: () => import("@/views/me/MeView.vue"),
       children: [
         {
-          name: "me",
-          path: "",
+          name: "/me",
+          path: "/",
           component: () => import("@/views/me/DefaultSubView.vue"),
         },
         {
-          path: "settings",
+          path: "/settings",
           component: () => import("@/views/me/SettingsSubView.vue"),
-        },
-        {
-          path: "events",
-          component: () => import("@/views/me/EventsSubView.vue")
         }
       ],
       alias: ["/me"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/users/:username`,
-      name: "user",
+      path: "/users/:username",
+      name: "/user",
       component: () => import("@/views/user/UserView.vue"),
       alias: ["/users/:username"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/admin`,
+      path: "/admin",
       component: () => import("@/views/admin/AdminView.vue"),
       children: [
         {
-          name: "admin",
-          path: "",
+          name: "/admin",
+          path: "/",
           component: () => import("@/views/admin/DefaultSubView.vue")
         },
         {
-          path: "users",
+          path: "/users",
           component: () => import("@/views/admin/UsersSubView.vue"),
         },
         {
-          path: "contests",
+          path: "/contests",
           component: () => import("@/views/admin/ContestsSubView.vue")
         },
         {
-          path: "news",
+          path: "/news",
           component: () => import("@/views/admin/NewsSubView.vue")
         },
         {
-          path: "news/add",
+          path: "/news/add",
           component: () => import("@/views/admin/AddNewSubView.vue")
         },
         {
-          path: "news/:id",
+          path: "/news/:id",
           component: () => import("@/views/admin/EditNewSubView.vue")
         }
       ],
       alias: ["/admin"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/summer-camp`,
-      name: "summer-camp",
+      path: "/summer-camp",
+      name: "/summer-camp",
       component: () => import("@/views/summerCamp/SummerCamp.vue"),
       alias: ["/summer-camp"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/recovery`,
-      name: "requestRecovery",
+      path: "/recovery",
+      name: "/requestRecovery",
       component: () => import("@/views/recovery/RequestRecoveryView.vue"),
       alias: ["/rec"]
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/recovery/:key`,
-      name: "recovery",
+      path: "/recovery/:key",
+      name: "/recovery",
       component: () => import("@/views/recovery/RecoveryView.vue")
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/honor`,
-      name: "honor",
+      path: "/honor",
+      name: "/honor",
       component: () => import("@/views/honor/HonorView.vue")
     },
     {
-      path: `${ROUTER_PATH_PREFIX}/outer-sign-in`,
-      name: "outer-sign-in",
+      path: "/outer-sign-in",
+      name: "/outer-sign-in",
       component: () => import("@/views/outerSignIn/OuterSignInView.vue")
+    },
+    {
+      path: "/events",
+      name: "/events",
+      component: () => import("@/views/events/EventsView.vue")
     }
   ]
 });
