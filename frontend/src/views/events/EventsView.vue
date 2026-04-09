@@ -4,7 +4,7 @@ import {getEvents, type Event} from "@/api/events.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import EventButton from "@/components/EventButton.vue";
 
-const events = ref<Array<Event> | null | false>([]);
+const events = ref<Array<Omit<Event, "formFields">> | null | false>([]);
 const pending = ref<boolean>(true);
 
 onMounted(async () => {

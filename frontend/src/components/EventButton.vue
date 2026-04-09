@@ -7,7 +7,7 @@ import HiddenLink from "@/components/HiddenLink.vue";
 
 const props = defineProps({
   event: {
-    type: Object as PropType<Event>,
+    type: Object as PropType<Omit<Event, "formFields">>,
     required: true
   }
 });
@@ -26,7 +26,7 @@ const props = defineProps({
       <div class="buttons">
         <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
         <HiddenLink :to="event.summaryUrl"><TermButton v-if="event.summaryUrl">Подробнее</TermButton></HiddenLink>
-        <TermButton>Зарегестрироваться</TermButton>
+        <HiddenLink :to="`/events/${event.id}`"><TermButton>Зарегестрироваться</TermButton></HiddenLink>
       </div>
     </div>
   </TermWindow>

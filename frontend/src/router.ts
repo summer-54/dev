@@ -7,13 +7,13 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: 'home',
+      name: "home",
       component: HomeView,
       alias: ["/"]
     },
     {
       path: "/summer-cup",
-      name: 'summerCup',
+      name: "summerCup",
       component: () => import("@/views/summerCup/SummerCupView.vue"),
       children: [
         {
@@ -35,37 +35,37 @@ const router = createRouter({
     },
     {
       path: "/olymp",
-      name: 'olymp',
+      name: "olymp",
       component: () => import("@/views/olymp/OlympView.vue"),
       alias: ["/olymp"]
     },
     {
       path: "/news/:id",
-      name: 'news',
+      name: "news",
       component: () => import("@/views/news/NewsView.vue"),
       alias: ["/news/:id"]
     },
     {
       path: "/test",
-      name: 'test',
+      name: "test",
       component: () => import("@/views/test/TestView.vue"),
       alias: ["/test"]
     },
     {
       path: "/sign-in",
-      name: "/signIn",
+      name: "signIn",
       component: () => import("@/views/signIn/SignInView.vue"),
       alias: ["/sign-in"]
     },
     {
       path: "/oauth/:uuid",
-      name: "/oauth",
+      name: "oauth",
       component: () => import("@/views/oauth/OauthView.vue"),
       alias: ["/oauth/:uuid"]
     },
     {
       path: "/registration",
-      name: "/registration",
+      name: "registration",
       component: () => import("@/views/registration/RegistrationView.vue"),
       alias: ["/reg", "//registration"]
     },
@@ -75,7 +75,7 @@ const router = createRouter({
       children: [
         {
           name: "/me",
-          path: "/",
+          path: "",
           component: () => import("@/views/me/DefaultSubView.vue"),
         },
         {
@@ -87,7 +87,7 @@ const router = createRouter({
     },
     {
       path: "/users/:username",
-      name: "/user",
+      name: "user",
       component: () => import("@/views/user/UserView.vue"),
       alias: ["/users/:username"]
     },
@@ -96,7 +96,7 @@ const router = createRouter({
       component: () => import("@/views/admin/AdminView.vue"),
       children: [
         {
-          name: "/admin",
+          name: "admin",
           path: "/",
           component: () => import("@/views/admin/DefaultSubView.vue")
         },
@@ -125,35 +125,40 @@ const router = createRouter({
     },
     {
       path: "/summer-camp",
-      name: "/summer-camp",
+      name: "summer-camp",
       component: () => import("@/views/summerCamp/SummerCamp.vue"),
       alias: ["/summer-camp"]
     },
     {
       path: "/recovery",
-      name: "/requestRecovery",
+      name: "requestRecovery",
       component: () => import("@/views/recovery/RequestRecoveryView.vue"),
       alias: ["/rec"]
     },
     {
       path: "/recovery/:key",
-      name: "/recovery",
+      name: "recovery",
       component: () => import("@/views/recovery/RecoveryView.vue")
     },
     {
       path: "/honor",
-      name: "/honor",
+      name: "honor",
       component: () => import("@/views/honor/HonorView.vue")
     },
     {
       path: "/outer-sign-in",
-      name: "/outer-sign-in",
+      name: "outer-sign-in",
       component: () => import("@/views/outerSignIn/OuterSignInView.vue")
     },
     {
       path: "/events",
-      name: "/events",
+      name: "events",
       component: () => import("@/views/events/EventsView.vue")
+    },
+    {
+      path: "/events/:id",
+      name: "eventReg",
+      component: () => import("@/views/eventReg/EventRegView.vue")
     }
   ]
 });
