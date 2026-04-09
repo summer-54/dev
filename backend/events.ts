@@ -1,5 +1,5 @@
 import {BackendiumRouter} from "backendium";
-import {array, boolean, file, int, object, optional, string, uuid} from "parsium";
+import {array, boolean, file, int, object, optional, ParsingError, string, uuid} from "parsium";
 import {checkAuthRetData} from "./authChecker.js";
 import {JwtAccessPayload} from "./jwt.js";
 import {getUserById, getUserIdByUsername} from "./sql/users.sql.js";
@@ -8,7 +8,7 @@ import {Readable} from "node:stream"
 import {db} from "./sql/index.sql.js";
 import {checkAccess, getUserEvents} from "./sql/events.sql.js";
 import {sendEventConfirmEmail} from "./mail.js";
-import {formFieldsValidator, time} from "./parsers.js";
+import {formFieldsValidator, generateValidator, time} from "./parsers.js";
 
 const router = new BackendiumRouter<JwtAccessPayload>();
 router.setAuth(async (request, response) => {
@@ -193,34 +193,56 @@ router.post("/:id", {
         response.end();
         return;
     }
-    if (event.account) {
-        const auth = await checkAuthRetData(request.expressRequest.headers?.authorization, response);
-        if (!auth) return;
-        await db.insertInto("eventParticipants").values({
-            user: auth.id,
-            event: request.params.id,
-            formFields: request.body,
-            originalFormFields: request.body,
-            accepted: event.autoAccept,
-            datetime: new Date(),
-            editDatetime: new Date()
-        }).execute();
+    try {
+        const formFields = generateValidator(event.formFields)(request.body, "response");
+
+        if (event.account) {
+            const auth = await checkAuthRetData(request.expressRequest.headers?.authorization, response);
+            if (!auth) return;
+            if (
+                (await db.selectFrom("eventParticipants")
+                    .where(({eb, and}) => and([eb("event", '=', request.params.id), eb("user", '=', auth.id)]))
+                    .execute()
+                ).length > 0
+            ) {
+                response.status(409);
+                response.end();
+                return;
+            }
+            await db.insertInto("eventParticipants").values({
+                user: auth.id,
+                event: request.params.id,
+                formFields,
+                originalFormFields: request.body,
+                accepted: event.autoAccept,
+                datetime: new Date(),
+                editDatetime: new Date()
+            }).execute();
+        }
+        else {
+            await db.insertInto("eventParticipants").values({
+                event: request.params.id,
+                formFields,
+                originalFormFields: request.body,
+                accepted: event.autoAccept,
+                datetime: new Date(),
+                editDatetime: new Date()
+            }).execute();
+        }
+        response.end();
+        if (event.emailConfirm && "email" in request.body && typeof request.body.email === "string") {
+            await sendEventConfirmEmail(request.body.email, event.displayName, event.summaryUrl,
+                // @ts-ignore
+                Object.fromEntries(Object.entries(request.body).map(([x, y]) => [event?.formFields[x]?.name as string, y])));
+        }
     }
-    else {
-        await db.insertInto("eventParticipants").values({
-            event: request.params.id,
-            formFields: request.body,
-            originalFormFields: request.body,
-            accepted: event.autoAccept,
-            datetime: new Date(),
-            editDatetime: new Date()
-        }).execute();
-    }
-    response.end();
-    if (event.emailConfirm && "email" in request.body && typeof request.body.email === "string") {
-        await sendEventConfirmEmail(request.body.email, event.displayName, event.summaryUrl,
-            // @ts-ignore
-            Object.fromEntries(Object.entries(request.body).map(([x, y]) => [event?.formFields[x]?.name as string, y])))
+    catch (error) {
+        if (error instanceof ParsingError) {
+            response.status(400);
+            response.end(error.message);
+            return;
+        }
+        throw error;
     }
 });
 
@@ -285,7 +307,7 @@ router.patch("/:id/response/:rid", {
     bodyValidator: object({}),
     auth: true
 }, async (request, response) => {
-    const eventRow = await db.selectFrom("eventParticipants").select(["id", "user"])
+    const eventRow = await db.selectFrom("eventParticipants").select(["id", "user", "event"])
         .where(({and, eb}) => and([eb("event", '=', request.params.id), eb("id", '=', request.params.rid)]))
         .executeTakeFirst();
     if (!eventRow) {
@@ -293,14 +315,26 @@ router.patch("/:id/response/:rid", {
         response.end();
         return;
     }
+    const event = await db.selectFrom("events").where("id", '=', eventRow.event)
+        .select(["formFields"]).executeTakeFirstOrThrow();
     if (eventRow.user != request.globalAuth.id && !(await checkAccess(request.params.id, request.globalAuth.id))) {
         response.status(403);
         response.end();
         return;
     }
-    await db.updateTable("eventParticipants").set({formFields: request.body, editDatetime: new Date()})
-        .where("id", "=", request.params.rid).execute();
-    response.end();
+    try {
+        await db.updateTable("eventParticipants").set({formFields: generateValidator(event.formFields)(request.body, "response"), editDatetime: new Date()})
+            .where("id", "=", request.params.rid).execute();
+        response.end();
+    }
+    catch (error) {
+        if (error instanceof ParsingError) {
+            response.status(400);
+            response.end(error.message);
+            return;
+        }
+        throw error;
+    }
 });
 
 router.get("/:id/response/:rid", {
