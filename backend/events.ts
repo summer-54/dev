@@ -8,13 +8,12 @@ import {Readable} from "node:stream"
 import {db} from "./sql/index.sql.js";
 import {checkAccess, getUserEvents} from "./sql/events.sql.js";
 import {sendEventConfirmEmail} from "./mail.js";
+import {formFieldsValidator, time} from "./parsers.js";
 
 const router = new BackendiumRouter<JwtAccessPayload>();
 router.setAuth(async (request, response) => {
     return checkAuthRetData(request.headers?.authorization, response);
 });
-
-const time = () => string({pattern: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/});
 
 router.post("/", {
     bodyValidator: object({
@@ -28,7 +27,7 @@ router.post("/", {
         account: optional(boolean()),
         emailConfirm: optional(boolean()),
         summaryUrl: optional(string()),
-        formFields: optional(object({})),
+        formFields: formFieldsValidator,
         registerStart: optional(time()),
         registerEnd: optional(time()),
         datetime: optional(time())
@@ -42,11 +41,12 @@ router.post("/", {
         response.end();
         return;
     }
-    const {img, ...body} = request.body;
+    const {img, formFields, ...body} = request.body;
     const id = await db.transaction().execute(async trx => {
         const {id} = await trx.insertInto("events").values({
             ...body,
-            imgUrl: await putImage(img.filename ?? "", Readable.from(img.createReadStream()))
+            imgUrl: await putImage(img.filename ?? "", Readable.from(img.createReadStream())),
+            formFields: JSON.stringify(formFields)
         }).returning("id").executeTakeFirstOrThrow();
         await trx.insertInto("eventAdmins").values({user: user.id, event: id}).execute();
         return id;
@@ -67,7 +67,7 @@ router.patch("/:id", {
         account: optional(boolean()),
         emailConfirm: optional(boolean()),
         summaryUrl: optional(string()),
-        formFields: optional(object({})),
+        formFields: optional(formFieldsValidator),
         registerStart: optional(time()),
         registerEnd: optional(time()),
         datetime: optional(time())
@@ -82,10 +82,11 @@ router.patch("/:id", {
         response.end();
         return;
     }
-    const {img, ...body} = request.body;
+    const {img, formFields, ...body} = request.body;
     await db.updateTable("events").set({
         ...body,
         imgUrl: img ? await putImage(img.filename ?? "", Readable.from(img.createReadStream())) : undefined,
+        formFields: JSON.stringify(formFields)
     }).where("id", '=', request.params.id).execute();
     response.end();
 });

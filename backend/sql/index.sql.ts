@@ -1,6 +1,7 @@
 import setupDB from "./setup.sql.js";
 import {ColumnType, Generated, Kysely, PostgresDialect} from "kysely";
 import pg from "pg";
+import {FormFieldsType} from "../parsers.js";
 
 export interface NewsTable {
     id: Generated<number>;
@@ -191,7 +192,7 @@ export interface EventsTable {
     account: ColumnType<boolean, boolean | undefined, boolean>;
     emailConfirm: ColumnType<boolean, boolean | undefined, boolean>;
     summaryUrl: ColumnType<string, string | undefined, string>;
-    formFields?: ColumnType<object, object | undefined, object>;
+    formFields: ColumnType<FormFieldsType, string, string>;
     registerStart?: ColumnType<Date, Date | string, Date | string>;
     registerEnd?: ColumnType<Date, Date | string, Date | string>;
     datetime?: ColumnType<Date, Date | string, Date | string>;
