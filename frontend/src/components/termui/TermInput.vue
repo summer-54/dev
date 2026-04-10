@@ -5,7 +5,7 @@
     <span class="terminal-content">
       <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
       <input
-          :type="password ? 'password' : 'text'"
+          :type="password ? 'password' : number ? 'number' : 'text'"
           v-model="inputValue"
           class="terminal-input"
           :placeholder="placeholder"
@@ -32,6 +32,10 @@ const props = defineProps({
   },
   placeholder: String,
   password: {
+    type: Boolean,
+    required: false
+  },
+  number: {
     type: Boolean,
     required: false
   },
