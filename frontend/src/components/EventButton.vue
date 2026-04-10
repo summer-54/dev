@@ -26,7 +26,7 @@ const props = defineProps({
       <div class="buttons">
         <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
         <HiddenLink :to="event.summaryUrl"><TermButton v-if="event.summaryUrl">Подробнее</TermButton></HiddenLink>
-        <HiddenLink :to="`/events/${event.id}`"><TermButton>Зарегестрироваться</TermButton></HiddenLink>
+        <HiddenLink :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
       </div>
     </div>
   </TermWindow>

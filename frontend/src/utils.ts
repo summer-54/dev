@@ -26,3 +26,9 @@ export async function readFileBase64(file: File): Promise<string> {
 }
 
 export const themeName = ref<"light" | "dark">();
+
+export function formatDateNoSeconds(date: Date) {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}` +
+        `T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}

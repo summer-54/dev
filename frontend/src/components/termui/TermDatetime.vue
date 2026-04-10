@@ -6,7 +6,7 @@
       <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
       <input
           type="datetime-local"
-          v-model="inputValue"
+          v-model="value"
           class="terminal-input"
           :placeholder="placeholder"
       />
@@ -17,9 +17,10 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, type PropType, ref, watch} from "vue";
+import {formatDateNoSeconds} from "@/utils.js";
 
-const inputValue = defineModel({ type: String });
+const inputValue = defineModel({ type: Object as PropType<Date> });
 
 const props = defineProps({
   label: {
@@ -42,6 +43,7 @@ const props = defineProps({
 });
 
 const prompt = ref(props.label);
+const value = ref("");
 
 function selectPrompt() {
   if (props.mLabel === "") {
@@ -55,6 +57,14 @@ function selectPrompt() {
 onMounted(() => {
   selectPrompt();
   window.addEventListener("resize", selectPrompt);
+});
+
+watch(value, val => {
+  inputValue.value = new Date(val);
+});
+
+watch(inputValue, val => {
+  if (val) value.value = formatDateNoSeconds(new Date(val));
 });
 </script>
 
