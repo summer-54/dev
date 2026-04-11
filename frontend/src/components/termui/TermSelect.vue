@@ -4,12 +4,19 @@
 
     <span class="terminal-content">
       <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
-      <select
+      <Select
           v-model="inputValue"
           class="terminal-input"
+          :class="$style.select"
+          :options="options"
+          :overlayClass="$style.selectOverlay"
       >
-        <option v-for="option in options" :value="option">{{option}}</option>
-      </select>
+        <template #option="slotProps">
+            <div>
+                <div>{{ slotProps.option }}</div>
+            </div>
+        </template>
+      </Select>
     </span>
 
     <span class="bracket bracket-right"></span>
@@ -18,6 +25,7 @@
 
 <script setup lang="ts">
 import {onMounted, type PropType, ref} from "vue";
+import {Select} from "primevue";
 
 const inputValue = defineModel({ type: String });
 
@@ -61,6 +69,28 @@ onMounted(() => {
   window.addEventListener("resize", selectPrompt);
 });
 </script>
+
+<style module>
+.select {
+  --p-select-padding-x: 0;
+  --p-select-padding-y: 0;
+}
+
+.selectOverlay {
+  font-family: 'Courier New', Courier, monospace;
+  --p-select-overlay-background: #000000A0;
+  --p-select-overlay-border-color: #95EAA730;
+  --p-select-option-focus-background: #95EAA720;
+  --p-select-option-selected-focus-background: #95EAA720;
+  --p-select-option-selected-background: #00000000;
+  --p-select-option-selected-color: #95EAA7FF;
+  --p-select-option-selected-focus-color: #95EAA7FF;
+
+  :global(.p-select-option-selected) {
+    text-shadow: 0 0 5px #95EAA7FF;
+  }
+}
+</style>
 
 <style scoped>
 .terminal-wrapper {
