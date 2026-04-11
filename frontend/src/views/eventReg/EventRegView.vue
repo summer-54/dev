@@ -51,4 +51,8 @@ main {
   display: flex;
   justify-content: center;
 }
+
+.window {
+  max-width: 800px;
+}
 </style>

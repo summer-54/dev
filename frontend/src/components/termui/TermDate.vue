@@ -83,7 +83,7 @@ watch(inputValue, val => {
 /* Графические скобки через border */
 .bracket {
   width: 5px;
-  height: 40px;
+  height: calc(100% + 8px);
   border: 2px solid black;
   opacity: 0.6;
   position: absolute;
@@ -114,6 +114,10 @@ watch(inputValue, val => {
   font-weight: bold;
   user-select: none;
   transition: text-shadow ease-in-out 0.2s;
+  max-width: 60%;
+  display: block;
+  /*word-break: break-word;*/
+  white-space: normal;
 }
 
 .optional {
@@ -139,7 +143,7 @@ watch(inputValue, val => {
     }
 
     .bracket {
-      height: 45px;
+      height: calc(100% + 12px);
     }
 
     .bracket-left {
@@ -168,7 +172,7 @@ watch(inputValue, val => {
   }
 
   .bracket {
-    height: 45px;
+    height: calc(100% + 12px);
   }
 
   .bracket-left {
