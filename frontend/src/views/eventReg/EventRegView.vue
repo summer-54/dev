@@ -22,6 +22,23 @@ onMounted(async () => {
 function send() {
   register(response.value, route.params.id.toString());
 }
+
+function formatDatetime(date: Date) {
+  return !isNaN(date.getTime()) ? date?.toISOString() : "";
+}
+
+function formatDate(date: Date) {
+  return !isNaN(date.getTime()) ? `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getFullYear()).padStart(4, '0')}` : "";
+}
+
+function readDate(dateStr: string) {
+  let [d, m, y] = dateStr.split('.').map(v => Number(v));
+  let date = new Date();
+  date.setFullYear(y);
+  date.setMonth(m - 1);
+  date.setDate(d);
+  return date;
+}
 </script>
 
 <template>
@@ -36,8 +53,8 @@ function send() {
         <TermInput v-if="field.type === 'text'" :label="field.title" v-model="response[field.key]"/>
         <TermInput v-if="field.type === 'int' || field.type === 'float'" number :label="field.title" :modelValue="response[field.key]" @update:modelValue="value => response[field.key] = Number(value)"/>
         <TermSelect v-if="field.type === 'select'" :label="field.title" :options="field.variants" v-model="response[field.key]"/>
-        <TermDate v-if="field.type === 'date'" :label="field.title" :modelValue="new Date(response[field.key])" @update:modelValue="date => response[field.key] = date?.toISOString()"/>
-        <TermDatetime v-if="field.type === 'datetime'" :label="field.title" :modelValue="new Date(response[field.key])" @update:modelValue="date => response[field.key] = date?.toISOString()"/>
+        <TermDate v-if="field.type === 'date'" :label="field.title" :modelValue="response[field.key] ? readDate(response[field.key]) : undefined" @update:modelValue="date => response[field.key] = formatDate(date)"/>
+        <TermDatetime v-if="field.type === 'datetime'" :label="field.title" :modelValue="response[field.key] ? new Date(response[field.key]) : undefined" @update:modelValue="date => response[field.key] = formatDatetime(date)"/>
       </template>
 
       <TermButton @click="send">Зарегистрироваться</TermButton>

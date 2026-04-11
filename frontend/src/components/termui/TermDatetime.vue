@@ -4,11 +4,13 @@
 
     <span class="terminal-content">
       <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
-      <input
-          type="datetime-local"
-          v-model="value"
+      <DatePicker
+          v-model="inputValue"
           class="terminal-input"
+          :class="$style.date"
           :placeholder="placeholder"
+          showTime showIcon iconDisplay="input"
+          dateFormat="dd.mm.yy"
       />
     </span>
 
@@ -17,10 +19,13 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, type PropType, ref, watch} from "vue";
-import {formatDateNoSeconds} from "@/utils.js";
+import {onMounted, type PropType, ref} from "vue";
+import {DatePicker} from "primevue";
 
-const inputValue = defineModel({ type: Object as PropType<Date> });
+const inputValue = defineModel({
+  type: Object as PropType<Date>,
+  required: true
+});
 
 const props = defineProps({
   label: {
@@ -43,7 +48,6 @@ const props = defineProps({
 });
 
 const prompt = ref(props.label);
-const value = ref("");
 
 function selectPrompt() {
   if (props.mLabel === "") {
@@ -58,15 +62,19 @@ onMounted(() => {
   selectPrompt();
   window.addEventListener("resize", selectPrompt);
 });
-
-watch(value, val => {
-  inputValue.value = new Date(val);
-});
-
-watch(inputValue, val => {
-  if (val) value.value = formatDateNoSeconds(new Date(val));
-});
 </script>
+
+<style module>
+.date {
+  --p-inputtext-padding-x: 0;
+  --p-inputtext-padding-y: 0;
+  --p-inputtext-background: #00000000;
+
+  :global(.p-datepicker-input) {
+    border: none !important;
+  }
+}
+</style>
 
 <style scoped>
 .terminal-wrapper {

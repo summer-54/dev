@@ -8,7 +8,7 @@ import {Readable} from "node:stream"
 import {db} from "./sql/index.sql.js";
 import {checkAccess, getUserEvents} from "./sql/events.sql.js";
 import {sendEventConfirmEmail} from "./mail.js";
-import {formFieldsValidator, generateValidator, time} from "./parsers.js";
+import {formFieldsValidator, generateValidator, datetime} from "./parsers.js";
 
 const router = new BackendiumRouter<JwtAccessPayload>();
 router.setAuth(async (request, response) => {
@@ -28,9 +28,9 @@ router.post("/", {
         emailConfirm: optional(boolean()),
         summaryUrl: optional(string()),
         formFields: formFieldsValidator,
-        registerStart: optional(time()),
-        registerEnd: optional(time()),
-        datetime: optional(time())
+        registerStart: optional(datetime()),
+        registerEnd: optional(datetime()),
+        datetime: optional(datetime())
     }, {ignoreUnknown: false}),
     auth: true
 }, async (request, response) => {
@@ -68,9 +68,9 @@ router.patch("/:id", {
         emailConfirm: optional(boolean()),
         summaryUrl: optional(string()),
         formFields: optional(formFieldsValidator),
-        registerStart: optional(time()),
-        registerEnd: optional(time()),
-        datetime: optional(time())
+        registerStart: optional(datetime()),
+        registerEnd: optional(datetime()),
+        datetime: optional(datetime())
     }, {ignoreUnknown: false}),
     paramsValidator: object({
         id: uuid()
