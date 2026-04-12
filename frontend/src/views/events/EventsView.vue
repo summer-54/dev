@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {getEvents, type Event} from "@/api/events.js";
+import {getEvents, type EventType} from "@/api/events.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import EventButton from "@/components/EventButton.vue";
 
-const events = ref<Array<Omit<Event, "formFields">> | null | false>([]);
+const events = ref<Array<Omit<EventType, "formFields">> | null | false>([]);
 const pending = ref<boolean>(true);
 
 onMounted(async () => {
@@ -34,7 +34,7 @@ main {
 
 ul, li {
   list-style: none;
-  padding: 0 10px 0 6px;
+  padding: 0 3px;
   width: 100%;
 }
 

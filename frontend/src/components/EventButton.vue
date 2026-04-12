@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
-import type {Event} from "@/api/events.js";
+import type {EventType} from "@/api/events.js";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import HiddenLink from "@/components/HiddenLink.vue";
 
 const props = defineProps({
   event: {
-    type: Object as PropType<Omit<Event, "formFields">>,
+    type: Object as PropType<Omit<EventType, "formFields">>,
     required: true
   }
 });
@@ -26,7 +26,10 @@ const props = defineProps({
       <div class="buttons">
         <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
         <HiddenLink v-if="event.summaryUrl" :to="event.summaryUrl"><TermButton>Подробнее</TermButton></HiddenLink>
-        <HiddenLink :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
+        <HiddenLink v-if="!event.my" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && event.editable" :to="`/events/${event.id}/response`"><TermButton>Изменить</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && !event.editable" :to="`/events/${event.id}/response`"><TermButton>Просмотреть</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && !event.account" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться повторно</TermButton></HiddenLink>
       </div>
     </div>
   </TermWindow>

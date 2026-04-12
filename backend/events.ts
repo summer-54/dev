@@ -275,6 +275,20 @@ router.get("/:id/responses", {
     );
 });
 
+router.get("/:id/my-responses", {
+    paramsValidator: object({
+        id: uuid()
+    }),
+    auth: true
+}, async (request, response) => {
+    response.expressResponse.set("content-type", "application/json");
+    response.end(
+        await db.selectFrom("eventParticipants")
+            .where(({and, eb}) => and([eb("event", '=', request.params.id), eb("user", '=', request.globalAuth.id)]))
+            .selectAll().orderBy("editDatetime", "desc").execute()
+    );
+});
+
 router.patch("/:id/responses/status", {
     paramsValidator: object({
         id: uuid()

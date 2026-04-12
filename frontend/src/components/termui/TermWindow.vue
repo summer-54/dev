@@ -136,7 +136,7 @@ section {
   background: #00000050;
   box-shadow: 0 0 5px #95EAA7FF;
 
-  .header {
+  .header, .header * {
     color: #95EAA7FF;
     text-shadow: 0 0 5px #95EAA7FF;
   }
