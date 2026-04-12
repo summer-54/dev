@@ -16,14 +16,22 @@ export async function getUserEvents(userId: number) {
     return db.with('openEvents', db => db
             .selectFrom('events')
             .selectAll()
-            .select(({val}) => [val('open').as('type'), val(3).as('priority')])
+            .select(({val}) => [
+                val('open').as('type'),
+                val(false).as('my'),
+                val(3).as('priority')
+            ])
             .where('showInList', '=', true)
             .where('opened', '=', true)
         )
         .with('myEvents', db => db
             .selectFrom('events')
             .selectAll()
-            .select(({val}) => [val('my').as('type'), val(2).as('priority')])
+            .select(({val}) => [
+                val('my').as('type'),
+                val(true).as('my'),
+                val(2).as('priority')
+            ])
             .where(({exists, selectFrom}) =>
                 exists(
                     selectFrom('eventParticipants')
@@ -36,7 +44,11 @@ export async function getUserEvents(userId: number) {
         .with('adminEvents', db => db
             .selectFrom('events')
             .selectAll()
-            .select(({val}) => [val('admin').as('type'), val(1).as('priority')])
+            .select(({val}) => [
+                val('admin').as('type'),
+                val(false).as('my'),
+                val(1).as('priority')
+            ])
             .where(({exists, selectFrom}) =>
                 exists(
                     selectFrom('eventAdmins')
@@ -53,6 +65,14 @@ export async function getUserEvents(userId: number) {
         )
         .selectFrom('userEvents')
         .select(["id", "imgUrl", "displayName", "description", "showInList", "opened", "editable", "account", "summaryUrl", "type", "registerStart", "registerEnd", "datetime"])
+        .select(eb =>
+            eb.cast(
+                eb.fn
+                    .max('my')
+                    .over(ob => ob.partitionBy('id')),
+                'boolean'
+            ).as('my')
+        )
         .distinctOn(['id'])
         .orderBy('id')
         .orderBy('priority').execute()

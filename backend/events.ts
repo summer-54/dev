@@ -131,6 +131,7 @@ router.patch("/:id/admins", {
 router.get("/", {auth: true}, async (request, response) => {
     response.expressResponse.set("content-type", "application/json");
     response.end(await getUserEvents(request.globalAuth.id));
+    console.log(await getUserEvents(request.globalAuth.id));
 });
 
 router.get("/list-all", {auth: true}, async (request, response) => {
@@ -220,7 +221,13 @@ router.post("/:id", {
             }).execute();
         }
         else {
+            let auth = undefined;
+            if ("authorization" in request.expressRequest.headers) {
+                auth = await checkAuthRetData(request.expressRequest.headers?.authorization, response);
+                if (!auth) return;
+            }
             await db.insertInto("eventParticipants").values({
+                user: auth?.id,
                 event: request.params.id,
                 formFields,
                 originalFormFields: request.body,

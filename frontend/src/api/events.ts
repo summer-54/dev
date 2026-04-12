@@ -13,6 +13,7 @@ export type Event = {
     "account": boolean,
     "summaryUrl": string,
     "type": "admin" | "my" | "open",
+    "my": boolean,
     "registerStart": string | null,
     "registerEnd": string | null,
     "datetime": string | null,
