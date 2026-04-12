@@ -51,7 +51,8 @@ function readDate(dateStr: string) {
 
       <template v-for="field in event.event.formFields">
         <TermInput v-if="field.type === 'text'" :label="field.title" v-model="response[field.key]"/>
-        <TermInput v-if="field.type === 'int' || field.type === 'float'" number :label="field.title" :modelValue="response[field.key]" @update:modelValue="value => response[field.key] = Number(value)"/>
+        <TermInput v-if="field.type === 'int'" int :label="field.title" :modelValue="response[field.key]" @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"/>
+        <TermInput v-if="field.type === 'float'" float :label="field.title" :modelValue="response[field.key]" @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"/>
         <TermSelect v-if="field.type === 'select'" :label="field.title" :options="field.variants" v-model="response[field.key]"/>
         <TermDate v-if="field.type === 'date'" :label="field.title" :modelValue="response[field.key] ? readDate(response[field.key]) : undefined" @update:modelValue="date => response[field.key] = formatDate(date)"/>
         <TermDatetime v-if="field.type === 'datetime'" :label="field.title" :modelValue="response[field.key] ? new Date(response[field.key]) : undefined" @update:modelValue="date => response[field.key] = formatDatetime(date)"/>

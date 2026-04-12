@@ -5,10 +5,20 @@
     <span class="terminal-content">
       <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
       <input
-          :type="password ? 'password' : number ? 'number' : 'text'"
+          v-if="!int && !float"
+          :type="password ? 'password' : 'text'"
           v-model="inputValue"
           class="terminal-input"
           :placeholder="placeholder"
+      />
+      <input
+          v-else
+          type="text"
+          v-model="inputValue"
+          class="terminal-input"
+          :placeholder="placeholder"
+          @keydown="inputHandler"
+          inputmode="numeric"
       />
     </span>
 
@@ -35,7 +45,11 @@ const props = defineProps({
     type: Boolean,
     required: false
   },
-  number: {
+  int: {
+    type: Boolean,
+    required: false
+  },
+  float: {
     type: Boolean,
     required: false
   },
@@ -60,6 +74,14 @@ onMounted(() => {
   selectPrompt();
   window.addEventListener("resize", selectPrompt);
 });
+
+function inputHandler(event: KeyboardEvent) {
+  if (event.key.length != 1 || event.ctrlKey || event.altKey || event.metaKey) return;
+  let value = ((event.target as HTMLInputElement)?.value + event.key).replaceAll(',', '.');
+  if (props.float && !Number.isFinite(Number(value))) return event.preventDefault();
+  let match = value.match(/[0-9]*/);
+  if (props.int && (!match || !match[0] || match[0].length != value.length)) return event.preventDefault();
+}
 </script>
 
 <style scoped>
