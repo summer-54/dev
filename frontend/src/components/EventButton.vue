@@ -24,7 +24,7 @@ const props = defineProps({
         </p>
       </div>
       <div class="buttons">
-        <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
+        <HiddenLink :to="`/events/${event.id}/edit`"><TermButton v-if="event.type === 'admin'">Редактировать (admin)</TermButton></HiddenLink>
         <HiddenLink v-if="event.summaryUrl" :to="event.summaryUrl"><TermButton>Подробнее</TermButton></HiddenLink>
         <HiddenLink v-if="!event.my && event.opened" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
         <HiddenLink v-if="event.my && event.editable" :to="`/events/${event.id}/response`"><TermButton>Изменить</TermButton></HiddenLink>
@@ -61,6 +61,7 @@ img {
   width: 120px;
   float: left;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 h4 {
