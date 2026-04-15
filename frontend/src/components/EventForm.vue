@@ -4,7 +4,7 @@ import TermWindow from "@/components/termui/TermWindow.vue";
 import TermSelect from "@/components/termui/TermSelect.vue";
 import TermDate from "@/components/termui/TermDate.vue";
 import TermDatetime from "@/components/termui/TermDatetime.vue";
-import {type PropType} from "vue";
+import {type PropType, watch} from "vue";
 import type {EventType} from "@/api/events.js";
 
 const props = defineProps({
@@ -18,6 +18,10 @@ const response = defineModel("response", {
   type: Object,
   required: true
 });
+const filled = defineModel("filled", {
+  type: Boolean,
+  required: true
+})
 
 function formatDatetime(date: Date) {
   return !isNaN(date.getTime()) ? date?.toISOString() : "";
@@ -44,6 +48,35 @@ function readDate(dateStr: string | undefined) {
 function readDatetime(dateStr: string | undefined) {
   return dateStr ? new Date(dateStr) : undefined;
 }
+
+watch(response, value => {
+  filled.value = true;
+  for (const field of props.event?.formFields) {
+    if (!field) continue;
+    if (field.optional && !value[field.key]) continue;
+    if (!value[field.key]) {
+      filled.value = false;
+      continue;
+    }
+    if (field.type === "text") {
+      if (
+          field.min != undefined && value[field.key].length < field.min
+          || field.max != undefined && value[field.key].length > field.max
+          || field.pattern != undefined && !(new RegExp(field.pattern)).test(value[field.key])
+      ) {
+        filled.value = false;
+      }
+    }
+    else if (field.type === "int" || field.type === "float") {
+      if (
+          field.min != undefined && Number(value[field.key]) < field.min
+          || field.max != undefined && Number(value[field.key]) > field.max
+      ) {
+        filled.value = false;
+      }
+    }
+  }
+}, {deep: true});
 </script>
 
 <template>
@@ -57,31 +90,37 @@ function readDatetime(dateStr: string | undefined) {
                  :label="field.title"
                  v-model="response[field.key]"
                  :min="field.min" :max="field.max"
-                 :pattern="field.pattern ? new RegExp(field.pattern) : undefined"/>
+                 :pattern="field.pattern ? new RegExp(field.pattern) : undefined"
+                 :optional="field.optional"/>
       <TermInput v-if="field.type === 'int'" int
                  :label="field.title"
                  :modelValue="response[field.key]"
                  @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"
-                 :min="field.min" :max="field.max"/>
+                 :min="field.min" :max="field.max"
+                 :optional="field.optional"/>
       <TermInput v-if="field.type === 'float'" float
                  :label="field.title"
                  :modelValue="response[field.key]"
                  @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"
-                 :min="field.min" :max="field.max"/>
+                 :min="field.min" :max="field.max"
+                 :optional="field.optional"/>
       <TermSelect v-if="field.type === 'select'"
                   :label="field.title"
                   :options="field.variants"
-                  v-model="response[field.key]"/>
+                  v-model="response[field.key]"
+                  :optional="field.optional"/>
       <TermDate v-if="field.type === 'date'"
                 :label="field.title"
                 :modelValue="readDate(response[field.key])"
                 @update:modelValue="date => response[field.key] = formatDate(date)"
-                :min="readDate(field.min)" :max="readDate(field.max)"/>
+                :min="readDate(field.min)" :max="readDate(field.max)"
+                :optional="field.optional"/>
       <TermDatetime v-if="field.type === 'datetime'"
                     :label="field.title"
                     :modelValue="readDatetime(response[field.key])"
                     @update:modelValue="date => response[field.key] = formatDatetime(date)"
-                    :min="readDatetime(field.min)" :max="readDatetime(field.max)"/>
+                    :min="readDatetime(field.min)" :max="readDatetime(field.max)"
+                    :optional="field.optional"/>
     </template>
 
     <slot/>

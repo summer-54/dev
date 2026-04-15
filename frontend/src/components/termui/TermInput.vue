@@ -3,7 +3,8 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
+      <span :class="{prompt: true, optional: optional}"
+            v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
       <input
           v-if="!int && !float"
           :type="password ? 'password' : 'text'"

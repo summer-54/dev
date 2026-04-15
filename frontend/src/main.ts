@@ -15,6 +15,7 @@ import {
 } from "chart.js";
 import PrimeVue from "primevue/config";
 import Aura from "@primevue/themes/aura";
+import TooltipDir from 'primevue/tooltip';
 
 ChartJS.register(
     CategoryScale,
@@ -52,5 +53,6 @@ app.use(PrimeVue, {
         }
     }
 });
+app.directive('tooltip', TooltipDir);
 
 app.mount('#app');

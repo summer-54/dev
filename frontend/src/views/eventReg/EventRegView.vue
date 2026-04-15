@@ -11,6 +11,7 @@ const route = useRoute();
 const event = ref<{event: EventType, incorrect: false} | {event: null, incorrect: true}>({incorrect: true, event: null});
 const pending = ref<boolean>(true);
 const response = ref<Record<string, any>>({});
+const filled = ref(false);
 
 onMounted(async () => {
   const data = await getEvent(route.params.id.toString());
@@ -26,9 +27,9 @@ function send() {
 <template>
   <main>
     <template v-if="event.incorrect">Ошибка доступа (или ещё какая-то)</template>
-    <EventForm v-else :event="event.event" v-model:response="response">
+    <EventForm v-else :event="event.event" v-model:response="response" v-model:filled="filled">
       <template #header>{{event.event.displayName}}</template>
-      <TermButton @click="send">Зарегистрироваться</TermButton>
+      <TermButton @click="send" :disabled="!filled">Зарегистрироваться</TermButton>
     </EventForm>
     <ProgressIndicator v-if="pending"/>
   </main>

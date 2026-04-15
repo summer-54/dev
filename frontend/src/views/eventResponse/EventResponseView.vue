@@ -11,6 +11,7 @@ const route = useRoute();
 const event = ref<{event: EventType, incorrect: false} | {event: null, incorrect: true}>({incorrect: true, event: null});
 const responses = ref<Array<EventResponseType>>([]);
 const pending = ref<boolean>(true);
+const filled = ref<Record<number, boolean>>({});
 
 onMounted(async () => {
   const data = await getEvent(route.params.id.toString());
@@ -32,13 +33,13 @@ function send(rid: number) {
     <template v-if="event.incorrect">Ошибка доступа (или ещё какая-то)</template>
     <template v-else>
       <h2>{{event.event.displayName}}</h2>
-      <EventForm v-for="response in responses" :event="event.event" v-model:response="response.formFields">
+      <EventForm v-for="response in responses" :event="event.event" v-model:response="response.formFields" v-model:filled="filled[response.id]">
         <template #header>
           <div class="respId">Заявка на участие №{{response.id}}</div>
           <div class="date">Создано: {{new Date(response.datetime).toLocaleString('ru')}}</div>
           <div class="date">Изменено: {{new Date(response.editDatetime).toLocaleString('ru')}}</div>
         </template>
-        <TermButton @click="send(response.id)">Изменить</TermButton>
+        <TermButton @click="send(response.id)" :disabled="!filled[response.id]">Изменить</TermButton>
       </EventForm>
     </template>
     <ProgressIndicator v-if="pending"/>
