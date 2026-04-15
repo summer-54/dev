@@ -10,21 +10,23 @@ const route = useRoute();
 
 const event = ref<{event: EventType, incorrect: false} | {event: null, incorrect: true}>({incorrect: true, event: null});
 const responses = ref<Array<EventResponseType>>([]);
-const pending = ref<boolean>(true);
+const pending = ref<number>(1);
 const filled = ref<Record<number, boolean>>({});
 
 onMounted(async () => {
   const data = await getEvent(route.params.id.toString());
   const data2 = await getMyResponses(route.params.id.toString())
-  pending.value = false;
+  pending.value--;
   if (data !== false && data !== null && data2 !== false && data2 !== null) {
     event.value = {event: data, incorrect: false};
     responses.value = data2;
   }
 });
 
-function send(rid: number) {
-  editResponse(responses.value.filter(({id}) => id === rid)[0].formFields, route.params.id.toString(), rid);
+async function send(rid: number) {
+  pending.value++;
+  await editResponse(responses.value.filter(({id}) => id === rid)[0].formFields, route.params.id.toString(), rid);
+  pending.value--;
 }
 </script>
 

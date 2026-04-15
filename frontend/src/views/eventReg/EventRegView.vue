@@ -19,8 +19,10 @@ onMounted(async () => {
   if (data !== false && data !== null) event.value = {event: data, incorrect: false};
 });
 
-function send() {
-  register(response.value, route.params.id.toString());
+async function send() {
+  pending.value = true;
+  await register(response.value, route.params.id.toString());
+  pending.value = false;
 }
 </script>
 
