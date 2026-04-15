@@ -1,5 +1,5 @@
 <template>
-  <button class="terminal-wrapper" :class="{dark: $themeName === 'dark'}">
+  <button class="terminal-wrapper" :class="{enabled: !disabled, dark: $themeName === 'dark'}" :disabled="disabled">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
@@ -11,7 +11,12 @@
 </template>
 
 <script setup lang="ts">
-
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+});
 </script>
 
 <style scoped>
@@ -61,7 +66,7 @@
 }
 
 @media (hover: hover) {
-  .terminal-wrapper:hover {
+  .enabled:hover {
     background: #60e17b30;
 
     .bracket {
@@ -81,14 +86,13 @@
     }
 
     .terminal-content {
-      border-color: #60e17b30;
       border-radius: 5px;
       text-shadow: 0 0 8px #60e17bFF;
     }
   }
 }
 
-.terminal-wrapper:focus-visible {
+.enabled:focus-visible {
   background: #60e17b30;
 
   .bracket {
@@ -108,13 +112,12 @@
   }
 
   .terminal-content {
-    border-color: #60e17b30;
     border-radius: 5px;
     text-shadow: 0 0 8px #60e17bFF;
   }
 }
 
-.terminal-wrapper:active {
+.enabled:active {
   background: #60e17b30;
 
   .bracket {
@@ -130,7 +133,6 @@
   }
 
   .terminal-content {
-    border-color: #60e17b30;
     border-radius: 5px;
     text-shadow: 0 0 10px #60e17bFF, 0 0 15px #60e17bFF;
     transition-duration: 0.02s;
@@ -152,12 +154,16 @@
 
   .terminal-content {
     border: 1px solid #95EAA720;
-    text-shadow: 0 0 5px #95EAA7FF;
+    color: gray;
+  }
+
+  .enabled .terminal-content {
     color: #95EAA7FF;
+    text-shadow: 0 0 5px #95EAA7FF;
   }
 
   @media (hover: hover) {
-    .terminal-wrapper:hover {
+    .enabled:hover {
       .terminal-content {
         background: #95EAA710;
         border-color: #95EAA730;
@@ -166,7 +172,7 @@
     }
   }
 
-  .terminal-wrapper:focus-visible {
+  .enabled:focus-visible {
     .terminal-content {
       background: #95EAA710;
       border-color: #95EAA730;
@@ -175,7 +181,7 @@
     }
   }
 
-  .terminal-wrapper:active {
+  .enabled:active {
     .terminal-content {
       background: #95EAA710;
       border-color: #95EAA730;

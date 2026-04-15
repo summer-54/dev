@@ -26,10 +26,11 @@ const props = defineProps({
       <div class="buttons">
         <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
         <HiddenLink v-if="event.summaryUrl" :to="event.summaryUrl"><TermButton>Подробнее</TermButton></HiddenLink>
-        <HiddenLink v-if="!event.my" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
+        <HiddenLink v-if="!event.my && event.opened" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
         <HiddenLink v-if="event.my && event.editable" :to="`/events/${event.id}/response`"><TermButton>Изменить</TermButton></HiddenLink>
         <HiddenLink v-if="event.my && !event.editable" :to="`/events/${event.id}/response`"><TermButton>Просмотреть</TermButton></HiddenLink>
-        <HiddenLink v-if="event.my && !event.account" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться повторно</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && !event.account && event.opened" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться повторно</TermButton></HiddenLink>
+        <TermButton v-if="!event.opened" disabled>Регистрация закрыта</TermButton>
       </div>
     </div>
   </TermWindow>

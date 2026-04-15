@@ -187,11 +187,16 @@ router.post("/:id", {
     bodyValidator: object({})
 }, async (request, response) => {
     const event = await db.selectFrom("events").where("id", '=', request.params.id)
-        .select(["id", "account", "autoAccept", "emailConfirm", "displayName", "summaryUrl", "formFields"])
+        .select(["id", "account", "autoAccept", "emailConfirm", "displayName", "summaryUrl", "formFields", "opened"])
         .executeTakeFirst();
     if (!event) {
         response.status(404);
         response.end();
+        return;
+    }
+    if (!event.opened) {
+        response.status(409);
+        response.end("Registration is not opened");
         return;
     }
     try {
