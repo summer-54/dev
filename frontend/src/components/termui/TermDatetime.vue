@@ -11,6 +11,7 @@
           :placeholder="placeholder"
           showTime showIcon iconDisplay="input"
           dateFormat="dd.mm.yy"
+          :minDate="min" :maxDate="max"
       />
     </span>
 
@@ -44,7 +45,9 @@ const props = defineProps({
   optional: {
     type: Boolean,
     default: false
-  }
+  },
+  min: Date,
+  max: Date
 });
 
 const prompt = ref(props.label);

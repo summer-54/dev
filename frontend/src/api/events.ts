@@ -24,25 +24,25 @@ export type EventType = {
         optional?: boolean
     } & ({
         type: "text",
-        min: number,
-        max: number,
-        pattern: string
+        min?: number,
+        max?: number,
+        pattern?: string
     } | {
         type: "int",
-        min: number,
-        max: number
+        min?: number,
+        max?: number
     } | {
         type: "float",
-        min: number,
-        max: number
+        min?: number,
+        max?: number
     } | {
         type: "date",
-        min: string,
-        max: string
+        min?: string,
+        max?: string
     } | {
         type: "datetime",
-        min: string,
-        max: string
+        min?: string,
+        max?: string
     } | {
         type: "select",
         variants: Array<any>

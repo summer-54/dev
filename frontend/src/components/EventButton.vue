@@ -83,5 +83,6 @@ p {
 
 .main {
   gap: 10px;
+  width: 100%;
 }
 </style>
