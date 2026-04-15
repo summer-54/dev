@@ -25,12 +25,13 @@
 
       <Popover ref="op">
         <template v-if="!int && !float">
-          <span v-if="min != undefined && (inputValue ?? '').length < min">Length must be not less than {{min}}</span>
-          <span v-if="max != undefined && (inputValue ?? '').length > max">Length must be not more than {{max}}</span>
+          <div v-if="min != undefined && (inputValue ?? '').length < min">Length must be not less than {{min}}</div>
+          <div v-if="max != undefined && (inputValue ?? '').length > max">Length must be not more than {{max}}</div>
+          <div v-if="props.pattern != undefined && !props.pattern.test(inputValue ?? '')">Does not match pattern</div>
         </template>
         <template v-else>
-          <span v-if="min != undefined && Number(inputValue) < min">Value must be not less than {{min}}</span>
-          <span v-if="max != undefined && Number(inputValue) > max">Value must be not more than {{max}}</span>
+          <div v-if="min != undefined && Number(inputValue) < min">Value must be not less than {{min}}</div>
+          <div v-if="max != undefined && Number(inputValue) > max">Value must be not more than {{max}}</div>
         </template>
       </Popover>
     </span>
@@ -73,7 +74,8 @@ const props = defineProps({
     default: false
   },
   min: Number,
-  max: Number
+  max: Number,
+  pattern: RegExp
 });
 
 const prompt = ref(props.label);
@@ -109,6 +111,7 @@ function onInput(event: InputEvent) {
   if (!props.int && !props.float) {
     if (props.min != undefined && value.length < props.min) op.value.show(event);
     else if (props.max != undefined && value.length > props.max) op.value.show(event);
+    else if (props.pattern != undefined && !props.pattern.test(value)) op.value.show(event);
     else op.value.hide();
   }
   else {

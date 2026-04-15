@@ -56,7 +56,8 @@ function readDatetime(dateStr: string | undefined) {
       <TermInput v-if="field.type === 'text'"
                  :label="field.title"
                  v-model="response[field.key]"
-                 :min="field.min" :max="field.max"/>
+                 :min="field.min" :max="field.max"
+                 :pattern="field.pattern ? new RegExp(field.pattern) : undefined"/>
       <TermInput v-if="field.type === 'int'" int
                  :label="field.title"
                  :modelValue="response[field.key]"
