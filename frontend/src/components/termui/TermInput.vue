@@ -10,6 +10,7 @@
           v-model="inputValue"
           class="terminal-input"
           :placeholder="placeholder"
+          @input="onInput"
       />
       <input
           v-else
@@ -19,7 +20,19 @@
           :placeholder="placeholder"
           @keydown="inputHandler"
           inputmode="numeric"
+          @input="onInput"
       />
+
+      <Popover ref="op">
+        <template v-if="!int && !float">
+          <span v-if="min != undefined && (inputValue ?? '').length < min">Length must be not less than {{min}}</span>
+          <span v-if="max != undefined && (inputValue ?? '').length > max">Length must be not more than {{max}}</span>
+        </template>
+        <template v-else>
+          <span v-if="min != undefined && Number(inputValue) < min">Value must be not less than {{min}}</span>
+          <span v-if="max != undefined && Number(inputValue) > max">Value must be not more than {{max}}</span>
+        </template>
+      </Popover>
     </span>
 
     <span class="bracket bracket-right"></span>
@@ -28,7 +41,9 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
+import {Popover} from "primevue";
 
+const op = ref();
 const inputValue = defineModel({ type: String });
 
 const props = defineProps({
@@ -56,7 +71,9 @@ const props = defineProps({
   optional: {
     type: Boolean,
     default: false
-  }
+  },
+  min: Number,
+  max: Number
 });
 
 const prompt = ref(props.label);
@@ -81,6 +98,24 @@ function inputHandler(event: KeyboardEvent) {
   if (props.float && !Number.isFinite(Number(value))) return event.preventDefault();
   let match = value.match(/[0-9]*/);
   if (props.int && (!match || !match[0] || match[0].length != value.length)) return event.preventDefault();
+}
+
+function onInput(event: InputEvent) {
+  const value = (event.target as HTMLInputElement).value;
+  if (value === "") {
+    op.value.hide();
+    return;
+  }
+  if (!props.int && !props.float) {
+    if (props.min != undefined && value.length < props.min) op.value.show(event);
+    else if (props.max != undefined && value.length > props.max) op.value.show(event);
+    else op.value.hide();
+  }
+  else {
+    if (props.min != undefined && Number(value) < props.min) op.value.show(event);
+    else if (props.max != undefined && Number(value) > props.max) op.value.show(event);
+    else op.value.hide();
+  }
 }
 </script>
 

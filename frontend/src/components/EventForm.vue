@@ -55,15 +55,18 @@ function readDatetime(dateStr: string | undefined) {
     <template v-for="field in event.formFields">
       <TermInput v-if="field.type === 'text'"
                  :label="field.title"
-                 v-model="response[field.key]"/>
+                 v-model="response[field.key]"
+                 :min="field.min" :max="field.max"/>
       <TermInput v-if="field.type === 'int'" int
                  :label="field.title"
                  :modelValue="response[field.key]"
-                 @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"/>
+                 @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"
+                 :min="field.min" :max="field.max"/>
       <TermInput v-if="field.type === 'float'" float
                  :label="field.title"
                  :modelValue="response[field.key]"
-                 @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"/>
+                 @update:modelValue="value => response[field.key] = value?.replaceAll(',', '.')"
+                 :min="field.min" :max="field.max"/>
       <TermSelect v-if="field.type === 'select'"
                   :label="field.title"
                   :options="field.variants"
