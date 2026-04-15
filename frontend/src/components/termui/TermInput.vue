@@ -25,13 +25,13 @@
 
       <Popover ref="op">
         <template v-if="!int && !float">
-          <div v-if="min != undefined && (inputValue ?? '').length < min">Length must be not less than {{min}}</div>
-          <div v-if="max != undefined && (inputValue ?? '').length > max">Length must be not more than {{max}}</div>
-          <div v-if="props.pattern != undefined && !props.pattern.test(inputValue ?? '')">Does not match pattern</div>
+          <div v-if="min != undefined && (inputValue ?? '').length < min">Длина строки должна быть не менее {{min}}</div>
+          <div v-if="max != undefined && (inputValue ?? '').length > max">Длина строки должна быть не более {{max}}</div>
+          <div v-if="props.pattern != undefined && !props.pattern.test(inputValue ?? '')">Строка не соответствует шаблону</div>
         </template>
         <template v-else>
-          <div v-if="min != undefined && Number(inputValue) < min">Value must be not less than {{min}}</div>
-          <div v-if="max != undefined && Number(inputValue) > max">Value must be not more than {{max}}</div>
+          <div v-if="min != undefined && Number(inputValue) < min">Значение должно быть не менее {{min}}</div>
+          <div v-if="max != undefined && Number(inputValue) > max">Значение должно быть не более {{max}}</div>
         </template>
       </Popover>
     </span>
