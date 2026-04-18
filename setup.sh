@@ -5,17 +5,20 @@ MAIL_USER=MAIL_USER
 MAIL_PASS=MAIL_PASS
 MINIO_SECRET_KEY=MINIO_SECRET_KEY
 MINIO_DOMAIN=\"http://localhost:54002\"
-JWT_SECRET=SECRET" > ./.env
+JWT_SECRET=SECRET" >./.env
 fi
 
 if [[ ! -e "./keys" ]]; then
-mkdir "./keys"
+  mkdir "./keys"
 fi
 
 if [[ ! -f "./keys/private.pem" ]]; then
-openssl ecparam -genkey -name prime256v1 -noout -out ./keys/private.pem
+  openssl ecparam -genkey -name prime256v1 -noout -out ./keys/private.pem
 fi
 
 if [[ ! -f "./keys/public.pem" ]]; then
-openssl pkey -in ./keys/private.pem -pubout -out ./keys/public.pem
+  openssl pkey -in ./keys/private.pem -pubout -out ./keys/public.pem
 fi
+
+podman network create inf54_network
+

@@ -8,3 +8,4 @@ frontend/components.d.ts
 *.pem
 *.lock
 .idea
+backend/dist
