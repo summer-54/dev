@@ -3,13 +3,21 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
-      <select
+      <span :class="{prompt: true, optional: optional}"
+            v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
+      <Select
           v-model="inputValue"
           class="terminal-input"
+          :class="$style.select"
+          :options="options"
+          :overlayClass="$style.selectOverlay"
       >
-        <option v-for="option in options" :value="option">{{option}}</option>
-      </select>
+        <template #option="slotProps">
+            <div>
+                <div>{{ slotProps.option }}</div>
+            </div>
+        </template>
+      </Select>
     </span>
 
     <span class="bracket bracket-right"></span>
@@ -18,6 +26,7 @@
 
 <script setup lang="ts">
 import {onMounted, type PropType, ref} from "vue";
+import {Select} from "primevue";
 
 const inputValue = defineModel({ type: String });
 
@@ -62,6 +71,28 @@ onMounted(() => {
 });
 </script>
 
+<style module>
+.select {
+  --p-select-padding-x: 0;
+  --p-select-padding-y: 0;
+}
+
+.selectOverlay {
+  font-family: 'Courier New', Courier, monospace;
+  --p-select-overlay-background: #000000A0;
+  --p-select-overlay-border-color: #95EAA730;
+  --p-select-option-focus-background: #95EAA720;
+  --p-select-option-selected-focus-background: #95EAA720;
+  --p-select-option-selected-background: #00000000;
+  --p-select-option-selected-color: #95EAA7FF;
+  --p-select-option-selected-focus-color: #95EAA7FF;
+
+  :global(.p-select-option-selected) {
+    text-shadow: 0 0 5px #95EAA7FF;
+  }
+}
+</style>
+
 <style scoped>
 .terminal-wrapper {
   display: flex;
@@ -77,7 +108,7 @@ onMounted(() => {
 /* Графические скобки через border */
 .bracket {
   width: 5px;
-  height: 40px;
+  height: calc(100% + 8px);
   border: 2px solid black;
   opacity: 0.6;
   position: absolute;
@@ -108,6 +139,10 @@ onMounted(() => {
   font-weight: bold;
   user-select: none;
   transition: text-shadow ease-in-out 0.2s;
+  max-width: 60%;
+  display: block;
+  /*word-break: break-word;*/
+  white-space: normal;
 }
 
 .optional {
@@ -133,7 +168,7 @@ onMounted(() => {
     }
 
     .bracket {
-      height: 45px;
+      height: calc(100% + 12px);
     }
 
     .bracket-left {
@@ -162,7 +197,7 @@ onMounted(() => {
   }
 
   .bracket {
-    height: 45px;
+    height: calc(100% + 12px);
   }
 
   .bracket-left {

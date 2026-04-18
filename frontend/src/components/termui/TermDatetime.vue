@@ -3,12 +3,16 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
-      <input
-          type="datetime-local"
-          v-model="value"
+      <span :class="{prompt: true, optional: optional}"
+            v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
+      <DatePicker
+          v-model="inputValue"
           class="terminal-input"
+          :class="$style.date"
           :placeholder="placeholder"
+          showTime showIcon iconDisplay="input"
+          dateFormat="dd.mm.yy"
+          :minDate="min" :maxDate="max"
       />
     </span>
 
@@ -17,10 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, type PropType, ref, watch} from "vue";
-import {formatDateNoSeconds} from "@/utils.js";
+import {onMounted, type PropType, ref} from "vue";
+import {DatePicker} from "primevue";
 
-const inputValue = defineModel({ type: Object as PropType<Date> });
+const inputValue = defineModel({
+  type: Object as PropType<Date>,
+  required: true
+});
 
 const props = defineProps({
   label: {
@@ -39,11 +46,12 @@ const props = defineProps({
   optional: {
     type: Boolean,
     default: false
-  }
+  },
+  min: Date,
+  max: Date
 });
 
 const prompt = ref(props.label);
-const value = ref("");
 
 function selectPrompt() {
   if (props.mLabel === "") {
@@ -58,15 +66,19 @@ onMounted(() => {
   selectPrompt();
   window.addEventListener("resize", selectPrompt);
 });
-
-watch(value, val => {
-  inputValue.value = new Date(val);
-});
-
-watch(inputValue, val => {
-  if (val) value.value = formatDateNoSeconds(new Date(val));
-});
 </script>
+
+<style module>
+.date {
+  --p-inputtext-padding-x: 0;
+  --p-inputtext-padding-y: 0;
+  --p-inputtext-background: #00000000;
+
+  :global(.p-datepicker-input) {
+    border: none !important;
+  }
+}
+</style>
 
 <style scoped>
 .terminal-wrapper {
@@ -83,7 +95,7 @@ watch(inputValue, val => {
 /* Графические скобки через border */
 .bracket {
   width: 5px;
-  height: 40px;
+  height: calc(100% + 8px);
   border: 2px solid black;
   opacity: 0.6;
   position: absolute;
@@ -114,6 +126,10 @@ watch(inputValue, val => {
   font-weight: bold;
   user-select: none;
   transition: text-shadow ease-in-out 0.2s;
+  max-width: 60%;
+  display: block;
+  /*word-break: break-word;*/
+  white-space: normal;
 }
 
 .optional {
@@ -139,7 +155,7 @@ watch(inputValue, val => {
     }
 
     .bracket {
-      height: 45px;
+      height: calc(100% + 12px);
     }
 
     .bracket-left {
@@ -168,7 +184,7 @@ watch(inputValue, val => {
   }
 
   .bracket {
-    height: 45px;
+    height: calc(100% + 12px);
   }
 
   .bracket-left {

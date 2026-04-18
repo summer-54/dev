@@ -8,7 +8,7 @@ import {Readable} from "node:stream"
 import {db} from "./sql/index.sql.js";
 import {checkAccess, getUserEvents} from "./sql/events.sql.js";
 import {sendEventConfirmEmail} from "./mail.js";
-import {formFieldsValidator, generateValidator, time} from "./parsers.js";
+import {formFieldsValidator, generateValidator, datetime} from "./parsers.js";
 
 const router = new BackendiumRouter<JwtAccessPayload>();
 router.setAuth(async (request, response) => {
@@ -28,9 +28,9 @@ router.post("/", {
         emailConfirm: optional(boolean()),
         summaryUrl: optional(string()),
         formFields: formFieldsValidator,
-        registerStart: optional(time()),
-        registerEnd: optional(time()),
-        datetime: optional(time())
+        registerStart: optional(datetime()),
+        registerEnd: optional(datetime()),
+        datetime: optional(datetime())
     }, {ignoreUnknown: false}),
     auth: true
 }, async (request, response) => {
@@ -68,9 +68,9 @@ router.patch("/:id", {
         emailConfirm: optional(boolean()),
         summaryUrl: optional(string()),
         formFields: optional(formFieldsValidator),
-        registerStart: optional(time()),
-        registerEnd: optional(time()),
-        datetime: optional(time())
+        registerStart: optional(datetime()),
+        registerEnd: optional(datetime()),
+        datetime: optional(datetime())
     }, {ignoreUnknown: false}),
     paramsValidator: object({
         id: uuid()
@@ -131,6 +131,7 @@ router.patch("/:id/admins", {
 router.get("/", {auth: true}, async (request, response) => {
     response.expressResponse.set("content-type", "application/json");
     response.end(await getUserEvents(request.globalAuth.id));
+    console.log(await getUserEvents(request.globalAuth.id));
 });
 
 router.get("/list-all", {auth: true}, async (request, response) => {
@@ -186,11 +187,16 @@ router.post("/:id", {
     bodyValidator: object({})
 }, async (request, response) => {
     const event = await db.selectFrom("events").where("id", '=', request.params.id)
-        .select(["id", "account", "autoAccept", "emailConfirm", "displayName", "summaryUrl", "formFields"])
+        .select(["id", "account", "autoAccept", "emailConfirm", "displayName", "summaryUrl", "formFields", "opened"])
         .executeTakeFirst();
     if (!event) {
         response.status(404);
         response.end();
+        return;
+    }
+    if (!event.opened) {
+        response.status(409);
+        response.end("Registration is not opened");
         return;
     }
     try {
@@ -220,7 +226,13 @@ router.post("/:id", {
             }).execute();
         }
         else {
+            let auth = undefined;
+            if ("authorization" in request.expressRequest.headers) {
+                auth = await checkAuthRetData(request.expressRequest.headers?.authorization, response);
+                if (!auth) return;
+            }
             await db.insertInto("eventParticipants").values({
+                user: auth?.id,
                 event: request.params.id,
                 formFields,
                 originalFormFields: request.body,
@@ -265,6 +277,20 @@ router.get("/:id/responses", {
     response.end(
         await db.selectFrom("eventParticipants").where("event", '=', request.params.id)
             .limit(request.query.limit).offset(request.query.offset).selectAll().execute()
+    );
+});
+
+router.get("/:id/my-responses", {
+    paramsValidator: object({
+        id: uuid()
+    }),
+    auth: true
+}, async (request, response) => {
+    response.expressResponse.set("content-type", "application/json");
+    response.end(
+        await db.selectFrom("eventParticipants")
+            .where(({and, eb}) => and([eb("event", '=', request.params.id), eb("user", '=', request.globalAuth.id)]))
+            .selectAll().orderBy("editDatetime", "desc").execute()
     );
 });
 

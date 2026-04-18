@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type {PropType} from "vue";
-import type {Event} from "@/api/events.js";
+import type {EventType} from "@/api/events.js";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import HiddenLink from "@/components/HiddenLink.vue";
 
 const props = defineProps({
   event: {
-    type: Object as PropType<Omit<Event, "formFields">>,
+    type: Object as PropType<Omit<EventType, "formFields">>,
     required: true
   }
 });
@@ -24,9 +24,13 @@ const props = defineProps({
         </p>
       </div>
       <div class="buttons">
-        <TermButton v-if="event.type === 'admin'">Редактировать</TermButton>
-        <HiddenLink :to="event.summaryUrl"><TermButton v-if="event.summaryUrl">Подробнее</TermButton></HiddenLink>
-        <HiddenLink :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
+        <HiddenLink :to="`/events/${event.id}/edit`"><TermButton v-if="event.type === 'admin'">Редактировать (admin)</TermButton></HiddenLink>
+        <HiddenLink v-if="event.summaryUrl" :to="event.summaryUrl"><TermButton>Подробнее</TermButton></HiddenLink>
+        <HiddenLink v-if="!event.my && event.opened" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && event.editable" :to="`/events/${event.id}/response`"><TermButton>Изменить</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && !event.editable" :to="`/events/${event.id}/response`"><TermButton>Просмотреть</TermButton></HiddenLink>
+        <HiddenLink v-if="event.my && !event.account && event.opened" :to="`/events/${event.id}`"><TermButton>Зарегистрироваться повторно</TermButton></HiddenLink>
+        <TermButton v-if="!event.opened" disabled>Регистрация закрыта</TermButton>
       </div>
     </div>
   </TermWindow>
@@ -57,6 +61,7 @@ img {
   width: 120px;
   float: left;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 
 h4 {
@@ -80,5 +85,6 @@ p {
 
 .main {
   gap: 10px;
+  width: 100%;
 }
 </style>
