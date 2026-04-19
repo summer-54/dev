@@ -25,7 +25,7 @@ import {onMounted, type PropType, ref} from "vue";
 import {DatePicker} from "primevue";
 
 const inputValue = defineModel({
-  type: Object as PropType<Date>,
+  type: Object as PropType<Date | undefined>,
   required: true
 });
 

@@ -23,12 +23,12 @@ const filled = defineModel("filled", {
   required: true
 })
 
-function formatDatetime(date: Date) {
-  return !isNaN(date.getTime()) ? date?.toISOString() : "";
+function formatDatetime(date: Date | undefined) {
+  return date && !isNaN(date.getTime()) ? date?.toISOString() : "";
 }
 
-function formatDate(date: Date) {
-  return !isNaN(date.getTime()) ? `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getFullYear()).padStart(4, '0')}` : "";
+function formatDate(date: Date | undefined) {
+  return date && !isNaN(date.getTime()) ? `${String(date.getDate()).padStart(2, '0')}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getFullYear()).padStart(4, '0')}` : "";
 }
 
 function readDate(dateStr: string | undefined) {
