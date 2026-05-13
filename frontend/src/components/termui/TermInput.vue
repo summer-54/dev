@@ -3,7 +3,7 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional}"
+      <span :class="{prompt: true, optional: optional, lineBreak: !noBreak}"
             v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
       <input
           v-if="!int && !float"
@@ -76,7 +76,8 @@ const props = defineProps({
   },
   min: Number,
   max: Number,
-  pattern: RegExp
+  pattern: RegExp,
+  noBreak: Boolean
 });
 
 const prompt = ref(props.label);
@@ -171,6 +172,9 @@ function onInput(event: InputEvent) {
   transition: text-shadow ease-in-out 0.2s;
   max-width: 60%;
   display: block;
+}
+
+.lineBreak {
   /*word-break: break-word;*/
   white-space: normal;
 }

@@ -17,13 +17,13 @@ const isDark = computed(() => {
         Добро пожаловать. Регистрация
       </template>
 
-      <TermInput label="root@inf54:~# username:" mLabel="> username:" placeholder="Имя пользователя"/>
-      <TermInput label="root@inf54:~# email:" mLabel="> email:" placeholder="Email"/>
-      <TermInput label="root@inf54:~# password:" mLabel="> password:" placeholder="Пароль" password/>
-      <TermInput label="root@inf54:~# confirm:" mLabel="> confirm:" placeholder="Повторите пароль" password/>
-      <TermInput label="root@inf54:~# name:" mLabel="> name:" placeholder="Имя"/>
-      <TermInput label="root@inf54:~# surname:" mLabel="> surname:" placeholder="Фамилия"/>
-      <TermInput label="root@inf54:~# codeforces:" mLabel="> codeforces:" placeholder="Ник на Codeforces (опц.)" optional/>
+      <TermInput label="root@inf54:~# username:" mLabel="> username:" placeholder="Имя пользователя" noBreak/>
+      <TermInput label="root@inf54:~# email:" mLabel="> email:" placeholder="Email" noBreak/>
+      <TermInput label="root@inf54:~# password:" mLabel="> password:" placeholder="Пароль" password noBreak/>
+      <TermInput label="root@inf54:~# confirm:" mLabel="> confirm:" placeholder="Повторите пароль" password noBreak/>
+      <TermInput label="root@inf54:~# name:" mLabel="> name:" placeholder="Имя" noBreak/>
+      <TermInput label="root@inf54:~# surname:" mLabel="> surname:" placeholder="Фамилия" noBreak/>
+      <TermInput label="root@inf54:~# codeforces:" mLabel="> codeforces:" placeholder="Ник на Codeforces (опц.)" optional noBreak/>
       <TermButton>testtest</TermButton>
     </TermWindow>
 
