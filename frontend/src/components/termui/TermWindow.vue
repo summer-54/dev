@@ -22,16 +22,6 @@ onMounted(() => {
 
 <template>
 <section :class="{dark: $themeName === 'dark'}">
-  <span class="border border-top">{{h}}</span>
-  <span class="border border-left">{{v}}</span>
-  <span class="border border-right">{{v}}</span>
-  <span class="border border-bottom">{{h}}</span>
-
-  <span class="border corner corner-top-left">┌</span>
-  <span class="border corner corner-top-right">┐</span>
-  <span class="border corner corner-bottom-left">└</span>
-  <span class="border corner corner-bottom-right">┘</span>
-
   <div class="prompt" v-if="prompt">{{prompt}}</div>
   <div class="header" v-if="!noHeader">
     <slot name="header"/>
@@ -53,6 +43,7 @@ section {
   padding: 10px;
   font-family: 'Courier New', Courier, monospace;
   margin: 5px;
+  border: 1px solid rgba(149, 234, 167, 0.8);
 
   .header {
     padding: 10px;
@@ -69,72 +60,12 @@ section {
     align-items: center;
     gap: 20px;
   }
-
-  .border {
-    position: absolute;
-    font-size: 16px;
-    letter-spacing: 5px;
-  }
-
-  .border-right, .border-left {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-
-    top: 18px;
-  }
-
-  .border-top, .border-bottom {
-    left: 15px;
-  }
-
-  .border-left {
-    left: -5px;
-  }
-
-  .border-top {
-    top: -5px;
-  }
-
-  .border-right {
-    right: -5px;
-  }
-
-  .border-bottom {
-    bottom: -5px;
-  }
-
-  .corner {
-    background-color: white;
-  }
-
-  .corner-top-left {
-    top: -5px;
-    left: 0;
-    border-bottom-right-radius: 10px;
-  }
-
-  .corner-top-right {
-    top: -5px;
-    right: -5px;
-    border-bottom-left-radius: 10px;
-  }
-
-  .corner-bottom-left {
-    bottom: -5px;
-    left: 0;
-    border-top-right-radius: 10px;
-  }
-
-  .corner-bottom-right {
-    bottom: -5px;
-    right: -5px;
-    border-top-left-radius: 10px;
-  }
 }
 
 .dark {
-  background: #00000050;
-  box-shadow: 0 0 5px #95EAA7FF;
+  //background: #00000050;
+  //box-shadow: 0 0 5px #95EAA7FF;
+  background: rgba(96, 151, 109, 0.04);
 
   .header, .header * {
     color: #95EAA7FF;
@@ -144,14 +75,6 @@ section {
   .prompt {
     color: #95EAA7FF;
     text-shadow: 0 0 5px #95EAA7FF;
-  }
-
-  .border {
-    color: #95EAA7FF;
-  }
-
-  .corner {
-    background-color: rgb(18, 18, 18);
   }
 }
 </style>

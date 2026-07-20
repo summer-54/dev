@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {onMounted} from "vue";
 import {useRouter} from "vue-router";
+import TermBG from "@/components/termui/TermBG.vue";
 
 const router = useRouter();
 
@@ -21,7 +22,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <main></main>
+  <main>
+    <TermBG/>
+  </main>
 </template>
 
 <style scoped>

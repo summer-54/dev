@@ -1,8 +1,9 @@
 <template>
   <main>
-    <Title text="Летняя школа программирования" />
-    <QA_container :qa_list="qa_list_small"/>
+    <h1>Летняя школа программирования</h1>
+    <QA_container :qa_list="qa_list_small" class="qa_list_small"/>
     <QA_container :qa_list="qa_list_large"/>
+    <TermBG/>
   </main>
 </template>
 
@@ -10,10 +11,11 @@
 import {defineComponent} from 'vue';
 import Title from '@/components/Title.vue';
 import QA_container from '@/components/QA_container.vue';
+import TermBG from "@/components/termui/TermBG.vue";
 
 export default defineComponent({
   name: "SummerCamp",
-  components: {Title, QA_container},
+  components: {TermBG, Title, QA_container},
   data() {
     return {
       qa_list_small: [
@@ -28,3 +30,36 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+h1 {
+  font-family: "ShoptronicSP",serif;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+
+  @media (width >= 1270px) {
+    font-size: 96px;
+  }
+  @media (910px <= width < 1270px) {
+    font-size: 64px;
+  }
+  @media (710px <= width < 910px) {
+    font-size: 48px;
+  }
+  @media (width < 710px) {
+    font-size: 36px;
+  }
+}
+
+:global(.dark) {
+  h1 {
+    color: #95EAA7FF;
+    text-shadow: 0 0 10px #95EAA7FF;
+  }
+}
+
+.qa_list_small {
+  margin-bottom: 40px;
+}
+</style>

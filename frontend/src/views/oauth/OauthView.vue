@@ -4,6 +4,7 @@ import {hasToken} from "@/api/users.js";
 import {useRoute, useRouter} from "vue-router";
 import {authWrapper} from "@/api/authWrapper.js";
 import axios from "axios";
+import TermBG from "@/components/termui/TermBG.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -26,7 +27,7 @@ onMounted(async () => {
 </script>
 
 <template>
-
+  <TermBG/>
 </template>
 
 <style scoped>

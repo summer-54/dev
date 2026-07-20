@@ -1,19 +1,25 @@
 <template>
   <div>
-    <span class="qa_container" v-for="{q, a} in qa_list">
-      <Subtitle :text="q" class="subtitle"></Subtitle>
-      <span class="answer" v-html="a"></span>
-    </span>
+    <Animation class="qa_container" v-for="({q, a}, index) in qa_list" animation="fadeRight" :delay="index * 100">
+      <TermWindow class="inner">
+        <template #header>
+          <span class="question">{{q}}</span>
+        </template>
+        <span class="answer" v-html="a"></span>
+      </TermWindow>
+    </Animation>
   </div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue';
 import Subtitle from "@/components/Subtitle.vue";
+import Animation from "@/components/ui/animation.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
 
 export default defineComponent({
   name: "QA_container",
-  components: {Subtitle},
+  components: {TermWindow, Animation, Subtitle},
   props: {
     qa_list: {
       type: Array<{q: string, a: string}>,
@@ -27,13 +33,14 @@ export default defineComponent({
 .answer {
   font-family: "LXGW WenKai Mono TC", monospace;
   font-size: 24px;
-  
+  width: 100%;
+
   @media (min-width: 530px) and (max-width: 940px) {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   @media (max-width: 530px) {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -48,13 +55,17 @@ div {
     padding: 0 20px;
   }
 
-  span {
+  .qa_container {
     flex-basis: 350px;
     flex-grow: 1;
-    text-align: justify;
 
     h2 {
       text-align: center;
+    }
+
+    .inner {
+      width: 100%;
+      height: 100%;
     }
   }
 }

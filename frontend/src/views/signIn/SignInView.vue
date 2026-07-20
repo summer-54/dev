@@ -8,10 +8,11 @@ import Title from "@/components/Title.vue";
 import {hasToken, signIn} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import TermBG from "@/components/termui/TermBG.vue";
 
 export default defineComponent({
   name: "SignInView",
-  components: {ProgressIndicator, CustomForm, Title, SuiButton, SuiInput},
+  components: {TermBG, ProgressIndicator, CustomForm, Title, SuiButton, SuiInput},
   data() {
     return {
       username: "",
@@ -65,6 +66,7 @@ export default defineComponent({
       </span>
     </CustomForm>
     <ProgressIndicator v-if="pending"/>
+    <TermBG/>
   </main>
 </template>
 

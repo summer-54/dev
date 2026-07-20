@@ -3,7 +3,7 @@ import TermInput from "@/components/termui/TermInput.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import {computed} from "vue";
-import TermHeader from "@/components/termui/header/TermHeader.vue";
+// import TermHeader from "@/components/termui/header/TermHeader.vue";
 
 const isDark = computed(() => {
   return document.documentElement.classList.contains('dark');
@@ -27,7 +27,7 @@ const isDark = computed(() => {
       <TermButton>testtest</TermButton>
     </TermWindow>
 
-    <TermHeader/>
+<!--    <TermHeader/>-->
   </div>
 </template>
 

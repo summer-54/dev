@@ -102,7 +102,8 @@ const currentTrigger = ref("");
   border-radius: 5px;
   list-style: none;
   border: 1px solid #95EAA730;
-  background: rgba(96, 151, 109, 0.06);
+  background: rgba(96, 151, 109, 0.1);
+  backdrop-filter: blur(22px) saturate(180%);
   margin: 0;
   transition: background-color .6s, color .6s;
 }
@@ -133,9 +134,23 @@ const currentTrigger = ref("");
   overflow: hidden;
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 300ms ease;
-  background: rgba(96, 151, 109, 0.06);
+  //background: rgba(96, 151, 109, 0.06);
   border: 1px solid #95EAA730;
+  background:
+      linear-gradient(oklch(0 0 0 / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0 0 0 / 0.04) 1px, transparent 1px),
+      white;
+  background-size: 46px 46px;
 }
+
+:global(.dark) .NavigationMenuViewport {
+  background:
+      linear-gradient(oklch(1 0 0 / 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(1 0 0 / 0.022) 1px, transparent 1px),
+      rgb(18, 18, 18);
+  background-size: 46px 46px;
+}
+
 .NavigationMenuViewport[data-state='open'] {
   animation: scaleIn 200ms ease;
 }

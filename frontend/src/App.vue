@@ -67,7 +67,7 @@ body {
 
 #app {
   height: 100%;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
 }
 
 .fade-enter-active, .fade-leave-active {
@@ -76,5 +76,13 @@ body {
 
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+@font-face {
+  font-family: 'ShoptronicSP';
+  src: url('./assets/ShoptronicSP Basic.otf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 </style>

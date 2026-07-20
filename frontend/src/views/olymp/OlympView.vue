@@ -17,10 +17,11 @@ import author2 from "@/assets/author2.jpg";
 import author3 from "@/assets/author3.jpg";
 import author4 from "@/assets/author4.jpg";
 import Animation from "@/components/ui/animation.vue";
+import TermBG from "@/components/termui/TermBG.vue";
 
 export default defineComponent({
   name: "OlympView",
-  components: {Animation, QA_container, Subtitle, CircledImage_container, ImageGallery, Title, OlympMaterials},
+  components: {TermBG, Animation, QA_container, Subtitle, CircledImage_container, ImageGallery, Title, OlympMaterials},
   data() {
     return {
       rules: [
@@ -59,17 +60,29 @@ export default defineComponent({
 
 <template>
   <main>
-    <Title text="Олимпиада по программированию"></Title>
-    <animation animation="flip"><Subtitle text="Правила"/></animation>
+    <div class="firstScreen">
+      <Animation animation="opacity">
+        <h1><span class="highlight">Олимпиада</span> классов при механико-математическом факультете МГУ имени М.В.Ломоносова <span class="highlight">по программированию</span></h1>
+      </Animation>
+      <Animation animation="opacity" :delay="500">
+        <p class="description">
+          Олимпиада проводится с целью выявления наиболее талантливых и способных учащихся в области программирования, а также пробуждения интереса к программированию.
+          Победители и призёры олимпиады получат дипломы и памятные призы.
+          По результатам олимпиады отбираются участники ЛШП.
+        </p>
+      </Animation>
+    </div>
+<!--    <Animation animation="opacity" :delay="1000">-->
+    <animation animation="opacity"><h2 class="highlight">Правила</h2></animation>
     <QA_container :qa_list="rules"></QA_container>
-    <animation animation="flip"><Subtitle text="Организационный комитет"></Subtitle></animation>
+    <animation animation="opacity"><h2 class="highlight">Организационный комитет</h2></animation>
     <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
-    <animation animation="flip"><Subtitle text="Методическая комиссия"></Subtitle></animation>
+    <animation animation="opacity"><h2 class="highlight">Методическая комиссия</h2></animation>
     <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
-    <animation animation="flip"><Subtitle text="Фотогалерея"></Subtitle></animation>
-    <ImageGallery :imgs_list="gallery_list"></ImageGallery>
     <OlympMaterials/>
-    <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>
+<!--    </Animation>-->
+<!--    <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>-->
+    <TermBG/>
   </main>
 </template>
 
@@ -79,24 +92,73 @@ main {
   flex-direction: column;
   align-items: center;
 }
-.link_p {
-  margin-top: 100px;
-  display: block;
-  width: 100%;
-  text-align: center;
-  padding-bottom: 50px;
-  font-weight: bold;
-}
-.link {
-  font-family: "LXGW WenKai Mono TC", monospace;
-  text-decoration: none;
-  font-size: 24px;
-  @media (min-width: 530px) and (max-width: 940px) {
-    font-size: 16px;
-  }
 
-  @media (max-width: 530px) {
-    font-size: 12px;
+h1 {
+  font-family: "ShoptronicSP",serif;
+  text-align: center;
+
+  @media (width >= 1270px) {
+    font-size: 96px;
+  }
+  @media (910px <= width < 1270px) {
+    font-size: 64px;
+  }
+  @media (710px <= width < 910px) {
+    font-size: 48px;
+  }
+  @media (width < 710px) {
+    font-size: 36px;
+  }
+}
+
+h2 {
+  font-family: "ShoptronicSP",serif;
+  font-size: 48px;
+}
+
+.description {
+  font-family: "LXGW WenKai Mono TC", monospace;
+  text-align: center;
+
+  @media (910px <= width) {
+    font-size: 36px;
+  }
+  @media (710px <= width < 910px) {
+    font-size: 24px;
+  }
+  @media (width < 710px) {
+    font-size: 20px;
+  }
+}
+
+.highlight {
+  color: #57d16d;
+  text-shadow: 0 0 10px #57d16d;
+}
+
+.firstScreen {
+  margin-top: -60px;
+  min-height: calc(100vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  @media (width >= 1270px) {
+    padding: 0 100px;
+  }
+  @media (910px <= width < 1270px) {
+    padding: 0 50px;
+  }
+  @media (width <= 910px) {
+    padding: 0 20px;
+  }
+}
+
+:global(.dark) {
+  .highlight {
+    color: #95EAA7FF;
+    text-shadow: 0 0 10px #95EAA7FF;
   }
 }
 </style>

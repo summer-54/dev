@@ -35,6 +35,20 @@ export default defineComponent({
 </style>
 
 <style module>
+@keyframes opacity {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.opacity {
+  opacity: 0;
+  animation: opacity 1.2s ease-out forwards;
+}
+
 @keyframes fadeLeft {
   from {
     transform: translateX(-20px);

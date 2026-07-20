@@ -65,6 +65,6 @@ export default defineComponent({
 }
 table {
   margin: auto;
-  padding-top: 100px;
+  padding-top: 80px;
 }
 </style>

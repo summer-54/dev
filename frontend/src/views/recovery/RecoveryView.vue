@@ -10,6 +10,7 @@
       <SuiButton @click.prevent.stop="recoveryRequest" :disabled="password !== passwordConfirm || passwordStrength <= 0 || pending">Восстановить пароль</SuiButton>
     </CustomForm>
     <ProgressIndicator v-if="pending"/>
+    <TermBG/>
   </main>
 </template>
 
@@ -26,6 +27,7 @@ import SuiInput from 'sffui.vue/suiInput.vue';
 import FormComment from "@/components/ui/formComment.vue";
 import {recovery} from "@/api/recovery.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import TermBG from "@/components/termui/TermBG.vue";
 
 const router = useRouter();
 

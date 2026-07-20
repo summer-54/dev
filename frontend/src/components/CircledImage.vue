@@ -44,10 +44,7 @@ export default defineComponent({
   @media (min-width: 902px) and (max-width: 1105px){
     width: 180px;
   }
-  @media (min-width: 702px) and (max-width: 902px){
-    width: 130px;
-  }
-  @media (max-width: 702px){
+  @media (max-width: 902px){
     width: 50vw;
   }
 }
@@ -60,15 +57,15 @@ export default defineComponent({
   font-family: "LXGW WenKai Mono TC", monospace;
 
   @media (min-width: 940px){
-    font-size: 18px;
+    font-size: 24px;
   }
 
   @media (min-width: 530px) and (max-width: 940px) {
-    font-size: 16px;
+    font-size: 20px;
   }
 
   @media (max-width: 530px) {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 .note1 {
@@ -93,13 +90,13 @@ export default defineComponent({
     max-width: 182px;
   }
 
-  @media (min-width: 702px) and (max-width: 902px){
+  /*@media (min-width: 702px) and (max-width: 902px){
     max-width: 132px;
   }
 
   @media (max-width: 702px){
     max-width: 60vw;
-  }
+  }*/
   margin-bottom: 30px;
 }
 </style>

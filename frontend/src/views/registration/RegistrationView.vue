@@ -9,10 +9,11 @@ import {hasToken, isUniqueCodeforcesHandle, isUniqueEmail, isUniqueUsername, reg
 import CustomForm from "@/components/ui/CustomForm.vue";
 import FormComment from "@/components/ui/formComment.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import TermBG from "@/components/termui/TermBG.vue";
 
 export default defineComponent({
   name: "RegistrationView",
-  components: {ProgressIndicator, FormComment, CustomForm, Title, SuiInput, SuiButton},
+  components: {TermBG, ProgressIndicator, FormComment, CustomForm, Title, SuiInput, SuiButton},
   data() {
     return {
       username: "",
@@ -106,6 +107,7 @@ export default defineComponent({
       </span>
     </CustomForm>
     <ProgressIndicator v-if="pending"/>
+    <TermBG/>
   </main>
 </template>
 

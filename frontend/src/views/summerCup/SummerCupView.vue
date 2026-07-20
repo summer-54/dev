@@ -7,10 +7,11 @@ import {VueLatex} from "vatex";
 import Tex from "@/components/ui/tex.vue";
 import SolutionContainer from "./SolutionContainer.vue";
 import Tabs from "@/components/ui/Tabs.vue";
+import TermBG from "@/components/termui/TermBG.vue";
 
 export default defineComponent({
   name: "SummerCupView",
-  components: {Tabs, Tex, Subtitle, QA_container, Title, VueLatex, SolutionContainer},
+  components: {TermBG, Tabs, Tex, Subtitle, QA_container, Title, VueLatex, SolutionContainer},
   data() {
     return {
       qa_list: [
@@ -63,7 +64,7 @@ export default defineComponent({
 
 <template>
   <main>
-    <Title text="Летний кубок по программированию"/>
+    <h1>Летний кубок по программированию</h1>
     <QA_container :qa_list="qa_list"></QA_container>
     <Subtitle style="text-align: center;" text="Система оценивания"/>
     <tex class="plain_text" :text="text"/>
@@ -73,6 +74,7 @@ export default defineComponent({
         <Component :is="Component"/>
       </Transition>
     </RouterView>
+    <TermBG/>
   </main>
 </template>
 
@@ -83,6 +85,31 @@ export default defineComponent({
 
   @media (max-width: 530px) {
     margin: 0 20px;
+  }
+}
+
+h1 {
+  font-family: "ShoptronicSP",serif;
+  text-align: center;
+
+  @media (width >= 1270px) {
+    font-size: 96px;
+  }
+  @media (910px <= width < 1270px) {
+    font-size: 64px;
+  }
+  @media (710px <= width < 910px) {
+    font-size: 48px;
+  }
+  @media (width < 710px) {
+    font-size: 36px;
+  }
+}
+
+:global(.dark) {
+  h1 {
+    color: #95EAA7FF;
+    text-shadow: 0 0 10px #95EAA7FF;
   }
 }
 
