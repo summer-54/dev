@@ -50,7 +50,7 @@ h1 {
   @media (420px <= width < 710px) {
     font-size: 36px;
   }
-  @media (width < 4200px) {
+  @media (width < 420px) {
     font-size: 30px;
   }
 }
