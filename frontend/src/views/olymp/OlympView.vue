@@ -114,6 +114,13 @@ h1 {
 h2 {
   font-family: "ShoptronicSP",serif;
   font-size: 48px;
+
+  @media (910px <= width) {
+    font-size: 48px;
+  }
+  @media (width < 910px) {
+    font-size: 28px;
+  }
 }
 
 .description {

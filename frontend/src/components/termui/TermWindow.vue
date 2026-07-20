@@ -42,7 +42,6 @@ section {
   overflow: hidden;
   padding: 10px;
   font-family: 'Courier New', Courier, monospace;
-  margin: 5px;
   border: 1px solid rgba(149, 234, 167, 0.8);
 
   .header {
