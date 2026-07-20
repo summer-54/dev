@@ -8,10 +8,12 @@ import Tex from "@/components/ui/tex.vue";
 import SolutionContainer from "./SolutionContainer.vue";
 import Tabs from "@/components/ui/Tabs.vue";
 import TermBG from "@/components/termui/TermBG.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
+import Animation from "@/components/ui/animation.vue";
 
 export default defineComponent({
   name: "SummerCupView",
-  components: {TermBG, Tabs, Tex, Subtitle, QA_container, Title, VueLatex, SolutionContainer},
+  components: {Animation, TermWindow, TermBG, Tabs, Tex, Subtitle, QA_container, Title, VueLatex, SolutionContainer},
   data() {
     return {
       qa_list: [
@@ -66,8 +68,14 @@ export default defineComponent({
   <main>
     <h1>Летний кубок по программированию</h1>
     <QA_container :qa_list="qa_list"></QA_container>
-    <Subtitle style="text-align: center;" text="Система оценивания"/>
-    <tex class="plain_text" :text="text"/>
+    <Animation animation="fadeRight" :delay="200">
+      <TermWindow class="tex">
+        <template #header>
+          Система оценивания
+        </template>
+        <tex class="plain_text" :text="text"/>
+      </TermWindow>
+    </Animation>
     <Tabs :routes="{'I ЛКП': '/summer-cup/1', 'II ЛКП': '/summer-cup/2'}"/>
     <RouterView v-slot="{Component}">
       <Transition name="fade" mode="out-in">
@@ -81,11 +89,6 @@ export default defineComponent({
 <style scoped>
 .plain_text {
   text-align: justify;
-  margin: 0 40px;
-
-  @media (max-width: 530px) {
-    margin: 0 20px;
-  }
 }
 
 h1 {
@@ -101,8 +104,11 @@ h1 {
   @media (710px <= width < 910px) {
     font-size: 48px;
   }
-  @media (width < 710px) {
+  @media (420px <= width < 710px) {
     font-size: 36px;
+  }
+  @media (width < 4200px) {
+    font-size: 30px;
   }
 }
 
@@ -123,5 +129,13 @@ h2 {
 
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+.tex {
+  margin: 40px 40px 0 40px;
+
+  @media (max-width: 530px) {
+    margin: 40px 20px 0 20px;
+  }
 }
 </style>

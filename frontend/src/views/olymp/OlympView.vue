@@ -106,8 +106,11 @@ h1 {
   @media (710px <= width < 910px) {
     font-size: 48px;
   }
-  @media (width < 710px) {
+  @media (420px <= width < 710px) {
     font-size: 36px;
+  }
+  @media (width < 4200px) {
+    font-size: 30px;
   }
 }
 
