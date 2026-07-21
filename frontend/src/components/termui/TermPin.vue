@@ -122,21 +122,44 @@ defineProps({
 <style module>
 .input {
   :global(.p-inputotp-input) {
-    border: 1px solid #95EAA720;
+    border: 1px solid gray;
     background: transparent;
 
     @media (hover: hover) {
       &:hover {
-        text-shadow: 0 0 8px #95EAA7FF;
-        background: #95EAA710;
+        text-shadow: 0 0 8px #60e17b;
+        background: #60e17b30;
         border-color: #95EAA730 !important;
       }
     }
 
     &:active, &:focus {
-      text-shadow: 0 0 8px #95EAA7FF;
-      background: #95EAA710;
+      text-shadow: 0 0 8px #60e17b;
+      background: #60e17b30;
       border-color: #95EAA730 !important;
+    }
+  }
+}
+
+:global(.dark) {
+  .input {
+    :global(.p-inputotp-input) {
+      border: 1px solid #95EAA720;
+      background: transparent;
+
+      @media (hover: hover) {
+        &:hover {
+          text-shadow: 0 0 8px #95EAA7FF;
+          background: #95EAA710;
+          border-color: #95EAA730 !important;
+        }
+      }
+
+      &:active, &:focus {
+        text-shadow: 0 0 8px #95EAA7FF;
+        background: #95EAA710;
+        border-color: #95EAA730 !important;
+      }
     }
   }
 }
