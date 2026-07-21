@@ -59,6 +59,12 @@ section {
     align-items: center;
     gap: 20px;
   }
+
+  .prompt {
+    @media (width < 480px) {
+      font-size: 12px;
+    }
+  }
 }
 
 .dark {

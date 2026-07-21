@@ -1,0 +1,119 @@
+<script setup lang="ts">
+import {InputOtp} from "primevue";
+</script>
+
+<template>
+  <div class="terminal-wrapper">
+    <span class="bracket bracket-left"></span>
+    <InputOtp :class="$style.input"/>
+    <span class="bracket bracket-right"></span>
+  </div>
+</template>
+
+<style scoped>
+.terminal-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Courier New', Courier, monospace;
+  //width: 100%;
+  gap: 10px;
+  position: relative;
+  cursor: text;
+  font-size: 16px;
+}
+
+.bracket {
+  width: 5px;
+  height: calc(100% + 8px);
+  border: 2px solid black;
+  opacity: 0.6;
+  position: absolute;
+  transition: all ease-in-out 0.2s;
+}
+
+.bracket-left {
+  border-right: none;
+  left: 0;
+}
+
+.bracket-right {
+  border-left: none;
+  right: 0;
+}
+
+.terminal-wrapper:focus-within {
+  .bracket {
+    height: calc(100% + 12px);
+  }
+
+  .bracket-left {
+    left: -8px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .bracket-right {
+    right: -8px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+}
+
+@media (hover: hover) {
+  .terminal-wrapper:hover {
+    .bracket {
+      height: calc(100% + 12px);
+    }
+
+    .bracket-left {
+      left: -8px;
+      border-top-left-radius: 3px;
+      border-bottom-left-radius: 3px;
+    }
+
+    .bracket-right {
+      right: -8px;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+  }
+}
+
+:global(.dark) {
+  .bracket {
+    border: 2px solid #95EAA7FF;
+  }
+
+  .bracket-left {
+    border-right: none;
+  }
+
+  .bracket-right {
+    border-left: none;
+  }
+}
+</style>
+
+<style module>
+.input {
+  :global(.p-inputotp-input) {
+    border: 1px solid #95EAA720;
+    background: transparent;
+
+    @media (hover: hover) {
+      &:hover {
+        text-shadow: 0 0 8px #95EAA7FF;
+        background: #95EAA710;
+        border-color: #95EAA730 !important;
+      }
+    }
+
+    &:active, &:focus {
+      text-shadow: 0 0 8px #95EAA7FF;
+      background: #95EAA710;
+      border-color: #95EAA730 !important;
+    }
+  }
+}
+</style>
