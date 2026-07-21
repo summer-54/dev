@@ -9,10 +9,13 @@ import {hasToken, signIn} from "@/api/users.js";
 import CustomForm from "@/components/ui/CustomForm.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import TermBG from "@/components/termui/TermBG.vue";
+import TermButton from "@/components/termui/TermButton.vue";
+import TermInput from "@/components/termui/TermInput.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
 
 export default defineComponent({
   name: "SignInView",
-  components: {TermBG, ProgressIndicator, CustomForm, Title, SuiButton, SuiInput},
+  components: {TermWindow, TermInput, TermButton, TermBG, ProgressIndicator, CustomForm, Title, SuiButton, SuiInput},
   data() {
     return {
       username: "",
@@ -52,19 +55,23 @@ export default defineComponent({
 
 <template>
   <main>
-    <Title text="Вход"/>
-    <CustomForm>
-      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username" border="#9297FB"/>
-      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>
-      <span v-if="wrong">Неверное имя пользователя или пароль</span>
-      <span class="buttons">
-        <SuiButton @click="submit" :disabled="pending" border="#9297FB">Войти</SuiButton>
-        <RouterLink to="/registration"><SuiButton border="#9297FB">Зарегистрироваться</SuiButton></RouterLink>
-      </span>
-      <span class="buttons">
-        <RouterLink to="/recovery">Забыли пароль?</RouterLink>
-      </span>
-    </CustomForm>
+<!--    <CustomForm>-->
+<!--      <SuiInput maxLength="50" placeholder="Имя пользователя" v-model="username" border="#9297FB"/>-->
+<!--      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>-->
+<!--      <span v-if="wrong">Неверное имя пользователя или пароль</span>-->
+<!--    </CustomForm>-->
+    <TermWindow class="form" prompt="root@inf54:~# ./register.sh">
+      <template #header>
+        Добро пожаловать. Вход
+      </template>
+
+      <TermInput label="root@inf54:~# username:" mLabel="> username:" placeholder="Имя пользователя" noBreak v-model="username"/>
+      <TermInput label="root@inf54:~# password:" mLabel="> password:" placeholder="Пароль" password noBreak v-model="password"/>
+      <p class="error" v-if="wrong">Неверное имя пользователя или пароль</p>
+      <TermButton @click="submit" :disabled="pending">Войти</TermButton>
+      <p>Нет аккаунта? <RouterLink class="highlight" to="/registration">Регистрация</RouterLink></p>
+      <p><RouterLink class="highlight" to="/recovery">Забыли пароль?</RouterLink></p>
+    </TermWindow>
     <ProgressIndicator v-if="pending"/>
     <TermBG/>
   </main>
@@ -89,7 +96,30 @@ button {
     margin-bottom: 0;
   }
 }
-a {
-  text-decoration: none;
+
+.error {
+  color: red;
+}
+
+p {
+  margin: 0;
+}
+
+:global(.dark) {
+  .highlight {
+    color: #95EAA7FF;
+    text-shadow: 0 0 5px #95EAA7FF;
+  }
+}
+
+.form {
+  width: calc(min(600px, 98vw));
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
 }
 </style>

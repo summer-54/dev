@@ -14,16 +14,6 @@ const isDark = computed(() => {
 <template>
   <main>
     <div class="forms">
-      <TermWindow class="window" prompt="root@inf54:~# ./register.sh">
-        <template #header>
-          Добро пожаловать. Вход
-        </template>
-
-        <TermInput label="root@inf54:~# username:" mLabel="> username:" placeholder="Имя пользователя" noBreak/>
-        <TermInput label="root@inf54:~# password:" mLabel="> password:" placeholder="Пароль" password noBreak/>
-        <TermButton>Войти</TermButton>
-        <p>Нет аккаунта? <RouterLink class="highlight" to="/registration">Регистрация</RouterLink></p>
-      </TermWindow>
       <TermWindow class="window" prompt="root@inf54:~# ./recovery.sh">
         <template #header>
           Восстановление пароля
