@@ -18,6 +18,10 @@ defineProps({
   integerOnly: {
     type: Boolean,
     default: false
+  },
+  disabled: {
+    type: Boolean,
+    default: false
   }
 });
 </script>
@@ -25,7 +29,7 @@ defineProps({
 <template>
   <div class="terminal-wrapper">
     <span class="bracket bracket-left"></span>
-    <InputOtp :class="$style.input" v-model="model" :length="length" :integerOnly="integerOnly" :mask="mask"/>
+    <InputOtp :class="$style.input" v-model="model" :length="length" :integerOnly="integerOnly" :mask="mask" :disabled="disabled"/>
     <span class="bracket bracket-right"></span>
   </div>
 </template>
