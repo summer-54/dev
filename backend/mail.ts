@@ -11,6 +11,14 @@ export const mailer = createTransport({
     },
 });
 
+export async function sendConfirmationEmail(to: string, code: string) {
+    await mailer.sendMail({
+        from: `Информатика в школе №54 <${process.env.MAIL_USER}>`, to,
+        subject: "Регистрация",
+        html: `Здравствуйте!<br>Ваш код: ${code}`
+    });
+}
+
 export async function sendRecoveryMail(to: string, link: string) {
     await mailer.sendMail({
         from: `Информатика в школе №54 <${process.env.MAIL_USER}>`, to,

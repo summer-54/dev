@@ -18,11 +18,19 @@ export default async function () {
             .addColumn("image", "varchar(256)", cb => cb.notNull()).execute();
     } catch (error) {}
     try {
+        await db.schema.createTable("emailConfirmations")
+            .addColumn("id", "serial", cb => cb.primaryKey().unique())
+            .addColumn("email", "varchar(256)", cb => cb.notNull())
+            .addColumn("code", "varchar(6)", cb => cb.notNull())
+            .addColumn("token", "varchar(512)", cb => cb.notNull().unique())
+            .addColumn("expires", "timestamp", cb => cb.notNull()).execute();
+    } catch (error) {}
+    try {
         await db.schema.createTable("users")
             .addColumn("id", "serial", cb => cb.primaryKey().unique())
             .addColumn("username", "varchar(50)", cb => cb.notNull().unique())
-            .addColumn("codeforcesHandle", "varchar(50)", cb => cb.notNull().unique())
-            .addColumn("codeforcesHandleLowerCase", "varchar(50)", cb => cb.notNull().unique())
+            .addColumn("codeforcesHandle", "varchar(50)")
+            .addColumn("codeforcesHandleLowerCase", "varchar(50)")
             .addColumn("firstName", "varchar(50)", cb => cb.notNull())
             .addColumn("lastName", "varchar(50)", cb => cb.notNull())
             .addColumn("email", "varchar(64)", cb => cb.unique().notNull())

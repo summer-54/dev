@@ -6,13 +6,57 @@ import {UpdateObjectExpression} from "kysely/dist/cjs/parser/update-set-parser.j
 import {generateRefreshToken, verifyAccessToken} from "../jwt.js";
 import useragent from "useragent";
 import isMobile from "is-mobile";
+import {sendConfirmationEmail} from "../mail";
+import cryptoRandomString from 'crypto-random-string';
 
-export async function register({username, codeforcesHandle, firstName, lastName, email, password}: {username: string, codeforcesHandle: string, firstName: string, lastName: string, email: string, password: string}, useragent: string, app: string) {
+export function generateRandomString() {
+    return randomstring.generate({length: 256, charset: ["alphanumeric", '@', '#', '%', '^', '&', '*', ':', ';']});
+}
+
+export function generateToken() {
+    return `${generateRandomString()}.${Date.now()}`;
+}
+
+export async function registerStart(email: string) {
+    const code = cryptoRandomString({length: 6});
+    const token = generateToken();
+    let date = new Date();
+    date.setMinutes(date.getMinutes() + 10);
+    await db.insertInto("emailConfirmations").values({
+        email, code, token, expires: date
+    }).executeTakeFirstOrThrow();
+    await sendConfirmationEmail(email, code);
+    return code;
+}
+
+export async function emailConfirm(email: string, code: string) {
+    let data = await db.selectFrom("emailConfirmations").select(["token", "expires"]).limit(1)
+        .where(({and, eb}) => and([eb("email", '=', email), eb("code", '=', code)]))
+        .executeTakeFirst();
+    if (!data || new Date() > data.expires) return null;
+    db.updateTable("emailConfirmations").set({code: ""})
+        .where(({and, eb}) => and([eb("email", '=', email), eb("code", '=', code)]))
+    return data.token;
+}
+
+export async function getEmailByToken(token: string) {
+    let data = await db.selectFrom("emailConfirmations").select(["email"]).limit(1)
+        .where(({and, eb}) => and([eb("token", '=', token)]))
+        .executeTakeFirst();
+    if (!data) return null;
+    return data.email;
+}
+
+export async function removeEmailConfirm(token: string) {
+    await db.deleteFrom("emailConfirmations").where("token", '=', token).execute();
+}
+
+export async function register({username, codeforcesHandle, firstName, lastName, email, password}: {username: string, codeforcesHandle?: string, firstName: string, lastName: string, email: string, password: string}, useragent: string, app: string) {
     let passwordHash = await bcrypt.hash(password, 12);
     await db.insertInto("users").values({
         username,
         codeforcesHandle,
-        codeforcesHandleLowerCase: codeforcesHandle.toLowerCase(),
+        codeforcesHandleLowerCase: codeforcesHandle?.toLowerCase(),
         firstName,
         lastName,
         email: email.toLowerCase(),
@@ -20,14 +64,6 @@ export async function register({username, codeforcesHandle, firstName, lastName,
         isAdmin: false
     }).executeTakeFirstOrThrow();
     return signIn(username, password, useragent, app, passwordHash);
-}
-
-export function generateRandomString() {
-    return randomstring.generate({length: 512, charset: ["alphanumeric", '@', '#', '$', '%', '^', '&', '*', ':', ';']});
-}
-
-export async function generateToken() {
-    return `${generateRandomString()}.${new Date().getFullYear()}.${new Date().getMonth()}.${new Date().getDate()}.${new Date().getHours()}.${new Date().getMinutes()}.${new Date().getSeconds()}.${new Date().getMilliseconds()}`;
 }
 
 export async function signInById(id: number, useragentStr: string, app: string): Promise<string | null> {

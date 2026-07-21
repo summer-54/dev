@@ -18,11 +18,19 @@ export interface NewsImagesTable {
     image: string;
 }
 
+export interface EmailConfirmationTable {
+    id: Generated<number>;
+    email: string;
+    code: string;
+    token: string;
+    expires: ColumnType<Date, Date | string, Date | string>
+}
+
 export interface UsersTable {
     id: Generated<number>;
     username: string;
-    codeforcesHandle: string;
-    codeforcesHandleLowerCase: string;
+    codeforcesHandle?: string;
+    codeforcesHandleLowerCase?: string;
     firstName: string;
     lastName: string;
     passwordHash: string;
@@ -220,6 +228,7 @@ export interface EventParticipantsTable {
 export interface Database {
     news: NewsTable;
     newsImages: NewsImagesTable;
+    emailConfirmations: EmailConfirmationTable;
     users: UsersTable;
     sessions: SessionsTable;
     contestGroups: ContestGroupsTable;

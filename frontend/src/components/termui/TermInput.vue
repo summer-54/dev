@@ -12,6 +12,7 @@
           class="terminal-input"
           :placeholder="placeholder"
           @input="onInput"
+          :disabled="disabled"
       />
       <input
           v-else
@@ -22,6 +23,7 @@
           @keydown="inputHandler"
           inputmode="numeric"
           @input="onInput"
+          :disabled="disabled"
       />
 
       <Popover ref="op">
@@ -77,7 +79,11 @@ const props = defineProps({
   min: Number,
   max: Number,
   pattern: RegExp,
-  noBreak: Boolean
+  noBreak: Boolean,
+  disabled: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const prompt = ref(props.label);

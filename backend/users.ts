@@ -1,8 +1,8 @@
 import {buildHandlers} from "./legacy.js";
 import {
     adminUsersPatch,
-    checkUseragent,
-    getAllUsers,
+    checkUseragent, emailConfirm,
+    getAllUsers, getEmailByToken,
     getUserByToken,
     getUserByUsername,
     getUserIdByToken,
@@ -13,7 +13,7 @@ import {
     makeAdmin,
     patchUser,
     patchUserPassword,
-    register,
+    register, registerStart, removeEmailConfirm,
     signIn,
     signOut, updateLastRefreshTimestamp
 } from "./sql/users.sql.js";
@@ -167,13 +167,42 @@ const router = buildHandlers({
     }
 });
 
+router.post("/users/register-start", {
+    bodyValidator: object({
+        email: email()
+    })
+}, async (request, response) => {
+    if (!(await isUniqueEmail(request.body.email))) {
+        response.status(409);
+        response.end();
+        return;
+    }
+    await registerStart(request.body.email.toLowerCase())
+    response.end();
+});
+
+router.post("/users/email-confirm", {
+    bodyValidator: object({
+        email: email(),
+        code: string({min: 6, max: 6})
+    })
+}, async (request, response) => {
+    let token = await emailConfirm(request.body.email.toLowerCase(), request.body.code);
+    if (!token) {
+        response.status(401);
+        response.end();
+        return;
+    }
+    response.end(token);
+});
+
 router.post("/users/register", {
     bodyValidator: object({
         username: string(),
-        codeforcesHandle: string(),
+        codeforcesHandle: optional(string()),
         firstName: string(),
         lastName: string(),
-        email: email(),
+        emailToken: string(),
         password: string()
     }),
     headersValidator: object({
@@ -190,17 +219,19 @@ router.post("/users/register", {
         response.end("username");
         return;
     }
-    if (!(await isUniqueEmail(request.body.email))) {
+    const email = await getEmailByToken(request.body.emailToken);
+    if (!email) {
         response.status(409);
         response.end("email");
         return;
     }
-    if (!(await isUniqueCodeforcesHandle(request.body.codeforcesHandle))) {
+    if (request.body.codeforcesHandle && !(await isUniqueCodeforcesHandle(request.body.codeforcesHandle))) {
         response.status(409);
         response.end("codeforcesHandle");
         return;
     }
-    let token = await register(request.body, request.headers["user-agent"], "main");
+    await removeEmailConfirm(request.body.emailToken);
+    let token = await register({...request.body, email}, request.headers["user-agent"], "main");
     if (!token) {
         response.status(500);
         response.end("");

@@ -20,7 +20,21 @@ export type SearchUserType = {
 
 export let me = ref<UserType | null>(null);
 
-export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, email: string, password: string}) {
+export async function registerStart(email: string) {
+    let response = await axios.post<string>(`${SERVER_URL}/users/register-start`, {email});
+    if (response.status === 200) return 0;
+    if (response.status === 400) return 1;
+    if (response.status === 409) return 2;
+    return 3;
+}
+
+export async function emailConfirm(email: string, code: string) {
+    let response = await axios.post<string>(`${SERVER_URL}/users/email-confirm`, {email, code});
+    if (response.status !== 200) return null;
+    return response.data;
+}
+
+export async function register(body: {username: string, firstName: string, lastName: string, codeforcesHandle: string, emailToken: string, password: string}) {
     let response = await axios.post<string>(`${SERVER_URL}/users/register`, body);
     if (response.status === 201) {
         return 0;

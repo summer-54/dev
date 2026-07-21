@@ -1,11 +1,31 @@
 <script setup lang="ts">
 import {InputOtp} from "primevue";
+import type {PropType} from "vue";
+
+const model = defineModel({
+  type: Object as PropType<string>
+});
+
+defineProps({
+  length: {
+    type: Number,
+    default: 6
+  },
+  mask: {
+    type: Boolean,
+    default: false
+  },
+  integerOnly: {
+    type: Boolean,
+    default: false
+  }
+});
 </script>
 
 <template>
   <div class="terminal-wrapper">
     <span class="bracket bracket-left"></span>
-    <InputOtp :class="$style.input"/>
+    <InputOtp :class="$style.input" v-model="model" :length="length" :integerOnly="integerOnly" :mask="mask"/>
     <span class="bracket bracket-right"></span>
   </div>
 </template>
