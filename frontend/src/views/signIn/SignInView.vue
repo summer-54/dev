@@ -78,25 +78,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-input {
-  @media (max-width: 420px){
-    width: 75%;
-  }
-}
-button {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 20px;
-
-  * {
-    margin-bottom: 0;
-  }
-}
-
 .error {
   color: red;
 }
