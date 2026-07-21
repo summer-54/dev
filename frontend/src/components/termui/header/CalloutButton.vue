@@ -55,6 +55,12 @@ const primaryColor = computed(() => colors.value.primaryColor);
   border-bottom-right-radius: 3px;
 }
 
+:global(.dark) {
+  .callout {
+    background: #95EAA710;
+  }
+}
+
 .callout:hover {
   .bracket {
     opacity: 1;

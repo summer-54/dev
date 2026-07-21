@@ -9,7 +9,7 @@ import {Icon} from "@iconify/vue";
 import cup from "@/assets/cup.svg";
 import account from "@/assets/account.svg";
 import inf54 from "@/assets/inf54.ico";
-//import menu from "@/assets/menu.svg";
+import code from "@/assets/code.svg";
 import darkIcon from "@/assets/dark.svg";
 import lightIcon from "@/assets/light.svg";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
@@ -34,27 +34,27 @@ const sideBarOpened = ref(false);
         </div>
       </template>
     </TermHeaderRootItem>
-    <TermHeaderRootItem navigate-to="/">
-      <template #heading>
-        <div :class="$style.flex">
-          <ThemeInvertSvg :src="news" alt=""/>
-          <span>
-            Статьи
-          </span>
-        </div>
-      </template>
-      <TermSecondaryLayout>
-        <TermHeaderListItem title="Школьная информатика">
-          Темы уроков; ОГЭ; ЕГЭ
-        </TermHeaderListItem>
-        <TermHeaderListItem title="Олимпиадная информатика">
-          Подробные конспекты лекций
-        </TermHeaderListItem>
-        <TermHeaderListItem title="Промышленная разработка">
-          Статьи про реальные навыки, необходимые для программистов, и подготовка к PROD и высшей пробе по промышленному программированию
-        </TermHeaderListItem>
-      </TermSecondaryLayout>
-    </TermHeaderRootItem>
+<!--    <TermHeaderRootItem navigate-to="/">-->
+<!--      <template #heading>-->
+<!--        <div :class="$style.flex">-->
+<!--          <ThemeInvertSvg :src="news" alt=""/>-->
+<!--          <span>-->
+<!--            Статьи-->
+<!--          </span>-->
+<!--        </div>-->
+<!--      </template>-->
+<!--      <TermSecondaryLayout>-->
+<!--        <TermHeaderListItem title="Школьная информатика">-->
+<!--          Темы уроков; ОГЭ; ЕГЭ-->
+<!--        </TermHeaderListItem>-->
+<!--        <TermHeaderListItem title="Олимпиадная информатика">-->
+<!--          Подробные конспекты лекций-->
+<!--        </TermHeaderListItem>-->
+<!--        <TermHeaderListItem title="Промышленная разработка">-->
+<!--          Статьи про реальные навыки, необходимые для программистов, и подготовка к PROD и высшей пробе по промышленному программированию-->
+<!--        </TermHeaderListItem>-->
+<!--      </TermSecondaryLayout>-->
+<!--    </TermHeaderRootItem>-->
     <TermHeaderRootItem>
       <template #heading>
         <div :class="$style.flex">
@@ -81,6 +81,26 @@ const sideBarOpened = ref(false);
           Выездная летняя школа по программированию
         </TermHeaderListItem>
       </TermPrimaryLayout>
+    </TermHeaderRootItem>
+    <TermHeaderRootItem>
+      <template #heading>
+        <div :class="$style.flex">
+          <ThemeInvertSvg :src="code" alt=""/>
+          <span>
+            Решать!
+          </span>
+        </div>
+      </template>
+      <TermSecondaryLayout>
+        <TermHeaderListItem title="Контесты" href="https://contest.inf54.ru" contentLess/>
+        <TermHeaderListItem title="Группы" href="https://contest.inf54.ru/groups" contentLess/>
+        <TermHeaderListItem title="Вопросы" href="https://contest.inf54.ru/questions">
+          Можно задать вопрос по решению задачи
+        </TermHeaderListItem>
+        <TermHeaderListItem title="Рейтинг" href="https://contest.inf54.ru/rating">
+          Рейтинг среди всех учеников школы
+        </TermHeaderListItem>
+      </TermSecondaryLayout>
     </TermHeaderRootItem>
     <TermHeaderRootItem content-less navigate-to="/me">
       <template #heading>
@@ -139,24 +159,24 @@ const sideBarOpened = ref(false);
         route: '/',
         command() {sideBarOpened = false}
       },
-      {
-        label: 'Статьи',
-        icon: news,
-        items: [
-          {
-            label: 'Школьная информатика',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'Олимпиадная информатика',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'Промышленная разработка',
-            command() {sideBarOpened = false}
-          }
-        ]
-      },
+      // {
+      //   label: 'Статьи',
+      //   icon: news,
+      //   items: [
+      //     {
+      //       label: 'Школьная информатика',
+      //       command() {sideBarOpened = false}
+      //     },
+      //     {
+      //       label: 'Олимпиадная информатика',
+      //       command() {sideBarOpened = false}
+      //     },
+      //     {
+      //       label: 'Промышленная разработка',
+      //       command() {sideBarOpened = false}
+      //     }
+      //   ]
+      // },
       {
         label: 'Соревнования и поездки',
         icon: cup,
@@ -177,14 +197,45 @@ const sideBarOpened = ref(false);
             command() {sideBarOpened = false}
           }
         ]
+      },
+      {
+        label: 'Решать!',
+        icon: code,
+        items: [
+          {
+            label: 'Контесты',
+            href: 'https://contest.inf54.ru',
+            command() {sideBarOpened = false}
+          },
+          {
+            label: 'Группы',
+            href: 'https://contest.inf54.ru/groupes',
+            command() {sideBarOpened = false}
+          },
+          {
+            label: 'Вопросы',
+            href: 'https://contest.inf54.ru/questions',
+            command() {sideBarOpened = false}
+          },
+          {
+            label: 'Рейтинг',
+            href: 'https://contest.inf54.ru/rating',
+            command() {sideBarOpened = false}
+          }
+        ]
       }
     ]">
-      <template #item="{item: {label, icon, items, route}}">
+      <template #item="{item: {label, icon, items, route, href}}">
         <RouterLink :to='route' :class="$style.menuElem" v-if="route">
           <ThemeInvertSvg v-if="icon" :alt="label as string" :src="icon as string"/>
           {{label}}
           <Icon icon="radix-icons:caret-down" :class="$style.CaretDown" v-if="items"/>
         </RouterLink>
+        <a :href='href' :class="$style.menuElem" v-else-if="href">
+          <ThemeInvertSvg v-if="icon" :alt="label as string" :src="icon as string"/>
+          {{label}}
+          <Icon icon="radix-icons:caret-down" :class="$style.CaretDown" v-if="items"/>
+        </a>
         <div :class="$style.menuElem" v-else>
           <ThemeInvertSvg v-if="icon" :alt="label as string" :src="icon as string"/>
           {{label}}

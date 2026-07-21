@@ -4,7 +4,7 @@ import {defineComponent} from "vue";
 import {routerPending} from "@/router.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import {themeName} from "@/utils.js";
-import Header from "@/header/Header.vue";
+import Header from "@/Header.vue";
 
 export default defineComponent({
   components: {Header, ProgressIndicator, RouterView},

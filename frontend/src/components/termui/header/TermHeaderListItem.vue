@@ -5,7 +5,12 @@ import {colors} from "./colors.js";
 
 const props = defineProps({
   title: String,
-  navigateTo: Object as PropType<RouteLocationRaw>
+  navigateTo: Object as PropType<RouteLocationRaw>,
+  href: String,
+  contentLess: {
+    type: Boolean,
+    default: false
+  }
 });
 
 const hoverColor = computed(() => colors.value.hoverColor),
@@ -20,11 +25,19 @@ const primaryColor = computed(() => colors.value.primaryColor);
   <li>
     <span class="bracket bracket-left"></span>
 <!--    <NavigationMenuLink as-child>-->
-    <RouterLink v-if="navigateTo" :to="navigateTo" class="ListItemLink">
+    <a v-if="href" :href="href" class="ListItemLink">
       <div class="ListItemHeading">
         {{ props.title }}
       </div>
-      <p class="ListItemText">
+      <p class="ListItemText" v-if="!contentLess">
+        <slot/>
+      </p>
+    </a>
+    <RouterLink v-else-if="navigateTo" :to="navigateTo" class="ListItemLink">
+      <div class="ListItemHeading">
+        {{ props.title }}
+      </div>
+      <p class="ListItemText" v-if="!contentLess">
         <slot/>
       </p>
     </RouterLink>
@@ -32,7 +45,7 @@ const primaryColor = computed(() => colors.value.primaryColor);
       <div class="ListItemHeading">
         {{ props.title }}
       </div>
-      <p class="ListItemText">
+      <p class="ListItemText" v-if="!contentLess">
         <slot/>
       </p>
     </button>
@@ -55,6 +68,7 @@ const primaryColor = computed(() => colors.value.primaryColor);
   font-weight: initial;
   color: v-bind(itemTextColor);
   transition: color 0.6s ease-in-out;
+  margin-bottom: 0;
 }
 
 .ListItemLink {
@@ -80,6 +94,8 @@ const primaryColor = computed(() => colors.value.primaryColor);
 li {
   position: relative;
   display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 .bracket {
