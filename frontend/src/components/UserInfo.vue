@@ -49,12 +49,14 @@ onMounted(() => {
         <template #header>
           Статистика
         </template>
-        <div class="tsStats">
-          <template v-for="n in tsStats">
-            <span v-if="n > 0" :style="`--n: ${n * 100}%; --m: ${(1 - n) * 100}%`" class="tsStat colored"/>
-            <span v-else-if="n == 0" class="tsStat empty"/>
-            <span v-else class="tsStat"/>
-          </template>
+        <div class="tsStatsScroll">
+          <div class="tsStats">
+            <template v-for="n in tsStats">
+              <span v-if="n > 0" :style="`--n: ${n * 100}%; --m: ${(1 - n) * 100}%`" class="tsStat colored"/>
+              <span v-else-if="n == 0" class="tsStat empty"/>
+              <span v-else class="tsStat"/>
+            </template>
+          </div>
         </div>
       </TermWindow>
     </div>
@@ -85,13 +87,17 @@ onMounted(() => {
   }
 }
 
+.tsStatsScroll {
+  overflow-x: auto;
+}
+
 .tsStats {
   display: inline-flex;
   flex-direction: column;
   flex-wrap: wrap;
   gap: 2px;
   max-height: 82px;
-  width: 634px;
+  width: calc(min(634px, 90vw));
 }
 
 .stats {
