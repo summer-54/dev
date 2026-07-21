@@ -1,6 +1,6 @@
 <template>
   <main>
-    <TermWindow class="form" prompt="root@inf54:~# ./recovery.sh --request">
+    <TermWindow class="form" prompt="root@inf54:~# ./recovery.sh">
       <template #header>
         Восстановление пароля
       </template>
