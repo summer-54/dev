@@ -44,7 +44,14 @@ export default defineComponent({
           results: "https://codeforces.com/spectator/ranklist/1e14d24fe35f078ac5a18181557e0d11",
           gym: "https://codeforces.com/contestInvitation/a2431f05cb0f66b9855a0d6b8da0f3e04eca9523",
           solutions: "/solutions25.pdf"
-        }
+        },
+        {
+          year: 2026,
+          tasks: "/tasks26.pdf",
+          results: "https://codeforces.com/spectator/ranklist/feb36b4d9b2d5fc0875993401303893e",
+          gym: "https://codeforces.com/contestInvitation/fe04aff4a6c4783482e360046084051d6977a44c",
+          solutions: "/solutions26.pdf"
+        },
       ]
     }
   }
