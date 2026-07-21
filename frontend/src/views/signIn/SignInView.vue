@@ -60,7 +60,7 @@ export default defineComponent({
 <!--      <SuiInput maxLength="50" placeholder="Пароль" password v-model="password" border="#9297FB"/>-->
 <!--      <span v-if="wrong">Неверное имя пользователя или пароль</span>-->
 <!--    </CustomForm>-->
-    <TermWindow class="form" prompt="root@inf54:~# ./register.sh">
+    <TermWindow class="form" prompt="root@inf54:~# ./login.sh">
       <template #header>
         Добро пожаловать. Вход
       </template>
