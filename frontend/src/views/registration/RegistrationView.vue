@@ -142,7 +142,7 @@ export default defineComponent({
           </template>
 
           <p class="subtitle">Введите код, который мы отправили вам на почту</p>
-          <TermPin v-model="emailConfirm" :disabled="stage === 1"/>
+          <TermPin v-model="emailConfirm" :disabled="stage !== 1"/>
           <p class="error" v-if="emailToken === null">Код не верный</p>
         </TermWindow>
       </Transition>
