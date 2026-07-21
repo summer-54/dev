@@ -1,82 +1,36 @@
-<script lang="ts">
-import {defineComponent, type PropType} from 'vue';
-import {Line} from "vue-chartjs";
-import type { Chart } from 'chart.js';
-import IconButton from "@/components/ui/iconButton.vue";
+<script lang="ts" setup>
+import {onMounted, type PropType, ref, watch} from 'vue';
 import {type UserType} from "@/api/users";
-import {getFullStandings, getUserStatistics} from "@/api/codeforces";
 import Title from "@/components/Title.vue";
-import type {ChartDataset} from "chart.js";
+import {getUserTSStats} from "@/api/stats.ts";
+import TermWindow from "@/components/termui/TermWindow.vue";
 
-export default defineComponent({
-  name: "UserInfo",
-  components: {Title, IconButton, Line},
-  props: {
-    user: {
-      type: Object as PropType<UserType>,
-      required: true
-    }
-  },
-  data() {
-    return {
-      labels: [] as Array<string>,
-      tasksDatasets: [] as Array<ChartDataset<"line">>,
-      percentsDatasets: [] as Array<ChartDataset<"line">>,
-      participatingInCup: false,
-      cupDatasets: [] as Array<ChartDataset<"line">>
-    }
-  },
-  methods: {
-    async updateStatistics() {
-      let username = this.user?.username ?? "";
-      let {perContest, hardTasks, attemptsCountPerTask} = await getUserStatistics(username);
-      this.tasksDatasets = [{
-        data: perContest.map(percent => Math.round(percent * 10) / 10),
-        label: "Процент решенных задач",
-        borderColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
-        backgroundColor: this.$themeName === "light" ? "#004e01" : "#00ad03",
-        tension: .5
-      }, {
-        data: hardTasks.map(percent => Math.round(percent * 10) / 10),
-        label: "Процент решенных сложных задач",
-        borderColor: this.$themeName === "light" ? "#850000" : "#bf0000",
-        backgroundColor: this.$themeName === "light" ? "#850000" : "#bf0000",
-        tension: .5
-      }];
-      this.percentsDatasets = [{
-        data: attemptsCountPerTask,
-        label: "Среднее количество попыток на задачу",
-        borderColor: this.$themeName === "light" ? "#001285" : "#0721c8",
-        backgroundColor: this.$themeName === "light" ? "#001285" : "#0721c8",
-        tension: .5
-      }]
-      this.labels = [];
-      for (let i = 1; i <= perContest.length; i++) this.labels.push(`${i} тур`);
-      console.log(this.tasksDatasets, this.labels);
-      let standings = (await getFullStandings()).standings;
-      if (standings[username] !== undefined) {
-        this.participatingInCup = true;
-        this.cupDatasets = [{
-          data: standings[username],
-          label: "Баллы в ЛКП",
-          borderColor: this.$themeName === "light" ? "#ff8b00" : "#ff8b00",
-          backgroundColor: this.$themeName === "light" ? "#ff8b00" : "#ff8b00",
-          tension: .5
-        }]
-      }
-    }
-  },
-  mounted() {
-    this.updateStatistics();
-  },
-  watch: {
-    user() {
-      this.updateStatistics();
-    },
-    $themeName() {
-      this.updateStatistics();
-    }
+const props = defineProps({
+  user: {
+    type: Object as PropType<UserType>,
+    required: true
   }
+});
+
+const tsStats = ref<Array<number>>([]);
+
+async function updateStatistics() {
+  let data = (await getUserTSStats(props.user?.username)).reverse();
+  tsStats.value = data.map(stat => stat / Math.max(...data));
+  let today = new Date().getDay() - 1;
+  if (today < 0) today = 6;
+  console.log(today);
+  for (let i = 0; i < today; i++) {
+    tsStats.value.unshift(-1);
+  }
+}
+
+watch(props, () => {
+  updateStatistics();
+}, {deep: true});
+
+onMounted(() => {
+  updateStatistics();
 });
 </script>
 
@@ -90,26 +44,21 @@ export default defineComponent({
       </div>
       <slot/>
     </div>
-    <div class="charts">
-      <div class="chartp">
-        <div class="chart">
-          <Line :data="{labels, datasets: tasksDatasets}" :options="{scales: {y: {min: 0, max: 100}}, maintainAspectRatio: false}"/>
+    <div class="stats">
+      <TermWindow>
+        <template #header>
+          Статистика
+        </template>
+        <div class="tsStats">
+          <template v-for="n in tsStats">
+            <span v-if="n > 0" :style="`--n: ${n * 100}%; --m: ${(1 - n) * 100}%`" class="tsStat colored"/>
+            <span v-else-if="n == 0" class="tsStat empty"/>
+            <span v-else class="tsStat"/>
+          </template>
         </div>
-      </div>
-      <div class="chartp">
-        <div class="chart">
-          <Line :data="{labels, datasets: percentsDatasets}" :options="{scales: {y: {min: 0}}, maintainAspectRatio: false}"/>
-        </div>
-      </div>
+      </TermWindow>
     </div>
-    <div class="charts" v-if="participatingInCup">
-      <div class="chartp">
-        <div class="chart">
-          <Line :data="{labels, datasets: cupDatasets}" :options="{scales: {y: {min: 0, max: 90}}, maintainAspectRatio: false}"/>
-        </div>
-      </div>
-    </div>
-    </main>
+  </main>
 </template>
 
 <style scoped>
@@ -121,10 +70,9 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 0 20px;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 20px;
+  margin: 0 20px 20px;
 
   div {
     display: flex;
@@ -135,30 +83,37 @@ export default defineComponent({
       font-size: 20px;
     }
   }
-
-  @media (max-width: 396px) {
-    .button {
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-  }
 }
 
-@media (min-width: 1000px) {
-  .charts {
-    display: flex;
-    justify-content: space-around;
+.tsStats {
+  display: inline-flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-height: 82px;
+  width: 634px;
+}
 
-    .chartp {
-      width: 45vw;
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-      canvas {
-        position: relative;
-        height: 100%;
-        width: 100%;
-      }
-    }
+.tsStat {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+
+  &.colored {
+    --color-a: #6bc46d;
+    --color-b: #00630e;
+
+    background-color: color-mix(in srgb, var(--color-a) var(--m), var(--color-b) var(--n));
+  }
+
+  &.empty {
+    background-color: #2a313c;
   }
 }
 </style>
