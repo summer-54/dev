@@ -1,13 +1,19 @@
 <template>
   <main>
-    <Title text="Восстановление пароля"></Title>
-    <Subtitle class="centered" :text="`Письмо отправлено на ${email}`" v-if="done"/>
-    <Subtitle class="centered" text="При отправке возникла проблема" v-else-if="failed"/>
-    <CustomForm v-if="!done">
-      <SuiInput placeholder="Почта" v-model="email"/>
-      <SuiButton @click="recovery" :disabled="pending">Восстановить пароль</SuiButton>
-    </CustomForm>
+    <TermWindow class="form" prompt="root@inf54:~# ./recovery.sh --request">
+      <template #header>
+        Восстановление пароля
+      </template>
+
+      <div v-if="!done" class="inner">
+        <TermInput label="root@inf54:~# email:" mLabel="> email:" placeholder="Email" noBreak v-model="email"/>
+        <TermButton @click="recovery" :disabled="pending">Продолжить</TermButton>
+      </div>
+      <p v-if="done">Письмо отправлено на {{email}}</p>
+      <p class="error" v-else-if="failed">При отправке возникла проблема</p>
+    </TermWindow>
     <ProgressIndicator v-if="pending"/>
+    <TermBG/>
   </main>
 </template>
 
@@ -21,10 +27,18 @@ import SuiInput from 'sffui.vue/suiInput.vue';
 import Title from '@/components/Title.vue';
 import Subtitle from '@/components/Subtitle.vue';
 import {requestRecovery} from "@/api/recovery.js";
+import TermButton from "@/components/termui/TermButton.vue";
+import TermInput from "@/components/termui/TermInput.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
+import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import TermBG from "@/components/termui/TermBG.vue";
 
 export default defineComponent({
   name: "RecoveryView",
-  components: {CustomForm, SuiButton, SuiInput, Title, Subtitle},
+  components: {
+    TermBG,
+    ProgressIndicator,
+    TermWindow, TermInput, TermButton, CustomForm, SuiButton, SuiInput, Title, Subtitle},
   data() {
     return {
       email: "",
@@ -46,7 +60,30 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.centered {
-  text-align: center;
+.error {
+  color: red;
+}
+
+p {
+  margin: 0;
+}
+
+.form {
+  width: calc(min(600px, 98vw));
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
 }
 </style>

@@ -1,14 +1,20 @@
 <template>
   <main>
-    <Title text="Восстановление пароля"></Title>
-    <Subtitle class="centered" text="При восстановлении возникла проблема" v-if="failed"/>
-    <CustomForm v-if="!done">
-      <SuiInput placeholder="Новый пароль" v-model="password" password/>
-      <FormComment color="unset">Сила пароля: {{passwordStrength}}/6</FormComment>
-      <SuiInput placeholder="Повторите новый пароль" v-model="passwordConfirm" password/>
-      <FormComment v-if="password !== passwordConfirm && passwordConfirm.length > 0">Не совпадает</FormComment>
-      <SuiButton @click.prevent.stop="recoveryRequest" :disabled="password !== passwordConfirm || passwordStrength <= 0 || pending">Восстановить пароль</SuiButton>
-    </CustomForm>
+    <TermWindow class="form" prompt="root@inf54:~# ./recovery.sh --request">
+      <template #header>
+        Восстановление пароля
+      </template>
+
+      <div v-if="!done" class="inner">
+        <TermInput label="root@inf54:~# password:" mLabel="> password:" placeholder="Пароль" password noBreak v-model="password"/>
+        <p class="error" v-if="passwordStrength === -1">Не может содержать русские буквы</p>
+        <p>Сила пароля: {{passwordStrength}}/6</p>
+        <TermInput label="root@inf54:~# confirm:" mLabel="> confirm:" placeholder="Повторите пароль" password noBreak v-model="passwordConfirm"/>
+        <p class="error" v-if="password !== passwordConfirm">Не совпадает</p>
+        <TermButton @click="recoveryRequest" :disabled="password !== passwordConfirm || passwordStrength <= 0 || pending">Продолжить</TermButton>
+      </div>
+      <p class="error" v-else-if="failed">При отправке возникла проблема</p>
+    </TermWindow>
     <ProgressIndicator v-if="pending"/>
     <TermBG/>
   </main>
@@ -17,17 +23,12 @@
 <script lang="ts" setup>
 import {computed, ref} from "vue";
 import {useRouter} from "vue-router";
-import Title from "@/components/Title.vue";
-import Subtitle from "@/components/Subtitle.vue";
-import CustomForm from "@/components/ui/CustomForm.vue";
-// @ts-ignore
-import SuiButton from 'sffui.vue/suiButton.vue';
-// @ts-ignore
-import SuiInput from 'sffui.vue/suiInput.vue';
-import FormComment from "@/components/ui/formComment.vue";
 import {recovery} from "@/api/recovery.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import TermBG from "@/components/termui/TermBG.vue";
+import TermButton from "@/components/termui/TermButton.vue";
+import TermInput from "@/components/termui/TermInput.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
 
 const router = useRouter();
 
@@ -56,3 +57,32 @@ async function recoveryRequest() {
   pending.value = false;
 }
 </script>
+
+<style scoped>
+.error {
+  color: red;
+}
+
+p {
+  margin: 0;
+}
+
+.form {
+  width: calc(min(600px, 98vw));
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+</style>

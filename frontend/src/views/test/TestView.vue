@@ -14,14 +14,6 @@ const isDark = computed(() => {
 <template>
   <main>
     <div class="forms">
-      <TermWindow class="window" prompt="root@inf54:~# ./recovery.sh">
-        <template #header>
-          Восстановление пароля
-        </template>
-
-        <TermInput label="root@inf54:~# email:" mLabel="> email:" placeholder="Email" noBreak/>
-        <TermButton>Продолжить</TermButton>
-      </TermWindow>
       <TermWindow class="window" prompt="root@inf54:~# ./patch-user.sh">
         <template #header>
           Общая информация

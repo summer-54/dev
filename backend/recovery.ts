@@ -19,11 +19,20 @@ router.patch("/recovery/:key", {
         "user-agent": string()
     })
 }, async (request, response) => {
-    if (!urlKeys.has(request.params.key)) return;
+    if (!urlKeys.has(request.params.key)) {
+        response.status(401);
+        response.end();
+        return;
+    }
     await patchUserPassword(urlKeys.get(request.params.key) ?? 0, request.body.password);
     const token = await signInById(urlKeys.get(request.params.key) ?? 0, request.headers["user-agent"], "main");
-    urlKeys.delete(request.params.key);
-    response.end(token, 200);
+    response.expressResponse.cookie("refreshToken", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: "strict",
+        path: "/api/refresh-token"
+    });
+    response.end();
 });
 
 router.patch("/recovery", {
@@ -33,7 +42,9 @@ router.patch("/recovery", {
 }, async (request, response) => {
     let id = await getIdByEmail(request.body.email);
     if (!id) {
-        return {code: 404};
+        response.status(404);
+        response.end();
+        return;
     }
     let key = "";
     do {
