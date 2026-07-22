@@ -12,16 +12,23 @@ const props = defineProps({
   }
 });
 
-const tsStats = ref<Array<number>>([]);
+const tsStats = ref<Array<{color: number, count: number, date: string}>>([]);
 
 async function updateStatistics() {
   let data = (await getUserTSStats(props.user?.username)).reverse();
-  tsStats.value = data.map(stat => stat / Math.max(...data));
+  tsStats.value = data.map((stat, index) => {
+    let date = new Date();
+    date.setDate(date.getDate() - data.length + index + 1);
+    return {
+      color: stat / Math.max(...data),
+      count: stat,
+      date: date.toLocaleDateString()
+    };
+  });
   let today = new Date().getDay() - 1;
   if (today < 0) today = 6;
-  console.log(today);
   for (let i = 0; i < today; i++) {
-    tsStats.value.unshift(-1);
+    tsStats.value.unshift({color: -1, count: 0, date: ""});
   }
 }
 
@@ -51,9 +58,9 @@ onMounted(() => {
         </template>
         <div class="tsStatsScroll">
           <div class="tsStats">
-            <template v-for="n in tsStats">
-              <span v-if="n > 0" :style="`--n: ${n * 100}%; --m: ${(1 - n) * 100}%`" class="tsStat colored"/>
-              <span v-else-if="n == 0" class="tsStat empty"/>
+            <template v-for="{color, count, date} in tsStats">
+              <span v-if="color > 0" :style="`--n: ${color * 100}%; --m: ${(1 - color) * 100}%`" class="tsStat colored" v-tooltip.bottom="`${count} решено ${date}`"/>
+              <span v-else-if="color === 0" class="tsStat empty"/>
               <span v-else class="tsStat"/>
             </template>
           </div>
