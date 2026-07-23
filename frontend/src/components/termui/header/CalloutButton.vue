@@ -81,7 +81,6 @@ const primaryColor = computed(() => colors.value.primaryColor);
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
-  //background: linear-gradient(135deg, var(--green-9) 0%, var(--indigo-9) 100%);
   border-radius: 6px;
   padding: 25px;
   text-decoration: none;

@@ -53,8 +53,6 @@ const props = defineProps({
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-
-  //margin-top: 10px;
 }
 
 img {

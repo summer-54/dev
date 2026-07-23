@@ -40,7 +40,6 @@ defineProps({
   align-items: center;
   justify-content: center;
   font-family: 'Courier New', Courier, monospace;
-  //width: 100%;
   gap: 10px;
   position: relative;
   cursor: text;

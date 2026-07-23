@@ -68,8 +68,6 @@ section {
 }
 
 .dark {
-  //background: #00000050;
-  //box-shadow: 0 0 5px #95EAA7FF;
   background: rgba(96, 151, 109, 0.04);
 
   .header, .header * {

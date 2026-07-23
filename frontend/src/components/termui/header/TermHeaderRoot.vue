@@ -134,7 +134,6 @@ const currentTrigger = ref("");
   overflow: hidden;
   height: var(--radix-navigation-menu-viewport-height);
   transition: width, height, 300ms ease;
-  //background: rgba(96, 151, 109, 0.06);
   border: 1px solid #95EAA730;
   background:
       linear-gradient(oklch(0 0 0 / 0.04) 1px, transparent 1px),
