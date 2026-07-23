@@ -1,41 +1,47 @@
-<script lang="ts" setup>
-import {computed, onMounted} from 'vue'
+<script lang="ts">
+import {defineComponent} from 'vue'
 import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/icons/home.svg";
 import usersIcon from "@/assets/icons/account.svg";
 import contestsIcon from "@/assets/icons/cup.svg";
 import newsIcon from "@/assets/icons/news.svg";
 import {isAdmin} from "@/api/users.js";
-import {themeName} from "@/utils.ts";
-import {useRouter} from "vue-router";
 
-const router = useRouter();
-
-computed(() => {
-  return themeName.value === "dark" ? "white" : "black";
-});
-
-onMounted(async () => {
-  if (!(await isAdmin())) await router.push("/");
+export default defineComponent({
+  name: "AdminView",
+  components: {NavButton},
+  data() {
+    return {homeIcon, usersIcon, contestsIcon, newsIcon}
+  },
+  computed: {
+    color() {
+      return this.$themeName === "dark" ? "white" : "black";
+    }
+  },
+  mounted() {
+    (async () => {
+      if (!(await isAdmin())) this.$router.push("/");
+    })();
+  }
 });
 </script>
 
 <template>
-<div class="admin">
-  <nav>
-    <NavButton to="/admin" :icon="homeIcon">Главная</NavButton>
-    <NavButton to="/admin/news" :icon="newsIcon">Новости</NavButton>
-    <NavButton to="/admin/contests" :icon="contestsIcon">Контесты</NavButton>
-    <NavButton to="/admin/users" :icon="usersIcon">Пользователи</NavButton>
-  </nav>
-  <div class="router">
-    <RouterView v-slot="{Component}">
-      <Transition name="fade" mode="out-in">
-        <Component :is="Component"/>
-      </Transition>
-    </RouterView>
+  <div class="admin">
+    <nav>
+      <NavButton to="/admin" :icon="homeIcon">Главная</NavButton>
+      <NavButton to="/admin/news" :icon="newsIcon">Новости</NavButton>
+      <NavButton to="/admin/contests" :icon="contestsIcon">Контесты</NavButton>
+      <NavButton to="/admin/users" :icon="usersIcon">Пользователи</NavButton>
+    </nav>
+    <div class="router">
+      <RouterView v-slot="{Component}">
+        <Transition name="fade" mode="out-in">
+          <Component :is="Component"/>
+        </Transition>
+      </RouterView>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped>
