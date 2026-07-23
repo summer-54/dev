@@ -37,7 +37,6 @@ export default defineComponent({
 
 <style scoped>
 * {
-  font-family: "LXGW WenKai Mono TC", monospace;
   font-size: v-bind(fontsize);
 }
 </style>

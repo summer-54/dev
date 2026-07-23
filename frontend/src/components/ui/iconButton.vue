@@ -49,7 +49,6 @@ button {
 }
 
 div {
-  font-family: "Tiny5", sans-serif;
   font-size: 16px;
 }
 </style>
@@ -63,8 +62,6 @@ div {
   @media (max-width: 425px) {
     font-size: 12px !important;
   }
-
-  font-family: "Tiny5", sans-serif !important;
 }
 
 .noText {

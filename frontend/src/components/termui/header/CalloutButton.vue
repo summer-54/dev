@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import menu_olymp from "@/assets/menu_olymp.jpg";
+import menu_olymp from "@/assets/photo/menu_olymp.jpg";
 import {computed} from "vue";
 import {colors} from "@/components/termui/header/colors.js";
 

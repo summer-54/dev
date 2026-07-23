@@ -13,7 +13,6 @@ export default defineComponent({
 
 <style scoped>
 h2 {
-  font-family: "LXGW WenKai Mono TC", monospace;
   font-size: 28px;
   
   @media (min-width: 530px) and (max-width: 940px) {

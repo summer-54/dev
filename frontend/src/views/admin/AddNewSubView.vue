@@ -4,7 +4,7 @@ import {defineComponent} from "vue";
 // @ts-ignore
 import SuiInput from "sffui.vue/suiInput.vue";
 import FixedButton from "@/components/ui/fixedButton.vue";
-import doneIcon from "@/assets/done.svg";
+import doneIcon from "@/assets/icons/done.svg";
 import {postNew} from "@/api/news.js";
 import Subtitle from "@/components/Subtitle.vue";
 // @ts-ignore

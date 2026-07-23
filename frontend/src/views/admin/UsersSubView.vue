@@ -3,7 +3,7 @@ import {defineComponent} from 'vue'
 import FixedButton from "@/components/ui/fixedButton.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import {adminUsersPatch, getAllUsers, makeAdmin, type UserType} from "@/api/users.js";
-import doneIcon from "@/assets/done.svg";
+import doneIcon from "@/assets/icons/done.svg";
 // @ts-ignore
 import SuiInput from "sffui.vue/suiInput.vue";
 // @ts-ignore
@@ -77,10 +77,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
-
 main {
   display: flex;
   justify-content: center;

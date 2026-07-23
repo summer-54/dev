@@ -8,14 +8,14 @@ import ImageGallery from '@/components/ImageGallery.vue';
 import Title from '@/components/Title.vue';
 import OlympMaterials from "./OlympMaterials.vue";
 
-import manager1 from "@/assets/manager1.jpg";
-import manager2 from "@/assets/manager2.jpg";
-import manager3 from "@/assets/manager3.jpg";
-import manager4 from "@/assets/manager4.jpg";
-import author1 from "@/assets/author1.jpg";
-import author2 from "@/assets/author2.jpg";
-import author3 from "@/assets/author3.jpg";
-import author4 from "@/assets/author4.jpg";
+import manager1 from "@/assets/photo/manager1.jpg";
+import manager2 from "@/assets/photo/manager2.jpg";
+import manager3 from "@/assets/photo/manager3.jpg";
+import manager4 from "@/assets/photo/manager4.jpg";
+import author1 from "@/assets/photo/author1.jpg";
+import author2 from "@/assets/photo/author2.jpg";
+import author3 from "@/assets/photo/author3.jpg";
+import author4 from "@/assets/photo/author4.jpg";
 import Animation from "@/components/ui/animation.vue";
 import TermBG from "@/components/termui/TermBG.vue";
 
@@ -115,7 +115,7 @@ h1 {
 }
 
 h2 {
-  font-family: "ShoptronicSP",serif;
+  font-family: "ShoptronicSP", serif;
   font-size: 48px;
 
   @media (910px <= width) {
@@ -127,7 +127,6 @@ h2 {
 }
 
 .description {
-  font-family: "LXGW WenKai Mono TC", monospace;
   text-align: center;
 
   @media (910px <= width) {
@@ -142,6 +141,7 @@ h2 {
 }
 
 .highlight {
+  font-family: "ShoptronicSP", serif;
   color: #57d16d;
   text-shadow: 0 0 10px #57d16d;
 }

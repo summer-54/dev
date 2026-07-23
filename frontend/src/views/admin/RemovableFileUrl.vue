@@ -1,6 +1,6 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
-import removeIcon from "@/assets/remove.svg";
+import removeIcon from "@/assets/icons/remove.svg";
 import IconButton from "@/components/ui/iconButton.vue";
 
 export default defineComponent({

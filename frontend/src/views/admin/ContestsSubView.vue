@@ -2,7 +2,7 @@
 import {defineComponent} from "vue";
 import {addContest, type ContestType, getAllContests, patchContest, patchContests} from "@/api/codeforces.js";
 import FixedButton from "@/components/ui/fixedButton.vue";
-import doneIcon from "@/assets/done.svg";
+import doneIcon from "@/assets/icons/done.svg";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import Title from "@/components/Title.vue";
 // @ts-ignore
@@ -131,10 +131,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
-
 main {
   display: flex;
   justify-content: center;

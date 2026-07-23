@@ -54,9 +54,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
 main {
   margin: 0 20px;
 }

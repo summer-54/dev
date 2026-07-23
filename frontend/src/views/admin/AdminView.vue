@@ -1,10 +1,10 @@
 <script lang="ts">
 import {defineComponent} from 'vue'
 import NavButton from "@/components/ui/navButton.vue";
-import homeIcon from "@/assets/home.svg";
-import usersIcon from "@/assets/account.svg";
-import contestsIcon from "@/assets/cup.svg";
-import newsIcon from "@/assets/news.svg";
+import homeIcon from "@/assets/icons/home.svg";
+import usersIcon from "@/assets/icons/account.svg";
+import contestsIcon from "@/assets/icons/cup.svg";
+import newsIcon from "@/assets/icons/news.svg";
 import {isAdmin} from "@/api/users.js";
 
 export default defineComponent({

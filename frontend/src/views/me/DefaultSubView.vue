@@ -3,7 +3,7 @@ import {defineComponent} from 'vue'
 import Title from "@/components/Title.vue";
 import {me, signOut} from "@/api/users.js";
 import IconButton from "@/components/ui/iconButton.vue";
-import signOutIcon from "@/assets/signout.svg"
+import signOutIcon from "@/assets/icons/signout.svg"
 import UserInfo from "@/components/UserInfo.vue";
 
 export default defineComponent({
@@ -38,10 +38,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
-
 @media (max-width: 396px) {
   .button {
     display: flex;

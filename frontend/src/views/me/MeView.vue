@@ -2,12 +2,12 @@
 import {defineComponent} from "vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
-import {getMe, hasToken, me, signOut, isAdmin} from "@/api/users.js";
+import {getMe, hasToken, me, isAdmin} from "@/api/users.js";
 import NavButton from "@/components/ui/navButton.vue";
-import homeIcon from "@/assets/home.svg"
-import settingsIcon from "@/assets/settings.svg"
-import signOutIcon from "@/assets/signout.svg"
-import adminIcon from "@/assets/admin.svg"
+import homeIcon from "@/assets/icons/home.svg"
+import settingsIcon from "@/assets/icons/settings.svg"
+import signOutIcon from "@/assets/icons/signout.svg"
+import adminIcon from "@/assets/icons/admin.svg"
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 
 export default defineComponent({
@@ -63,7 +63,6 @@ nav {
 
   * {
     text-decoration: none;
-    font-family: "Tiny5", sans-serif;
     margin-left: 20px;
   }
 }

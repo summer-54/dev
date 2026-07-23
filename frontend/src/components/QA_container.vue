@@ -31,7 +31,7 @@ export default defineComponent({
 
 <style scoped>
 .answer {
-  font-family: "LXGW WenKai Mono TC", monospace;
+  font-family: "PT Mono", monospace;
   font-size: 24px;
   width: 100%;
 

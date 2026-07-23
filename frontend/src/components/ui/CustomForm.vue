@@ -34,7 +34,6 @@ div {
 
   & > * {
     margin-bottom: 20px;
-    font-family: "LXGW WenKai Mono TC", monospace;
     transition: all 0.5s;
   }
 

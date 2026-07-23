@@ -4,7 +4,7 @@ import News from "./News.vue";
 import {getNews, type NewsType, websocketNews} from "@/api/news.js";
 import Title from "@/components/Title.vue";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
-import searchIcon from "@/assets/search.svg"
+import searchIcon from "@/assets/icons/search.svg"
 import UsersSearch from "@/views/home/UsersSearch.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 // @ts-ignore
@@ -75,10 +75,6 @@ export default defineComponent({
 </template>
 
 <style scoped>
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
-
 main {
   display: flex;
   align-items: flex-start;

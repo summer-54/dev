@@ -4,14 +4,14 @@
       <template v-if="solution.href">
         <RouterLink :to="solution.route" class="tour">
             <Subtitle :text="solution.num + ' тур'" />
-            <span v-if="solution.date" class="date"><img src="@/assets/clock.svg"> {{ solution.date }}</span>
+            <span v-if="solution.date" class="date"><img src="../../assets/icons/clock.svg"> {{ solution.date }}</span>
             <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending[solution.num-1] }}</span>
         </RouterLink>
       </template>
       <template v-else>
         <RouterLink class="tour" :to="solution.route">
           <Subtitle :text="solution.num + ' тур'" />
-          <span v-if="solution.date" class="date"><img src="@/assets/clock.svg"> {{ solution.date }}</span>
+          <span v-if="solution.date" class="date"><img src="../../assets/icons/clock.svg"> {{ solution.date }}</span>
           <span v-if="solution.tasks_amount">{{ solution.tasks_amount }} задач{{ ending[solution.num-1] }}</span>
         </RouterLink>
       </template>
@@ -87,7 +87,6 @@ export default defineComponent({
   transition: all .5s;
 
   font-size: 20px;
-  font-family: "LXGW WenKai Mono TC", monospace;
   text-decoration: none;
   
   @media (min-width: 530px) and (max-width: 940px) {
@@ -124,7 +123,6 @@ h2 {
 }
 a {
   font-size: 28px;
-  font-family: "LXGW WenKai Mono TC", monospace;
   text-decoration: none;
   
   @media (min-width: 530px) and (max-width: 940px) {

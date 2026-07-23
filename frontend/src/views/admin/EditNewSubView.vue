@@ -2,7 +2,7 @@
 import {defineComponent} from 'vue'
 import FixedButton from "@/components/ui/fixedButton.vue";
 import Title from "@/components/Title.vue";
-import doneIcon from "@/assets/done.svg";
+import doneIcon from "@/assets/icons/done.svg";
 import {getNew, patchNew, removeNew} from "@/api/news.js";
 // @ts-ignore
 import SuiInput from "sffui.vue/suiInput.vue";
@@ -153,9 +153,5 @@ div {
     padding: 20px;
     resize: none;
   }
-}
-
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
 }
 </style>

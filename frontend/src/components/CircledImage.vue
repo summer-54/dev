@@ -54,7 +54,6 @@ export default defineComponent({
   margin-left: 20px;
   margin-right: 20px;
   align-items: center;
-  font-family: "LXGW WenKai Mono TC", monospace;
 
   @media (min-width: 940px){
     font-size: 24px;
@@ -70,7 +69,6 @@ export default defineComponent({
 }
 .note1 {
   font-weight: bold;
-  font-family: "LXGW WenKai Mono TC", monospace;
   text-align: center;
 }
 .note2 {

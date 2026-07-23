@@ -19,7 +19,6 @@ export default defineComponent({
 <style scoped>
 h1 {
   text-align: center;
-  font-family: "LXGW WenKai Mono TC", monospace;
   margin-left: 8px;
   margin-right: 8px;
   font-size: 40px;

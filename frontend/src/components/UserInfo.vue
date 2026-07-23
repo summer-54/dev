@@ -71,10 +71,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-* {
-  font-family: "LXGW WenKai Mono TC", monospace;
-}
-
 .info {
   display: flex;
   justify-content: space-between;

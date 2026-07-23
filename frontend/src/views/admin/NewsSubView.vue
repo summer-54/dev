@@ -4,7 +4,7 @@ import {getNews, type NewsType, websocketNews} from "@/api/news.js";
 import News from "@/views/home/News.vue";
 import Title from "@/components/Title.vue";
 import IconButton from "@/components/ui/iconButton.vue";
-import addIcon from "@/assets/add.svg";
+import addIcon from "@/assets/icons/add.svg";
 import NavButton from "@/components/ui/navButton.vue";
 import FixedButton from "@/components/ui/fixedButton.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";

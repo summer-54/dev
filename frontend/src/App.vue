@@ -80,9 +80,21 @@ body {
 
 @font-face {
   font-family: 'ShoptronicSP';
-  src: url('./assets/ShoptronicSP Basic.otf');
+  src: url('@/assets/fonts/ShoptronicSP Basic.otf');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+@font-face {
+  font-family: 'PT Mono';
+  src: url('@/assets/fonts/PTM55FT.ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  font-family: "PT Mono", monospace;
 }
 </style>

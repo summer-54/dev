@@ -67,6 +67,5 @@ export default defineComponent({
 }
 .comment {
   font-size: 20px;
-  font-family: "LXGW WenKai Mono TC", monospace;
 }
 </style>

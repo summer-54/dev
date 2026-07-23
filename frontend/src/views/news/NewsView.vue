@@ -7,7 +7,7 @@ import ImageGallery from "@/components/ImageGallery.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import {isAdmin} from "@/api/users.js";
 import IconButton from "@/components/ui/iconButton.vue";
-import edit from "@/assets/edit.svg";
+import edit from "@/assets/icons/edit.svg";
 
 export default defineComponent({
   name: "NewsView",
@@ -76,7 +76,7 @@ export default defineComponent({
         <IconButton :icon="edit" @click="editMethod()">Редактировать</IconButton>
       </span>
       <Title :text="news.title" />
-      <span class="date"><img src="@/assets/clock.svg"><span>{{ date }}</span></span>
+      <span class="date"><img src="../../assets/icons/clock.svg"><span>{{ date }}</span></span>
       <span class="text" v-html="news.fullText"></span>
       <span v-if="images.length > 0">
         <Subtitle style="text-align: center" text="Фотогалерея" />
@@ -90,7 +90,6 @@ export default defineComponent({
 * {
   margin-left: 8px;
   margin-right: 8px;
-  font-family: "LXGW WenKai Mono TC", monospace;
 }
 .date {
   display: flex;

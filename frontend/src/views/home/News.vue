@@ -92,6 +92,5 @@ export default defineComponent({
 }
 * {
   text-decoration: none;
-  font-family: "LXGW WenKai Mono TC", monospace;
 }
 </style>
