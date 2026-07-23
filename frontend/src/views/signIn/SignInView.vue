@@ -1,56 +1,45 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-// @ts-ignore
-import SuiInput from "sffui.vue/suiInput.vue"
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue"
-import Title from "@/components/Title.vue";
+<script lang="ts" setup>
+import {onMounted, ref} from "vue";
 import {hasToken, signIn} from "@/api/users.js";
-import CustomForm from "@/components/ui/CustomForm.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import TermBG from "@/components/termui/TermBG.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermInput from "@/components/termui/TermInput.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "SignInView",
-  components: {TermWindow, TermInput, TermButton, TermBG, ProgressIndicator, CustomForm, Title, SuiButton, SuiInput},
-  data() {
-    return {
-      username: "",
-      password: "",
-      wrong: false,
-      pending: false
-    }
-  },
-  async mounted() {
-    if (await hasToken()) {
-      let to = this.$router.currentRoute.value.query.next?.toString() ?? "/me";
-      if (to.startsWith("/")) this.$router.push(to);
-      else window.location.href = to;
-    }
-  },
-  methods: {
-    async submit(event: Event) {
-      event.preventDefault();
-      this.pending = true;
-      try {
-        let response = await signIn(this.username, this.password);
-        if (response) {
-          let to = this.$router.currentRoute.value.query.next?.toString() ?? "/me";
-          if (to.startsWith("/")) this.$router.push(to);
-          else window.location.href = to;
-        }
-        else this.wrong = true;
-      }
-      catch (error) {
-        this.wrong = true;
-      }
-      this.pending = false;
-    }
+const router = useRouter();
+
+const username = ref("");
+const password = ref("");
+const wrong = ref(false);
+const pending = ref(false);
+
+onMounted(async () => {
+  if (await hasToken()) {
+    let to = router.currentRoute.value.query.next?.toString() ?? "/me";
+    if (to.startsWith("/")) await router.push(to);
+    else window.location.href = to;
   }
 });
+
+async function submit(event: Event) {
+  event.preventDefault();
+  pending.value = true;
+  try {
+    let response = await signIn(username.value, password.value);
+    if (response) {
+      let to = router.currentRoute.value.query.next?.toString() ?? "/me";
+      if (to.startsWith("/")) await router.push(to);
+      else window.location.href = to;
+    }
+    else wrong.value = true;
+  }
+  catch (error) {
+    wrong.value = true;
+  }
+  pending.value = false;
+}
 </script>
 
 <template>

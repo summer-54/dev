@@ -1,5 +1,5 @@
-<script lang="ts">
-import {defineComponent} from "vue";
+<script lang="ts" setup>
+import {onMounted, ref} from "vue";
 import News from "./News.vue";
 import {getNews, type NewsType, websocketNews} from "@/api/news.js";
 import Title from "@/components/Title.vue";
@@ -8,54 +8,45 @@ import searchIcon from "@/assets/icons/search.svg"
 import UsersSearch from "@/views/home/UsersSearch.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 // @ts-ignore
-import SuiInput from "sffui.vue/suiInput.vue";
-// @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue";
 import TermBG from "@/components/termui/TermBG.vue";
 
-export default defineComponent({
-  name: "HomeView",
-  components: {TermBG, ProgressIndicator, UsersSearch, ThemeInvertSvg, News, Title, SuiInput, SuiButton},
-  data() {
-    return {
-      news_count: 0,
-      news_cur: [] as NewsType,
-      news_amount: 0,
-      searching: false,
-      searchIcon
-    }
-  },
-  mounted(){
-    const options = {
-      rootMargin: "0px",
-      threshold: 1.0
-    }
-    let global_this = this;
-    getNews().then(data=>{
-      global_this.news_amount = data.length;
-    }, () => {
-      global_this.news_amount = 0;
-      console.log("Cannot get news");
-    });
-    const news_at_once = 40;
-    const callback = function(entries: Array<IntersectionObserverEntry>){
-      if(entries[0].isIntersecting){
-        global_this.news_count += news_at_once;
-        getNews(global_this.news_count, Math.max(0, global_this.news_amount-global_this.news_count+1)).then(data=>{
-          global_this.news_cur = data
-        });
-      }
-    }
-    const observer = new IntersectionObserver(callback, options);
-    observer.observe(this.$refs.observer as HTMLElement);
-    websocketNews(article => {
-      if (this.news_cur.map(({id}) => id).includes(article.id)) this.news_cur[this.news_cur.findIndex(({id}) => id === article.id) ?? 0] = article;
-      else this.news_cur.unshift(article);
-    }, ID => {
-      this.news_cur = this.news_cur.filter(({id}) => id !== ID);
-    });
+const observerElem = ref<HTMLSpanElement>();
+
+const news_count = ref(0);
+const news_cur = ref<NewsType>([]);
+const news_amount = ref(0);
+const searching = ref(false);
+
+onMounted(() => {
+  const options = {
+    rootMargin: "0px",
+    threshold: 1.0
   }
-})
+  getNews().then(data => {
+    news_amount.value = data.length;
+  }, () => {
+    news_amount.value = 0;
+    console.log("Cannot get news");
+  });
+  const news_at_once = 40;
+  const callback = function(entries: Array<IntersectionObserverEntry>){
+    if(entries[0].isIntersecting){
+      news_count.value += news_at_once;
+      getNews(news_count.value, Math.max(0, news_amount.value - news_count.value + 1)).then(data => {
+        news_cur.value = data
+      });
+    }
+  }
+  const observer = new IntersectionObserver(callback, options);
+  observer.observe(observerElem.value as HTMLSpanElement);
+  websocketNews(article => {
+    if (news_cur.value.map(({id}) => id).includes(article.id)) news_cur.value[news_cur.value.findIndex(({id}) => id === article.id) ?? 0] = article;
+    else news_cur.value.unshift(article);
+  }, ID => {
+    news_cur.value = news_cur.value.filter(({id}) => id !== ID);
+  });
+});
 </script>
 
 <template>
@@ -65,7 +56,7 @@ export default defineComponent({
       <span class="container">
         <News v-for="{id, title, description, img} in news_cur" :src="img" :title="title" :comment="description" :page="'/news/'+id"/>
       </span>
-      <span class="observer" ref="observer"/>
+      <span class="observerElem" ref="observerElem"/>
     </div>
     <SuiButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
     <UsersSearch v-model:searching="searching"/>
@@ -115,7 +106,7 @@ main {
   gap: 20px;
 }
 
-.observer {
+.observerElem {
   display: block;
   height: 30px;
 }

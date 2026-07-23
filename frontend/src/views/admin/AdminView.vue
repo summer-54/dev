@@ -1,29 +1,23 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script lang="ts" setup>
+import {computed, onMounted} from 'vue'
 import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/icons/home.svg";
 import usersIcon from "@/assets/icons/account.svg";
 import contestsIcon from "@/assets/icons/cup.svg";
 import newsIcon from "@/assets/icons/news.svg";
 import {isAdmin} from "@/api/users.js";
+import {themeName} from "@/utils.ts";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "AdminView",
-  components: {NavButton},
-  data() {
-      return {homeIcon, usersIcon, contestsIcon, newsIcon}
-  },
-  computed: {
-    color() {
-      return this.$themeName === "dark" ? "white" : "black";
-    }
-  },
-  mounted() {
-    (async () => {
-      if (!(await isAdmin())) this.$router.push("/");
-    })();
-  }
-})
+const router = useRouter();
+
+computed(() => {
+  return themeName.value === "dark" ? "white" : "black";
+});
+
+onMounted(async () => {
+  if (!(await isAdmin())) await router.push("/");
+});
 </script>
 
 <template>

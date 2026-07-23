@@ -1,61 +1,56 @@
-<script lang="ts">
-import {defineComponent} from "vue"
+<script lang="ts" setup>
+import {onMounted, ref, watch} from "vue"
 // @ts-ignore
 import SuiInput from "sffui.vue/suiInput.vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue";
 import {searchUser, type SearchUserType} from "@/api/users";
-import focus from "@/directives/focus";
+import vFocus from "@/directives/focus";
 
-export default defineComponent({
-  name: "UsersSearch",
-  components: {SuiInput, SuiButton},
-  props: {
-    searching: {
-      type: Boolean,
-      required: true
-    }
-  },
-  emits: ["update:searching"],
-  data() {
-    return {
-      searchText: "",
-      foundUsers: [] as Array<SearchUserType & {text: string}>,
-      selectedFoundUser: -1
-    }
-  },
-  directives: {focus},
-  methods: {
-    async updateSearch() {
-      if (this.searchText === "") return this.$emit("update:searching", false);
-      let users = await searchUser(this.searchText);
-      if (users) this.foundUsers = users.map(user => ({
-        ...user,
-        text: user.minStr !== "username" ? `${user.username} (${user[user.minStr]})` : user.username
-      }));
-    },
-    selectUser(event: KeyboardEvent) {
-      if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key != "Escape") return;
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-      if (event.key === "ArrowUp" && this.selectedFoundUser >= 0) this.selectedFoundUser--;
-      if (event.key === "ArrowDown" && this.selectedFoundUser < this.foundUsers.length - 1) this.selectedFoundUser++;
-      if (event.key === "Escape") this.$emit("update:searching", false);
-    }
-  },
-  mounted() {
-    document.body.addEventListener("click", () => {
-      this.$emit("update:searching", false);
-      this.searchText = "";
-    });
-  },
-  watch: {
-    searching() {
-      if (!this.searching) this.foundUsers = [];
-    }
+const props = defineProps({
+  searching: {
+    type: Boolean,
+    required: true
   }
-})
+});
+
+const emit = defineEmits<{
+  "update:searching": [value: boolean]
+}>();
+
+const searchText = ref("");
+const foundUsers = ref<Array<SearchUserType & {text: string}>>([])
+const selectedFoundUser = ref(-1);
+
+async function updateSearch() {
+  if (searchText.value === "") return emit("update:searching", false);
+  let users = await searchUser(searchText.value);
+  if (users) foundUsers.value = users.map(user => ({
+    ...user,
+    text: user.minStr !== "username" ? `${user.username} (${user[user.minStr]})` : user.username
+  }));
+}
+
+function selectUser(event: KeyboardEvent) {
+  if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key != "Escape") return;
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  if (event.key === "ArrowUp" && selectedFoundUser.value >= 0) selectedFoundUser.value--;
+  if (event.key === "ArrowDown" && selectedFoundUser.value < foundUsers.value.length - 1) selectedFoundUser.value++;
+  if (event.key === "Escape") emit("update:searching", false);
+}
+
+onMounted(() => {
+  document.body.addEventListener("click", () => {
+    emit("update:searching", false);
+    searchText.value = "";
+  });
+});
+
+watch(props, () => {
+  if (!props.searching) foundUsers.value = [];
+});
 </script>
 
 <template>

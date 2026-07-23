@@ -14,45 +14,35 @@
   </span>
 </template>
 
-<script lang="ts">
-import {defineComponent} from "vue";
+<script lang="ts" setup>
+import {computed, ref} from "vue";
 
-export default defineComponent({
-  name: "ImageGallery",
-  props: {
-    imgs_list: {
-      type: Array<{src: string, id: number}>,
-      required: true
-    }
-  },
-  data(){
-    return {
-      cur: 0,
-      left: false
-    }
-  },
-  methods: {
-    previous(){
-      this.left = false;
-      this.cur += this.imgs_list.length-1;
-      this.cur %= this.imgs_list.length;
-    },
-    next(){
-      this.left = true;
-      this.cur++;
-      this.cur %= this.imgs_list.length;
-    }
-  },
-  computed: {
-    length() {
-      return window.matchMedia("(min-width: 1200px)").matches ? 600 :
-        window.matchMedia("(min-width: 800px) and (max-width: 1200px)").matches ? 400 :
-        window.matchMedia("(min-width: 500px) and (max-width: 800px)").matches ? 250 : 150;
-    },
-    height() {
-
-    }
+const props = defineProps({
+  imgs_list: {
+    type: Array<{src: string, id: number}>,
+    required: true
   }
+});
+
+const cur = ref(0);
+const left = ref(false);
+
+function previous() {
+  left.value = false;
+  cur.value += props.imgs_list.length - 1;
+  cur.value %= props.imgs_list.length;
+}
+
+function next() {
+  left.value = true;
+  cur.value++;
+  cur.value %= props.imgs_list.length;
+}
+
+const length = computed(() => {
+  return window.matchMedia("(min-width: 1200px)").matches ? 600 :
+    window.matchMedia("(min-width: 800px) and (max-width: 1200px)").matches ? 400 :
+    window.matchMedia("(min-width: 500px) and (max-width: 800px)").matches ? 250 : 150;
 });
 </script>
 

@@ -1,28 +1,18 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-import Title from "@/components/Title.vue";
-import {me, signOut} from "@/api/users.js";
+<script lang="ts" setup>
+import {computed} from 'vue'
+import {me, signOut as signOut_} from "@/api/users.js";
 import IconButton from "@/components/ui/iconButton.vue";
 import signOutIcon from "@/assets/icons/signout.svg"
 import UserInfo from "@/components/UserInfo.vue";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "DefaultSubView",
-  data() {
-    return {
-      signOutIcon
-    }
-  },
-  components: {UserInfo, IconButton, Title},
-  computed: {
-    user: () => me.value
-  },
-  methods: {
-    signOut() {
-      signOut().then(() => this.$router.push("/"));
-    }
-  }
-})
+const router = useRouter();
+
+const user = computed(() => me.value);
+
+function signOut() {
+  signOut_().then(() => router.push("/"));
+}
 </script>
 
 <template>

@@ -1,23 +1,18 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-  name: "ThemeInvertSvg",
-  props: {
-    src: {
-      type: String,
-      required: true
-    },
-    alt: {
-      type: String,
-      required: true
-    },
-    inverted: {
-      type: Boolean,
-      required: false
-    }
+<script lang="ts" setup>
+defineProps({
+  src: {
+    type: String,
+    required: true
+  },
+  alt: {
+    type: String,
+    required: true
+  },
+  inverted: {
+    type: Boolean,
+    required: false
   }
-})
+});
 </script>
 
 <template>

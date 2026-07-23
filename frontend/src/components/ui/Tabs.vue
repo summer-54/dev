@@ -1,30 +1,24 @@
-<script lang="ts">
-import {defineComponent, type PropType} from "vue";
+<script lang="ts" setup>
+import {type PropType} from "vue";
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue";
+import {useRoute} from "vue-router";
 
-export default defineComponent({
-  name: "Tabs",
-  components: {SuiButton},
-  props: {
-    routes: {
-      type: Object as PropType<{[key: string]: string}>,
-      required: true
-    }
-  },
-  computed: {
-    currentRoute(): string {
-      return Object(this.$router).currentRoute.value.path;
-    }
+const currentRoute = useRoute();
+
+defineProps({
+  routes: {
+    type: Object as PropType<{[key: string]: string}>,
+    required: true
   }
-})
+});
 </script>
 
 <template>
   <header>
     <nav>
       <RouterLink v-for="(route, text) in routes" :to="route">
-        <SuiButton transform="1.2" :disabled="currentRoute.startsWith(route)">{{text}}</SuiButton>
+        <SuiButton transform="1.2" :disabled="currentRoute.fullPath.startsWith(route)">{{text}}</SuiButton>
       </RouterLink>
     </nav>
   </header>

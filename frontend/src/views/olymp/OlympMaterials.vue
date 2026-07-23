@@ -11,51 +11,44 @@
   </table>
 </template>
 
-<script lang="ts">
-import {defineComponent} from "vue";
+<script lang="ts" setup>
+import {ref} from "vue";
 
-export default defineComponent({
-  name: "OlympMaterials",
-  data() {
-    return {
-      materials: [
-        {
-          year: 2022,
-          tasks: "/tasks22.pdf",
-          results: "https://codeforces.com/spectator/ranklist/7a560457e6bff93772b8a5f630ba2888"
-        },
-        {
-          year: 2023,
-          tasks: "/tasks23.pdf",
-          results: "https://codeforces.com/spectator/ranklist/4e6194aba52ae5ee893740ac265ca71e",
-          gym: "https://codeforces.com/contestInvitation/ff9a89f060b2d1857c844f118b385fdb4fe861d0",
-          solutions: "/solution23.pdf"
-        },
-        {
-          year: 2024,
-          tasks: "/tasks24.pdf",
-          results: "https://codeforces.com/spectator/ranklist/5b07c464e44e728aaa349f638ef1bfe2",
-          gym: "https://codeforces.com/gym/105136",
-          solutions: "https://youtu.be/iac53dNDHbg"
-        },
-        {
-          year: 2025,
-          tasks: "/tasks25.pdf",
-          results: "https://codeforces.com/spectator/ranklist/1e14d24fe35f078ac5a18181557e0d11",
-          gym: "https://codeforces.com/contestInvitation/a2431f05cb0f66b9855a0d6b8da0f3e04eca9523",
-          solutions: "/solutions25.pdf"
-        },
-        {
-          year: 2026,
-          tasks: "/tasks26.pdf",
-          results: "https://codeforces.com/spectator/ranklist/feb36b4d9b2d5fc0875993401303893e",
-          gym: "https://codeforces.com/contestInvitation/fe04aff4a6c4783482e360046084051d6977a44c",
-          solutions: "/solutions26.pdf"
-        },
-      ]
-    }
-  }
-})
+const materials = ref([
+  {
+    year: 2022,
+    tasks: "/tasks22.pdf",
+    results: "https://codeforces.com/spectator/ranklist/7a560457e6bff93772b8a5f630ba2888"
+  },
+  {
+    year: 2023,
+    tasks: "/tasks23.pdf",
+    results: "https://codeforces.com/spectator/ranklist/4e6194aba52ae5ee893740ac265ca71e",
+    gym: "https://codeforces.com/contestInvitation/ff9a89f060b2d1857c844f118b385fdb4fe861d0",
+    solutions: "/solution23.pdf"
+  },
+  {
+    year: 2024,
+    tasks: "/tasks24.pdf",
+    results: "https://codeforces.com/spectator/ranklist/5b07c464e44e728aaa349f638ef1bfe2",
+    gym: "https://codeforces.com/gym/105136",
+    solutions: "https://youtu.be/iac53dNDHbg"
+  },
+  {
+    year: 2025,
+    tasks: "/tasks25.pdf",
+    results: "https://codeforces.com/spectator/ranklist/1e14d24fe35f078ac5a18181557e0d11",
+    gym: "https://codeforces.com/contestInvitation/a2431f05cb0f66b9855a0d6b8da0f3e04eca9523",
+    solutions: "/solutions25.pdf"
+  },
+  {
+    year: 2026,
+    tasks: "/tasks26.pdf",
+    results: "https://codeforces.com/spectator/ranklist/feb36b4d9b2d5fc0875993401303893e",
+    gym: "https://codeforces.com/contestInvitation/fe04aff4a6c4783482e360046084051d6977a44c",
+    solutions: "/solutions26.pdf"
+  },
+]);
 </script>
 
 <style scoped>

@@ -1,17 +1,12 @@
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
 import CircledImage from "@/components/CircledImage.vue";
 
-export default defineComponent({
-  name: "CircledImage_container",
-  props: {
-    imgs_list: {
-      type: Array<{src: string, note1: string, note2?: string}>,
-      required: true
-    }
-  },
-  components: {CircledImage}
-});
+const props = defineProps({
+  imgs_list: {
+    type: Array<{src: string, note1: string, note2?: string}>,
+    required: true
+  }
+})
 </script>
 
 <template>

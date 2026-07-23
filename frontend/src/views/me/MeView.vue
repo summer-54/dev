@@ -1,38 +1,30 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue"
-import {getMe, hasToken, me, isAdmin} from "@/api/users.js";
+<script lang="ts" setup>
+import {computed, onMounted, ref} from "vue";
+import {getMe, hasToken, isAdmin, me} from "@/api/users.js";
 import NavButton from "@/components/ui/navButton.vue";
 import homeIcon from "@/assets/icons/home.svg"
 import settingsIcon from "@/assets/icons/settings.svg"
-import signOutIcon from "@/assets/icons/signout.svg"
 import adminIcon from "@/assets/icons/admin.svg"
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "MeView",
-  components: {ProgressIndicator, NavButton, SuiButton},
-  data() {
-    return {homeIcon, settingsIcon, signOutIcon, adminIcon, admin: false};
-  },
-  async mounted() {
-    if (!(await hasToken())) {
-      this.$router.push("/sign-in");
-      return;
-    }
-    getMe().then(user => me.value = user).catch(err => {
-      this.pending = false;
-      localStorage.removeItem("token");
-      this.$router.push("/sign-in");
-    });
-    if (await isAdmin()) this.admin = true;
-  },
-  computed: {
-    pending() {
-      return !me.value;
-    }
+const router = useRouter();
+
+const admin = ref(false);
+
+const pending = computed(() => !me.value);
+
+onMounted(async () => {
+  if (!(await hasToken())) {
+    await router.push("/sign-in");
+    return;
   }
+  getMe().then(user => me.value = user).catch(err => {
+    // pending.value = false;
+    localStorage.removeItem("token");
+    router.push("/sign-in");
+  });
+  if (await isAdmin()) admin.value = true;
 });
 </script>
 

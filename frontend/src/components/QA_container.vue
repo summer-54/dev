@@ -11,20 +11,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from 'vue';
-import Subtitle from "@/components/Subtitle.vue";
+<script lang="ts" setup>
 import Animation from "@/components/ui/animation.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
 
-export default defineComponent({
-  name: "QA_container",
-  components: {TermWindow, Animation, Subtitle},
-  props: {
-    qa_list: {
-      type: Array<{q: string, a: string}>,
-      required: true
-    }
+const props = defineProps({
+  qa_list: {
+    type: Array<{q: string, a: string}>,
+    required: true
   }
 });
 </script>

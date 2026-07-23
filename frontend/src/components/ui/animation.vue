@@ -1,25 +1,20 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-import AnimateOnScroll from 'primevue/animateonscroll';
+<script lang="ts" setup>
+import {computed} from 'vue'
+import vAnimateOnScroll from 'primevue/animateonscroll';
 
-export default defineComponent({
-  name: "animation",
-  directives: {AnimateOnScroll},
-  props: {
-    animation: {
-      type: String,
-      required: true
-    },
-    delay: {
-      type: Number,
-      default: 0
-    }
+const props = defineProps({
+  animation: {
+    type: String,
+    required: true
   },
-  computed: {
-    delay_() {
-      return this.delay + "ms";
-    }
+  delay: {
+    type: Number,
+    default: 0
   }
+});
+
+const delay_ = computed(() => {
+  return props.delay + "ms";
 })
 </script>
 

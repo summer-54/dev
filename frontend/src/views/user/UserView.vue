@@ -1,47 +1,36 @@
-<script lang="ts">
-import {defineComponent, watch} from 'vue'
+<script lang="ts" setup>
+import {onMounted, ref, watch} from 'vue'
 import {getMe, getUserByUsername, me, type UserType} from "@/api/users";
 import Title from "@/components/Title.vue";
-import IconButton from "@/components/ui/iconButton.vue";
 import UserInfo from "@/components/UserInfo.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
+import {useRoute, useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "UserView",
-  components: {ProgressIndicator, UserInfo, IconButton, Title},
-  data() {
-    return {
-      user: null as UserType | null,
-      pending: true
-    }
-  },
-  computed: {
-    route() {
-      return Object(this.$router).currentRoute.value;
-    }
-  },
-  methods: {
-    async getUser() {
-      this.pending = true;
-      this.user = await getUserByUsername(this.route.params.username);
-      this.pending = false;
-    },
-    ifMe() {
-      if (me.value && this.user && me.value?.username === this.user?.username) this.$router.push("/me");
-    }
-  },
-  mounted() {
-    this.ifMe();
-    getMe().then(user => me.value = user);
-    this.getUser();
-    watch(me, () => this.ifMe());
-  },
-  watch: {
-    user() {
-      this.ifMe();
-    }
-  }
-})
+const route = useRoute();
+const router = useRouter();
+
+const user = ref<UserType | null>(null);
+const pending = ref(false);
+
+async function getUser() {
+  pending.value = true;
+  user.value = await getUserByUsername(route.params.username as string);
+  pending.value = false;
+}
+
+function ifMe() {
+  if (me.value && user.value && me.value?.username === user.value?.username) router.push("/me");
+}
+
+onMounted(() => {
+  ifMe();
+  getMe().then(user => me.value = user);
+  getUser();
+  watch(me, () => ifMe());
+});
+
+watch(me, () => ifMe());
+watch(user, () => ifMe());
 </script>
 
 <template>

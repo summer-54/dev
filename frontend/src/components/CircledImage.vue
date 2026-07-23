@@ -1,24 +1,19 @@
-<script lang="ts">
-import {defineComponent} from 'vue';
+<script lang="ts" setup>
 import Animation from "@/components/ui/animation.vue";
 
-export default defineComponent({
-  name: "CircledImage",
-  components: {Animation},
-  props: {
-    src: {
-      type: String,
-      required: true
-    },
-    note1: {
-      type: String,
-      required: true
-    },
-    note2: String,
-    delay: {
-      type: Number,
-      required: true
-    }
+const props = defineProps({
+  src: {
+    type: String,
+    required: true
+  },
+  note1: {
+    type: String,
+    required: true
+  },
+  note2: String,
+  delay: {
+    type: Number,
+    required: true
   }
 });
 </script>

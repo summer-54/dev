@@ -1,89 +1,73 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
-import {getMe, me, patchUser, patchUserPassword} from "@/api/users.js";
+<script lang="ts" setup>
+import {computed, onMounted, ref, watch} from 'vue'
+import {getMe, me, patchUser as patchUser_, patchUserPassword} from "@/api/users.js";
 import Title from "@/components/Title.vue";
-import Subtitle from "@/components/Subtitle.vue";
-// @ts-ignore
-import SuiInput from "sffui.vue/suiInput.vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
-import CustomForm from "@/components/ui/CustomForm.vue";
-import FormComment from "@/components/ui/formComment.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import TermInput from "@/components/termui/TermInput.vue";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "SettingsSubView",
-  components: {TermInput, TermWindow, TermButton, FormComment, CustomForm, Subtitle, Title, SuiInput, SuiButton},
-  data() {
-    return {
-      firstName: "",
-      lastName: "",
-      codeforcesHandle: "",
-      oldPassword: "",
-      newPassword: "",
-      newPasswordRepeat: "",
-      correctPassword: true,
-      pending: false
-    }
-  },
-  computed: {
-    user: () => me.value,
-    isPasswordEqual() {return this.newPassword === this.newPasswordRepeat;},
-    passwordStrength() {
-      if (this.newPassword.split("").map(char => char >= 'а' && char <= 'я' || char >= 'А' && char <= 'Я').filter(value => value).length) return -1;
-      if (this.newPassword.length < 4) return 0;
-      let numbersCount = this.newPassword.split("").map(char => char >= '1' && char <= '9').filter(value => value).length;
-      let lowerCaseCount = this.newPassword.split("").map(char => char >= 'a' && char <= 'z').filter(value => value).length;
-      let upperCaseCount = this.newPassword.split("").map(char => char >= 'A' && char <= 'Z').filter(value => value).length;
-      let symbolsCount = this.newPassword.split("").map(char => !(char >= '1' && char <= '9' || char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z')).filter(value => value).length;
-      return Math.min(numbersCount, 2) + Math.min(lowerCaseCount, 1) + Math.min(upperCaseCount, 1) + Math.min(symbolsCount, 2);
-    }
-  },
-  methods: {
-    async patchUser(event: Event) {
-      event.preventDefault();
-      this.pending = true;
-      let response = await patchUser({
-        firstName: this.firstName,
-        lastName: this.lastName,
-        codeforcesHandle: this.codeforcesHandle
-      });
-      this.pending = false;
-      if (response) {
-        me.value = await getMe();
-        this.$router.push("/me");
-      }
-    },
-    async patchPassword(event: Event) {
-      event.preventDefault();
-      this.pending = true;
-      let response = await patchUserPassword(this.oldPassword, this.newPassword);
-      this.pending = false;
-      if (response) this.$router.push("/me");
-      else this.correctPassword = false;
-    },
-    setup() {
-      if (this.user) {
-        this.firstName = this.user.firstName;
-        this.lastName = this.user.lastName;
-        this.codeforcesHandle = this.user.codeforcesHandle;
-      }
-    }
-  },
-  watch: {
-    user() {
-      this.setup();
-    },
-    oldPassword() {
-      this.correctPassword = true;
-    }
-  },
-  mounted() {
-    this.setup();
-  }
+const router = useRouter();
+
+const firstName = ref("");
+const lastName = ref("");
+const codeforcesHandle = ref("");
+const oldPassword = ref("");
+const newPassword = ref("");
+const newPasswordRepeat = ref("");
+const correctPassword = ref(true);
+const pending = ref(false);
+
+const user = computed(() => me.value);
+
+const passwordStrength = computed(() => {
+  if (newPassword.value.split("").map(char => char >= 'а' && char <= 'я' || char >= 'А' && char <= 'Я').filter(value => value).length) return -1;
+  if (newPassword.value.length < 4) return 0;
+  let numbersCount = newPassword.value.split("").map(char => char >= '1' && char <= '9').filter(value => value).length;
+  let lowerCaseCount = newPassword.value.split("").map(char => char >= 'a' && char <= 'z').filter(value => value).length;
+  let upperCaseCount = newPassword.value.split("").map(char => char >= 'A' && char <= 'Z').filter(value => value).length;
+  let symbolsCount = newPassword.value.split("").map(char => !(char >= '1' && char <= '9' || char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z')).filter(value => value).length;
+  return Math.min(numbersCount, 2) + Math.min(lowerCaseCount, 1) + Math.min(upperCaseCount, 1) + Math.min(symbolsCount, 2);
 })
+
+async function patchUser(event: Event) {
+  event.preventDefault();
+  pending.value = true;
+  let response = await patchUser_({
+    firstName: firstName.value,
+    lastName: lastName.value,
+    codeforcesHandle: codeforcesHandle.value
+  });
+  pending.value = false;
+  if (response) {
+    me.value = await getMe();
+    await router.push("/me");
+  }
+}
+
+async function patchPassword(event: Event) {
+  event.preventDefault();
+  pending.value = true;
+  let response = await patchUserPassword(oldPassword.value, newPassword.value);
+  pending.value = false;
+  if (response) await router.push("/me");
+  else correctPassword.value = false;
+}
+
+function setup() {
+  if (user.value) {
+    firstName.value = user.value.firstName;
+    lastName.value = user.value.lastName;
+    codeforcesHandle.value = user.value.codeforcesHandle;
+  }
+}
+
+watch(user, () => setup());
+watch(oldPassword, () => {
+  correctPassword.value = true;
+});
+
+onMounted(() => setup());
 </script>
 
 <template>

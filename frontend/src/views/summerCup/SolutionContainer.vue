@@ -19,9 +19,9 @@
   </span>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import Subtitle from "@/components/Subtitle.vue";
-import {defineComponent, type PropType} from "vue";
+import {computed, type PropType} from "vue";
 
 export type SolutionType = {
   num: number,
@@ -32,44 +32,39 @@ export type SolutionType = {
   route: string
 }
 
-export default defineComponent({
-  name: "SolutionContainer",
-  props: {
-    solutions: {
-      type: Object as PropType<Array<SolutionType>>,
-      required: true
-    }
-  },
-  components: {Subtitle},
-  computed: {
-    ending() {
-      let result = [] as Array<string>;
-      for (let i = 0; i < this.solutions.length; i++) {
-        let amount = this.solutions[i].tasks_amount;
-        if (amount === undefined) {
-          result[i] = "";
-          continue;
-        }
-        let last_digit = amount % 10;
-        let last_2_digits = amount % 100;
-        if (10 <= last_2_digits && last_2_digits <= 19) {
-          result[i] = "";
-          continue;
-        }
-        if (last_digit == 1) {
-          result[i] = "а";
-          continue;
-        }
-        if (2 <= last_digit && last_digit <= 4) {
-          result[i] = "и";
-          continue;
-        }
-        result[i] = "";
-      }
-      return result;
-    }
+const props = defineProps({
+  solutions: {
+    type: Object as PropType<Array<SolutionType>>,
+    required: true
   }
-})
+});
+
+const ending = computed(() => {
+  let result = [] as Array<string>;
+  for (let i = 0; i < props.solutions.length; i++) {
+    let amount = props.solutions[i].tasks_amount;
+    if (amount === undefined) {
+      result[i] = "";
+      continue;
+    }
+    let last_digit = amount % 10;
+    let last_2_digits = amount % 100;
+    if (10 <= last_2_digits && last_2_digits <= 19) {
+      result[i] = "";
+      continue;
+    }
+    if (last_digit == 1) {
+      result[i] = "а";
+      continue;
+    }
+    if (2 <= last_digit && last_digit <= 4) {
+      result[i] = "и";
+      continue;
+    }
+    result[i] = "";
+  }
+  return result;
+});
 </script>
 
 <style scoped>

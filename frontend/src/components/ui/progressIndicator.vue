@@ -1,10 +1,5 @@
-<script lang="ts">
-import {defineComponent} from "vue";
+<script lang="ts" setup>
 import {VueSpinnerGrid} from "vue3-spinners";
-
-export default defineComponent({
-  components: {VueSpinnerGrid}
-});
 </script>
 
 <template>

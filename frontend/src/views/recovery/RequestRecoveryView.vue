@@ -17,15 +17,8 @@
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
-import CustomForm from '@/components/ui/CustomForm.vue';
-// @ts-ignore
-import SuiButton from 'sffui.vue/suiButton.vue';
-// @ts-ignore
-import SuiInput from 'sffui.vue/suiInput.vue';
-import Title from '@/components/Title.vue';
-import Subtitle from '@/components/Subtitle.vue';
+<script lang="ts" setup>
+import {ref} from 'vue';
 import {requestRecovery} from "@/api/recovery.js";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermInput from "@/components/termui/TermInput.vue";
@@ -33,30 +26,18 @@ import TermWindow from "@/components/termui/TermWindow.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import TermBG from "@/components/termui/TermBG.vue";
 
-export default defineComponent({
-  name: "RecoveryView",
-  components: {
-    TermBG,
-    ProgressIndicator,
-    TermWindow, TermInput, TermButton, CustomForm, SuiButton, SuiInput, Title, Subtitle},
-  data() {
-    return {
-      email: "",
-      pending: false,
-      done: false,
-      failed: false
-    }
-  },
-  methods: {
-    async recovery(event: Event) {
-      event.preventDefault();
-      this.pending = true;
-      if (await requestRecovery(this.email)) this.done = true;
-      else this.failed = true;
-      this.pending = false;
-    }
-  }
-});
+const email = ref("");
+const pending = ref(false);
+const done = ref(false);
+const failed = ref(false);
+
+async function recovery(event: Event) {
+  event.preventDefault();
+  pending.value = true;
+  if (await requestRecovery(email.value)) done.value = true;
+  else failed.value = true;
+  pending.value = false;
+}
 </script>
 
 <style scoped>

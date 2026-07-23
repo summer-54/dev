@@ -1,31 +1,26 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script lang="ts" setup>
 // @ts-ignore
 import SuiButton from "sffui.vue/suiButton.vue"
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 
-export default defineComponent({
-  name: "iconButton",
-  components: {ThemeInvertSvg, SuiButton},
-  props: {
-    icon: {
-      type: String,
-      required: true
-    },
-    noText: {
-      type: Boolean,
-      default: false
-    },
-    notInvert: {
-      type: Boolean,
-      default: false
-    },
-    alt: {
-      type: String,
-      default: ""
-    }
+defineProps({
+  icon: {
+    type: String,
+    required: true
+  },
+  noText: {
+    type: Boolean,
+    default: false
+  },
+  notInvert: {
+    type: Boolean,
+    default: false
+  },
+  alt: {
+    type: String,
+    default: ""
   }
-})
+});
 </script>
 
 <template>

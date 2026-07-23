@@ -1,122 +1,97 @@
-<script lang="ts">
-import {defineComponent} from "vue";
-// @ts-ignore
-import SuiInput from "sffui.vue/suiInput.vue"
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue"
-import Title from "@/components/Title.vue";
+<script lang="ts" setup>
+import {computed, onMounted, ref, watch} from "vue";
 import {
-  emailConfirm,
+  emailConfirm as emailConfirm_,
   hasToken,
-  isUniqueCodeforcesHandle,
-  isUniqueEmail,
-  isUniqueUsername,
+  isUniqueCodeforcesHandle as isUniqueCodeforcesHandle_,
+  isUniqueEmail as isUniqueEmail_,
+  isUniqueUsername as isUniqueUsername_,
   register,
   registerStart
 } from "@/api/users.js";
-import CustomForm from "@/components/ui/CustomForm.vue";
-import FormComment from "@/components/ui/formComment.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
 import TermBG from "@/components/termui/TermBG.vue";
 import TermPin from "@/components/termui/TermPin.vue";
 import TermButton from "@/components/termui/TermButton.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import TermInput from "@/components/termui/TermInput.vue";
+import {useRouter} from "vue-router";
 
-export default defineComponent({
-  name: "RegistrationView",
-  components: {
-    TermInput,
-    TermWindow,
-    TermButton,
-    TermPin,
-    TermBG, ProgressIndicator, FormComment, CustomForm, Title, SuiInput, SuiButton},
-  data() {
-    return {
-      username: "",
-      password: "",
-      passwordRepeat: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      codeforcesHandle: "",
-      emailConfirm: "",
-      isUniqueUsername: true,
-      isUniqueEmail: true,
-      isUsernameEnoughLength: true,
-      isUniqueCodeforcesHandle: true,
-      pending: false,
-      stage: 0,
-      stage0Error: 0,
-      emailToken: undefined as undefined | null | string
-    }
-  },
-  async mounted() {
-    if (await hasToken()) this.$router.push("/me");
-  },
-  watch: {
-    username() {
-      isUniqueUsername(this.username).then(unique => this.isUniqueUsername = Boolean(unique));
-    },
-    email() {
-      isUniqueEmail(this.email).then(unique => this.isUniqueEmail = Boolean(unique));
-    },
-    codeforcesHandle() {
-      isUniqueCodeforcesHandle(this.codeforcesHandle).then(unique => this.isUniqueCodeforcesHandle = Boolean(unique));
-    },
-    emailConfirm() {
-      if (this.emailConfirm.length === 6) this.submit1();
-    }
-  },
-  methods: {
-    async submit(event: Event) {
-      event.preventDefault();
-      this.checkUsernameLength(true);
-      if (!this.isPasswordEqual || !this.isUniqueUsername || !this.isUniqueEmail || !this.isUniqueCodeforcesHandle || !this.isUsernameEnoughLength || this.passwordStrength <= 0 || this.pending || !this.emailToken) return;
-      this.pending = true;
-      let response = await register({
-        username: this.username,
-        password: this.password,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        emailToken: this.emailToken,
-        codeforcesHandle: this.codeforcesHandle
-      });
-      this.pending = false;
-      if (!response) this.$router.push("/me");
-    },
-    checkUsernameLength(setToFalse: boolean) {
-      if (this.username.length < 4 && setToFalse) this.isUsernameEnoughLength = false;
-      if (this.username.length >= 4) this.isUsernameEnoughLength = true;
-    },
-    async submit0() {
-      this.pending = true;
-      this.stage0Error = await registerStart(this.email);
-      if (this.stage0Error === 0) this.stage = 1;
-      this.pending = false;
-    },
-    async submit1() {
-      this.pending = true;
-      this.emailToken = await emailConfirm(this.email, this.emailConfirm);
-      if (this.emailToken) this.stage = 2;
-      else this.emailConfirm = "";
-      this.pending = false;
-    }
-  },
-  computed: {
-    isPasswordEqual() {
-      return this.password === this.passwordRepeat;
-    },
-    passwordStrength() {
-      if (this.password.split("").map(char => char >= 'а' && char <= 'я' || char >= 'А' && char <= 'Я').filter(value => value).length) return -1;
-      if (this.password.length < 4) return 0;
-      let numbersCount = this.password.split("").map(char => char >= '1' && char <= '9').filter(value => value).length;
-      let lowerCaseCount = this.password.split("").map(char => char >= 'a' && char <= 'z').filter(value => value).length;
-      let upperCaseCount = this.password.split("").map(char => char >= 'A' && char <= 'Z').filter(value => value).length;
-      let symbolsCount = this.password.split("").map(char => !(char >= '1' && char <= '9' || char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z')).filter(value => value).length;
-      return Math.min(numbersCount, 2) + Math.min(lowerCaseCount, 1) + Math.min(upperCaseCount, 1) + Math.min(symbolsCount, 2);
-    }
-  }
+const router = useRouter();
+
+const username = ref("");
+const password = ref("");
+const passwordRepeat = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const email = ref("");
+const codeforcesHandle = ref("");
+const emailConfirm = ref("");
+const isUniqueUsername = ref(true);
+const isUniqueEmail = ref(true);
+const isUsernameEnoughLength = ref(true);
+const isUniqueCodeforcesHandle = ref(true);
+const pending = ref(false);
+const stage = ref(0);
+const stage0Error = ref(0);
+const emailToken = ref<undefined | null | string>(undefined);
+
+const passwordStrength = computed(() => {
+  if (password.value.split("").map(char => char >= 'а' && char <= 'я' || char >= 'А' && char <= 'Я').filter(value => value).length) return -1;
+  if (password.value.length < 4) return 0;
+  let numbersCount = password.value.split("").map(char => char >= '1' && char <= '9').filter(value => value).length;
+  let lowerCaseCount = password.value.split("").map(char => char >= 'a' && char <= 'z').filter(value => value).length;
+  let upperCaseCount = password.value.split("").map(char => char >= 'A' && char <= 'Z').filter(value => value).length;
+  let symbolsCount = password.value.split("").map(char => !(char >= '1' && char <= '9' || char >= 'a' && char <= 'z' || char >= 'A' && char <= 'Z')).filter(value => value).length;
+  return Math.min(numbersCount, 2) + Math.min(lowerCaseCount, 1) + Math.min(upperCaseCount, 1) + Math.min(symbolsCount, 2);
+});
+
+function checkUsernameLength(setToFalse: boolean) {
+  if (username.value.length < 4 && setToFalse) isUsernameEnoughLength.value = false;
+  if (username.value.length >= 4) isUsernameEnoughLength.value = true;
+}
+
+async function submit(event: Event) {
+  event.preventDefault();
+  checkUsernameLength(true);
+  if (password.value !== passwordRepeat.value || !isUniqueUsername.value || !isUniqueEmail.value || !isUniqueCodeforcesHandle.value || !isUsernameEnoughLength.value || passwordStrength.value <= 0 || pending.value || !emailToken.value) return;
+  pending.value = true;
+  let response = await register({
+    username: username.value,
+    password: password.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    emailToken: emailToken.value,
+    codeforcesHandle: codeforcesHandle.value
+  });
+  pending.value = false;
+  if (!response) await router.push("/me");
+}
+
+async function submit0() {
+  pending.value = true;
+  stage0Error.value = await registerStart(email.value);
+  if (stage0Error.value === 0) stage.value = 1;
+  pending.value = false;
+}
+
+async function submit1() {
+  pending.value = true;
+  emailToken.value = await emailConfirm_(email.value, emailConfirm.value);
+  if (emailToken.value) stage.value = 2;
+  else emailConfirm.value = "";
+  pending.value = false;
+}
+
+onMounted(async () => {
+  if (await hasToken()) await router.push("/me");
+});
+
+watch(username, () => isUniqueUsername_(username.value).then(unique => isUniqueUsername.value = Boolean(unique)));
+watch(email, () => isUniqueEmail_(email.value).then(unique => isUniqueEmail.value = Boolean(unique)));
+watch(codeforcesHandle, () => isUniqueCodeforcesHandle_(codeforcesHandle.value).then(unique => isUniqueCodeforcesHandle.value = Boolean(unique)));
+watch(emailConfirm, () => {
+  if (emailConfirm.value.length === 6) submit1();
 });
 </script>
 
@@ -159,13 +134,13 @@ export default defineComponent({
           <p class="error" v-if="passwordStrength === -1">Не может содержать русские буквы</p>
           <p>Сила пароля: {{passwordStrength}}/6</p>
           <TermInput label="root@inf54:~# confirm:" mLabel="> confirm:" placeholder="Повторите пароль" password noBreak v-model="passwordRepeat"/>
-          <p class="error" v-if="!isPasswordEqual">Не совпадает</p>
+          <p class="error" v-if="password !== passwordRepeat">Не совпадает</p>
           <TermInput label="root@inf54:~# name:" mLabel="> name:" placeholder="Имя" noBreak v-model="firstName"/>
           <TermInput label="root@inf54:~# surname:" mLabel="> surname:" placeholder="Фамилия" noBreak v-model="lastName"/>
           <p class="subtitle">Дополнительная информация</p>
           <TermInput label="root@inf54:~# codeforces:" mLabel="> codeforces:" placeholder="Ник на Codeforces" optional noBreak v-model="codeforcesHandle"/>
           <p class="error" v-if="!isUniqueCodeforcesHandle && codeforcesHandle.length > 0">Не уникально</p>
-          <TermButton :disabled="!isPasswordEqual || !isUniqueUsername || !isUniqueEmail || !isUniqueCodeforcesHandle || !isUsernameEnoughLength
+          <TermButton :disabled="password !== passwordRepeat || !isUniqueUsername || !isUniqueEmail || !isUniqueCodeforcesHandle || !isUsernameEnoughLength
             || passwordStrength <= 0 || firstName.length <= 1 || lastName.length <= 1 || pending" @click="submit">Зарегистрироваться</TermButton>
         </TermWindow>
       </Transition>

@@ -1,29 +1,22 @@
-<script lang="ts">
-import {defineComponent} from 'vue'
+<script lang="ts" setup>
+import {computed} from 'vue'
 import {VueLatex} from "vatex";
 
-export default defineComponent({
-  name: "tex",
-  components: {VueLatex},
-  props: {
-    text: {
-      type: String,
-      required: true
-    },
-    fontSize: {
-      type: Number,
-      default: undefined
-    }
+const props = defineProps({
+  text: {
+    type: String,
+    required: true
   },
-  computed: {
-    data() {
-      return this.text.split("$");
-    },
-    fontsize() {
-      return (this.fontSize ?? (window.matchMedia("(max-width: 530px)").matches ? 14 : window.matchMedia("(max-width: 940px)").matches ? 16 : 24)) + "px";
-    }
+  fontSize: {
+    type: Number,
+    default: undefined
   }
-})
+});
+
+const data = computed(() => props.text.split("$"));
+const fontsize = computed(() => {
+  return (props.fontSize ?? (window.matchMedia("(max-width: 530px)").matches ? 14 : window.matchMedia("(max-width: 940px)").matches ? 16 : 24)) + "px";
+});
 </script>
 
 <template>
