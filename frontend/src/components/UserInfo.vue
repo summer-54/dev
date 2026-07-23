@@ -115,8 +115,8 @@ onMounted(() => {
   height: 10px;
 
   &.colored {
-    --color-a: #92f394;
-    --color-b: #009e16;
+    --color-a: #89ff89;
+    --color-b: #08a621;
 
     background-color: color-mix(in srgb, var(--color-a) var(--m), var(--color-b) var(--n));
   }
@@ -128,6 +128,11 @@ onMounted(() => {
 
 :global(.dark) {
   .tsStat {
+    &.colored {
+      --color-a: #92f394;
+      --color-b: #009e16;
+    }
+
     &.empty {
       background-color: #2a313c;
     }
