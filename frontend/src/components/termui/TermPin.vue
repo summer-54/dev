@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {InputOtp} from "primevue";
 import type {PropType} from "vue";
+import {ElInputOtp} from "element-plus";
 
 const model = defineModel({
   type: Object as PropType<string>
@@ -29,7 +29,7 @@ defineProps({
 <template>
   <div class="terminal-wrapper">
     <span class="bracket bracket-left"></span>
-    <InputOtp :class="$style.input" v-model="model" :length="length" :integerOnly="integerOnly" :mask="mask" :disabled="disabled"/>
+    <ElInputOtp :class="$style.input" v-model="model" :length="length" :integerOnly="integerOnly" :mask="mask" :disabled="disabled"/>
     <span class="bracket bracket-right"></span>
   </div>
 </template>
@@ -120,9 +120,11 @@ defineProps({
 
 <style module>
 .input {
-  :global(.p-inputotp-input) {
+  :global(.el-input-otp__input-field) {
     border: 1px solid gray;
     background: transparent;
+    box-shadow: none !important;
+    transition: background ease-in-out 0.2s;
 
     @media (hover: hover) {
       &:hover {
@@ -142,7 +144,7 @@ defineProps({
 
 :global(.dark) {
   .input {
-    :global(.p-inputotp-input) {
+    :global(.el-input-otp__input-field) {
       border: 1px solid #95EAA720;
       background: transparent;
 

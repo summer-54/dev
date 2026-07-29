@@ -4,6 +4,7 @@ import {type UserType} from "@/api/users";
 import Title from "@/components/Title.vue";
 import {getUserTSStats} from "@/api/stats.ts";
 import TermWindow from "@/components/termui/TermWindow.vue";
+import {ElTooltip} from "element-plus";
 
 const props = defineProps({
   user: {
@@ -59,7 +60,11 @@ onMounted(() => {
         <div class="tsStatsScroll">
           <div class="tsStats">
             <template v-for="{color, count, date} in tsStats">
-              <span v-if="color > 0" :style="`--n: ${color * 100}%; --m: ${(1 - color) * 100}%`" class="tsStat colored" v-tooltip.bottom="`${count} решено ${date}`"/>
+              <template v-if="color > 0">
+                <ElTooltip :content="`${count} решено ${date}`" effect="light" :popper-class="$style.popover">
+                  <span :style="`--n: ${color * 100}%; --m: ${(1 - color) * 100}%`" class="tsStat colored"/>
+                </ElTooltip>
+              </template>
               <span v-else-if="color === 0" class="tsStat empty"/>
               <span v-else class="tsStat"/>
             </template>
@@ -69,6 +74,14 @@ onMounted(() => {
     </div>
   </main>
 </template>
+
+<style module>
+:global(.dark) {
+  .popover {
+    color: white;
+  }
+}
+</style>
 
 <style scoped>
 .info {

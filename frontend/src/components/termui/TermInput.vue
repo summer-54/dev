@@ -1,10 +1,11 @@
 <template>
-  <label class="terminal-wrapper" :class="{dark: $themeName === 'dark'}">
+  <label class="terminal-wrapper" :class="{dark: $themeName === 'dark'}" v-click-outside="() => focus = false">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional, lineBreak: !noBreak}"
-            v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
+      <ElTooltip content="Необязательное поле" :disabled="!optional" :popper-class="$style.popover" effect="light">
+        <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
+      </ElTooltip>
       <input
           v-if="!int && !float"
           :type="password ? 'password' : 'text'"
@@ -13,6 +14,7 @@
           :placeholder="placeholder"
           @input="onInput"
           :disabled="disabled"
+          v-popover="op"
       />
       <input
           v-else
@@ -24,9 +26,16 @@
           inputmode="numeric"
           @input="onInput"
           :disabled="disabled"
+          v-popover="op"
       />
 
-      <Popover ref="op">
+      <ElPopover
+          ref="op"
+          virtual-triggering persistent
+          trigger="focus"
+          :visible="(!int && !float ? (min != undefined && (inputValue ?? '').length < min) || (max != undefined && (inputValue ?? '').length > max) || (props.pattern != undefined && !props.pattern.test(inputValue ?? ''))
+            : (min != undefined && Number(inputValue) < min) || (max != undefined && Number(inputValue) > max)) && focus"
+      >
         <template v-if="!int && !float">
           <div v-if="min != undefined && (inputValue ?? '').length < min">Длина строки должна быть не менее {{min}}</div>
           <div v-if="max != undefined && (inputValue ?? '').length > max">Длина строки должна быть не более {{max}}</div>
@@ -36,7 +45,7 @@
           <div v-if="min != undefined && Number(inputValue) < min">Значение должно быть не менее {{min}}</div>
           <div v-if="max != undefined && Number(inputValue) > max">Значение должно быть не более {{max}}</div>
         </template>
-      </Popover>
+      </ElPopover>
     </span>
 
     <span class="bracket bracket-right"></span>
@@ -45,9 +54,10 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {Popover} from "primevue";
+import {ElPopover, ElPopoverDirective as vPopover, ClickOutside as vClickOutside, ElTooltip} from "element-plus";
 
 const op = ref();
+const focus = ref(false);
 const inputValue = defineModel({ type: String });
 
 const props = defineProps({
@@ -111,24 +121,34 @@ function inputHandler(event: KeyboardEvent) {
 }
 
 function onInput(event: InputEvent) {
-  const value = (event.target as HTMLInputElement).value;
-  if (value === "") {
-    op.value.hide();
-    return;
-  }
-  if (!props.int && !props.float) {
-    if (props.min != undefined && value.length < props.min) op.value.show(event);
-    else if (props.max != undefined && value.length > props.max) op.value.show(event);
-    else if (props.pattern != undefined && !props.pattern.test(value)) op.value.show(event);
-    else op.value.hide();
-  }
-  else {
-    if (props.min != undefined && Number(value) < props.min) op.value.show(event);
-    else if (props.max != undefined && Number(value) > props.max) op.value.show(event);
-    else op.value.hide();
-  }
+  // console.log(op.value);
+  // const value = (event.target as HTMLInputElement).value;
+  // if (value === "") {
+  //   op.value.hide();
+  //   return;
+  // }
+  // if (!props.int && !props.float) {
+  //   if (props.min != undefined && value.length < props.min) op.value.show(event);
+  //   else if (props.max != undefined && value.length > props.max) op.value.show(event);
+  //   else if (props.pattern != undefined && !props.pattern.test(value)) op.value.show(event);
+  //   else op.value.hide();
+  // }
+  // else {
+  //   if (props.min != undefined && Number(value) < props.min) op.value.show(event);
+  //   else if (props.max != undefined && Number(value) > props.max) op.value.show(event);
+  //   else op.value.hide();
+  // }
+  focus.value = true;
 }
 </script>
+
+<style module>
+:global(.dark) {
+  .popover {
+    color: white;
+  }
+}
+</style>
 
 <style scoped>
 .terminal-wrapper {

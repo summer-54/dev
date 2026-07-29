@@ -3,9 +3,10 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional}"
-            v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
-      <DatePicker
+      <ElTooltip content="Необязательное поле" :disabled="!optional" :popper-class="$style.popover" effect="light">
+        <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
+      </ElTooltip>
+      <ElDatePicker
           v-model="inputValue"
           class="terminal-input"
           :class="$style.date"
@@ -13,6 +14,7 @@
           showTime showIcon iconDisplay="input"
           dateFormat="dd.mm.yy"
           :minDate="min" :maxDate="max"
+          type="datetime"
       />
     </span>
 
@@ -22,7 +24,7 @@
 
 <script setup lang="ts">
 import {onMounted, type PropType, ref} from "vue";
-import {DatePicker} from "primevue";
+import {ElDatePicker, ElTooltip} from "element-plus";
 
 const inputValue = defineModel({
   type: Object as PropType<Date | undefined>,
@@ -70,12 +72,17 @@ onMounted(() => {
 
 <style module>
 .date {
-  --p-inputtext-padding-x: 0;
-  --p-inputtext-padding-y: 0;
-  --p-inputtext-background: #00000000;
+  width: 100% !important;
 
-  :global(.p-datepicker-input) {
-    border: none !important;
+  :global(.el-input__wrapper) {
+    box-shadow: none !important;
+    background: none !important;
+  }
+}
+
+:global(.dark) {
+  .popover {
+    color: white;
   }
 }
 </style>
@@ -116,7 +123,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   white-space: nowrap;
-  padding: 5px 10px;
+  padding: 0 10px;
   border: 1px solid gray;
   transition: all ease-in-out 0.2s;
   width: 100%;

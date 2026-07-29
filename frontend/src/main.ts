@@ -13,9 +13,9 @@ import {
     Title as ChartJSTitle,
     Tooltip
 } from "chart.js";
-import PrimeVue from "primevue/config";
-import Aura from "@primevue/themes/aura";
-import TooltipDir from 'primevue/tooltip';
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 ChartJS.register(
     CategoryScale,
@@ -45,14 +45,6 @@ app.use(createVueSui({
     }
 }, {default: "dark"}));
 app.use(createManager());
-app.use(PrimeVue, {
-    theme: {
-        preset: Aura,
-        options: {
-            darkModeSelector: ".dark"
-        }
-    }
-});
-app.directive('tooltip', TooltipDir);
+app.use(ElementPlus);
 
 app.mount('#app');

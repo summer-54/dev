@@ -3,21 +3,22 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <span :class="{prompt: true, optional: optional}"
-            v-tooltip="optional ? 'Необязательное поле' : ''">{{prompt}}</span>
-      <Select
+      <ElTooltip content="Необязательное поле" :disabled="!optional" :popper-class="$style.popover" effect="light">
+        <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
+      </ElTooltip>
+      <ElSelect
           v-model="inputValue"
           class="terminal-input"
           :class="$style.select"
           :options="options"
-          :overlayClass="$style.selectOverlay"
+          :popperClass="$style.selectOverlay"
       >
-        <template #option="slotProps">
+        <ElOption v-for="item in options" :key="item" :label="item" :value="item" :class="$style.selectOption">
             <div>
-                <div>{{ slotProps.option }}</div>
+                <div>{{ item }}</div>
             </div>
-        </template>
-      </Select>
+        </ElOption>
+      </ElSelect>
     </span>
 
     <span class="bracket bracket-right"></span>
@@ -26,7 +27,7 @@
 
 <script setup lang="ts">
 import {onMounted, type PropType, ref} from "vue";
-import {Select} from "primevue";
+import {ElSelect, ElOption, ElTooltip} from "element-plus";
 
 const inputValue = defineModel({ type: String });
 
@@ -72,23 +73,39 @@ onMounted(() => {
 </script>
 
 <style module>
-.select {
-  --p-select-padding-x: 0;
-  --p-select-padding-y: 0;
+.select :global(.el-select__wrapper) {
+  background: transparent;
+  box-shadow: none !important;
 }
 
 .selectOverlay {
-  font-family: 'Courier New', Courier, monospace;
-  --p-select-overlay-background: #000000A0;
-  --p-select-overlay-border-color: #95EAA730;
-  --p-select-option-focus-background: #95EAA720;
-  --p-select-option-selected-focus-background: #95EAA720;
-  --p-select-option-selected-background: #00000000;
-  --p-select-option-selected-color: #95EAA7FF;
-  --p-select-option-selected-focus-color: #95EAA7FF;
+  background: transparent !important;
+  box-shadow: none !important;
+}
 
-  :global(.p-select-option-selected) {
-    text-shadow: 0 0 5px #95EAA7FF;
+@media (hover: hover) {
+  .selectOption:hover {
+    background: #95EAA710 !important;
+    border: 1px solid #95EAA730;
+    border-radius: 5px;
+  }
+}
+
+.selectOption:focus-within {
+  background: #95EAA710 !important;
+  border: 1px solid #95EAA730;
+  border-radius: 5px;
+}
+
+.selectOption {
+  transition: background ease-in-out 0.2s, border ease-in-out 0.2s;
+  background: transparent !important;
+  border-radius: 0;
+}
+
+:global(.dark) {
+  .popover {
+    color: white;
   }
 }
 </style>
@@ -129,7 +146,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   white-space: nowrap;
-  padding: 5px 10px;
+  padding: 0 10px;
   border: 1px solid gray;
   transition: all ease-in-out 0.2s;
   width: 100%;
@@ -158,7 +175,6 @@ onMounted(() => {
   width: 100%;
   padding: 0;
   caret-shape: block;
-  margin: 0 0 0 8px;
 }
 
 @media (hover: hover) {
