@@ -17,6 +17,7 @@ import TermSecondaryLayout from "@/components/termui/header/TermSecondaryLayout.
 import {ref} from "vue";
 import CalloutButton from "@/components/termui/header/CalloutButton.vue";
 import {useColorMode} from "@vueuse/core";
+import {ElDrawer, ElMenu, ElMenuItem, ElSubMenu} from "element-plus";
 
 const sideBarOpened = ref(false);
 const dark = useColorMode({initialValue: "dark"});
@@ -155,99 +156,67 @@ function toggleDark() {
       </template>
     </TermHeaderRootItem>
   </TermHeaderRoot>
-  <Drawer v-model:visible="sideBarOpened" :class="$style.drawer">
-    <PanelMenu :model="[
-      {
-        label: 'Новости',
-        icon: home,
-        route: '/',
-        command() {sideBarOpened = false}
-      },
-      // {
-      //   label: 'Статьи',
-      //   icon: news,
-      //   items: [
-      //     {
-      //       label: 'Школьная информатика',
-      //       command() {sideBarOpened = false}
-      //     },
-      //     {
-      //       label: 'Олимпиадная информатика',
-      //       command() {sideBarOpened = false}
-      //     },
-      //     {
-      //       label: 'Промышленная разработка',
-      //       command() {sideBarOpened = false}
-      //     }
-      //   ]
-      // },
-      {
-        label: 'Соревнования и поездки',
-        icon: cup,
-        items: [
-          {
-            label: 'Внутрення олимпиада',
-            route: '/olymp',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'Летний кубок',
-            route: '/summer-cup',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'ЛШП',
-            route: '/summer-camp',
-            command() {sideBarOpened = false}
-          }
-        ]
-      },
-      {
-        label: 'Решать!',
-        icon: code,
-        items: [
-          {
-            label: 'Контесты',
-            href: 'https://contest.inf54.ru',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'Группы',
-            href: 'https://contest.inf54.ru/groupes',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'Вопросы',
-            href: 'https://contest.inf54.ru/questions',
-            command() {sideBarOpened = false}
-          },
-          {
-            label: 'Рейтинг',
-            href: 'https://contest.inf54.ru/rating',
-            command() {sideBarOpened = false}
-          }
-        ]
-      }
-    ]">
-      <template #item="{item: {label, icon, items, route, href}}">
-        <RouterLink :to='route' :class="$style.menuElem" v-if="route">
-          <ThemeInvertSvg v-if="icon" :alt="label as string" :src="icon as string"/>
-          {{label}}
-          <Icon icon="radix-icons:caret-down" :class="$style.CaretDown" v-if="items"/>
+  <ElDrawer v-model="sideBarOpened" :class="$style.drawer" direction="ltr">
+    <ElMenu>
+      <ElMenuItem index="1">
+        <RouterLink to="/" :class="$style.menuElem" @click="sideBarOpened = false">
+          <ThemeInvertSvg :alt="home" :src="home"/>
+          Новости
         </RouterLink>
-        <a :href='href' :class="$style.menuElem" v-else-if="href">
-          <ThemeInvertSvg v-if="icon" :alt="label as string" :src="icon as string"/>
-          {{label}}
-          <Icon icon="radix-icons:caret-down" :class="$style.CaretDown" v-if="items"/>
-        </a>
-        <div :class="$style.menuElem" v-else>
-          <ThemeInvertSvg v-if="icon" :alt="label as string" :src="icon as string"/>
-          {{label}}
-          <Icon icon="radix-icons:caret-down" :class="$style.CaretDown" v-if="items"/>
-        </div>
-      </template>
-    </PanelMenu>
-  </Drawer>
+      </ElMenuItem>
+      <ElSubMenu index="2">
+        <template #title>
+          <div :class="$style.menuElem">
+            <ThemeInvertSvg :alt="cup" :src="cup"/>
+            Соревнования и поездки
+          </div>
+        </template>
+        <ElMenuItem index="2-1">
+          <RouterLink to="/olymp" :class="$style.menuElem" @click="sideBarOpened = false">
+            Внутрення олимпиада
+          </RouterLink>
+        </ElMenuItem>
+        <ElMenuItem index="2-2">
+          <RouterLink to="/summer-cup" :class="$style.menuElem" @click="sideBarOpened = false">
+            Летний кубок
+          </RouterLink>
+        </ElMenuItem>
+        <ElMenuItem index="2-3">
+          <RouterLink to="/summer-camp" :class="$style.menuElem" @click="sideBarOpened = false">
+            ЛШП
+          </RouterLink>
+        </ElMenuItem>
+      </ElSubMenu>
+      <ElSubMenu index="3">
+        <template #title>
+          <div :class="$style.menuElem">
+            <ThemeInvertSvg :alt="code" :src="code"/>
+            Решать!
+          </div>
+        </template>
+        <ElMenuItem index="3-1">
+          <a href="https://contest.inf54.ru" :class="$style.menuElem">
+            Контесты
+          </a>
+        </ElMenuItem>
+        <ElMenuItem index="3-2">
+          <a href="https://contest.inf54.ru/groupes" :class="$style.menuElem">
+            Группы
+          </a>
+        </ElMenuItem>
+        <ElMenuItem index="3-3">
+          <a href="https://contest.inf54.ru/questions" :class="$style.menuElem">
+            Вопросы
+          </a>
+        </ElMenuItem>
+        <ElMenuItem index="3-3">
+          <a href="https://contest.inf54.ru/rating" :class="$style.menuElem">
+            Рейтинг
+          </a>
+        </ElMenuItem>
+      </ElSubMenu>
+    </ElMenu>
+  </ElDrawer>
 </template>
 
 <style module>
@@ -290,6 +259,7 @@ function toggleDark() {
   gap: 10px;
   padding: 10px;
   text-decoration: none;
+  width: 100%;
 }
 
 .flex {
