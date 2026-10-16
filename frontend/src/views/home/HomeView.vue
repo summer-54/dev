@@ -7,9 +7,8 @@ import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 import searchIcon from "@/assets/icons/search.svg"
 import UsersSearch from "@/views/home/UsersSearch.vue";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
 import TermBG from "@/components/termui/TermBG.vue";
+import TermButton from "@/components/termui/TermButton.vue";
 
 const observerElem = ref<HTMLSpanElement>();
 
@@ -58,7 +57,7 @@ onMounted(() => {
       </span>
       <span class="observerElem" ref="observerElem"/>
     </div>
-    <SuiButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg :src="searchIcon" alt="search"/></SuiButton>
+    <TermButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg class="searchIcon" :src="searchIcon" alt="search"/></TermButton>
     <UsersSearch v-model:searching="searching"/>
     <ProgressIndicator v-if="!news_cur.length"/>
     <TermBG/>
@@ -93,6 +92,10 @@ main {
     @media (max-width: 420px) {
       top: 95px;
     }
+  }
+
+  .searchIcon {
+    width: 32px;
   }
 }
 

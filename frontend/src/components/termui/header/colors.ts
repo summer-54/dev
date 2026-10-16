@@ -1,8 +1,10 @@
 import {computed} from "vue";
-import {themeName} from "@/utils.js";
+import {useColorMode} from "@vueuse/core";
+
+const dark = useColorMode({initialValue: "dark"});
 
 export const colors = computed(() => {
-    return themeName.value === "dark" ? {
+    return dark.value === "dark" ? {
         bg: "#2c2c2c",
         hoverColor: "#9297FB",
         itemHeadingColor: "#9297FB",

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {computed} from 'vue'
-import vAnimateOnScroll from 'primevue/animateonscroll';
+// import vAnimateOnScroll from 'primevue/animateonscroll';
 
 const props = defineProps({
   animation: {

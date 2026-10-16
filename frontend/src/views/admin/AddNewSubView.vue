@@ -57,11 +57,6 @@ export default defineComponent({
     fullText() {
       this.resizeTextArea(this.$refs.fullText as HTMLTextAreaElement);
     }
-  },
-  computed: {
-    bg() {
-      return this.$theme.bg;
-    }
   }
 })
 </script>

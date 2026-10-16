@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import {useColorMode} from "@vueuse/core";
+
 defineProps({
   src: {
     type: String,
@@ -13,10 +15,12 @@ defineProps({
     required: false
   }
 });
+
+const dark = useColorMode({initialValue: "dark"});
 </script>
 
 <template>
-<img :src="src" :alt="alt" :class="{[$style.invert]: $themeName === (inverted ? 'dark' : 'light')}"/>
+<img :src="src" :alt="alt" :class="{[$style.invert]: dark === (inverted ? 'dark' : 'light')}"/>
 </template>
 
 <style module>

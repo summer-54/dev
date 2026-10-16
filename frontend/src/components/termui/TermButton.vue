@@ -38,7 +38,7 @@ defineProps({
 /* Графические скобки через border */
 .bracket {
   width: 5px;
-  height: 40px;
+  height: calc(100% + 6px);
   border: 2px solid black;
   opacity: 0.6;
   position: absolute;
@@ -63,6 +63,7 @@ defineProps({
   border: 1px solid gray;
   font-size: 16px;
   transition: all ease-in-out 0.2s;
+  width: 100%;
 }
 
 @media (hover: hover) {
@@ -70,7 +71,7 @@ defineProps({
     background: #60e17b30;
 
     .bracket {
-      height: 45px;
+      height: calc(100% + 10px);
     }
 
     .bracket-left {

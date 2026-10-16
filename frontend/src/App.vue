@@ -1,38 +1,8 @@
-<script lang="ts">
+<script lang="ts" setup>
 import {RouterView} from 'vue-router';
-import {defineComponent} from "vue";
 import {routerPending} from "@/router.js";
 import ProgressIndicator from "@/components/ui/progressIndicator.vue";
-import {themeName} from "@/utils.js";
 import Header from "@/Header.vue";
-
-export default defineComponent({
-  components: {Header, ProgressIndicator, RouterView},
-  computed: {
-    color() {
-      return this.$theme.color
-    },
-    routerPending() {
-      return routerPending.value;
-    },
-    theme() {return this.$themeName}
-  },
-  watch: {
-    $themeName() {
-      themeName.value = this.$themeName as "light" | "dark";
-      // PrimeVue.changeTheme(this.$themeName);
-      // this.$primevue.changeTheme(
-      //     `lara-${this.$themeName}-blue`
-      // );
-      if (this.$themeName === "dark") document.documentElement.classList.add("dark");
-      else document.documentElement.classList.remove("dark");
-    }
-  },
-  mounted() {
-    themeName.value = this.$themeName as "light" | "dark";
-    if (this.$themeName === "dark") document.documentElement.classList.add("dark");
-  }
-})
 </script>
 
 <template>
@@ -58,11 +28,21 @@ body {
   padding: 0;
   margin: 0;
   min-height: 100vh;
-  color-scheme: v-bind(theme);
 }
 
 * {
-  color: v-bind(color);
+  font-family: "PT Mono", monospace;
+  color: black;
+}
+
+.dark {
+  body {
+    background: rgb(18, 18, 18);
+  }
+
+  * {
+    color: white;
+  }
 }
 
 #app {
@@ -92,9 +72,5 @@ body {
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
-
-* {
-  font-family: "PT Mono", monospace;
 }
 </style>

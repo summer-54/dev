@@ -8,25 +8,24 @@
   </span>
   <span class="all_new" v-else>
     <RouterLink :to="page">
-      <SuiButton transform="1.2">
+      <TermButton transform="1.2">
         <span class="news">
           <span class="title" v-html="title"></span>
           <img :src="src" class="img">
           <span class="comment" v-html="comment"></span>
         </span>
-      </SuiButton>
+      </TermButton>
     </RouterLink>
   </span>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
+import TermButton from "@/components/termui/TermButton.vue";
 
 export default defineComponent({
   name: "News",
-  components: {SuiButton},
+  components: {TermButton},
   props: {
     src: {
       type: String

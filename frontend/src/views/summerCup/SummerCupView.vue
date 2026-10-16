@@ -2,8 +2,6 @@
 import {onMounted, ref} from "vue";
 import QA_container from "@/components/QA_container.vue";
 import Tex from "@/components/ui/tex.vue";
-import Tabs from "@/components/ui/Tabs.vue";
-import TermBG from "@/components/termui/TermBG.vue";
 import TermWindow from "@/components/termui/TermWindow.vue";
 import Animation from "@/components/ui/animation.vue";
 import {useRoute, useRouter} from "vue-router";
@@ -65,13 +63,13 @@ const text = ref("Один тур оценивается в 90 баллов, о�
         <tex class="plain_text" :text="text"/>
       </TermWindow>
     </Animation>
-    <Tabs :routes="{'I ЛКП': '/summer-cup/1', 'II ЛКП': '/summer-cup/2'}"/>
-    <RouterView v-slot="{Component}">
-      <Transition name="fade" mode="out-in">
-        <Component :is="Component"/>
-      </Transition>
-    </RouterView>
-    <TermBG/>
+<!--    <Tabs :routes="{'I ЛКП': '/summer-cup/1', 'II ЛКП': '/summer-cup/2'}"/>-->
+<!--    <RouterView v-slot="{Component}">-->
+<!--      <Transition name="fade" mode="out-in">-->
+<!--        <Component :is="Component"/>-->
+<!--      </Transition>-->
+<!--    </RouterView>-->
+<!--    <TermBG/>-->
   </main>
 </template>
 

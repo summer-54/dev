@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue"
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
+import TermButton from "@/components/termui/TermButton.vue";
 
 defineProps({
   icon: {
@@ -24,11 +23,13 @@ defineProps({
 </script>
 
 <template>
-  <SuiButton :class="{[$style.button]: true, [$style.noText]: noText}" border="#9297FB">
-    <img :src="icon" :alt="alt" v-if="notInvert">
-    <ThemeInvertSvg :src="icon" :alt="icon" v-else/>
-    <div v-if="!noText"><slot/></div>
-  </SuiButton>
+  <TermButton>
+    <div>
+      <img :src="icon" :alt="alt" v-if="notInvert">
+      <ThemeInvertSvg :src="icon" :alt="icon" v-else/>
+      <div v-if="!noText"><slot/></div>
+    </div>
+  </TermButton>
 </template>
 
 <style scoped>

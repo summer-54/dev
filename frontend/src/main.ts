@@ -1,7 +1,6 @@
 import {createApp} from "vue";
 import App from "./App.vue";
 import router from "./router";
-import {createVueSui} from "sffui.vue";
 import {createManager} from '@vue-youtube/core';
 import {
     CategoryScale,
@@ -30,20 +29,20 @@ ChartJS.register(
 const app = createApp(App);
 
 app.use(router);
-app.use(createVueSui({
-    dark: {
-        border: "#9297FB",
-        buttonBorder: "#9297FB",
-        inputBorder: "#9297FB",
-        fileInputBorder: "#9297FB"
-    },
-    light: {
-        border: "#9297FB",
-        buttonBorder: "#9297FB",
-        inputBorder: "#9297FB",
-        fileInputBorder: "#9297FB"
-    }
-}, {default: "dark"}));
+// app.use(createVueSui({
+//     dark: {
+//         border: "#9297FB",
+//         buttonBorder: "#9297FB",
+//         inputBorder: "#9297FB",
+//         fileInputBorder: "#9297FB"
+//     },
+//     light: {
+//         border: "#9297FB",
+//         buttonBorder: "#9297FB",
+//         inputBorder: "#9297FB",
+//         fileInputBorder: "#9297FB"
+//     }
+// }, {default: "dark"}));
 app.use(createManager());
 app.use(ElementPlus);
 

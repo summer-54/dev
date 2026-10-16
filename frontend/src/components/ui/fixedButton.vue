@@ -26,14 +26,6 @@ export default defineComponent({
       type: String,
       default: ""
     }
-  },
-  computed: {
-    color() {
-      return this.$theme.color;
-    },
-    border() {
-      return this.$theme.border;
-    }
   }
 })
 </script>
@@ -50,7 +42,7 @@ export default defineComponent({
   right: 20px;
 }
 
-.navButton button {
+/*.navButton button {
   border: 2px solid v-bind(color);
 }
 
@@ -64,5 +56,5 @@ export default defineComponent({
       border: v-bind(border) solid 2px !important;
     }
   }
-}
+}*/
 </style>

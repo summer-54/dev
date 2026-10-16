@@ -83,14 +83,8 @@ export default defineComponent({
     }
   },
   computed: {
-    bg() {
-      return this.$theme.bg;
-    },
     route() {
       return Object(this.$router).currentRoute.value;
-    },
-    color() {
-      return this.$theme.color;
     }
   },
   mounted() {
@@ -147,7 +141,7 @@ div {
 
   textarea {
     width: 96%;
-    background: v-bind(bg);
+    /*background: v-bind(bg);*/
     outline: none !important;
     border-radius: 15px;
     padding: 20px;

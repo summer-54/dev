@@ -74,11 +74,6 @@ export default defineComponent({
   },
   mounted() {
     this.get();
-  },
-  computed: {
-    color() {
-      return this.$theme.color;
-    }
   }
 })
 </script>
@@ -145,7 +140,6 @@ tbody tr td:nth-child(1) {
 }
 
 td {
-  border: 2px solid v-bind(color);
   border-radius: 15px;
   margin: 10px;
   text-align: center;

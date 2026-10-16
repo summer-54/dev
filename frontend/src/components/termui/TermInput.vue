@@ -3,7 +3,7 @@
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
-      <ElTooltip content="Необязательное поле" :disabled="!optional" :popper-class="$style.popover" effect="light">
+      <ElTooltip content="Необязательное поле" :disabled="!optional" :popper-class="$style.popover" effect="light" v-if="prompt !== ''">
         <span :class="{prompt: true, optional: optional}">{{prompt}}</span>
       </ElTooltip>
       <input

@@ -1,11 +1,9 @@
 <script lang="ts" setup>
 import {onMounted, ref, watch} from "vue"
-// @ts-ignore
-import SuiInput from "sffui.vue/suiInput.vue";
-// @ts-ignore
-import SuiButton from "sffui.vue/suiButton.vue";
 import {searchUser, type SearchUserType} from "@/api/users";
 import vFocus from "@/directives/focus";
+import TermInput from "@/components/termui/TermInput.vue";
+import TermButton from "@/components/termui/TermButton.vue";
 
 const props = defineProps({
   searching: {
@@ -56,11 +54,11 @@ watch(props, () => {
 <template>
   <Transition name="searchOpen" mode="out-in">
     <div class="search" v-if="searching" @keydown="selectUser" @click="$event.stopPropagation()">
-      <SuiInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
+      <TermInput v-model="searchText" @input="updateSearch" border="#9297FB" placeholder="Поиск пользователей" v-focus="selectedFoundUser < 0"/>
       <div>
         <TransitionGroup name="foundUsers">
           <RouterLink v-for="(user, index) in foundUsers" :key="user.username" :to="`/users/${user.username}`">
-            <SuiButton v-focus="selectedFoundUser === index" transform="1.2">{{user.text}}</SuiButton>
+            <TermButton v-focus="selectedFoundUser === index" transform="1.2">{{user.text}}</TermButton>
           </RouterLink>
         </TransitionGroup>
       </div>

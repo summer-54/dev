@@ -15,11 +15,15 @@ import lightIcon from "@/assets/icons/light.svg";
 import ThemeInvertSvg from "@/components/ui/ThemeInvertSvg.vue";
 import TermSecondaryLayout from "@/components/termui/header/TermSecondaryLayout.vue";
 import {ref} from "vue";
-import Drawer from "primevue/drawer";
-import PanelMenu from "primevue/panelmenu";
 import CalloutButton from "@/components/termui/header/CalloutButton.vue";
+import {useColorMode} from "@vueuse/core";
 
 const sideBarOpened = ref(false);
+const dark = useColorMode({initialValue: "dark"});
+
+function toggleDark() {
+  dark.value = dark.value === "dark" ? "light" : "dark";
+}
 </script>
 
 <template>
@@ -112,10 +116,10 @@ const sideBarOpened = ref(false);
         </div>
       </template>
     </TermHeaderRootItem>
-    <TermHeaderRootItem content-less @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')">
+    <TermHeaderRootItem content-less @click="toggleDark">
       <template #heading>
         <div :class="$style.flex">
-          <ThemeInvertSvg :src="$themeName === 'dark' ? lightIcon : darkIcon" alt=""/>
+          <ThemeInvertSvg :src="dark ? lightIcon : darkIcon" alt=""/>
         </div>
       </template>
     </TermHeaderRootItem>
@@ -143,10 +147,10 @@ const sideBarOpened = ref(false);
         </div>
       </template>
     </TermHeaderRootItem>
-    <TermHeaderRootItem content-less @click="$setTheme($themeName === 'dark' ? 'light' : 'dark')">
+    <TermHeaderRootItem content-less @click="toggleDark">
       <template #heading>
         <div :class="$style.flex">
-          <ThemeInvertSvg :src="$themeName === 'dark' ? lightIcon : darkIcon" alt=""/>
+          <ThemeInvertSvg :src="dark ? lightIcon : darkIcon" alt=""/>
         </div>
       </template>
     </TermHeaderRootItem>
