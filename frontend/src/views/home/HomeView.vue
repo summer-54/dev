@@ -57,7 +57,7 @@ onMounted(() => {
       </span>
       <span class="observerElem" ref="observerElem"/>
     </div>
-    <TermButton @click="$event.stopPropagation(); searching = true" v-if="!searching"><ThemeInvertSvg class="searchIcon" :src="searchIcon" alt="search"/></TermButton>
+    <TermButton @click="$event.stopPropagation(); searching = true" v-if="!searching" class="searchButton"><ThemeInvertSvg class="searchIcon" :src="searchIcon" alt="search"/></TermButton>
     <UsersSearch v-model:searching="searching"/>
     <ProgressIndicator v-if="!news_cur.length"/>
     <TermBG/>
@@ -80,7 +80,7 @@ main {
     transition: width .5s;
   }
 
-  > button {
+  .searchButton {
     position: fixed;
     right: 20px;
     top: 120px;
