@@ -13,11 +13,6 @@ export default defineComponent({
   data() {
     return {homeIcon, usersIcon, contestsIcon, newsIcon}
   },
-  computed: {
-    color() {
-      return this.$themeName === "dark" ? "white" : "black";
-    }
-  },
   mounted() {
     (async () => {
       if (!(await isAdmin())) this.$router.push("/");
@@ -70,7 +65,7 @@ export default defineComponent({
     }
     gap: 20px;
 
-    border: 2px solid v-bind(color);
+    //border: 2px solid v-bind(color);
     border-radius: 25px;
     transition: border 1s ease;
   }

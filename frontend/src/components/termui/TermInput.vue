@@ -1,5 +1,5 @@
 <template>
-  <label class="terminal-wrapper" :class="{dark: $themeName === 'dark'}" v-click-outside="() => focus = false">
+  <label class="terminal-wrapper" v-click-outside="() => focus = false">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
@@ -279,7 +279,7 @@ function onInput(event: InputEvent) {
   }
 }
 
-.dark {
+:global(.dark) {
   .bracket {
     border: 2px solid #95EAA7FF;
   }

@@ -1,5 +1,5 @@
 <template>
-  <label class="terminal-wrapper" :class="{dark: $themeName === 'dark'}">
+  <label class="terminal-wrapper">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
@@ -213,7 +213,7 @@ onMounted(() => {
   }
 }
 
-.dark {
+:global(.dark) {
   .bracket {
     border: 2px solid #95EAA7FF;
   }

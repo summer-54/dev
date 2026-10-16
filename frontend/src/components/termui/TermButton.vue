@@ -1,5 +1,5 @@
 <template>
-  <button class="terminal-wrapper" :class="{enabled: !disabled, dark: $themeName === 'dark'}" :disabled="disabled">
+  <button class="terminal-wrapper" :class="{enabled: !disabled}" :disabled="disabled">
     <span class="bracket bracket-left"></span>
 
     <span class="terminal-content">
@@ -140,7 +140,7 @@ defineProps({
   }
 }
 
-.dark {
+:global(.dark) {
   .bracket {
     border: 2px solid #95EAA7FF;
   }

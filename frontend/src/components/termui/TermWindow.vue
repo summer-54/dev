@@ -21,7 +21,7 @@ onMounted(() => {
 </script>
 
 <template>
-<section :class="{dark: $themeName === 'dark'}">
+<section>
   <div class="prompt" v-if="prompt">{{prompt}}</div>
   <div class="header" v-if="!noHeader">
     <slot name="header"/>
@@ -67,7 +67,7 @@ section {
   }
 }
 
-.dark {
+:global(.dark) {
   background: rgba(96, 151, 109, 0.04);
 
   .header, .header * {
