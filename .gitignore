@@ -9,3 +9,4 @@ frontend/components.d.ts
 *.lock
 .idea
 backend/dist
+keys

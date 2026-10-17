@@ -66,27 +66,27 @@ services:
       - "./keys:/keys"
     networks:
       inf54_network:
-  article54:
-    image: vssizoff/article54server
-    depends_on:
-      minio:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-    environment:
-      PORT: 8080
-      HOST: "0.0.0.0"
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: postgres
-      MINIO_ENDPOINT: minio
-      MINIO_PORT: 9000
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
-      PUSH_CHECK: "http://backend:8080/push-check"
-      PULL_CHECK: "http://backend:8080/pull-check"
+#  article54:
+#    image: vssizoff/article54server
+#    depends_on:
+#      minio:
+#        condition: service_healthy
+#      db:
+#        condition: service_healthy
+#    environment:
+#      PORT: 8080
+#      HOST: "0.0.0.0"
+#      DB_HOST: db
+#      DB_PORT: 5432
+#      DB_USER: postgres
+#      DB_PASSWORD: ${DB_PASSWORD}
+#      DB_NAME: postgres
+#      MINIO_ENDPOINT: minio
+#      MINIO_PORT: 9000
+#      MINIO_ACCESS_KEY: minioadmin
+#      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+#      PUSH_CHECK: "http://backend:8080/push-check"
+#      PULL_CHECK: "http://backend:8080/pull-check"
   nginx:
     build:
       context: .
@@ -94,7 +94,7 @@ services:
       target: server
     depends_on:
       - backend
-      - article54
+#      - article54
     ports:
       - "54000:80"
     volumes:
