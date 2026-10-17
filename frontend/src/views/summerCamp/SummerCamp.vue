@@ -55,6 +55,6 @@ h1 {
 }
 
 .qa_list_small {
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 </style>

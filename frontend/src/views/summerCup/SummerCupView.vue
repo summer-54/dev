@@ -110,19 +110,11 @@ h2 {
   text-align: center;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
-}
-
-.fade-enter-from, .fade-leave-to {
-  opacity: 0;
-}
-
 .tex {
-  margin: 40px 40px 0 40px;
+  margin: 32px 40px 0 40px;
 
   @media (max-width: 530px) {
-    margin: 40px 20px 0 20px;
+    margin: 32px 20px 0 20px;
   }
 }
 </style>

@@ -68,16 +68,18 @@ section {
 }
 
 :global(.dark) {
-  background: rgba(96, 151, 109, 0.04);
+  section {
+    background: #60976d0a;
 
-  .header, .header * {
-    color: #95EAA7FF;
-    text-shadow: 0 0 5px #95EAA7FF;
-  }
+    .header, .header * {
+      color: #95EAA7FF;
+      text-shadow: 0 0 5px #95EAA7FF;
+    }
 
-  .prompt {
-    color: #95EAA7FF;
-    text-shadow: 0 0 5px #95EAA7FF;
+    .prompt {
+      color: #95EAA7FF;
+      text-shadow: 0 0 5px #95EAA7FF;
+    }
   }
 }
 </style>

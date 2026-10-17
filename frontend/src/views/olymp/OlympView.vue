@@ -1,8 +1,5 @@
 <script lang="ts" setup>
-import {ref} from 'vue';
-
-import QA_container from '@/components/QA_container.vue';
-import CircledImage_container from '@/components/CircledImage_container.vue';
+import {onBeforeUnmount, onMounted, ref} from 'vue';
 import OlympMaterials from "./OlympMaterials.vue";
 
 import manager1 from "@/assets/photo/manager1.jpg";
@@ -13,8 +10,9 @@ import author1 from "@/assets/photo/author1.jpg";
 import author2 from "@/assets/photo/author2.jpg";
 import author3 from "@/assets/photo/author3.jpg";
 import author4 from "@/assets/photo/author4.jpg";
-import Animation from "@/components/ui/animation.vue";
 import TermBG from "@/components/termui/TermBG.vue";
+import TermWindow from "@/components/termui/TermWindow.vue";
+import CircledImage from "@/components/CircledImage.vue";
 
 const rules = ref([
   {q: "Кто может принять участие?", a: "Вы должны быть учеником 8-11 классов при мехмате МГУ."},
@@ -41,29 +39,71 @@ const authors_list = ref([
   {src: author3, note1: "Иван Клочков"},
   {src: author4, note1: "Рамиль Хакамов"}
 ]);
+
+const rulesRef = ref();
+const managerRef = ref();
+const authorsRef = ref();
+
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          entry.target.classList.add("show");
+        }
+      },
+      { threshold: 0.2 },
+  )
+
+  observer.observe(rulesRef.value);
+  observer.observe(managerRef.value);
+  observer.observe(authorsRef.value);
+})
+
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
   <main>
     <div class="firstScreen">
-      <Animation animation="opacity">
+      <Transition appear name="opacity">
         <h1><span class="highlight">Олимпиада</span> классов при механико-математическом факультете МГУ имени М.В.Ломоносова <span class="highlight">по программированию</span></h1>
-      </Animation>
-      <Animation animation="opacity" :delay="500">
+      </Transition>
+      <Transition appear name="opacity" class="delayed">
         <p class="description">
           Олимпиада проводится с целью выявления наиболее талантливых и способных учащихся в области программирования, а также пробуждения интереса к программированию.
           Победители и призёры олимпиады получат дипломы и памятные призы.
           По результатам олимпиады отбираются участники ЛШП.
         </p>
-      </Animation>
+      </Transition>
     </div>
 <!--    <Animation animation="opacity" :delay="1000">-->
-    <animation animation="opacity"><h2 class="highlight">Правила</h2></animation>
-    <QA_container :qa_list="rules"></QA_container>
-    <animation animation="opacity"><h2 class="highlight">Организационный комитет</h2></animation>
-    <CircledImage_container :imgs_list="manager_list"></CircledImage_container>
-    <animation animation="opacity"><h2 class="highlight">Методическая комиссия</h2></animation>
-    <CircledImage_container :imgs_list="authors_list"></CircledImage_container>
+    <div ref="rulesRef">
+      <h2 class="highlight opacity-animated">Правила</h2>
+      <div class="qa">
+        <div class="qa_container" v-for="({q, a}, index) in rules">
+          <TermWindow class="inner slide-animated" :style="{'transition-delay': index * 150 + 'ms'}">
+            <template #header>
+              <span class="question">{{q}}</span>
+            </template>
+            <span class="answer" v-html="a"></span>
+          </TermWindow>
+        </div>
+      </div>
+    </div>
+    <div ref="managerRef">
+      <h2 class="highlight opacity-animated">Организационный комитет</h2>
+      <span class="circled_image_container">
+        <CircledImage class="slide-animated" :style="{'transition-delay': index * 150 + 'ms'}" v-for="(item, index) in manager_list" :src="item.src" :note1="item.note1" :note2="item.note2" :delay="index*200"/>
+      </span>
+    </div>
+    <div ref="authorsRef">
+      <h2 class="highlight opacity-animated">Методическая комиссия</h2>
+      <span class="circled_image_container">
+        <CircledImage class="slide-animated" :style="{'transition-delay': index * 150 + 'ms'}" v-for="(item, index) in authors_list" :src="item.src" :note1="item.note1" :delay="index*200"/>
+      </span>
+    </div>
     <OlympMaterials/>
 <!--    </Animation>-->
 <!--    <span class="link_p"><a class="link" href="https://moscowschool54.ru/priyem/2024/" target="_blank">Приходите к нам учиться!</a></span>-->
@@ -102,6 +142,7 @@ h1 {
 h2 {
   font-family: "ShoptronicSP", serif;
   font-size: 48px;
+  text-align: center;
 
   @media (910px <= width) {
     font-size: 48px;
@@ -155,5 +196,88 @@ h2 {
     color: #95EAA7FF;
     text-shadow: 0 0 10px #95EAA7FF;
   }
+}
+
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: opacity 2s ease;
+}
+
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+}
+
+.delayed {
+  transition-delay: 0.5s;
+}
+
+.opacity-animated {
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.slide-animated {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 2s ease;
+}
+
+.show {
+  .opacity-animated {
+    opacity: 1;
+  }
+
+  .slide-animated {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.answer {
+  font-family: "PT Mono", monospace;
+  font-size: 24px;
+  width: 100%;
+
+  @media (min-width: 530px) and (max-width: 940px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 16px;
+  }
+}
+
+.qa {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  padding: 0 40px;
+
+  @media (max-width: 530px) {
+    padding: 0 20px;
+  }
+
+  .qa_container {
+    flex-basis: 350px;
+    flex-grow: 1;
+    display: flex;
+
+    h2 {
+      text-align: center;
+    }
+
+    .inner {
+      height: auto;
+    }
+  }
+}
+
+.circled_image_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 </style>

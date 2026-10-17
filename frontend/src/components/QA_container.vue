@@ -41,7 +41,7 @@ const props = defineProps({
 div {
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: 32px;
   justify-content: center;
   padding: 0 40px;
 
@@ -52,14 +52,14 @@ div {
   .qa_container {
     flex-basis: 350px;
     flex-grow: 1;
+    display: flex;
 
     h2 {
       text-align: center;
     }
 
     .inner {
-      width: 100%;
-      height: 100%;
+      width: 100%
     }
   }
 }
